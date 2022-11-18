@@ -34,3 +34,5 @@ build/
 
 *.properties
 !**/src/main/resource/
+!/bots
+!/cache
