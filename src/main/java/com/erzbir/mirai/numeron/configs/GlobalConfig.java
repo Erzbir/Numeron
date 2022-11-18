@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.configs;
 import java.util.List;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/16 21:42
  */
 
@@ -19,10 +19,13 @@ public class GlobalConfig {
 
     public static String toStrings() {
         return "GlobalConfig{" +
-                "master=" + master + "\n" +
-                "\tillegalList=" + illegalList.toString() + "\n" +
-                "\tgroupList=" + groupList.toString() + "\n" +
-                "\tblackList=" + blackList.toString() + "\n" +
-                "\twhiteList=" + whiteList.toString() + "\n";
+                "master: " + master + "\n" +
+                "\tillegalList: " + illegalList.toString() + "\n" +
+                "\tgroupList: " + groupList.toString() + "\n" +
+                "\tblackList: " + blackList.toString() + "\n" +
+                "\twhiteList: " + whiteList.toString() + "\n" +
+                "\tOS: " + OS + "\n" +
+                "\tHOME: " + HOME + "\n" +
+                "}";
     }
 }

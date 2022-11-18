@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/13 17:30
  */
 public class GroupIllegalAction extends Action {

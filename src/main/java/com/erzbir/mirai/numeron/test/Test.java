@@ -11,7 +11,7 @@ import net.mamoe.mirai.event.events.UserMessageEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/18 20:17
  */
 @Listener

@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.controller;
 import com.erzbir.mirai.numeron.Interface.ActionFactory;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/13 23:13
  */
 public class WhiteListActionFactory implements ActionFactory {

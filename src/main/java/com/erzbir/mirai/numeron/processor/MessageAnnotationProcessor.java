@@ -24,18 +24,18 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/18 15:10
  */
 @Component
-public class MessageAnnotationProcess implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
-    ApplicationContext applicationContext;
-    EventChannel<BotEvent> channel;
-    EventChannel<BotEvent> filteredChannel;
+public class MessageAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
+    public static ApplicationContext context;
+    public static EventChannel<BotEvent> channel;
+    public static EventChannel<BotEvent> filteredChannel;
 
     @Override
-    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+    public void setApplicationContext(@NotNull ApplicationContext context) throws BeansException {
+        MessageAnnotationProcessor.context = context;
     }
 
     private EventChannel<BotEvent> toFilter(EventChannel<BotEvent> c, GroupMessage m) {
@@ -116,13 +116,13 @@ public class MessageAnnotationProcess implements ApplicationContextAware, Applic
 
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        Bot bot = PluginAnnotationProcessor.applicationContext.getBean(Bot.class);
+        Bot bot = PluginAnnotationProcessor.context.getBean(Bot.class);
         channel = bot.getEventChannel();
         filteredChannel = bot.getEventChannel();
-        applicationContext.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> filteredChannel = filteredChannel.filter(v::filter));
-        Iterable<String> beanIterable = List.of(applicationContext.getBeanDefinitionNames());
+        context.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> filteredChannel = filteredChannel.filter(v::filter));
+        Iterable<String> beanIterable = List.of(context.getBeanDefinitionNames());
         beanIterable.forEach(beanName -> {
-            Object bean = applicationContext.getBean(beanName);
+            Object bean = context.getBean(beanName);
             System.out.println(beanName);
             Method[] declaredMethods = bean.getClass().getDeclaredMethods();
             Iterable<Method> methodIterable = List.of(declaredMethods);
@@ -131,21 +131,29 @@ public class MessageAnnotationProcess implements ApplicationContextAware, Applic
                 UserMessage userMessage = method.getDeclaredAnnotation(UserMessage.class);
                 Message message = method.getDeclaredAnnotation(Message.class);
                 if (message != null) {
-                    isFilter(bean, method, toFilter(filteredChannel, message), toFilter(channel, message), message);
+                    execute(bean, method, toFilter(filteredChannel, message), toFilter(channel, message), message);
                     return;
                 }
                 if (groupMessage != null) {
-                    isFilter(bean, method, toFilter(filteredChannel, groupMessage), toFilter(channel, groupMessage), groupMessage);
+                    execute(bean, method, toFilter(filteredChannel, groupMessage), toFilter(channel, groupMessage), groupMessage);
                     return;
                 }
                 if (userMessage != null) {
-                    isFilter(bean, method, toFilter(filteredChannel, userMessage), toFilter(channel, userMessage), userMessage);
+                    execute(bean, method, toFilter(filteredChannel, userMessage), toFilter(channel, userMessage), userMessage);
                 }
             });
         });
     }
 
-    private void isFilter(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull Message message) {
+    /**
+     *
+     * @param bean bean对象
+     * @param method 反射获取到的bean对象的方法
+     * @param channel1 过滤后的channel
+     * @param channel2 没有过滤的channel
+     * @param message 消息注解
+     */
+    private void execute(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull Message message) {
         if (message.filter()) {
             channel1.subscribeAlways(MessageEvent.class, event1 -> {
                 try {
@@ -165,7 +173,7 @@ public class MessageAnnotationProcess implements ApplicationContextAware, Applic
         }
     }
 
-    private void isFilter(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull GroupMessage groupMessage) {
+    private void execute(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull GroupMessage groupMessage) {
         if (groupMessage.filter()) {
             channel1.subscribeAlways(GroupMessageEvent.class, event1 -> {
                 try {
@@ -185,7 +193,7 @@ public class MessageAnnotationProcess implements ApplicationContextAware, Applic
         }
     }
 
-    private void isFilter(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull UserMessage userMessage) {
+    private void execute(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull UserMessage userMessage) {
         if (userMessage.filter()) {
             channel1.subscribeAlways(UserMessageEvent.class, event1 -> {
                 try {

@@ -8,7 +8,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/17 09:43
  */
 @Filter

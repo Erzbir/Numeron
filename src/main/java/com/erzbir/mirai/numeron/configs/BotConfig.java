@@ -13,14 +13,15 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @Author: Erzbir
- * @Date: 2022/11/16 21:14
+ * @author  Erzbir
+ * @Date:  2022/11/16 21:14
+ * @info 配置类
  */
-
 @Configuration
 @ComponentScan (basePackages = "com.erzbir.mirai.numeron")
 @PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
+
     private static final String deviceInfo = "device.json";
     private static Bot bot;
     @Value ("${master}")
@@ -37,13 +38,12 @@ public class BotConfig {
     public List<Long> blackList;
     @Value ("#{T(java.util.Arrays).stream('${whiteList}'.split(','))}")
     public List<Long> whiteList;
-    public String WORKDIR = "bots/" + ACCOUNT;
+    public String WORKDIR;
 
     public static Bot getBot() {
         return bot;
     }
 
-    //设备认证信息文件
 
     @Bean
     public Bot bot() {
@@ -52,17 +52,18 @@ public class BotConfig {
         GlobalConfig.groupList = groupList;
         GlobalConfig.illegalList = illegalList;
         GlobalConfig.whiteList = whiteList;
+        WORKDIR = "bots/" + ACCOUNT;
         File file = new File(WORKDIR);
         if (!file.exists()) {
             file.mkdirs();
         }
+        file = null;
         bot = BotFactory.INSTANCE.newBot(ACCOUNT, PASSWORD, new BotConfiguration() {
             {
-                setWorkingDir(new File(WORKDIR));
-                setHeartbeatStrategy(HeartbeatStrategy.STAT_HB);
-                setProtocol(MiraiProtocol.ANDROID_PAD); // 切换协议
-                //保存设备信息到文件deviceInfo.json文件里相当于是个设备认证信息
-                fileBasedDeviceInfo(deviceInfo);
+                setWorkingDir(new File(WORKDIR)); // 工作目录
+                setHeartbeatStrategy(HeartbeatStrategy.STAT_HB); // 心跳策略
+                setProtocol(MiraiProtocol.ANDROID_PAD); // 登陆协议
+                fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
             }
         });
         return bot;

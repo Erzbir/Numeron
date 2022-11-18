@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/16 21:39
  */
 @Component

@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.controller;
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/13 17:27
  */
 

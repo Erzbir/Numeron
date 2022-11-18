@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.Interface;
 import com.erzbir.mirai.numeron.controller.Action;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/13 17:32
  */
 public interface ActionFactory {

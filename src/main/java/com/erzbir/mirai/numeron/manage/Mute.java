@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/9 18:58
  */
 public class Mute {

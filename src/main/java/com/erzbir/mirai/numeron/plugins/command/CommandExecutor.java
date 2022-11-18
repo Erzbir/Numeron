@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/16 22:29
  */
 @Plugin

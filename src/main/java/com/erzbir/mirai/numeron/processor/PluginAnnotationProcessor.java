@@ -17,26 +17,26 @@ import org.springframework.stereotype.Component;
 
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/17 09:49
  */
 @Component
 public class PluginAnnotationProcessor implements BeanPostProcessor, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
-    public static ApplicationContext applicationContext;
+    public static ApplicationContext context;
     public static EventChannel<BotEvent> channel;
 
     @Override
-    public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
-        PluginAnnotationProcessor.applicationContext = applicationContext;
+    public void setApplicationContext(@NotNull ApplicationContext context) throws BeansException {
+        PluginAnnotationProcessor.context = context;
     }
 
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        Bot bot = applicationContext.getBean(Bot.class);
+        Bot bot = context.getBean(Bot.class);
         channel = bot.getEventChannel();
         Intrinsics.checkNotNull(channel);
-        applicationContext.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> channel = channel.filter(v::filter));
-        applicationContext.getBeansOfType(PluginRegister.class).forEach((k, v) -> v.register(bot, channel));
+        context.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> channel = channel.filter(v::filter));
+        context.getBeansOfType(PluginRegister.class).forEach((k, v) -> v.register(bot, channel));
         bot.login();
     }
 }

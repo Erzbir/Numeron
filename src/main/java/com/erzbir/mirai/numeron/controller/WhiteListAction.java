@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/13 23:13
  */
 public class WhiteListAction extends Action {

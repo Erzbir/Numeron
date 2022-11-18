@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.enums;
 
 /**
- * @Author: Erzbir
+ * @author Erzbir
  * @Date: 2022/11/18 14:36
  */
 public enum MessageRule {
