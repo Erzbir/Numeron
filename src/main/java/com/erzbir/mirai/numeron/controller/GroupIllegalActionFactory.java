@@ -1,12 +1,12 @@
-package com.erzbir.mirai.numeron.controller.ActionFactory;
+package com.erzbir.mirai.numeron.controller;
 
-import com.erzbir.mirai.numeron.Interface.Factory;
+import com.erzbir.mirai.numeron.Interface.ActionFactory;
 
 /**
  * @Author: Erzbir
  * @Date: 2022/11/13 17:30
  */
-public class GroupIllegalActionFactory implements Factory {
+public class GroupIllegalActionFactory implements ActionFactory {
     private static final GroupIllegalAction INSTANCE = new GroupIllegalAction();
     private static final GroupIllegalActionFactory INSTANCE2 = new GroupIllegalActionFactory();
 

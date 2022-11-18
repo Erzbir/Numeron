@@ -33,3 +33,4 @@ build/
 .vscode/
 
 *.properties
+!**/src/main/resource/

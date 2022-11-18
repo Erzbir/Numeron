@@ -22,12 +22,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PluginAnnotationProcessor implements BeanPostProcessor, ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
-    private ApplicationContext applicationContext;
-    private EventChannel<BotEvent> channel;
+    public static ApplicationContext applicationContext;
+    public static EventChannel<BotEvent> channel;
 
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
+        PluginAnnotationProcessor.applicationContext = applicationContext;
     }
 
     @Override

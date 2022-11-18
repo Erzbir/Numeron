@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.controller.ActionFactory;
+package com.erzbir.mirai.numeron.controller;
 
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
 

@@ -1,12 +1,12 @@
-package com.erzbir.mirai.numeron.controller.ActionFactory;
+package com.erzbir.mirai.numeron.controller;
 
-import com.erzbir.mirai.numeron.Interface.Factory;
+import com.erzbir.mirai.numeron.Interface.ActionFactory;
 
 /**
  * @Author: Erzbir
  * @Date: 2022/11/13 17:35
  */
-public class BlackListActionFactory implements Factory {
+public class BlackListActionFactory implements ActionFactory {
     private static final BlackListAction INSTANCE = new BlackListAction();
     private static final BlackListActionFactory INSTANCE2 = new BlackListActionFactory();
 
