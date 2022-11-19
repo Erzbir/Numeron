@@ -74,7 +74,7 @@ whiteList: 白名单QQ列表
 
 如果想进行添加黑名单等操作, 建议模仿我在controller包下的做法, 使用工厂模式
 
-基本都有一个模板, test包下的Test类是通过注解来处理消息的例子, plugins包下的command包下的<code>CommandExecutor</code>
+基本都有一个模板, test包下的<code>Test</code>类是通过注解来处理消息的例子, plugins包下的command包下的<code>CommandExecutor</code>
 类是直接在消息中匹配关键词的例子
 
 很多包下面什么都没有, 慢慢写吧.......
