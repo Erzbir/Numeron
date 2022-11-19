@@ -32,6 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+*.properties
 !/src/main/resource/
 !/bots
 !/cache
