@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.configs;
+package com.erzbir.mirai.numeron.config;
 
 import java.util.List;
 

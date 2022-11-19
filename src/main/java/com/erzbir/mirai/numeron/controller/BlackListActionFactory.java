@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.controller;
 
-import com.erzbir.mirai.numeron.Interface.ActionFactory;
+import com.erzbir.mirai.numeron.interfaces.ActionFactory;
 
 /**
  * @author Erzbir

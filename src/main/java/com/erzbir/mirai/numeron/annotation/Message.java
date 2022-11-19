@@ -1,6 +1,8 @@
-package com.erzbir.mirai.numeron.Annotation;
+package com.erzbir.mirai.numeron.annotation;
 
+import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
+import com.erzbir.mirai.numeron.enums.PermissionType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,9 +16,11 @@ import java.lang.annotation.Target;
 @Retention (RetentionPolicy.RUNTIME)
 @Target (ElementType.METHOD)
 public @interface Message {
-    boolean filter() default false;
+    FilterRule filterRule() default FilterRule.NONE;
 
     MessageRule messageRule() default MessageRule.EQUAL;
 
     String text() default "";
+
+    PermissionType permission() default PermissionType.WHITE;
 }

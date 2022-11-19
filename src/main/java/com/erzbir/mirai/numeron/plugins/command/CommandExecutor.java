@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
-import com.erzbir.mirai.numeron.Annotation.Plugin;
-import com.erzbir.mirai.numeron.Interface.PluginRegister;
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.annotation.Plugin;
+import com.erzbir.mirai.numeron.interfaces.PluginRegister;
+import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
 import com.erzbir.mirai.numeron.controller.BlackListActionFactory;
 import com.erzbir.mirai.numeron.controller.WhiteListActionFactory;

@@ -1,9 +1,10 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.Annotation.GroupMessage;
-import com.erzbir.mirai.numeron.Annotation.Message;
-import com.erzbir.mirai.numeron.Annotation.UserMessage;
-import com.erzbir.mirai.numeron.Interface.ChannelFilterInter;
+import com.erzbir.mirai.numeron.annotation.GroupMessage;
+import com.erzbir.mirai.numeron.annotation.Message;
+import com.erzbir.mirai.numeron.annotation.UserMessage;
+import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.enums.FilterRule;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -31,31 +32,102 @@ import java.util.regex.Pattern;
 public class MessageAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     public static ApplicationContext context;
     public static EventChannel<BotEvent> channel;
-    public static EventChannel<BotEvent> filteredChannel;
 
     @Override
     public void setApplicationContext(@NotNull ApplicationContext context) throws BeansException {
         MessageAnnotationProcessor.context = context;
     }
 
-    private EventChannel<BotEvent> toFilter(EventChannel<BotEvent> c, GroupMessage m) {
+    @NotNull
+    private EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> c, GroupMessage m) {
         return c.filter(event -> {
             if (m != null && event instanceof GroupMessageEvent event1) {
+                boolean flag = true;
+                if (!m.filterRule().equals(FilterRule.NONE)) {
+                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn
+                            && GlobalConfig.groupList.contains(event1.getGroup().getId())
+                            && !GlobalConfig.blackList.contains(event1.getSender().getId()) : GlobalConfig.isOn && GlobalConfig.groupList.contains(event1.getGroup().getId());
+                }
                 switch (m.messageRule()) {
                     case EQUAL -> {
-                        return event1.getMessage().contentToString().equals(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().equals(m.text());
                     }
                     case BEGIN_WITH -> {
-                        return event1.getMessage().contentToString().startsWith(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().startsWith(m.text());
                     }
                     case END_WITH -> {
-                        return event1.getMessage().contentToString().endsWith(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().endsWith(m.text());
                     }
                     case REGEX -> {
-                        return Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find()
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
+                            }
+                            case MASTER -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find()
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
                     }
                     case CONTAINS -> {
-                        return event1.getMessage().contentToString().contains(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().contains(m.text());
                     }
                 }
             }
@@ -63,24 +135,95 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         });
     }
 
-    private EventChannel<BotEvent> toFilter(EventChannel<BotEvent> c, Message m) {
+    @NotNull
+    private EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> c, Message m) {
         return c.filter(event -> {
             if (m != null && event instanceof MessageEvent event1) {
+                boolean flag = true;
+                if (!m.filterRule().equals(FilterRule.NONE)) {
+                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn
+                            && !GlobalConfig.blackList.contains(event1.getSender().getId()) : GlobalConfig.isOn;
+                }
                 switch (m.messageRule()) {
                     case EQUAL -> {
-                        return event1.getMessage().contentToString().equals(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().equals(m.text());
                     }
                     case BEGIN_WITH -> {
-                        return event1.getMessage().contentToString().startsWith(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().startsWith(m.text());
                     }
                     case END_WITH -> {
-                        return event1.getMessage().contentToString().endsWith(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().endsWith(m.text());
                     }
                     case REGEX -> {
-                        return Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find()
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
+                            }
+                            case MASTER -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find()
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
                     }
                     case CONTAINS -> {
-                        return event1.getMessage().contentToString().contains(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().contains(m.text());
                     }
                 }
             }
@@ -88,24 +231,96 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         });
     }
 
-    private EventChannel<BotEvent> toFilter(EventChannel<BotEvent> c, UserMessage m) {
+    @NotNull
+    private EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> c, UserMessage m) {
         return c.filter(event -> {
             if (m != null && event instanceof UserMessageEvent event1) {
+                boolean flag = true;
+                if (!m.filterRule().equals(FilterRule.NONE)) {
+                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn
+                            && !GlobalConfig.blackList.contains(event1.getSender().getId()) : GlobalConfig.isOn;
+                }
                 switch (m.messageRule()) {
                     case EQUAL -> {
-                        return event1.getMessage().contentToString().equals(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return event1.getMessage().contentToString().equals(m.text())
+                                        && flag;
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().equals(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().equals(m.text());
                     }
                     case BEGIN_WITH -> {
-                        return event1.getMessage().contentToString().startsWith(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().startsWith(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().startsWith(m.text());
                     }
                     case END_WITH -> {
-                        return event1.getMessage().contentToString().endsWith(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().endsWith(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().endsWith(m.text());
                     }
                     case REGEX -> {
-                        return Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find()
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
+                            }
+                            case MASTER -> {
+                                return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find()
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && Pattern.compile(m.text()).matcher(event1.getMessage().contentToString()).find();
                     }
                     case CONTAINS -> {
-                        return event1.getMessage().contentToString().contains(m.text());
+                        switch (m.permission()) {
+                            case WHITE -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text())
+                                        && GlobalConfig.whiteList.contains(event1.getSender().getId());
+                            }
+                            case ALL -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text());
+                            }
+                            case MASTER -> {
+                                return flag && event1.getMessage().contentToString().contains(m.text())
+                                        && GlobalConfig.master == event1.getSender().getId();
+                            }
+                        }
+                        return flag && event1.getMessage().contentToString().contains(m.text());
                     }
                 }
             }
@@ -116,10 +331,8 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
 
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        Bot bot = PluginAnnotationProcessor.context.getBean(Bot.class);
+        Bot bot = context.getBean(Bot.class);
         channel = bot.getEventChannel();
-        filteredChannel = bot.getEventChannel();
-        context.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> filteredChannel = filteredChannel.filter(v::filter));
         Iterable<String> beanIterable = List.of(context.getBeanDefinitionNames());
         beanIterable.forEach(beanName -> {
             Object bean = context.getBean(beanName);
@@ -130,86 +343,55 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                 GroupMessage groupMessage = method.getDeclaredAnnotation(GroupMessage.class);
                 UserMessage userMessage = method.getDeclaredAnnotation(UserMessage.class);
                 Message message = method.getDeclaredAnnotation(Message.class);
-                if (message != null) {
-                    execute(bean, method, toFilter(filteredChannel, message), toFilter(channel, message), message);
-                    return;
-                }
                 if (groupMessage != null) {
-                    execute(bean, method, toFilter(filteredChannel, groupMessage), toFilter(channel, groupMessage), groupMessage);
+                    execute(bean, method, toFilter(channel, groupMessage), (GroupMessage) null);
                     return;
                 }
                 if (userMessage != null) {
-                    execute(bean, method, toFilter(filteredChannel, userMessage), toFilter(channel, userMessage), userMessage);
+                    execute(bean, method, toFilter(channel, userMessage), (UserMessage) null);
+                    return;
+                }
+                if (message != null) {
+                    execute(bean, method, toFilter(channel, message), (Message) null);
                 }
             });
         });
+        bot.login();
     }
 
     /**
-     *
-     * @param bean bean对象
-     * @param method 反射获取到的bean对象的方法
-     * @param channel1 过滤后的channel
-     * @param channel2 没有过滤的channel
+     * @param bean    bean对象
+     * @param method  反射获取到的bean对象的方法
+     * @param channel 过滤的channel
      * @param message 消息注解
      */
-    private void execute(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull Message message) {
-        if (message.filter()) {
-            channel1.subscribeAlways(MessageEvent.class, event1 -> {
-                try {
-                    method.invoke(bean, event1);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            channel2.subscribeAlways(MessageEvent.class, event1 -> {
-                try {
-                    method.invoke(bean, event1);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+    private void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, Message message) {
+        channel.subscribeAlways(MessageEvent.class, event1 -> {
+            try {
+                method.invoke(bean, event1);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    private void execute(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull GroupMessage groupMessage) {
-        if (groupMessage.filter()) {
-            channel1.subscribeAlways(GroupMessageEvent.class, event1 -> {
-                try {
-                    method.invoke(bean, event1);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            channel2.subscribeAlways(GroupMessageEvent.class, event1 -> {
-                try {
-                    method.invoke(bean, event1);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+    private void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, GroupMessage groupMessage) {
+        channel.subscribeAlways(GroupMessageEvent.class, event1 -> {
+            try {
+                method.invoke(bean, event1);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    private void execute(Object bean, Method method, EventChannel<BotEvent> channel1, EventChannel<BotEvent> channel2, @NotNull UserMessage userMessage) {
-        if (userMessage.filter()) {
-            channel1.subscribeAlways(UserMessageEvent.class, event1 -> {
-                try {
-                    method.invoke(bean, event1);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            channel2.subscribeAlways(UserMessageEvent.class, event1 -> {
-                try {
-                    method.invoke(bean, event1);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
+    private void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, UserMessage userMessage) {
+        channel.subscribeAlways(UserMessageEvent.class, event1 -> {
+            try {
+                method.invoke(bean, event1);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

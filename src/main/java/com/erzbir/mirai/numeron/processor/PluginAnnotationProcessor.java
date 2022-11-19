@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.Interface.ChannelFilterInter;
-import com.erzbir.mirai.numeron.Interface.PluginRegister;
+import com.erzbir.mirai.numeron.interfaces.ChannelFilterInter;
+import com.erzbir.mirai.numeron.interfaces.PluginRegister;
 import kotlin.jvm.internal.Intrinsics;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
@@ -32,11 +32,10 @@ public class PluginAnnotationProcessor implements BeanPostProcessor, Application
 
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        Bot bot = context.getBean(Bot.class);
+        Bot bot = MessageAnnotationProcessor.context.getBean(Bot.class);
         channel = bot.getEventChannel();
         Intrinsics.checkNotNull(channel);
         context.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> channel = channel.filter(v::filter));
         context.getBeansOfType(PluginRegister.class).forEach((k, v) -> v.register(bot, channel));
-        bot.login();
     }
 }

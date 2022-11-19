@@ -1,12 +1,11 @@
 package com.erzbir.mirai.numeron.controller;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.config.GlobalConfig;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/13 17:27
  */
-
 public class BlackListAction extends Action {
 
     @Override

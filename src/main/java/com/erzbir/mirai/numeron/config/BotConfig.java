@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.configs;
+package com.erzbir.mirai.numeron.config;
 
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -13,9 +13,11 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @author  Erzbir
- * @Date:  2022/11/16 21:14
- * @info 配置类
+ * @author Erzbir
+ * @Date: 2022/11/16 21:14
+ * <p>
+ *
+ * </p>
  */
 @Configuration
 @ComponentScan (basePackages = "com.erzbir.mirai.numeron")
