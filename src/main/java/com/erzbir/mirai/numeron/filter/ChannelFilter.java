@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.filter;
 
 import com.erzbir.mirai.numeron.annotation.Filter;
-import com.erzbir.mirai.numeron.interfaces.ChannelFilterInter;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.interfaces.ChannelFilterInter;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;

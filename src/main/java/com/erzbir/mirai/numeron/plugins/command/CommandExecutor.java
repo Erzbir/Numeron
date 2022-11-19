@@ -1,11 +1,11 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
 import com.erzbir.mirai.numeron.annotation.Plugin;
-import com.erzbir.mirai.numeron.interfaces.PluginRegister;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
 import com.erzbir.mirai.numeron.controller.BlackListActionFactory;
 import com.erzbir.mirai.numeron.controller.WhiteListActionFactory;
+import com.erzbir.mirai.numeron.interfaces.PluginRegister;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.EventChannel;
@@ -178,9 +178,7 @@ public class CommandExecutor implements PluginRegister {
                         }
                     }
                 }
-                case "/info" -> {
-                    event.getSubject().sendMessage(GlobalConfig.toStrings());
-                }
+                case "/info" -> event.getSubject().sendMessage(GlobalConfig.toStrings());
             }
         });
     }

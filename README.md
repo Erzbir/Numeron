@@ -18,31 +18,31 @@ import org.jetbrains.annotations.NotNull;
 
 @Listener
 public class Test {
-   // 注解中如果filterRule默认值是NONE表示不开启过滤, NORMAL表示过滤掉掉groupList以外的群
+    // 注解中如果filterRule默认值是NONE表示不开启过滤, NORMAL表示过滤掉掉groupList以外的群
 
-   @GroupMessage (messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
-   // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
-   public void regex(@NotNull GroupMessageEvent event) {
-      event.getSubject().sendMessage("这是一个数字");
-   }
+    @GroupMessage (messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
+    public void regex(@NotNull GroupMessageEvent event) {
+        event.getSubject().sendMessage("这是一个数字");
+    }
 
-   @UserMessage (text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
-   // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
-   public void sayHello(@NotNull UserMessageEvent event) {
-      event.getSubject().sendMessage("hi");
-   }
+    @UserMessage (text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
+    // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
+    public void sayHello(@NotNull UserMessageEvent event) {
+        event.getSubject().sendMessage("hi");
+    }
 
-   @Message (text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
-   // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
-   public void sayGoodNight(@NotNull MessageEvent event) {
-      event.getSubject().sendMessage("晚安");
-   }
+    @Message (text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
+    public void sayGoodNight(@NotNull MessageEvent event) {
+        event.getSubject().sendMessage("晚安");
+    }
 
-   // 权限是所有人, 不过滤
-   @Message (text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
-   public void sayH(@NotNull MessageEvent e) {
-      e.getSubject().sendMessage("你好");
-   }
+    // 权限是所有人, 不过滤
+    @Message (text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    public void sayH(@NotNull MessageEvent e) {
+        e.getSubject().sendMessage("你好");
+    }
 }
 
 ```
