@@ -20,7 +20,7 @@ public @interface UserMessage {
 
     MessageRule messageRule() default MessageRule.EQUAL;
 
-    String text() default "";
-
     PermissionType permission() default PermissionType.WHITE;
+
+    String text() default "";
 }

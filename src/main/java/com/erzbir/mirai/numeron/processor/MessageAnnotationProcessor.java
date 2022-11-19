@@ -1,10 +1,9 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.annotation.GroupMessage;
-import com.erzbir.mirai.numeron.annotation.Message;
-import com.erzbir.mirai.numeron.annotation.UserMessage;
+import com.erzbir.mirai.numeron.annotation.*;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
+import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -17,7 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -28,10 +26,12 @@ import java.util.regex.Pattern;
  * @author Erzbir
  * @Date: 2022/11/18 15:10
  */
-@Component
+@Processor
+@Slf4j
 public class MessageAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     public static ApplicationContext context;
     public static EventChannel<BotEvent> channel;
+    public static Bot bot;
 
     @Override
     public void setApplicationContext(@NotNull ApplicationContext context) throws BeansException {
@@ -328,37 +328,6 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         });
     }
 
-
-    @Override
-    public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        Bot bot = context.getBean(Bot.class);
-        channel = bot.getEventChannel();
-        Iterable<String> beanIterable = List.of(context.getBeanDefinitionNames());
-        beanIterable.forEach(beanName -> {
-            Object bean = context.getBean(beanName);
-            System.out.println(beanName);
-            Method[] declaredMethods = bean.getClass().getDeclaredMethods();
-            Iterable<Method> methodIterable = List.of(declaredMethods);
-            methodIterable.forEach(method -> {
-                GroupMessage groupMessage = method.getDeclaredAnnotation(GroupMessage.class);
-                UserMessage userMessage = method.getDeclaredAnnotation(UserMessage.class);
-                Message message = method.getDeclaredAnnotation(Message.class);
-                if (groupMessage != null) {
-                    execute(bean, method, toFilter(channel, groupMessage), (GroupMessage) null);
-                    return;
-                }
-                if (userMessage != null) {
-                    execute(bean, method, toFilter(channel, userMessage), (UserMessage) null);
-                    return;
-                }
-                if (message != null) {
-                    execute(bean, method, toFilter(channel, message), (Message) null);
-                }
-            });
-        });
-        bot.login();
-    }
-
     /**
      * @param bean    bean对象
      * @param method  反射获取到的bean对象的方法
@@ -393,5 +362,34 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
+        bot = context.getBean(Bot.class);
+        channel = bot.getEventChannel();
+        log.info("开始注册消息处理......");
+        context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> {
+            Object bean = context.getBean(k);
+            log.info("扫瞄到 " + k);
+            Method[] declaredMethods = bean.getClass().getDeclaredMethods();
+            List.of(declaredMethods).forEach(method -> {
+                GroupMessage groupMessage = method.getDeclaredAnnotation(GroupMessage.class);
+                UserMessage userMessage = method.getDeclaredAnnotation(UserMessage.class);
+                Message message = method.getDeclaredAnnotation(Message.class);
+                if (groupMessage != null) {
+                    execute(bean, method, toFilter(channel, groupMessage), (GroupMessage) null);
+                    return;
+                }
+                if (userMessage != null) {
+                    execute(bean, method, toFilter(channel, userMessage), (UserMessage) null);
+                    return;
+                }
+                if (message != null) {
+                    execute(bean, method, toFilter(channel, message), (Message) null);
+                }
+            });
+        });
+        log.info("消息处理注册完成");
     }
 }
