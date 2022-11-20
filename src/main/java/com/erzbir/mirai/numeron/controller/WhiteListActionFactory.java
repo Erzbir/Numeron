@@ -7,18 +7,14 @@ import com.erzbir.mirai.numeron.interfaces.ActionFactory;
  * @Date: 2022/11/13 23:13
  */
 public class WhiteListActionFactory implements ActionFactory {
-    private static final WhiteListAction INSTANCE = new WhiteListAction();
-    private static final WhiteListActionFactory INSTANCE2 = new WhiteListActionFactory();
+    public static final WhiteListActionFactory INSTANCE = new WhiteListActionFactory();
+    private static final WhiteListAction INSTANCE1 = new WhiteListAction();
 
     private WhiteListActionFactory() {
     }
 
-    public static WhiteListActionFactory newInstance() {
-        return INSTANCE2;
-    }
-
     @Override
     public Action build() {
-        return INSTANCE;
+        return INSTANCE1;
     }
 }

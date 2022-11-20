@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Listener
 public class Test {
-    @GroupMessage (messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @GroupMessage (messageRule = MessageRule.REGEX, text = "s\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     public void regex(@NotNull GroupMessageEvent e) {
         e.getSubject().sendMessage("awa");
     }
@@ -28,7 +28,7 @@ public class Test {
         e.getSubject().sendMessage("hi");
     }
 
-    @Message (text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    @Message (text = "晚安", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
     public void sayGoodNight(@NotNull MessageEvent e) {
         e.getSubject().sendMessage("晚安");
     }

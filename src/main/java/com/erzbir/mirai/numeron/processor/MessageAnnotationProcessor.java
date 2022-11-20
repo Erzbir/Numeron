@@ -44,9 +44,9 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
             if (m != null && event instanceof GroupMessageEvent event1) {
                 boolean flag = true;
                 if (!m.filterRule().equals(FilterRule.NONE)) {
-                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn
-                            && GlobalConfig.groupList.contains(event1.getGroup().getId())
-                            && !GlobalConfig.blackList.contains(event1.getSender().getId()) : GlobalConfig.isOn && GlobalConfig.groupList.contains(event1.getGroup().getId());
+                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ?
+                            (GlobalConfig.isOn && GlobalConfig.groupList.contains(event1.getGroup().getId())
+                                    && !GlobalConfig.blackList.contains(event1.getSender().getId())) : (GlobalConfig.isOn && GlobalConfig.groupList.contains(event1.getGroup().getId()));
                 }
                 switch (m.messageRule()) {
                     case EQUAL -> {
@@ -141,8 +141,8 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
             if (m != null && event instanceof MessageEvent event1) {
                 boolean flag = true;
                 if (!m.filterRule().equals(FilterRule.NONE)) {
-                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn
-                            && !GlobalConfig.blackList.contains(event1.getSender().getId()) : GlobalConfig.isOn;
+                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? (GlobalConfig.isOn
+                            && !GlobalConfig.blackList.contains(event1.getSender().getId())) : GlobalConfig.isOn;
                 }
                 switch (m.messageRule()) {
                     case EQUAL -> {
@@ -237,8 +237,8 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
             if (m != null && event instanceof UserMessageEvent event1) {
                 boolean flag = true;
                 if (!m.filterRule().equals(FilterRule.NONE)) {
-                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn
-                            && !GlobalConfig.blackList.contains(event1.getSender().getId()) : GlobalConfig.isOn;
+                    flag = m.filterRule().equals(FilterRule.BLACKLIST) ? (GlobalConfig.isOn
+                            && !GlobalConfig.blackList.contains(event1.getSender().getId())) : GlobalConfig.isOn;
                 }
                 switch (m.messageRule()) {
                     case EQUAL -> {
@@ -332,12 +332,12 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
      * @param bean    bean对象
      * @param method  反射获取到的bean对象的方法
      * @param channel 过滤的channel
-     * @param message 消息注解
+     * @param message 消息注解, 这个参数只是为了占位用的为了实现重载, 目前还没有用
      */
     private void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, Message message) {
-        channel.subscribeAlways(MessageEvent.class, event1 -> {
+        channel.subscribeAlways(MessageEvent.class, event -> {
             try {
-                method.invoke(bean, event1);
+                method.invoke(bean, event);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -345,9 +345,9 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
     }
 
     private void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, GroupMessage groupMessage) {
-        channel.subscribeAlways(GroupMessageEvent.class, event1 -> {
+        channel.subscribeAlways(GroupMessageEvent.class, event -> {
             try {
-                method.invoke(bean, event1);
+                method.invoke(bean, event);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -355,9 +355,9 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
     }
 
     private void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, UserMessage userMessage) {
-        channel.subscribeAlways(UserMessageEvent.class, event1 -> {
+        channel.subscribeAlways(UserMessageEvent.class, event -> {
             try {
-                method.invoke(bean, event1);
+                method.invoke(bean, event);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -372,8 +372,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> {
             Object bean = context.getBean(k);
             log.info("扫瞄到 " + k);
-            Method[] declaredMethods = bean.getClass().getDeclaredMethods();
-            List.of(declaredMethods).forEach(method -> {
+            List.of(bean.getClass().getDeclaredMethods()).forEach(method -> {
                 GroupMessage groupMessage = method.getDeclaredAnnotation(GroupMessage.class);
                 UserMessage userMessage = method.getDeclaredAnnotation(UserMessage.class);
                 Message message = method.getDeclaredAnnotation(Message.class);

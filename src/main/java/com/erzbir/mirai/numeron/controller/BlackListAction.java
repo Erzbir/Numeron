@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.sql.SqlUtil;
 
 /**
  * @author Erzbir
@@ -9,24 +10,27 @@ import com.erzbir.mirai.numeron.config.GlobalConfig;
 public class BlackListAction extends Action {
 
     @Override
-    public void add(long id) {
-        GlobalConfig.blackList.add(id);
+    public String add(Object id) {
+        GlobalConfig.blackList.add((Long) id);
+        SqlUtil.add((Long) id);
+        return "添加成功";
     }
 
     @Override
-    public String query(long id) {
-        if (id == 0) {
+    public String query(Object id) {
+        if ((Long) id == 0L) {
             return GlobalConfig.blackList.toString();
-        }
-        if (GlobalConfig.whiteList.contains(id)) {
+        } else if (GlobalConfig.blackList.contains((Long) id)) {
             return "在黑名单中";
         }
-        return "";
+        return "查无此人";
     }
 
     @Override
-    public void remove(long id) {
-        GlobalConfig.blackList.remove(id);
+    public String remove(Object id) {
+        GlobalConfig.blackList.remove((Long) id);
+        SqlUtil.remove((Long) id);
+        return "删除成功";
     }
 
 

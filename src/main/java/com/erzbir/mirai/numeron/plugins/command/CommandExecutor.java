@@ -35,7 +35,7 @@ public class CommandExecutor implements PluginRegister {
                             return;
                         }
                         long userId = Long.parseLong(command[1]);
-                        Action action = WhiteListActionFactory.newInstance().build();
+                        Action action = WhiteListActionFactory.INSTANCE.build();
                         action.add(userId);
                         event.getSubject().sendMessage(userId + " was added to the whitelist");
                     }
@@ -43,15 +43,20 @@ public class CommandExecutor implements PluginRegister {
                 case "/ban" -> {
                     if (event.getSender().getId() != GlobalConfig.master) {
                         event.getSubject().sendMessage("you don't have permission");
-                        if (command.length != 2) {
-                            event.getSubject().sendMessage("use: /ban [userId]");
-                            return;
-                        }
-                        long userId = Long.parseLong(command[1]);
-                        Action action = BlackListActionFactory.newInstance().build();
-                        action.add(userId);
-                        event.getSubject().sendMessage(userId + " was added to the blacklist");
+                        return;
                     }
+                    if (command.length != 2) {
+                        event.getSubject().sendMessage("use: /ban [userId]");
+                        return;
+                    }
+                    long userId = Long.parseLong(command[1]);
+                    Action action = BlackListActionFactory.INSTANCE.build();
+                    action.add(userId);
+                    event.getSubject().sendMessage(userId + " was added to the blacklist");
+                }
+                case "/s" -> {
+                    Action action = BlackListActionFactory.INSTANCE.build();
+                    event.getSubject().sendMessage(action.query(Long.parseLong(command[1])));
                 }
                 case "/mute" -> {
                     if (GlobalConfig.whiteList.contains(event.getSender().getId())

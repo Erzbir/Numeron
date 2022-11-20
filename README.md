@@ -49,30 +49,9 @@ public class Test {
 
 ## 说明:
 
-没有使用数据库, 你可以尝试加一个, 所有配置都写在resource下的application.properties中, 通过<code>@Value</code>注入,
-如果你的项目中没有这个文件请新建, 格式如下:
+第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>save()</code>方法
 
-```properties
-username=292929292929
-password=dwoj123132
-master=282828282828
-illegalList=嗯哼,啊哈
-groupList=1312314213,244211314,12421412
-blackList=4124114,1231231,421421421
-whiteList=525321,3923112,3931313,41421412
-```
-
-```text
-username: 机器人QQ
-password: 机器人QQ密码
-master: 机器人主人
-illegalList: 违禁词列表
-groupList: 启用机器人的群
-blackList: 黑名单QQ列表
-whiteList: 白名单QQ列表
-```
-
-如果想进行添加黑名单等操作, 建议模仿我在controller包下的做法, 使用工厂模式
+如果想进行添加黑名单删改等等操作, 建议模仿我在controller包下的做法, 使用工厂模式
 
 基本都有一个模板, test包下的<code>Test</code>类是通过注解来处理消息的例子, plugins包下的command包下的<code>
 CommandExecutor</code>
@@ -96,6 +75,11 @@ CommandExecutor</code>
    > 实现过滤的做法是: 将所有把实现了<code>ChannelFilterInter</code>的bean对象取出来, 执行过滤方法之后再放进去
 
 权限控制和消息匹配的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
+
+配置加载方式是 数据库 + 文件IO + 反射
+
+成员变量上加上<code>@DataValue</code>可以通过数据库注入, 目前没有完善, 如果自定义则需要修改<code>SqlUtil</code>中的代码.
+> 注入的逻辑是: 在初始化时将数据库数据解析成<code>HashMap<String, HashSet<String, Object>></code>, 通过反射获取<code>filedName</code>在通过<code>filedName</code>在<code>HashMap</code>中取对应的<code>HashSet</code>
 
 ## 联系方式:
 
