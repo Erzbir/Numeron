@@ -50,8 +50,7 @@ public class CommandExecutor implements PluginRegister {
                         return;
                     }
                     long userId = Long.parseLong(command[1]);
-                    Action action = BlackListActionFactory.INSTANCE.build();
-                    action.add(userId);
+                    BlackListActionFactory.INSTANCE.build().add(userId);
                     event.getSubject().sendMessage(userId + " was added to the blacklist");
                 }
                 case "/s" -> {

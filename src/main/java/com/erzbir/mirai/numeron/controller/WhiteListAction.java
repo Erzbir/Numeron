@@ -11,7 +11,7 @@ public class WhiteListAction extends Action {
     @Override
     public String add(Object id) {
         GlobalConfig.whiteList.add((Long) id);
-        SqlUtil.add((Long) id);
+        SqlUtil.add((Long) id, "whiteLit");
         return "添加成功";
     }
 

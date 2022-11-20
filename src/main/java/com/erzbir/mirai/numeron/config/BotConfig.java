@@ -82,17 +82,9 @@ public class BotConfig {
         if (!properties.isEmpty() && properties.getProperty("enable").equals("true")) {
             master = Long.parseLong(properties.getProperty("master"));
             account = Long.parseLong(properties.getProperty("account"));
-            password = (String) properties.get("password");
-            switch ((String) properties.get("heartbeatStrategy")) {
-                case "REGISTER" -> heartbeatStrategy = BotConfiguration.HeartbeatStrategy.REGISTER;
-                case "NONE" -> heartbeatStrategy = BotConfiguration.HeartbeatStrategy.NONE;
-            }
-            switch ((String) properties.get("protocol")) {
-                case "ANDROID_PHONE" -> miraiProtocol = BotConfiguration.MiraiProtocol.ANDROID_PHONE;
-                case "ANDROID_WATCH" -> miraiProtocol = BotConfiguration.MiraiProtocol.ANDROID_WATCH;
-                case "IPAD" -> miraiProtocol = BotConfiguration.MiraiProtocol.IPAD;
-                case "MACOS" -> miraiProtocol = BotConfiguration.MiraiProtocol.MACOS;
-            }
+            password = properties.getProperty("password");
+            heartbeatStrategy = BotConfiguration.HeartbeatStrategy.valueOf((properties.getProperty("heartbeatStrategy")));
+            miraiProtocol = BotConfiguration.MiraiProtocol.valueOf((properties).getProperty("protocol"));
             return;
         } else {
             log.info("帐号配置为空或者未启用, 将手动输入");
@@ -125,7 +117,6 @@ public class BotConfig {
             DataValue annotation = field.getDeclaredAnnotation(DataValue.class);
             if (annotation != null) {
                 try {
-                    System.out.println(field.getName());
                     field.set(null, SqlUtil.perms.get(field.getName()));
                     } catch (IllegalAccessException e) {
                     e.printStackTrace();

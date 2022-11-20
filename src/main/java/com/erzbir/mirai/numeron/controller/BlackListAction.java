@@ -12,7 +12,7 @@ public class BlackListAction extends Action {
     @Override
     public String add(Object id) {
         GlobalConfig.blackList.add((Long) id);
-        SqlUtil.add((Long) id);
+        SqlUtil.add((Long) id, "blackList");
         return "添加成功";
     }
 
