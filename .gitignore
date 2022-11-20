@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-!/bots
-!/cache
-!/config
+
+!/config/
 data.sqlite
+!/bots/
