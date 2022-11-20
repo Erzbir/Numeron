@@ -3,6 +3,9 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+data.sqlite
+config
+bots
 
 ### STS ###
 .apt_generated
@@ -31,7 +34,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-data.sqlite
-!/config/*
-!/bots/*
