@@ -1,9 +1,9 @@
 package com.erzbir.mirai.numeron.test;
 
-import com.erzbir.mirai.numeron.annotation.GroupMessage;
-import com.erzbir.mirai.numeron.annotation.Listener;
-import com.erzbir.mirai.numeron.annotation.Message;
-import com.erzbir.mirai.numeron.annotation.UserMessage;
+import com.erzbir.mirai.numeron.annotation.litener.Listener;
+import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;
+import com.erzbir.mirai.numeron.annotation.massage.Message;
+import com.erzbir.mirai.numeron.annotation.massage.UserMessage;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * @author Erzbir
  * @Date: 2022/11/18 20:17
+ * <br>
+ * 消息处理注解使用示例
  */
 @Listener
 public class Test {

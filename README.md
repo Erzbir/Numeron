@@ -11,7 +11,7 @@
 例子:
 
 ```java
-import com.erzbir.mirai.numeron.annotation.UserMessage;
+import com.erzbir.mirai.numeron.annotation.massage.UserMessage;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import net.mamoe.mirai.event.events.UserMessageEvent;
 import org.jetbrains.annotations.NotNull;

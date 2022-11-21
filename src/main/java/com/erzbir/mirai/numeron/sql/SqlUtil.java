@@ -9,6 +9,9 @@ import java.util.Set;
 /**
  * @author Erzbir
  * @Date: 2022/11/20 00:37
+ * <p>
+ * 数据库操作工具类, 目前的实现非常难以维护, 目标是通过获取注解的值来执行sql语句并注入进变量, 并且通过扫瞄实现了特定接口的类来为他们创建表
+ * </p>
  */
 public class SqlUtil {
     public static Map<String, Set<Object>> perms = new HashMap<>();
@@ -84,7 +87,7 @@ public class SqlUtil {
         SqlUtil.add(311231221L, "whiteList");
         SqlUtil.add(375473609L);
         SqlUtil.add(780594692L);
-        SqlUtil.add(1235242L);
+        SqlUtil.add(329652880L);
         SqlUtil.add(12421431313L);
         SqlUtil.remove(1221L);
         SqlUtil.remove(12312L, "whiteList");
@@ -151,6 +154,11 @@ public class SqlUtil {
         return false;
     }
 
+    /**
+     * 添加一个违禁词
+     *
+     * @param value 关键词
+     */
     public static void add(String value) {
         if (exist(value)) {
             return;
@@ -166,6 +174,11 @@ public class SqlUtil {
         }
     }
 
+    /**
+     * 授权一个群
+     *
+     * @param value 群号
+     */
     public static void add(Long value) {
         if (exist(value)) {
             return;
@@ -181,6 +194,12 @@ public class SqlUtil {
         }
     }
 
+    /**
+     * 添加一个qq号到一个组别
+     *
+     * @param value qq号
+     * @param type  所属的组别, 目前只支持: blackList, whiteList
+     */
     public static void add(Long value, String type) {
         if (exist(value, null)) {
             return;
@@ -196,6 +215,11 @@ public class SqlUtil {
         }
     }
 
+    /**
+     * 删除违禁词
+     *
+     * @param value 关键词
+     */
     public static void remove(String value) {
         if (!exist(value)) {
             return;
@@ -211,6 +235,12 @@ public class SqlUtil {
         }
     }
 
+    /**
+     * 将一个qq号从对应组移出
+     *
+     * @param value qq号
+     * @param type  所属的组别, 目前只支持: blackList, whiteList
+     */
     public static void remove(Long value, String type) {
         if (!exist(value, null)) {
             return;
@@ -226,6 +256,11 @@ public class SqlUtil {
         }
     }
 
+    /**
+     * 移出groupList相当于取消该群授权
+     *
+     * @param value 群号
+     */
     public static void remove(Long value) {
         if (!exist(value)) {
             return;

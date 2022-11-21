@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.annotation;
+package com.erzbir.mirai.numeron.annotation.sql;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

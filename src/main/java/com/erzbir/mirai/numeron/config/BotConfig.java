@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.config;
 
-import com.erzbir.mirai.numeron.annotation.DataValue;
+import com.erzbir.mirai.numeron.annotation.sql.DataValue;
 import com.erzbir.mirai.numeron.sql.SqlUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
@@ -23,7 +23,7 @@ import java.util.Scanner;
  * @author Erzbir
  * @Date: 2022/11/16 21:14
  * <p>
- *
+ * 配置类, 数据库资源的加载用反射和数据读操作实现
  * </p>
  */
 @Configuration
@@ -131,6 +131,7 @@ public class BotConfig {
     }
 
     private static void save() {
+        log.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
         File file = new File("config");
@@ -149,6 +150,7 @@ public class BotConfig {
             properties.setProperty("heartbeatStrategy", heartbeatStrategy.name());
             properties.setProperty("enable", "true");
             properties.store(outputStream, null);
+            log.info("保存成功");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.annotation;
+package com.erzbir.mirai.numeron.annotation.massage;
 
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
@@ -11,11 +11,11 @@ import java.lang.annotation.Target;
 
 /**
  * @author Erzbir
- * @Date: 2022/11/18 14:34
+ * @Date: 2022/11/18 14:32
  */
 @Retention (RetentionPolicy.RUNTIME)
 @Target (ElementType.METHOD)
-public @interface UserMessage {
+public @interface Message {
     FilterRule filterRule() default FilterRule.NONE;
 
     MessageRule messageRule() default MessageRule.EQUAL;

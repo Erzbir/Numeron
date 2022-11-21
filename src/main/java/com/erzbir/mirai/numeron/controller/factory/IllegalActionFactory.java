@@ -1,5 +1,7 @@
-package com.erzbir.mirai.numeron.controller;
+package com.erzbir.mirai.numeron.controller.factory;
 
+import com.erzbir.mirai.numeron.controller.Action;
+import com.erzbir.mirai.numeron.controller.IllegalAction;
 import com.erzbir.mirai.numeron.interfaces.ActionFactory;
 
 /**

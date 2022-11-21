@@ -29,7 +29,7 @@ public class WhiteListAction extends Action {
     @Override
     public String remove(Object id) {
         GlobalConfig.whiteList.remove((Long) id);
-        SqlUtil.remove((Long) id);
+        SqlUtil.remove((Long) id, "whiteList");
         return "删除成功";
     }
 }

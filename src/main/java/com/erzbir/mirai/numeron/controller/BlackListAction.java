@@ -29,9 +29,7 @@ public class BlackListAction extends Action {
     @Override
     public String remove(Object id) {
         GlobalConfig.blackList.remove((Long) id);
-        SqlUtil.remove((Long) id);
+        SqlUtil.remove((Long) id, "blackList");
         return "删除成功";
     }
-
-
 }

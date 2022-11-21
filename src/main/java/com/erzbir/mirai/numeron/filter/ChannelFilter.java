@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.filter;
 
-import com.erzbir.mirai.numeron.annotation.Filter;
+import com.erzbir.mirai.numeron.annotation.filter.Filter;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.interfaces.ChannelFilterInter;
 import net.mamoe.mirai.event.events.BotEvent;

@@ -1,10 +1,9 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
-import com.erzbir.mirai.numeron.annotation.Plugin;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
-import com.erzbir.mirai.numeron.controller.BlackListActionFactory;
-import com.erzbir.mirai.numeron.controller.WhiteListActionFactory;
+import com.erzbir.mirai.numeron.controller.factory.BlackListActionFactory;
+import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
 import com.erzbir.mirai.numeron.interfaces.PluginRegister;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
@@ -19,8 +18,11 @@ import java.util.Objects;
 /**
  * @author Erzbir
  * @Date: 2022/11/16 22:29
+ * <p>
+ * 插件示例
+ * </p>
  */
-@Plugin
+//@Plugin 要使用请取消注释
 public class CommandExecutor implements PluginRegister {
     @Override
     public void register(Bot bot, @NotNull EventChannel<BotEvent> channel) {
@@ -28,7 +30,7 @@ public class CommandExecutor implements PluginRegister {
             String content = event.getMessage().contentToString();
             String[] command = content.split(" ");
             switch (command[0]) {
-                case "/permit" -> {
+                case "#permit" -> {
                     if (event.getSender().getId() == GlobalConfig.master) {
                         if (command.length != 2) {
                             event.getSubject().sendMessage("use: /permit [userId]");
@@ -40,7 +42,7 @@ public class CommandExecutor implements PluginRegister {
                         event.getSubject().sendMessage(userId + " was added to the whitelist");
                     }
                 }
-                case "/ban" -> {
+                case "#ban" -> {
                     if (event.getSender().getId() != GlobalConfig.master) {
                         event.getSubject().sendMessage("you don't have permission");
                         return;
@@ -53,11 +55,11 @@ public class CommandExecutor implements PluginRegister {
                     BlackListActionFactory.INSTANCE.build().add(userId);
                     event.getSubject().sendMessage(userId + " was added to the blacklist");
                 }
-                case "/s" -> {
+                case "#s" -> {
                     Action action = BlackListActionFactory.INSTANCE.build();
                     event.getSubject().sendMessage(action.query(Long.parseLong(command[1])));
                 }
-                case "/mute" -> {
+                case "#mute" -> {
                     if (GlobalConfig.whiteList.contains(event.getSender().getId())
                             || event.getSender().getId() == GlobalConfig.master) {
                         if (event instanceof GroupMessageEvent event1) {
@@ -78,7 +80,7 @@ public class CommandExecutor implements PluginRegister {
                         }
                     }
                 }
-                case "/unmute" -> {
+                case "#unmute" -> {
                     if (GlobalConfig.whiteList.contains(event.getSender().getId())
                             || event.getSender().getId() == GlobalConfig.master) {
                         if (event instanceof GroupMessageEvent event1) {
@@ -98,7 +100,7 @@ public class CommandExecutor implements PluginRegister {
                         }
                     }
                 }
-                case "/muteAll" -> {
+                case "#muteAll" -> {
                     if (GlobalConfig.whiteList.contains(event.getSender().getId())
                             || event.getSender().getId() == GlobalConfig.master) {
                         if (command.length < 2) {
@@ -119,7 +121,7 @@ public class CommandExecutor implements PluginRegister {
                         }
                     }
                 }
-                case "/unmuteAll" -> {
+                case "#unmuteAll" -> {
                     if (GlobalConfig.whiteList.contains(event.getSender().getId())
                             || event.getSender().getId() == GlobalConfig.master) {
                         if (command.length < 2) {
@@ -140,7 +142,7 @@ public class CommandExecutor implements PluginRegister {
                         }
                     }
                 }
-                case "/kick" -> {
+                case "#kick" -> {
                     if (GlobalConfig.whiteList.contains(event.getSender().getId())
                             || event.getSender().getId() == GlobalConfig.master) {
                         if (event instanceof GroupMessageEvent event1) {
@@ -182,7 +184,7 @@ public class CommandExecutor implements PluginRegister {
                         }
                     }
                 }
-                case "/info" -> event.getSubject().sendMessage(GlobalConfig.toStrings());
+                case "#info" -> event.getSubject().sendMessage(GlobalConfig.toStrings());
             }
         });
     }

@@ -1,6 +1,10 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.annotation.*;
+import com.erzbir.mirai.numeron.annotation.Processor;
+import com.erzbir.mirai.numeron.annotation.litener.Listener;
+import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;
+import com.erzbir.mirai.numeron.annotation.massage.Message;
+import com.erzbir.mirai.numeron.annotation.massage.UserMessage;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
@@ -11,6 +15,7 @@ import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.event.events.UserMessageEvent;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +32,9 @@ import java.util.regex.Pattern;
 /**
  * @author Erzbir
  * @Date: 2022/11/18 15:10
+ * <p>
+ * 此类为消息处理类, 从bean容器中获取有特定注解的bean, 并根据方法上的注解执行 过滤channel/执行对应方法等
+ * </p>
  */
 @Processor
 @Slf4j
@@ -40,9 +48,16 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         MessageAnnotationProcessor.context = context;
     }
 
+    /**
+     * 通过过滤监听, 最终过滤到一个确定的事件, 过滤规则由注解标记
+     *
+     * @param channel           未过滤的监听频道
+     * @param messageAnnotation 消息处理注解, 使用泛型代替实际的注解, 这样做的目的是减少代码量, 用反射的方式还原注解
+     * @return EventChannel
+     */
     @NotNull
     private <E extends Annotation> EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> channel, E messageAnnotation) {
-        Class<? extends Annotation> aClass = messageAnnotation.annotationType();
+        Class<? extends Annotation> aClass = messageAnnotation.annotationType(); // 这里获取注解的字节码
         return channel.filter(event -> {
             if (aClass != null && event instanceof MessageEvent event1) {
                 boolean flag = true;
@@ -51,6 +66,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                 String text;
                 PermissionType permission;
                 try {
+                    // 以下操作通过反射调用注解的方法, 再强制类型转换成对应的类型
                     filterRule = (FilterRule) aClass.getDeclaredMethod("filterRule").invoke(messageAnnotation);
                     messageRule = (MessageRule) aClass.getDeclaredMethod("messageRule").invoke(messageAnnotation);
                     text = (String) aClass.getDeclaredMethod("text").invoke(messageAnnotation);
@@ -58,6 +74,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                     throw new RuntimeException(e);
                 }
+                // 这里是针对过滤规则进行过滤
                 if (filterRule != null && !filterRule.equals(FilterRule.NONE)) {
                     if (event instanceof GroupMessageEvent event2) {
                         flag = filterRule.equals(FilterRule.BLACKLIST) ? GlobalConfig.isOn && (!GlobalConfig.blackList.contains(event1.getSender().getId()) &&
@@ -68,6 +85,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                                 (GlobalConfig.isOn && !GlobalConfig.blackList.contains(event1.getSender().getId())) : GlobalConfig.isOn;
                     }
                 }
+                // 以下是针对匹配规则和权限规则进行过滤
                 switch (messageRule) {
                     case EQUAL -> {
                         switch (permission) {
@@ -156,13 +174,20 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
     }
 
     /**
-     * @param bean    bean对象
-     * @param method  反射获取到的bean对象的方法
-     * @param channel 过滤的channel
+     * @param bean              bean对象
+     * @param method            反射获取到的bean对象的方法
+     * @param channel           过滤的channel
+     * @param messageAnnotation 消息处理注解, 使用泛型代替实际的注解, 这样做的目的是减少代码量, 用反射的方式还原注解
      */
     private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E messageAnnotation) {
         channel.subscribeAlways(MessageEvent.class, event -> {
-            if (messageAnnotation instanceof GroupMessage && !(event instanceof GroupMessageEvent)) {
+            /*
+             * 这里判断的原因是: 所有事件都在这一个方法实现, 但是如果method是@GroupMessage注解标记的方法而event却是一个UserMessageEvent,
+             * 这时就会出现异常, 因为GroupMessageEvent和UserMessageEvent都是MessageEvent的子类,
+             * 这个if也可以不要就让他抛出异常, 因为我们期望的是@GroupMessage标记的就处理群消息而不是私聊消息
+             */
+            if ((messageAnnotation instanceof GroupMessage && !(event instanceof GroupMessageEvent))
+                    || (messageAnnotation instanceof UserMessage && !(event instanceof UserMessageEvent))) {
                 return;
             }
             try {
@@ -173,6 +198,11 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         });
     }
 
+    /**
+     * 这个方法是spring自动调用的, 用来扫瞄有规定注解的方法
+     *
+     * @param event the event to respond to
+     */
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
         bot = context.getBean(Bot.class);
