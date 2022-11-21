@@ -118,7 +118,7 @@ public class BotConfig {
             if (annotation != null) {
                 try {
                     field.set(null, SqlUtil.perms.get(field.getName()));
-                    } catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
 

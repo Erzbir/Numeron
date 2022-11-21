@@ -49,7 +49,8 @@ public class Test {
 
 ## 说明:
 
-第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>save()</code>方法
+第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>
+save()</code>方法
 
 如果想进行添加黑名单删改等等操作, 建议模仿我在controller包下的做法, 使用工厂模式
 
@@ -79,7 +80,8 @@ CommandExecutor</code>
 配置加载方式是 数据库 + 文件IO + 反射
 
 成员变量上加上<code>@DataValue</code>可以通过数据库注入, 目前没有完善, 如果自定义则需要修改<code>SqlUtil</code>中的代码.
-> 注入的逻辑是: 在初始化时将数据库数据解析成<code>HashMap<String, HashSet<String, Object>></code>, 通过反射获取<code>filedName</code>在通过<code>filedName</code>在<code>HashMap</code>中取对应的<code>HashSet</code>
+> 注入的逻辑是: 在初始化时将数据库数据解析成<code>HashMap<String, HashSet<String, Object>></code>, 通过反射获取<code>
+> filedName</code>在通过<code>filedName</code>在<code>HashMap</code>中取对应的<code>HashSet</code>
 
 ## 联系方式:
 

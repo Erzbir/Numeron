@@ -82,7 +82,8 @@ public class SqlUtil {
         SqlUtil.add(314112312L, "whiteList");
         SqlUtil.add(43141221L, "blackList");
         SqlUtil.add(311231221L, "whiteList");
-        SqlUtil.add(1231313L);
+        SqlUtil.add(375473609L);
+        SqlUtil.add(780594692L);
         SqlUtil.add(1235242L);
         SqlUtil.add(12421431313L);
         SqlUtil.remove(1221L);
