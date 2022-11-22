@@ -3,11 +3,23 @@ package com.erzbir.mirai.numeron.controller;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.sql.SqlUtil;
 
+import java.util.Objects;
+
 /**
  * @author Erzbir
  * @Date: 2022/11/13 23:13
  */
 public class WhiteListAction extends Action {
+    private static WhiteListAction INSTANCE;
+
+    private WhiteListAction() {
+
+    }
+
+    public static WhiteListAction getINSTANCE() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new WhiteListAction());
+    }
+
     @Override
     public String add(Object id) {
         GlobalConfig.whiteList.add((Long) id);

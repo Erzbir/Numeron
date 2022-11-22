@@ -3,11 +3,23 @@ package com.erzbir.mirai.numeron.controller;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.sql.SqlUtil;
 
+import java.util.Objects;
+
 /**
  * @author Erzbir
  * @Date: 2022/11/13 17:30
  */
 public class IllegalAction extends Action {
+
+    private static IllegalAction INSTANCE;
+
+    private IllegalAction() {
+
+    }
+
+    public static IllegalAction getINSTANCE() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new IllegalAction());
+    }
 
     @Override
     public String add(Object s) {

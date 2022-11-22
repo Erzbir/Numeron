@@ -10,13 +10,12 @@ import com.erzbir.mirai.numeron.interfaces.ActionFactory;
  */
 public class WhiteListActionFactory implements ActionFactory {
     public static final WhiteListActionFactory INSTANCE = new WhiteListActionFactory();
-    private static final WhiteListAction INSTANCE1 = new WhiteListAction();
 
     private WhiteListActionFactory() {
     }
 
     @Override
     public Action build() {
-        return INSTANCE1;
+        return WhiteListAction.getINSTANCE();
     }
 }

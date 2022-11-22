@@ -10,13 +10,12 @@ import com.erzbir.mirai.numeron.interfaces.ActionFactory;
  */
 public class IllegalActionFactory implements ActionFactory {
     public static final IllegalActionFactory INSTANCE = new IllegalActionFactory();
-    private static final IllegalAction INSTANCE1 = new IllegalAction();
 
     private IllegalActionFactory() {
     }
 
     @Override
     public Action build() {
-        return INSTANCE1;
+        return IllegalAction.getINSTANCE();
     }
 }

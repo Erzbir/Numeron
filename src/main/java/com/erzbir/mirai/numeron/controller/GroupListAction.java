@@ -3,11 +3,22 @@ package com.erzbir.mirai.numeron.controller;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.sql.SqlUtil;
 
+import java.util.Objects;
+
 /**
  * @author Erzbir
  * @Date: 2022/11/22 00:42
  */
 public class GroupListAction extends Action {
+    private static GroupListAction INSTANCE;
+
+    private GroupListAction() {
+
+    }
+
+    public static GroupListAction getINSTANCE() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new GroupListAction());
+    }
 
     @Override
     public String add(Object id) {

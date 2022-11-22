@@ -10,14 +10,13 @@ import com.erzbir.mirai.numeron.interfaces.ActionFactory;
  */
 public class BlackListActionFactory implements ActionFactory {
     public static final BlackListActionFactory INSTANCE = new BlackListActionFactory();
-    private static final BlackListAction INSTANCE1 = new BlackListAction();
 
     private BlackListActionFactory() {
     }
 
     @Override
     public Action build() {
-        return INSTANCE1;
+        return BlackListAction.getInstance();
     }
 
 }

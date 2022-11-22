@@ -10,7 +10,6 @@ import com.erzbir.mirai.numeron.interfaces.ActionFactory;
  */
 public class GroupListActionFactory implements ActionFactory {
     public static final GroupListActionFactory INSTANCE = new GroupListActionFactory();
-    private static final GroupListAction INSTANCE1 = new GroupListAction();
 
     private GroupListActionFactory() {
 
@@ -18,6 +17,6 @@ public class GroupListActionFactory implements ActionFactory {
 
     @Override
     public Action build() {
-        return INSTANCE1;
+        return GroupListAction.getINSTANCE();
     }
 }

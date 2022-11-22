@@ -3,11 +3,22 @@ package com.erzbir.mirai.numeron.controller;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.sql.SqlUtil;
 
+import java.util.Objects;
+
 /**
  * @author Erzbir
  * @Date: 2022/11/13 17:27
  */
 public class BlackListAction extends Action {
+    private static BlackListAction INSTANCE;
+
+    private BlackListAction() {
+
+    }
+
+    public static BlackListAction getInstance() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new BlackListAction());
+    }
 
     @Override
     public String add(Object id) {
