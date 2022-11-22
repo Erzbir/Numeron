@@ -20,27 +20,27 @@ import org.jetbrains.annotations.NotNull;
  */
 @Listener
 public class Test {
-    @GroupMessage (messageRule = MessageRule.REGEX, text = "s\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @GroupMessage(messageRule = MessageRule.REGEX, text = "s\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     public void regex(@NotNull GroupMessageEvent e) {
         e.getSubject().sendMessage("awa");
     }
 
-    @UserMessage (text = "hi", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @UserMessage(text = "hi", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     public void sayHello(@NotNull UserMessageEvent e) {
         e.getSubject().sendMessage("hi");
     }
 
-    @Message (text = "晚安", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    @Message(text = "晚安", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
     public void sayGoodNight(@NotNull MessageEvent e) {
         e.getSubject().sendMessage("晚安");
     }
 
-    @Message (text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     public void sayH(@NotNull MessageEvent e) {
         e.getSubject().sendMessage("你好");
     }
 
-    @GroupMessage (messageRule = MessageRule.CONTAINS, text = "小黑子", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @GroupMessage(messageRule = MessageRule.CONTAINS, text = "小黑子", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     public void sayZ(@NotNull GroupMessageEvent e) {
         e.getSubject().sendMessage("只因你太美");
     }

@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
  * @author Erzbir
  * @Date: 2022/11/20 18:06
  */
-@Retention (RetentionPolicy.RUNTIME)
-@Target (ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface DataValue {
-    String sql() default "";
+    String sql() default ""; // 此方法暂时没用, 后期打算通过反射执行sql语句
 }

@@ -4,47 +4,88 @@
 
 这是一个spring-boot开发基于mirai的QQ机器人, 使用spring做了一些封装.
 
-目前并没有什么功能(慢慢写), 现在可以把这个当成一个封装的框架来使用,
+可以把这个当成一个<b>脚手架</b>来使用,
 比如在A方法上加上<code>@GroupMessage</code>注解表示在监听到一个<code>GroupMessageEvent</code>后调用此方法进行对应处理(
-注意A方法所属的类必须加<code>@Listener</code>注解或者<code>@Component</code>)
+注意A方法所属的类必须加<code>@Listener</code>注解)
+
+三个消息处理注解:
+
+- <code>@Message</code> 可以标记在所有消息事件类型的处理方法上
+- <code>@GroupMessage</code> 标记在群消息事件处理的方法上
+- <code>@UserMessage</code> 标记在好友消息事件处理的方法上
+
+可以用消息处理注解做到什么?
+
+- 三种过滤规则: 不过滤 / 过滤黑名单 / 正常过滤
+- 三种权限规则: 主人 / 白名单 / 所有人
+- 五种消息匹配规则: 以?开头 / 以?结尾 / 包含? / 相等 / 正则
+- > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 
 例子:
 
 ```java
+import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;
 import com.erzbir.mirai.numeron.annotation.massage.UserMessage;
 import com.erzbir.mirai.numeron.enums.MessageRule;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
 import org.jetbrains.annotations.NotNull;
 
 @Listener
 public class Test {
-    // 注解中如果filterRule默认值是NONE表示不开启过滤, NORMAL表示过滤掉掉groupList以外的群
 
-    @GroupMessage (messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @GroupMessage(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
     public void regex(@NotNull GroupMessageEvent event) {
         event.getSubject().sendMessage("这是一个数字");
     }
 
-    @UserMessage (text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
+    @UserMessage(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
     // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
     public void sayHello(@NotNull UserMessageEvent event) {
         event.getSubject().sendMessage("hi");
     }
 
-    @Message (text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
     // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
     public void sayGoodNight(@NotNull MessageEvent event) {
         event.getSubject().sendMessage("晚安");
     }
 
     // 权限是所有人, 不过滤
-    @Message (text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
     public void sayH(@NotNull MessageEvent e) {
         e.getSubject().sendMessage("你好");
     }
-}
 
+    // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
+    @Message(text = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    public void muteSingle(@NotNull MessageEvent event) {
+        String[] s = event.getMessage().contentToString().split("\\s+");
+        long id;
+        int time;
+        s[1] = s[1].replaceAll("@", "");
+        id = Long.parseLong(s[1]);
+        time = Integer.parseInt(s[2]);
+        if (event instanceof GroupMessageEvent event1) {
+            Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
+        } else {
+            AtomicReference<NormalMember> member = new AtomicReference<>();
+            GlobalConfig.groupList.forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            if (member.get().getPermission().getLevel() < 1) {
+                member.get().mute(time);
+            }
+        }
+    }
+
+    // 这个例子是检测黑名单用户, 正则匹配所有, 不进行任何过滤和权限限制以达到实时检测所有消息发送者的目的. 这样的实现很不好, 因为会时刻都在执行这个方法, 会重新写一个只针对黑名单用户的检测
+    @GroupMessage(text = ".*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
+    public void scan(GroupMessageEvent event) {
+        if (GlobalConfig.blackList.contains(event.getSender().getId())) {
+            Objects.requireNonNull(event.getGroup().get(event.getSender().getId())).kick("踢出黑名单用户", true);
+        }
+    }
+}
 ```
 
 ## 说明:
@@ -56,9 +97,16 @@ save()</code>方法
 
 基本都有一个模板, test包下的<code>Test</code>类是通过注解来处理消息的例子, plugins包下的command包下的<code>
 CommandExecutor</code>
-类是直接在消息中匹配关键词的例子
 
-很多包下面什么都没有, 慢慢写吧.......
+<b>将所有QQ机器人功能写在plugins目录下</b>
+
+## plugin包下实现的功能:
+
+- 消息回复
+- 禁言
+- 黑名单检测
+- 违禁词检测
+  类是直接在消息中匹配关键词的例子
 
 ## 原理:
 
@@ -81,7 +129,8 @@ CommandExecutor</code>
 
 成员变量上加上<code>@DataValue</code>可以通过数据库注入, 目前没有完善, 如果自定义则需要修改<code>SqlUtil</code>中的代码.
 > 注入的逻辑是: 在初始化时将数据库数据解析成<code>HashMap<String, HashSet<String, Object>></code>, 通过反射获取<code>
-> filedName</code>在通过<code>filedName</code>在<code>HashMap</code>中取对应的<code>HashSet</code>
+> filedName</code>
+> 在通过<code>filedName</code>在<code>HashMap</code>中取对应的<code>HashSet</code>
 
 ## 联系方式:
 

@@ -13,14 +13,14 @@ import java.lang.annotation.Target;
  * @author Erzbir
  * @Date: 2022/11/18 14:32
  */
-@Retention (RetentionPolicy.RUNTIME)
-@Target (ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
 public @interface Message {
-    FilterRule filterRule() default FilterRule.NONE;
+    FilterRule filterRule();
 
     MessageRule messageRule() default MessageRule.EQUAL;
 
-    PermissionType permission() default PermissionType.WHITE;
+    PermissionType permission();
 
-    String text() default "";
+    String text();
 }

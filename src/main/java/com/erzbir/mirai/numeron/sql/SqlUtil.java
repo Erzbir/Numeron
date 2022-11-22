@@ -76,22 +76,9 @@ public class SqlUtil {
     }
 
     public static void main(String[] args) throws SQLException {
-        SqlUtil.add("sadasdad");
-        SqlUtil.add("sadashiopjposadadsdad");
-        SqlUtil.add("sadasasdasddad");
-        SqlUtil.add(1221L, "blackList");
-        SqlUtil.add(12312L, "whiteList");
-        SqlUtil.add(4311221L, "blackList");
-        SqlUtil.add(314112312L, "whiteList");
-        SqlUtil.add(43141221L, "blackList");
-        SqlUtil.add(311231221L, "whiteList");
         SqlUtil.add(375473609L);
         SqlUtil.add(780594692L);
         SqlUtil.add(329652880L);
-        SqlUtil.add(12421431313L);
-        SqlUtil.remove(1221L);
-        SqlUtil.remove(12312L, "whiteList");
-        SqlUtil.remove("sadasdad");
     }
 
     public static boolean exist(String value) {

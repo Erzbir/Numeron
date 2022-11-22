@@ -1,6 +1,4 @@
-package com.erzbir.mirai.numeron.annotation.filter;
-
-import org.springframework.stereotype.Component;
+package com.erzbir.mirai.numeron.annotation.sql;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,10 +7,9 @@ import java.lang.annotation.Target;
 
 /**
  * @author Erzbir
- * @Date: 2022/11/16 22:16
+ * @Date: 2022/11/22 18:05
  */
-@Component
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.TYPE)
-public @interface Filter {
+public @interface Loader {
 }

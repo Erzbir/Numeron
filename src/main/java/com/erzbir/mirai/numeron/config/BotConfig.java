@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.config;
 
 import com.erzbir.mirai.numeron.annotation.sql.DataValue;
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.config.load.SqlLoadToConfig;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -15,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -23,18 +22,15 @@ import java.util.Scanner;
  * @author Erzbir
  * @Date: 2022/11/16 21:14
  * <p>
- * 配置类, 数据库资源的加载用反射和数据读操作实现
+ * 配置类, 数据库资源的加载用反射和数据读操作实现. 如果用注释掉的方式进行注入, 在打jar包时会把帐号密码等一起打包, 显然不合适
  * </p>
  */
 @Configuration
 @Slf4j
-@ComponentScan (basePackages = "com.erzbir.mirai.numeron")
+@ComponentScan(basePackages = "com.erzbir.mirai.numeron")
 //@PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
     private static final String deviceInfo = "device.json";
-    public static Long master;
-    public static Long account;
-    public static String password;
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${illegalList}'.split(',')))}")
     @DataValue
     public static HashSet<String> illegalList;
@@ -47,6 +43,9 @@ public class BotConfig {
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
     @DataValue
     public static HashSet<Long> whiteList;
+    private static Long master;
+    private static Long account;
+    private static String password;
     private static Bot bot;
     private static String WORKDIR;
     private static BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
@@ -54,7 +53,12 @@ public class BotConfig {
 
     static {
         init();
-        dbInit();
+        log.info("开始载入数据库数据");
+        SqlLoadToConfig.load();
+        log.info("违禁词列表: " + illegalList.toString());
+        log.info("启用群列表: " + groupList.toString());
+        log.info("黑名单列表: " + blackList.toString());
+        log.info("白名单列表: " + whiteList.toString());
     }
 
     public static Bot getBot() {
@@ -109,25 +113,6 @@ public class BotConfig {
         scan.close();
         log.info("配置成功, 将保存配置....");
         save();
-    }
-
-    private static void dbInit() {
-        log.info("开始载入数据库数据");
-        List.of(BotConfig.class.getDeclaredFields()).forEach(field -> {
-            DataValue annotation = field.getDeclaredAnnotation(DataValue.class);
-            if (annotation != null) {
-                try {
-                    field.set(null, SqlUtil.perms.get(field.getName()));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-        log.info("违禁词列表: " + illegalList.toString());
-        log.info("启用群列表: " + groupList.toString());
-        log.info("黑名单列表: " + blackList.toString());
-        log.info("白名单列表: " + whiteList.toString());
     }
 
     private static void save() {

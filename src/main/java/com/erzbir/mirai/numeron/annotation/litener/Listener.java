@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @Date: 2022/11/18 14:27
  */
 @Component
-@Retention (RetentionPolicy.RUNTIME)
-@Target (ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
 public @interface Listener {
 }
