@@ -1,38 +1,37 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+name: Bug 报告
+description: 提交一个 bug
+labels:
+  - "z:question"
 
----
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你来到这里
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: 问题描述
+      description: 在此详细描述你遇到的问题
+    validations:
+      required: true
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现
+      description: 在这里简略说明如何让这个问题再次发生
+      placeholder: |
+        在这里简略说明如何让这个问题再次发生
+        可使用 1.  2.  3.  的列表格式，或其他任意恰当的格式
+        如果你不确定如何复现, 请尽量描述发生当时的情景
+        
+        建议提供相关代码
+    validations:
+      required: true
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
-**Additional context**
-Add any other context about the problem here.
+  - type: markdown
+    attributes:
+      value: |
+        ----
