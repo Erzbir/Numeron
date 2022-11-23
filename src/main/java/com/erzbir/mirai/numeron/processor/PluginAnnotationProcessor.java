@@ -1,6 +1,5 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.annotation.Processor;
 import com.erzbir.mirai.numeron.interfaces.ChannelFilterInter;
 import com.erzbir.mirai.numeron.interfaces.PluginRegister;
 import kotlin.jvm.internal.Intrinsics;
@@ -23,7 +22,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * 这个类的逻辑和作用和MessageAnnotationProcessor的逻辑类似, 这个类用来给插件注册和过滤
  * </p>
  */
-@Processor
+//@Processor 要使用请解除注释
 @Slf4j
 public class PluginAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     public static ApplicationContext context;

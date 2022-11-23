@@ -69,7 +69,7 @@ public class BotConfig {
         FileInputStream fileInputStream = null;
         Properties properties = new Properties();
         try {
-            fileInputStream = new FileInputStream("config/BotConfig.properties");
+            fileInputStream = new FileInputStream("./config/BotConfig.properties");
             properties.load(fileInputStream);
         } catch (IOException ignored) {
 
@@ -120,14 +120,14 @@ public class BotConfig {
         log.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
-        File file = new File("config");
+        File file = new File("./config");
         if (!file.exists()) {
             if (!file.mkdir()) {
                 return;
             }
         }
         try {
-            outputStream = new FileOutputStream("config/BotConfig.properties");
+            outputStream = new FileOutputStream("./config/BotConfig.properties");
             properties = new Properties();
             properties.setProperty("master", String.valueOf(master));
             properties.setProperty("account", String.valueOf(account));
@@ -157,7 +157,7 @@ public class BotConfig {
         GlobalConfig.groupList = groupList;
         GlobalConfig.illegalList = illegalList;
         GlobalConfig.whiteList = whiteList;
-        WORKDIR = "bots/" + account;
+        WORKDIR = "./bots/" + account;
         File file = new File(WORKDIR);
         if (!file.exists()) {
             if (file.mkdirs()) {
