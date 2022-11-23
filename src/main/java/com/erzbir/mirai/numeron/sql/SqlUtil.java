@@ -1,6 +1,9 @@
 package com.erzbir.mirai.numeron.sql;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +17,7 @@ import java.util.Set;
  * </p>
  */
 public class SqlUtil {
-    public static Map<String, Set<Object>> perms = new HashMap<>();
+    public static final Map<String, Set<Object>> perms = new HashMap<>();
     public static Connection connection;
     public static Statement statement;
 
@@ -75,7 +78,7 @@ public class SqlUtil {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         SqlUtil.add(375473609L);
         SqlUtil.add(780594692L);
         SqlUtil.add(329652880L);
@@ -101,6 +104,11 @@ public class SqlUtil {
         return false;
     }
 
+    /**
+     *
+     * @param type 只是为了重载
+     * @return boolean
+     */
     public static boolean exist(Long value, String type) {
         Statement statement;
         ResultSet resultSet;

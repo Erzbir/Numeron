@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.test;
+package com.erzbir.mirai.numeron.plugins.qqmanage.chat;
 
 import com.erzbir.mirai.numeron.annotation.litener.Listener;
 import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;

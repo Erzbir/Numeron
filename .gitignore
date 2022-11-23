@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 data.sqlite
-config
+/config
 bots
 
 ### STS ###

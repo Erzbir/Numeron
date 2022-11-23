@@ -2,7 +2,9 @@
 
 ## 介绍:
 
-这是一个spring-boot开发基于mirai的QQ机器人, 使用spring做了一些封装.
+这是一个SpringBoot开发基于Mirai的QQ机器人.
+
+很想交一个一起写代码的朋友, 这个项目的话只需要熟悉反射和会一点SpringBoot就可以了, 希望有个朋友能戳最后面的联系方式
 
 可以把这个当成一个<b>脚手架</b>来使用,
 比如在A方法上加上<code>@GroupMessage</code>注解表示在监听到一个<code>GroupMessageEvent</code>后调用此方法进行对应处理(
@@ -33,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Listener
 public class Test {
+    // 消息匹配规则设置了默认值, 默认是equals()完全匹配
 
     @GroupMessage(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
@@ -93,20 +96,20 @@ public class Test {
 第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>
 save()</code>方法
 
-如果想进行添加黑名单删改等等操作, 建议模仿我在controller包下的做法, 使用工厂模式
+如果想自定义黑名单删改类似的操作, 可以在controller包下自定义
 
-基本都有一个模板, test包下的<code>Test</code>类是通过注解来处理消息的例子, plugins包下的command包下的<code>
-CommandExecutor</code>
+基本都有一个模板, plugins包下的command包下的<code>
+CommandExecutor</code>是普通写法示例, plugins包下的chat包下和action包下是利用注解处理的示例
 
 <b>将所有QQ机器人功能写在plugins目录下</b>
 
-## plugin包下实现的功能:
+### plugins包下实现的功能:
 
 - 消息回复
-- 禁言
+- @禁言, qq号禁言
+- 全体禁言
 - 黑名单检测
 - 违禁词检测
-  类是直接在消息中匹配关键词的例子
 
 ## 原理:
 
@@ -123,14 +126,16 @@ CommandExecutor</code>
 
    > 实现过滤的做法是: 将所有把实现了<code>ChannelFilterInter</code>的bean对象取出来, 执行过滤方法之后再放进去
 
-权限控制和消息匹配的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
+权限控制/消息匹配/规则过滤 的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
 
 配置加载方式是 数据库 + 文件IO + 反射
 
-成员变量上加上<code>@DataValue</code>可以通过数据库注入, 目前没有完善, 如果自定义则需要修改<code>SqlUtil</code>中的代码.
+成员变量上加上<code>@DataValue</code>可以通过数据库注入, 目前没有完善, 如果自定义则需要修改<code>SqlUtil</code>中的代码,
+计划是通过反射而不需要修改源码
 > 注入的逻辑是: 在初始化时将数据库数据解析成<code>HashMap<String, HashSet<String, Object>></code>, 通过反射获取<code>
 > filedName</code>
-> 在通过<code>filedName</code>在<code>HashMap</code>中取对应的<code>HashSet</code>
+> 再通过<code>filedName</code>从<code>HashMap</code>中取对应的<code>HashSet</code>,
+> 由于数据库内容很少涉及增删改的数据量不大就没有使用缓存且一次性将所有内容读进内存
 
 ## 联系方式:
 

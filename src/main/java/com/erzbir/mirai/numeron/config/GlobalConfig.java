@@ -8,8 +8,8 @@ import java.util.HashSet;
  * <p>这个类只是对BotConfig的一个引用, 可以启用了<p/>
  */
 public class GlobalConfig {
-    public static String OS = System.getProperty("os.name");
-    public static String HOME = System.getenv("HOME");
+    public static final String OS = System.getProperty("os.name");
+    public static final String HOME = System.getenv("HOME");
     public static boolean isOn = true;
     public static Long master;
     public static HashSet<String> illegalList;

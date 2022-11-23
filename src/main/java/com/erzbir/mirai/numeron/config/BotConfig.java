@@ -71,8 +71,8 @@ public class BotConfig {
         try {
             fileInputStream = new FileInputStream("config/BotConfig.properties");
             properties.load(fileInputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
+
         } finally {
             if (fileInputStream != null) {
                 try {
@@ -102,6 +102,7 @@ public class BotConfig {
                 System.out.println("请输入数字帐号!!!!");
             }
         }
+        scan.nextLine();
         while (password == null) {
             System.out.print("输入密码: ");
             password = scan.nextLine();
@@ -115,7 +116,7 @@ public class BotConfig {
         save();
     }
 
-    private static void save() {
+    public static void save() {
         log.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
