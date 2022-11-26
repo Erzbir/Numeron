@@ -1,7 +1,6 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.interfaces.ChannelFilterInter;
-import com.erzbir.mirai.numeron.interfaces.PluginRegister;
+import com.erzbir.mirai.numeron.filter.ChannelFilterInter;
 import kotlin.jvm.internal.Intrinsics;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;

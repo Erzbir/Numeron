@@ -1,14 +1,13 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.annotation.Processor;
-import com.erzbir.mirai.numeron.annotation.litener.Listener;
-import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;
-import com.erzbir.mirai.numeron.annotation.massage.Message;
-import com.erzbir.mirai.numeron.annotation.massage.UserMessage;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.litener.Listener;
+import com.erzbir.mirai.numeron.massage.GroupMessage;
+import com.erzbir.mirai.numeron.massage.Message;
+import com.erzbir.mirai.numeron.massage.UserMessage;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;

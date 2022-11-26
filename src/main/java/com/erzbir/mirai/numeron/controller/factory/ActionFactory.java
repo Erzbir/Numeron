@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.interfaces;
+package com.erzbir.mirai.numeron.controller.factory;
 
 import com.erzbir.mirai.numeron.controller.Action;
 

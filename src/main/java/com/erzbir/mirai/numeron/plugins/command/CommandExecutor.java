@@ -4,7 +4,7 @@ import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
 import com.erzbir.mirai.numeron.controller.factory.BlackListActionFactory;
 import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
-import com.erzbir.mirai.numeron.interfaces.PluginRegister;
+import com.erzbir.mirai.numeron.processor.PluginRegister;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.EventChannel;

@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.entity.IllegalList;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class IllegalAction extends Action {
     @Override
     public String add(Object s) {
         GlobalConfig.illegalList.add((String) s);
-        SqlUtil.add((String) s);
+        IllegalList.INSTANCE.add((String) s);
         return "添加成功";
     }
 
@@ -42,7 +42,7 @@ public class IllegalAction extends Action {
     @Override
     public String remove(Object s) {
         GlobalConfig.illegalList.remove((String) s);
-        SqlUtil.remove((String) s);
+        IllegalList.INSTANCE.remove((String) s);
         return "删除成功";
     }
 }

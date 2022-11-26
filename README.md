@@ -26,8 +26,8 @@
 例子:
 
 ```java
-import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;
-import com.erzbir.mirai.numeron.annotation.massage.UserMessage;
+import com.erzbir.mirai.numeron.massage.GroupMessage;
+import com.erzbir.mirai.numeron.massage.UserMessage;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
@@ -128,10 +128,6 @@ CommandExecutor</code>是普通写法示例, plugins包下的chat包下和action
 
 权限控制/消息匹配/规则过滤 的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
 
-配置加载方式是 数据库 + 文件IO + 反射
-
-成员变量上加上<code>@DataValue</code>可以通过数据库注入, 目前没有完善, 如果自定义则需要修改<code>SqlUtil</code>中的代码,
-计划是通过反射而不需要修改源码
 > 注入的逻辑是: 在初始化时将数据库数据解析成<code>HashMap<String, HashSet<String, Object>></code>, 通过反射获取<code>
 > filedName</code>
 > 再通过<code>filedName</code>从<code>HashMap</code>中取对应的<code>HashSet</code>,

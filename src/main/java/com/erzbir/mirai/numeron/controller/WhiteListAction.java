@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.entity.WhiteList;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class WhiteListAction extends Action {
     @Override
     public String add(Object id) {
         GlobalConfig.whiteList.add((Long) id);
-        SqlUtil.add((Long) id, "whiteLit");
+        WhiteList.INSTANCE.add((Long) id);
         return "添加成功";
     }
 
@@ -41,7 +41,7 @@ public class WhiteListAction extends Action {
     @Override
     public String remove(Object id) {
         GlobalConfig.whiteList.remove((Long) id);
-        SqlUtil.remove((Long) id, "whiteList");
+        WhiteList.INSTANCE.remove((Long) id);
         return "删除成功";
     }
 }

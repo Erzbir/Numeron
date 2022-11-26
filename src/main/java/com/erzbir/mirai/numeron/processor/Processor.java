@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.annotation;
+package com.erzbir.mirai.numeron.processor;
 
 import org.springframework.stereotype.Component;
 

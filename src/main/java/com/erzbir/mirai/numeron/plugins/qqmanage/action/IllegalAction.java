@@ -1,13 +1,13 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
-import com.erzbir.mirai.numeron.annotation.litener.Listener;
-import com.erzbir.mirai.numeron.annotation.massage.GroupMessage;
-import com.erzbir.mirai.numeron.annotation.massage.Message;
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.factory.IllegalActionFactory;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.litener.Listener;
+import com.erzbir.mirai.numeron.massage.GroupMessage;
+import com.erzbir.mirai.numeron.massage.Message;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 

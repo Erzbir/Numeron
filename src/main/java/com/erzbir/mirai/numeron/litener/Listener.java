@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.annotation.filter;
+package com.erzbir.mirai.numeron.litener;
 
 import org.springframework.stereotype.Component;
 
@@ -9,10 +9,10 @@ import java.lang.annotation.Target;
 
 /**
  * @author Erzbir
- * @Date: 2022/11/16 22:16
+ * @Date: 2022/11/18 14:27
  */
 @Component
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Filter {
+public @interface Listener {
 }

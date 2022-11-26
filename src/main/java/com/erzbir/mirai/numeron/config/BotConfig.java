@@ -1,7 +1,9 @@
 package com.erzbir.mirai.numeron.config;
 
-import com.erzbir.mirai.numeron.annotation.sql.DataValue;
-import com.erzbir.mirai.numeron.config.load.SqlLoadToConfig;
+import com.erzbir.mirai.numeron.entity.BlackList;
+import com.erzbir.mirai.numeron.entity.GroupList;
+import com.erzbir.mirai.numeron.entity.IllegalList;
+import com.erzbir.mirai.numeron.entity.WhiteList;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -31,17 +33,10 @@ import java.util.Scanner;
 //@PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
     private static final String deviceInfo = "device.json";
-    //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${illegalList}'.split(',')))}")
-    @DataValue
     public static HashSet<String> illegalList;
-    //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${groupList}'.split(',')))}")
-    @DataValue
     public static HashSet<Long> groupList;
-    //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${blackList}'.split(',')))}")
-    @DataValue
     public static HashSet<Long> blackList;
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
-    @DataValue
     public static HashSet<Long> whiteList;
     private static Long master;
     private static Long account;
@@ -54,7 +49,11 @@ public class BotConfig {
     static {
         init();
         log.info("开始载入数据库数据");
-        SqlLoadToConfig.load();
+        illegalList = IllegalList.INSTANCE.getIllegal();
+        whiteList = WhiteList.INSTANCE.getWhite();
+        blackList = BlackList.INSTANCE.getBlack();
+        groupList = GroupList.INSTANCE.getGroup();
+
         log.info("违禁词列表: " + illegalList.toString());
         log.info("启用群列表: " + groupList.toString());
         log.info("黑名单列表: " + blackList.toString());

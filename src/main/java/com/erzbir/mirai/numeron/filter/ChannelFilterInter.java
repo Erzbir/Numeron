@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.interfaces;
+package com.erzbir.mirai.numeron.filter;
 
 import net.mamoe.mirai.event.events.BotEvent;
 

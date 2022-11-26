@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.entity.BlackList;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ public class BlackListAction extends Action {
     @Override
     public String add(Object id) {
         GlobalConfig.blackList.add((Long) id);
-        SqlUtil.add((Long) id, "blackList");
+        BlackList.INSTANCE.add((Long) id);
         return "添加成功";
     }
 
@@ -40,7 +40,7 @@ public class BlackListAction extends Action {
     @Override
     public String remove(Object id) {
         GlobalConfig.blackList.remove((Long) id);
-        SqlUtil.remove((Long) id, "blackList");
+        BlackList.INSTANCE.remove((Long) id);
         return "删除成功";
     }
 }

@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.controller;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.entity.GroupList;
 
 import java.util.Objects;
 
@@ -22,8 +22,7 @@ public class GroupListAction extends Action {
 
     @Override
     public String add(Object id) {
-        GlobalConfig.groupList.add((Long) id);
-        SqlUtil.add((Long) id);
+        GroupList.INSTANCE.add((Long) id);
         return "授权成功";
     }
 
@@ -39,8 +38,7 @@ public class GroupListAction extends Action {
 
     @Override
     public String remove(Object id) {
-        GlobalConfig.groupList.remove((Long) id);
-        SqlUtil.remove((Long) id);
+        GroupList.INSTANCE.remove((Long) id);
         return "取消授权成功";
     }
 }

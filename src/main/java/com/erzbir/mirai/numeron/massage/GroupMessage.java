@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.annotation.massage;
+package com.erzbir.mirai.numeron.massage;
 
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;

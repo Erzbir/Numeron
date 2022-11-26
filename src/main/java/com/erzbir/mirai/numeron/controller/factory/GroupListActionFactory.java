@@ -2,7 +2,6 @@ package com.erzbir.mirai.numeron.controller.factory;
 
 import com.erzbir.mirai.numeron.controller.Action;
 import com.erzbir.mirai.numeron.controller.GroupListAction;
-import com.erzbir.mirai.numeron.interfaces.ActionFactory;
 
 /**
  * @author Erzbir
