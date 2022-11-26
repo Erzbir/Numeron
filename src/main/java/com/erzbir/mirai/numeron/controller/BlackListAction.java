@@ -22,7 +22,6 @@ public class BlackListAction extends Action {
 
     @Override
     public String add(Object id) {
-        GlobalConfig.blackList.add((Long) id);
         BlackList.INSTANCE.add((Long) id);
         return "添加成功";
     }
@@ -39,7 +38,6 @@ public class BlackListAction extends Action {
 
     @Override
     public String remove(Object id) {
-        GlobalConfig.blackList.remove((Long) id);
         BlackList.INSTANCE.remove((Long) id);
         return "删除成功";
     }

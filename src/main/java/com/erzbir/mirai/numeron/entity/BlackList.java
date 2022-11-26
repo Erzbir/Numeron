@@ -100,11 +100,11 @@ public class BlackList {
 
     public void add(Long value) {
         addD(value);
-        addS(value);
+        new Thread(() -> addS(value)).start();
     }
 
     public void remove(Long value) {
         removeD(value);
-        removeS(value);
+        new Thread(() -> removeS(value));
     }
 }

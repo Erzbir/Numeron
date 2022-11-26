@@ -99,11 +99,11 @@ public class IllegalList {
 
     public void add(String value) {
         addD(value);
-        addS(value);
+        new Thread(() -> addS(value)).start();
     }
 
     public void remove(String value) {
         removeD(value);
-        removeS(value);
+        new Thread(() -> removeS(value)).start();
     }
 }

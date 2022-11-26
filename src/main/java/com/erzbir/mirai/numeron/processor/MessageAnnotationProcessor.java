@@ -179,7 +179,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
      * @param messageAnnotation 消息处理注解, 使用泛型代替实际的注解, 这样做的目的是减少代码量, 用反射的方式还原注解
      */
     private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E messageAnnotation) {
-        channel.subscribeAlways(MessageEvent.class, event -> {
+        new Thread(() -> channel.subscribeAlways(MessageEvent.class, event -> {
             /*
              * 这里判断的原因是: 所有事件都在这一个方法实现, 但是如果method是@GroupMessage注解标记的方法而event却是一个UserMessageEvent,
              * 这时就会出现异常, 因为GroupMessageEvent和UserMessageEvent都是MessageEvent的子类,
@@ -194,7 +194,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
-        });
+        })).start();
     }
 
     /**

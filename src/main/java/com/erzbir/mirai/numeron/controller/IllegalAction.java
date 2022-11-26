@@ -23,7 +23,6 @@ public class IllegalAction extends Action {
 
     @Override
     public String add(Object s) {
-        GlobalConfig.illegalList.add((String) s);
         IllegalList.INSTANCE.add((String) s);
         return "添加成功";
     }
@@ -41,7 +40,6 @@ public class IllegalAction extends Action {
 
     @Override
     public String remove(Object s) {
-        GlobalConfig.illegalList.remove((String) s);
         IllegalList.INSTANCE.remove((String) s);
         return "删除成功";
     }
