@@ -9,5 +9,6 @@ public enum MessageRule {
     END_WITH,
     CONTAINS,
     EQUAL,
-    REGEX
+    REGEX,
+    IN
 }

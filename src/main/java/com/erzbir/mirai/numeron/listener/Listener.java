@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.litener;
+package com.erzbir.mirai.numeron.listener;
 
 import org.springframework.stereotype.Component;
 

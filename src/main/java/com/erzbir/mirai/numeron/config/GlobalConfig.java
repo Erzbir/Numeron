@@ -5,7 +5,7 @@ import java.util.HashSet;
 /**
  * @author Erzbir
  * @Date: 2022/11/16 21:42
- * <p>这个类只是对BotConfig的一个引用, 可以启用了<p/>
+ * <p>这个类只是对BotConfig中成员的一个引用, 可以弃用了<p/>
  */
 public class GlobalConfig {
     public static final String OS = System.getProperty("os.name");

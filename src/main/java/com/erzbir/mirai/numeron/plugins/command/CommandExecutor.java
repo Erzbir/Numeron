@@ -4,7 +4,8 @@ import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
 import com.erzbir.mirai.numeron.controller.factory.BlackListActionFactory;
 import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
-import com.erzbir.mirai.numeron.processor.PluginRegister;
+import com.erzbir.mirai.numeron.plugins.Plugin;
+import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.EventChannel;
@@ -22,7 +23,7 @@ import java.util.Objects;
  * 插件示例
  * </p>
  */
-//@Plugin 要使用请取消注释
+@Plugin
 public class CommandExecutor implements PluginRegister {
     @Override
     public void register(Bot bot, @NotNull EventChannel<BotEvent> channel) {

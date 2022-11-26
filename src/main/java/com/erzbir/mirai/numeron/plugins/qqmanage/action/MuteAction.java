@@ -4,8 +4,8 @@ import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
-import com.erzbir.mirai.numeron.litener.Listener;
-import com.erzbir.mirai.numeron.massage.Message;
+import com.erzbir.mirai.numeron.listener.Listener;
+import com.erzbir.mirai.numeron.listener.massage.Message;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Date: 2022/11/21 23:07
  */
 @Listener
+@SuppressWarnings("unused")
 public class MuteAction {
 
     @Message(text = "/mute\\s+?@?\\d+?\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)

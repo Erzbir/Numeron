@@ -69,11 +69,11 @@ public class AutoReplyData {
     }
 
     private void addS(String key, String answer) {
+        String sql = "INSERT INTO CHAT(KEY, ANSWER) VALUES('" + key + "', '" + answer + "')";
         if (exist(key)) {
-            return;
+            sql = "UPDATE CHAT SET ANSWER = '" + answer + "' WHERE KEY = '" + answer + "'";
         }
         try (Statement statement = SqlUtil.connection.createStatement()) {
-            String sql = "INSERT INTO CHAT(KEY, ANSWER) VALUES('" + key + "', '" + answer + "')";
             statement.executeUpdate(sql);
         } catch (Exception e) {
             e.printStackTrace();

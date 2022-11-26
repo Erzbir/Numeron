@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.filter.ChannelFilterInter;
+import com.erzbir.mirai.numeron.filter.PluginChannelFilterInter;
+import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import kotlin.jvm.internal.Intrinsics;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
@@ -13,7 +14,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-
 /**
  * @author Erzbir
  * @Date: 2022/11/17 09:49
@@ -21,8 +21,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * 这个类的逻辑和作用和MessageAnnotationProcessor的逻辑类似, 这个类用来给插件注册和过滤
  * </p>
  */
-//@Processor 要使用请解除注释
+@Processor
 @Slf4j
+@SuppressWarnings("unused")
 public class PluginAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     public static ApplicationContext context;
     public static EventChannel<BotEvent> channel;
@@ -45,7 +46,7 @@ public class PluginAnnotationProcessor implements ApplicationContextAware, Appli
         Intrinsics.checkNotNull(channel);
         log.info("开始过滤插件监听......");
         // 扫瞄插件过滤器
-        context.getBeansOfType(ChannelFilterInter.class).forEach((k, v) -> {
+        context.getBeansOfType(PluginChannelFilterInter.class).forEach((k, v) -> {
             log.info("扫瞄到" + k);
             channel = channel.filter(v::filter);
         });

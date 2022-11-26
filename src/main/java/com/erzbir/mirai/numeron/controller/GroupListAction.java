@@ -33,7 +33,7 @@ public class GroupListAction extends Action {
         } else if (GlobalConfig.groupList.contains((Long) id)) {
             return "授权中";
         }
-        return "查无此人";
+        return "没有授权";
     }
 
     @Override

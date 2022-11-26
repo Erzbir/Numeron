@@ -24,7 +24,7 @@ import java.util.Scanner;
  * @author Erzbir
  * @Date: 2022/11/16 21:14
  * <p>
- * 配置类, 数据库资源的加载用反射和数据读操作实现. 如果用注释掉的方式进行注入, 在打jar包时会把帐号密码等一起打包, 显然不合适
+ * 配置类
  * </p>
  */
 @Configuration
@@ -33,16 +33,16 @@ import java.util.Scanner;
 //@PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
     private static final String deviceInfo = "device.json";
-    public static HashSet<String> illegalList;
-    public static HashSet<Long> groupList;
-    public static HashSet<Long> blackList;
+    public static HashSet<String> illegalList; // 违禁词表
+    public static HashSet<Long> groupList; // 启用的群
+    public static HashSet<Long> blackList; // 黑名单
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
-    public static HashSet<Long> whiteList;
-    private static Long master;
-    private static Long account;
-    private static String password;
-    private static Bot bot;
-    private static String WORKDIR;
+    public static HashSet<Long> whiteList; // 白名单
+    private static Long master; // 主人
+    private static Long account; // 帐号
+    private static String password; // 密码
+    private static Bot bot; // 唯一bot实例
+    private static String WORKDIR; // 工作目录
     private static BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
     private static BotConfiguration.MiraiProtocol miraiProtocol = BotConfiguration.MiraiProtocol.ANDROID_PAD;
 

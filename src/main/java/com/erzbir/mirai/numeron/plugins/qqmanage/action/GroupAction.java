@@ -5,8 +5,8 @@ import com.erzbir.mirai.numeron.controller.factory.GroupListActionFactory;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
-import com.erzbir.mirai.numeron.litener.Listener;
-import com.erzbir.mirai.numeron.massage.Message;
+import com.erzbir.mirai.numeron.listener.Listener;
+import com.erzbir.mirai.numeron.listener.massage.Message;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -14,6 +14,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @Date: 2022/11/22 00:57
  */
 @Listener
+@SuppressWarnings("unused")
 public class GroupAction {
     @Message(text = "/enable group\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void enable(MessageEvent event) {

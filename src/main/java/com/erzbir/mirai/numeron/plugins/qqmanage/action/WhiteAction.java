@@ -5,11 +5,12 @@ import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
-import com.erzbir.mirai.numeron.litener.Listener;
-import com.erzbir.mirai.numeron.massage.Message;
+import com.erzbir.mirai.numeron.listener.Listener;
+import com.erzbir.mirai.numeron.listener.massage.Message;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 @Listener
+@SuppressWarnings("unused")
 public class WhiteAction {
 
     @Message(text = "/permit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
