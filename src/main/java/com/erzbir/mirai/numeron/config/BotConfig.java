@@ -32,6 +32,7 @@ import java.util.Scanner;
 @ComponentScan(basePackages = "com.erzbir.mirai.numeron")
 //@PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
+    private static final String botName = "Numeron";
     private static final String deviceInfo = "device.json";
     public static HashSet<String> illegalList; // 违禁词表
     public static HashSet<Long> groupList; // 启用的群
@@ -156,6 +157,7 @@ public class BotConfig {
         GlobalConfig.groupList = groupList;
         GlobalConfig.illegalList = illegalList;
         GlobalConfig.whiteList = whiteList;
+        GlobalConfig.botName = botName;
         WORKDIR = "./bots/" + account;
         File file = new File(WORKDIR);
         if (!file.exists()) {

@@ -10,6 +10,7 @@ import java.util.HashSet;
 public class GlobalConfig {
     public static final String OS = System.getProperty("os.name");
     public static final String HOME = System.getenv("HOME");
+    public static String  botName;
     public static boolean isOn = true;
     public static Long master;
     public static HashSet<String> illegalList;
@@ -18,12 +19,13 @@ public class GlobalConfig {
     public static HashSet<Long> whiteList;
 
     public static String toStrings() {
-        return "\tOS: " + OS + "\n\n" +
+        return "\tName: " + botName + "\n\n" +
+                "\tOS: " + OS + "\n\n" +
                 "\tHOME: " + HOME + "\n\n" +
-                "\tmaster: " + master + "\n\n" +
-                "\tillegalList: " + illegalList.toString() + "\n\n" +
-                "\tgroupList: " + groupList.toString() + "\n\n" +
-                "\tblackList: " + blackList.toString() + "\n\n" +
-                "\twhiteList: " + whiteList.toString() + "\n\n";
+                "\tMaster: " + master + "\n\n" +
+                "\tIllegalList: " + illegalList.toString() + "\n\n" +
+                "\tGroupList: " + groupList.toString() + "\n\n" +
+                "\tBlackList: " + blackList.toString() + "\n\n" +
+                "\tWhiteList: " + whiteList.toString() + "\n\n";
     }
 }

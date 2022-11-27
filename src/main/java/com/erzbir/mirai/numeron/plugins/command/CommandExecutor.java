@@ -24,6 +24,7 @@ import java.util.Objects;
  * </p>
  */
 @Plugin
+@SuppressWarnings("unused")
 public class CommandExecutor implements PluginRegister {
     @Override
     public void register(Bot bot, @NotNull EventChannel<BotEvent> channel) {

@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.processor;
 
+import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.filter.PluginChannelFilterInter;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import kotlin.jvm.internal.Intrinsics;
@@ -48,7 +49,9 @@ public class PluginAnnotationProcessor implements ApplicationContextAware, Appli
         // 扫瞄插件过滤器
         context.getBeansOfType(PluginChannelFilterInter.class).forEach((k, v) -> {
             log.info("扫瞄到" + k);
-            channel = channel.filter(v::filter);
+            if (GlobalConfig.isOn) {
+                channel = channel.filter(v::filter);
+            }
         });
         log.info("插件监听过滤完成");
         log.info("开始插件注册.......");

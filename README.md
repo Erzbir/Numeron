@@ -6,7 +6,7 @@
 
 这是一个SpringBoot开发基于Mirai的QQ机器人.
 
-很想交一个一起写代码的朋友, 这个项目的话只需要熟悉反射和会一点SpringBoot就可以了, 希望有个朋友能戳最后面的联系方式
+这个项目的话只需要熟悉反射和会一点SpringBoot就可以了, 希望有个朋友能戳最后面的联系方式
 
 可以把这个当成一个<b>脚手架</b>来使用,
 比如在A方法上加上<code>@GroupMessage</code>注解表示在监听到一个<code>GroupMessageEvent</code>后调用此方法进行对应处理(
@@ -93,6 +93,8 @@ public class Test {
 }
 ```
 
+<b>以上被标记的所有方法都会在MessageAnnotationProcessor中开起一个线程反射调用</b>
+
 ## 说明:
 
 第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>
@@ -119,13 +121,14 @@ CommandExecutor</code>是普通写法示例, plugins包下的chat包下和action
 1. <code>MessageAnnotationProcessor</code>:
 
    获取所有消息处理方法上的注解, 根据注解的值将Channel进行过滤, 再通过反射调用到匹配到的方法
-2. <del><code>PluginAnnotationProcessor</code>(暂时弃用):
+
+2. <code>PluginAnnotationProcessor</code>:
    如果你不喜欢用注解来实现的方式, 你可以通过实现<code>PluginRegister</code>接口, 当你实现了<code>register()</code>方法后,
    这个类会先获取所有过滤器执行过滤方法,
-   再扫瞄实现了<code>PluginRegister</code>接口的类并为他们注册, 同时为他们传递一个过滤后的<code>Channel</code></del>
+   再扫瞄实现了<code>PluginRegister</code>接口的类并为他们注册, 同时为他们传递一个过滤后的<code>Channel</code>
 
-   > <del>实现过滤的做法是: 将所有把实现了<code>ChannelFilterInter</code>的bean对象取出来,
-   执行过滤方法之后再放进去</del>
+   > 实现过滤的做法是: 将所有把实现了<code>ChannelFilterInter</code>的bean对象取出来,
+   执行过滤方法之后再放进去
 
 权限控制/消息匹配/规则过滤 的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
 
@@ -136,7 +139,3 @@ email: 2978086497@qq.com
 ## 博客:
 
 <a href=https://erzbir.com>erzbir.com</a>
-
-## Bug:
-
-暂未发现
