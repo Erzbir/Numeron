@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/13 17:27
  */
-public class BlackListAction extends Action {
+public class BlackListAction implements Action {
     private static BlackListAction INSTANCE;
 
     private BlackListAction() {
@@ -21,8 +21,8 @@ public class BlackListAction extends Action {
     }
 
     @Override
-    public void add(Object id) {
-        BlackList.INSTANCE.add((Long) id);
+    public void add(Object id, String name, Long op_id) {
+        BlackList.INSTANCE.add((Long) id, op_id);
     }
 
     @Override

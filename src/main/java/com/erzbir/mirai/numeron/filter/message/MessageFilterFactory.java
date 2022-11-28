@@ -26,17 +26,17 @@ public class MessageFilterFactory implements FilterFactory {
     @Override
     public ChannelFilterInter create(Enum<?> e) {
         if (e.equals(EQUAL)) {
-            return new EqualsMessageFilter();
+            return EqualsMessageFilter.INSTANCE;
         } else if (e.equals(END_WITH)) {
-            return new EndMessageFilter();
+            return EndMessageFilter.INSTANCE;
         } else if (e.equals(BEGIN_WITH)) {
-            return new BeginMessageFilter();
+            return BeginMessageFilter.INSTANCE;
         } else if (e.equals(CONTAINS)) {
-            return new ContainsMessageFilter();
+            return ContainsMessageFilter.INSTANCE;
         } else if (e.equals(REGEX)) {
-            return new RegexMessageFilter();
+            return RegexMessageFilter.INSTANCE;
         } else if (e.equals(IN)) {
-            return new InMessageFilter();
+            return RegexMessageFilter.INSTANCE;
         }
         return null;
     }

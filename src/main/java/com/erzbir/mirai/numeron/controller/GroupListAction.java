@@ -9,20 +9,20 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/22 00:42
  */
-public class GroupListAction extends Action {
+public class GroupListAction implements Action {
     private static GroupListAction INSTANCE;
 
     private GroupListAction() {
 
     }
 
-    public static GroupListAction getINSTANCE() {
+    public static GroupListAction getInstance() {
         return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new GroupListAction());
     }
 
     @Override
-    public void add(Object id) {
-        GroupList.INSTANCE.add((Long) id);
+    public void add(Object id, String name, Long op_id) {
+        GroupList.INSTANCE.add((Long) id, op_id);
     }
 
     @Override

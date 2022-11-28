@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/13 17:30
  */
-public class IllegalAction extends Action {
+public class IllegalAction implements Action {
 
     private static IllegalAction INSTANCE;
 
@@ -17,18 +17,18 @@ public class IllegalAction extends Action {
 
     }
 
-    public static IllegalAction getINSTANCE() {
+    public static IllegalAction getInstance() {
         return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new IllegalAction());
     }
 
     @Override
-    public void add(Object s) {
-        IllegalList.INSTANCE.add((String) s);
+    public void add(Object s, String name, Long op_id) {
+        IllegalList.INSTANCE.add((String) s, op_id);
     }
 
     @Override
     public String query(Object s) {
-        if (s.equals("all")) {
+        if (s.equals("0")) {
             return GlobalConfig.blackList.toString();
         }
         if (GlobalConfig.illegalList.contains((String) s)) {

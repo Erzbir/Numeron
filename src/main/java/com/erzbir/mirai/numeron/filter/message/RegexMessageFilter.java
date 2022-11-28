@@ -12,10 +12,13 @@ import java.util.regex.Pattern;
  * </p>
  */
 public class RegexMessageFilter extends AbstractMessageFilter {
+    public static final RegexMessageFilter INSTANCE = new RegexMessageFilter();
+
+    private RegexMessageFilter() {
+    }
+
     @Override
     public Boolean filter(MessageEvent event, String text) {
         return Pattern.compile(text).matcher(event.getMessage().contentToString()).find();
     }
-
-
 }

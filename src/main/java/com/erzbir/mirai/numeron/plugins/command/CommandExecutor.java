@@ -2,8 +2,8 @@ package com.erzbir.mirai.numeron.plugins.command;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
-import com.erzbir.mirai.numeron.controller.factory.BlackListActionFactory;
-import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
+import com.erzbir.mirai.numeron.controller.BlackListAction;
+import com.erzbir.mirai.numeron.controller.WhiteListAction;
 import com.erzbir.mirai.numeron.plugins.Plugin;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import net.mamoe.mirai.Bot;
@@ -39,8 +39,8 @@ public class CommandExecutor implements PluginRegister {
                             return;
                         }
                         long userId = Long.parseLong(command[1]);
-                        Action action = WhiteListActionFactory.INSTANCE.build();
-                        action.add(userId);
+                        Action action = WhiteListAction.getInstance();
+                        action.add(userId, null, event.getSender().getId());
                         event.getSubject().sendMessage(userId + " was added to the whitelist");
                     }
                 }
@@ -54,11 +54,11 @@ public class CommandExecutor implements PluginRegister {
                         return;
                     }
                     long userId = Long.parseLong(command[1]);
-                    BlackListActionFactory.INSTANCE.build().add(userId);
+                    BlackListAction.getInstance().add(userId, null, event.getSender().getId());
                     event.getSubject().sendMessage(userId + " was added to the blacklist");
                 }
                 case "#s" -> {
-                    Action action = BlackListActionFactory.INSTANCE.build();
+                    Action action = BlackListAction.getInstance();
                     event.getSubject().sendMessage(action.query(Long.parseLong(command[1])));
                 }
                 case "#mute" -> {

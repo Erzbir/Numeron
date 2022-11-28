@@ -10,7 +10,7 @@ import java.sql.DriverManager;
  * 数据库操作工具类, 目前的实现非常难以维护, 目标是通过获取注解的值来执行sql语句并注入进变量, 并且通过扫瞄实现了特定接口的类来为他们创建表
  * </p>
  */
-public class SqlUtil {
+public class SqlConnection {
     public static Connection connection;
 
     static {
@@ -23,6 +23,6 @@ public class SqlUtil {
         }
     }
 
-    private SqlUtil() {
+    private SqlConnection() {
     }
 }

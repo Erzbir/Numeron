@@ -1,11 +1,12 @@
 package com.erzbir.mirai.numeron.entity;
 
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.sql.SqlConnection;
 import lombok.Getter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.HashSet;
 
 /**
@@ -19,12 +20,14 @@ public class GroupList {
     static {
         String sql = """
                 CREATE TABLE IF NOT EXISTS GROUPS(
-                    ID BIGINT PRIMARY KEY NOT NULL
+                    ID BIGINT PRIMARY KEY NOT NULL,
+                    OP_ID BIGINT NOT NULL,
+                    OP_TIME TEXT NOT NULL
                     )
                 """;
         String findAll = "SELECT * FROM GROUPS";
         ResultSet resultSet = null;
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             statement.executeUpdate(sql);
             resultSet = statement.executeQuery(findAll);
             while (resultSet.next()) {
@@ -48,7 +51,7 @@ public class GroupList {
 
     private boolean exist(Long value) {
         ResultSet resultSet;
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             String sql = "SELECT * FROM GROUPS WHERE ID = " + value;
             resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {
@@ -62,12 +65,13 @@ public class GroupList {
         return false;
     }
 
-    private void addS(Long value) {
+    private void addS(Long value, Long id) {
         if (exist(value)) {
             return;
         }
-        try (Statement statement = SqlUtil.connection.createStatement()) {
-            String sql = "INSERT INTO GROUPS(ID) VALUES(" + value + ")";
+        try (Statement statement = SqlConnection.connection.createStatement()) {
+            String sql = "INSERT INTO GROUPS(ID, OP_ID, OP_TIME) " +
+                    "VALUES(" + value + ", " + id + ", '" + LocalTime.now() + "' " + ")";
             statement.executeUpdate(sql);
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +83,7 @@ public class GroupList {
         if (!exist(value)) {
             return;
         }
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             String sql = "DELETE FROM GROUPS WHERE ID = " + value;
             statement.executeUpdate(sql);
         } catch (Exception e) {
@@ -97,9 +101,9 @@ public class GroupList {
         group.remove(value);
     }
 
-    public void add(Long value) {
+    public void add(Long value, Long id) {
         addD(value);
-        new Thread(() -> addS(value)).start();
+        new Thread(() -> addS(value, id)).start();
     }
 
     public void remove(Long value) {

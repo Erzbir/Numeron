@@ -23,11 +23,11 @@ public class PermissionFilterFactory implements FilterFactory {
     @Override
     public ChannelFilterInter create(Enum<?> e) {
         if (e.equals(ALL)) {
-            return new AllPermissionFilter();
+            return AllPermissionFilter.INSTANCE;
         } else if (e.equals(MASTER)) {
-            return new MasterPermissionFilter();
+            return MasterPermissionFilter.INSTANCE;
         } else if (e.equals(WHITE)) {
-            return new WhitePermissionFilter();
+            return WhitePermissionFilter.INSTANCE;
         }
         return null;
     }

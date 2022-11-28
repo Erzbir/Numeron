@@ -9,6 +9,10 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * 实体权限过滤类
  */
 public class MasterPermissionFilter extends AbstractPermissionFilter {
+    public static final MasterPermissionFilter INSTANCE = new MasterPermissionFilter();
+
+    private MasterPermissionFilter() {
+    }
 
     @Override
     public Boolean filter(MessageEvent event, String text) {

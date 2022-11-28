@@ -1,7 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
-import com.erzbir.mirai.numeron.controller.factory.BlackListActionFactory;
-import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
+import com.erzbir.mirai.numeron.controller.WhiteListAction;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -21,8 +20,8 @@ public class WhiteCommandHandle {
     public void permit(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
-        BlackListActionFactory.INSTANCE.build().remove(id);
-        WhiteListActionFactory.INSTANCE.build().add(id);
+        WhiteListAction.getInstance().remove(id);
+        WhiteListAction.getInstance().add(id, null, event.getSender().getId());
         event.getSubject().sendMessage(id + " 已添加到白名单");
     }
 
@@ -30,7 +29,14 @@ public class WhiteCommandHandle {
     public void noPermit(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
-        WhiteListActionFactory.INSTANCE.build().remove(id);
+        WhiteListAction.getInstance().remove(id);
         event.getSubject().sendMessage(id + " 已移出白名单");
+    }
+
+    @Message(text = "/query white\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    public void query(MessageEvent event) {
+        event.getSubject().
+                sendMessage(WhiteListAction.getInstance()
+                        .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }

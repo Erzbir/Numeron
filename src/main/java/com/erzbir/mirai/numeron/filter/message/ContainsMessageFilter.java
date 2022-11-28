@@ -10,6 +10,11 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * </p>
  */
 public class ContainsMessageFilter extends AbstractMessageFilter {
+    public static final ContainsMessageFilter INSTANCE = new ContainsMessageFilter();
+
+    private ContainsMessageFilter() {
+
+    }
 
     @Override
     public Boolean filter(MessageEvent event, String text) {

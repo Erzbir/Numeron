@@ -10,9 +10,13 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * </p>
  */
 public class EqualsMessageFilter extends AbstractMessageFilter {
+    public static final EqualsMessageFilter INSTANCE = new EqualsMessageFilter();
+
+    private EqualsMessageFilter() {
+    }
+
     @Override
     public Boolean filter(MessageEvent event, String text) {
         return event.getMessage().contentToString().equals(text);
     }
-
 }

@@ -10,6 +10,11 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * </p>
  */
 public class EndMessageFilter extends AbstractMessageFilter {
+    public static final EndMessageFilter INSTANCE = new EndMessageFilter();
+
+    private EndMessageFilter() {
+    }
+
     @Override
     public Boolean filter(MessageEvent event, String text) {
         return event.getMessage().contentToString().endsWith(text);

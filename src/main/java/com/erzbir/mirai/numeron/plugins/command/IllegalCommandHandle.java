@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
-import com.erzbir.mirai.numeron.controller.factory.IllegalActionFactory;
+import com.erzbir.mirai.numeron.controller.IllegalAction;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -20,7 +20,7 @@ public class IllegalCommandHandle {
     public void add(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         String s = split[2];
-        IllegalActionFactory.INSTANCE.build().add(s);
+        IllegalAction.getInstance().add(s, null, event.getSender().getId());
         event.getSubject().sendMessage("违禁词添加成功");
     }
 
@@ -28,8 +28,14 @@ public class IllegalCommandHandle {
     public void remove(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         String s = split[2];
-        IllegalActionFactory.INSTANCE.build().remove(s);
+        IllegalAction.getInstance().remove(s);
         event.getSubject().sendMessage("违禁词删除成功");
     }
 
+    @Message(text = "/query illegal\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    public void query(MessageEvent event) {
+        event.getSubject().
+                sendMessage(IllegalAction.getInstance()
+                        .query(event.getMessage().contentToString().split("\\s+")[2]));
+    }
 }

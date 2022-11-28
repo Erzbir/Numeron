@@ -8,6 +8,7 @@ import com.erzbir.mirai.numeron.processor.entiry.excute.GroupMessageMethodExecut
  */
 public class GroupMessageMethodExecutor extends AbstractMethodExecutor {
     public static final GroupMessageMethodExecutor INSTANCE = new GroupMessageMethodExecutor();
+
     private GroupMessageMethodExecutor() {
         super(new GroupMessageMethodExecute());
     }

@@ -10,9 +10,14 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * </p>
  */
 public class BeginMessageFilter extends AbstractMessageFilter {
+    public static final BeginMessageFilter INSTANCE = new BeginMessageFilter();
+
+    private BeginMessageFilter() {
+
+    }
+
     @Override
     public Boolean filter(MessageEvent event, String text) {
         return event.getMessage().contentToString().startsWith(text);
     }
-
 }

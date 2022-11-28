@@ -9,6 +9,11 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * 实体权限过滤类
  */
 public class WhitePermissionFilter extends AbstractPermissionFilter {
+    public static final WhitePermissionFilter INSTANCE = new WhitePermissionFilter();
+
+    private WhitePermissionFilter() {
+    }
+
     @Override
     public Boolean filter(MessageEvent event, String text) {
         return GlobalConfig.whiteList.contains(event.getSender().getId());

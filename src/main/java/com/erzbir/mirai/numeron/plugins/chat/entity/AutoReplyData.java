@@ -1,11 +1,12 @@
 package com.erzbir.mirai.numeron.plugins.chat.entity;
 
-import com.erzbir.mirai.numeron.sql.SqlUtil;
+import com.erzbir.mirai.numeron.sql.SqlConnection;
 import lombok.Getter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.HashMap;
 
 /**
@@ -20,11 +21,14 @@ public class AutoReplyData {
         String sql = """
                 CREATE TABLE IF NOT EXISTS CHAT(
                 KEY TEXT PRIMARY KEY NOT NULL,
-                ANSWER TEXT)
+                ANSWER TEXT,
+                OP_ID BIGINT NOT NULL,
+                OP_TIME TEXT NOT NULL
+                )
                 """;
         String findAll = "SELECT * from CHAT";
         ResultSet resultSet = null;
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             statement.executeUpdate(sql);
             resultSet = statement.executeQuery(findAll);
             while (resultSet.next()) {
@@ -50,9 +54,9 @@ public class AutoReplyData {
     private AutoReplyData() {
     }
 
-    public void add(String key, String answer) {
+    public void add(String key, String answer, Long id) {
         addD(key, answer);
-        addS(key, answer);
+        addS(key, answer, id);
     }
 
     public void remove(String key, String answer) {
@@ -68,12 +72,13 @@ public class AutoReplyData {
         data.remove(key);
     }
 
-    private void addS(String key, String answer) {
-        String sql = "INSERT INTO CHAT(KEY, ANSWER) VALUES('" + key + "', '" + answer + "')";
+    private void addS(String key, String answer, Long id) {
+        String sql = "INSERT INTO CHAT(KEY, ANSWER, OP_ID, OP_TIME) " +
+                "VALUES('" + key + "', '" + answer + "', " + id + ", '" + LocalTime.now() + "' " + ")";
         if (exist(key)) {
             sql = "UPDATE CHAT SET ANSWER = '" + answer + "' WHERE KEY = '" + answer + "'";
         }
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +90,7 @@ public class AutoReplyData {
         if (!exist(key)) {
             return;
         }
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             String sql = "DELETE FROM CHAT WHERE KEY = '" + key + "' and ANSWER = '" + answer + "'";
             statement.executeUpdate(sql);
         } catch (Exception e) {
@@ -100,7 +105,7 @@ public class AutoReplyData {
 
     public boolean exist(String key) {
         ResultSet resultSet;
-        try (Statement statement = SqlUtil.connection.createStatement()) {
+        try (Statement statement = SqlConnection.connection.createStatement()) {
             String sql = "SELECT * FROM CHAT WHERE KEY = '" + key + "'";
             resultSet = statement.executeQuery(sql);
             if (resultSet.next()) {

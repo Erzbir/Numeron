@@ -35,7 +35,7 @@ public class AutoReply {
     @Message(messageRule = MessageRule.REGEX, text = "/learn\\s+?.*?\\s+?.*", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
     public void learn(MessageEvent e) {
         String[] split = e.getMessage().contentToString().split("\\s+");
-        AutoReplyData.INSTANCE.add(split[1], split[2]);
+        AutoReplyData.INSTANCE.add(split[1], split[2], e.getSender().getId());
         e.getSubject().sendMessage("学会了");
     }
 

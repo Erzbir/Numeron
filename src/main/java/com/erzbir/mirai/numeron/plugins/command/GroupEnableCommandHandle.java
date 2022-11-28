@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
-import com.erzbir.mirai.numeron.controller.factory.GroupListActionFactory;
+import com.erzbir.mirai.numeron.controller.GroupListAction;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -21,7 +21,7 @@ public class GroupEnableCommandHandle {
     public void enable(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
-        GroupListActionFactory.INSTANCE.build().add(id);
+        GroupListAction.getInstance().add(id, null, event.getSender().getId());
         event.getSubject().sendMessage("群: " + id + " 已授权");
         System.out.println(GlobalConfig.groupList);
     }
@@ -30,8 +30,15 @@ public class GroupEnableCommandHandle {
     public void disable(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
-        GroupListActionFactory.INSTANCE.build().remove(id);
+        GroupListAction.getInstance().remove(id);
         event.getSubject().sendMessage("群: " + id + " 已取消授权");
         System.out.println(GlobalConfig.groupList);
+    }
+
+    @Message(text = "/query group\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    public void query(MessageEvent event) {
+        event.getSubject().
+                sendMessage(GroupListAction.getInstance()
+                        .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }
