@@ -21,9 +21,8 @@ public class WhiteListAction extends Action {
     }
 
     @Override
-    public String add(Object id) {
+    public void add(Object id) {
         WhiteList.INSTANCE.add((Long) id);
-        return "添加成功";
     }
 
     @Override
@@ -38,8 +37,7 @@ public class WhiteListAction extends Action {
     }
 
     @Override
-    public String remove(Object id) {
+    public void remove(Object id) {
         WhiteList.INSTANCE.remove((Long) id);
-        return "删除成功";
     }
 }

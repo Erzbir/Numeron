@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.qqmanage.action;
+package com.erzbir.mirai.numeron.plugins.command;
 
 import com.erzbir.mirai.numeron.config.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
@@ -17,7 +17,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
  */
 @Listener
 @SuppressWarnings("unused")
-public class Shutdown implements PluginRegister {
+public class OnOffCommandHandle implements PluginRegister {
 
     @Message(text = "/shutdown", filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void shutdown(MessageEvent e) {

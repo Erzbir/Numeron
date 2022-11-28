@@ -13,7 +13,6 @@ public interface ChannelFilterInter {
 
     /**
      * @param event 消息事件
-     * @param text  注解中的text()值
      * @return Boolean
      */
     Boolean filter(MessageEvent event, String text);

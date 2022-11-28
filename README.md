@@ -37,59 +37,59 @@ import org.jetbrains.annotations.NotNull;
 
 @Listener
 public class Test {
-   // 消息匹配规则设置了默认值, 默认是equals()完全匹配
+    // 消息匹配规则设置了默认值, 默认是equals()完全匹配
 
-   @GroupMessage(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
-   // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
-   public void regex(@NotNull GroupMessageEvent event) {
-      event.getSubject().sendMessage("这是一个数字");
-   }
+    @GroupMessage(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
+    public void regex(@NotNull GroupMessageEvent event) {
+        event.getSubject().sendMessage("这是一个数字");
+    }
 
-   @UserMessage(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
-   // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
-   public void sayHello(@NotNull UserMessageEvent event) {
-      event.getSubject().sendMessage("hi");
-   }
+    @UserMessage(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
+    // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
+    public void sayHello(@NotNull UserMessageEvent event) {
+        event.getSubject().sendMessage("hi");
+    }
 
-   @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
-   // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
-   public void sayGoodNight(@NotNull MessageEvent event) {
-      event.getSubject().sendMessage("晚安");
-   }
+    @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
+    public void sayGoodNight(@NotNull MessageEvent event) {
+        event.getSubject().sendMessage("晚安");
+    }
 
-   // 权限是所有人, 不过滤
-   @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
-   public void sayH(@NotNull MessageEvent e) {
-      e.getSubject().sendMessage("你好");
-   }
+    // 权限是所有人, 不过滤
+    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    public void sayH(@NotNull MessageEvent e) {
+        e.getSubject().sendMessage("你好");
+    }
 
-   // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
-   @Message(text = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-   public void muteSingle(@NotNull MessageEvent event) {
-      String[] s = event.getMessage().contentToString().split("\\s+");
-      long id;
-      int time;
-      s[1] = s[1].replaceAll("@", "");
-      id = Long.parseLong(s[1]);
-      time = Integer.parseInt(s[2]);
-      if (event instanceof GroupMessageEvent event1) {
-         Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
-      } else {
-         AtomicReference<NormalMember> member = new AtomicReference<>();
-         GlobalConfig.groupList.forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
-         if (member.get().getPermission().getLevel() < 1) {
-            member.get().mute(time);
-         }
-      }
-   }
+    // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
+    @Message(text = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    public void muteSingle(@NotNull MessageEvent event) {
+        String[] s = event.getMessage().contentToString().split("\\s+");
+        long id;
+        int time;
+        s[1] = s[1].replaceAll("@", "");
+        id = Long.parseLong(s[1]);
+        time = Integer.parseInt(s[2]);
+        if (event instanceof GroupMessageEvent event1) {
+            Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
+        } else {
+            AtomicReference<NormalMember> member = new AtomicReference<>();
+            GlobalConfig.groupList.forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            if (member.get().getPermission().getLevel() < 1) {
+                member.get().mute(time);
+            }
+        }
+    }
 
-   // 这个例子是检测黑名单用户, 正则匹配所有, 不进行任何过滤和权限限制以达到实时检测所有消息发送者的目的. 这样的实现很不好, 因为会时刻都在执行这个方法, 会重新写一个只针对黑名单用户的检测
-   @GroupMessage(text = ".*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
-   public void scan(GroupMessageEvent event) {
-      if (GlobalConfig.blackList.contains(event.getSender().getId())) {
-         Objects.requireNonNull(event.getGroup().get(event.getSender().getId())).kick("踢出黑名单用户", true);
-      }
-   }
+    // 这个例子是检测黑名单用户, 正则匹配所有, 不进行任何过滤和权限限制以达到实时检测所有消息发送者的目的. 这样的实现很不好, 因为会时刻都在执行这个方法, 会重新写一个只针对黑名单用户的检测
+    @GroupMessage(text = ".*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
+    public void scan(GroupMessageEvent event) {
+        if (GlobalConfig.blackList.contains(event.getSender().getId())) {
+            Objects.requireNonNull(event.getGroup().get(event.getSender().getId())).kick("踢出黑名单用户", true);
+        }
+    }
 }
 ```
 
@@ -112,7 +112,7 @@ CommandExecutor</code>是普通写法示例, plugins包下的chat包下和action
 - 全体禁言
 - 黑名单检测
 - 违禁词检测
-- 添加关键词回复
+- 指令添加关键词回复
 
 ## 原理:
 

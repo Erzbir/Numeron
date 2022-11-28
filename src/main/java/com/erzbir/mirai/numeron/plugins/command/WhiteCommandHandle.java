@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.qqmanage.action;
+package com.erzbir.mirai.numeron.plugins.command;
 
 import com.erzbir.mirai.numeron.controller.factory.BlackListActionFactory;
 import com.erzbir.mirai.numeron.controller.factory.WhiteListActionFactory;
@@ -9,9 +9,13 @@ import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import net.mamoe.mirai.event.events.MessageEvent;
 
+/**
+ * @author Erzbir
+ * @Date: 2022/11/27 22:50
+ */
 @Listener
 @SuppressWarnings("unused")
-public class WhiteAction {
+public class WhiteCommandHandle {
 
     @Message(text = "/permit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void permit(MessageEvent event) {
@@ -22,7 +26,7 @@ public class WhiteAction {
         event.getSubject().sendMessage(id + " 已添加到白名单");
     }
 
-    @Message(text = "/nopermit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Message(text = "/unpermit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void noPermit(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);

@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class GlobalConfig {
     public static final String OS = System.getProperty("os.name");
     public static final String HOME = System.getenv("HOME");
-    public static String  botName;
+    public static String botName;
     public static boolean isOn = true;
     public static Long master;
     public static HashSet<String> illegalList;

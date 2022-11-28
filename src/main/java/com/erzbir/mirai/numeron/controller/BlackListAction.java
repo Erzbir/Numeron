@@ -21,9 +21,8 @@ public class BlackListAction extends Action {
     }
 
     @Override
-    public String add(Object id) {
+    public void add(Object id) {
         BlackList.INSTANCE.add((Long) id);
-        return "添加成功";
     }
 
     @Override
@@ -37,8 +36,7 @@ public class BlackListAction extends Action {
     }
 
     @Override
-    public String remove(Object id) {
+    public void remove(Object id) {
         BlackList.INSTANCE.remove((Long) id);
-        return "删除成功";
     }
 }

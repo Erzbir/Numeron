@@ -5,4 +5,5 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.action;
  * @Date: 2022/11/27 13:07
  */
 public class KickAction {
+
 }

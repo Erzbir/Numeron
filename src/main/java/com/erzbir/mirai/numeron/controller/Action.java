@@ -6,9 +6,9 @@ package com.erzbir.mirai.numeron.controller;
  */
 public abstract class Action {
 
-    public abstract String add(Object o);
+    public abstract void add(Object o);
 
     public abstract String query(Object o);
 
-    public abstract String remove(Object o);
+    public abstract void remove(Object o);
 }

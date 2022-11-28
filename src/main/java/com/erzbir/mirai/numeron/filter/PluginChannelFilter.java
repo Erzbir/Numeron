@@ -10,13 +10,12 @@ import net.mamoe.mirai.event.events.MessageEvent;
  */
 @Filter
 public class PluginChannelFilter implements ChannelFilterInter {
-
     @Override
     public Boolean filter(MessageEvent event, String text) {
-        if (event instanceof GroupMessageEvent) {
+        if (event instanceof GroupMessageEvent event2) {
             return GlobalConfig.isOn
-                    && GlobalConfig.groupList.contains(((GroupMessageEvent) event).getGroup().getId())
-                    && !GlobalConfig.blackList.contains(((GroupMessageEvent) event).getSender().getId());
+                    && GlobalConfig.groupList.contains((event2).getGroup().getId())
+                    && !GlobalConfig.blackList.contains((event2).getSender().getId());
         } else {
             return GlobalConfig.isOn
                     && !GlobalConfig.blackList.contains(event.getSender().getId());

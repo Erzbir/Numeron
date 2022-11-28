@@ -22,9 +22,8 @@ public class IllegalAction extends Action {
     }
 
     @Override
-    public String add(Object s) {
+    public void add(Object s) {
         IllegalList.INSTANCE.add((String) s);
-        return "添加成功";
     }
 
     @Override
@@ -39,8 +38,7 @@ public class IllegalAction extends Action {
     }
 
     @Override
-    public String remove(Object s) {
+    public void remove(Object s) {
         IllegalList.INSTANCE.remove((String) s);
-        return "删除成功";
     }
 }

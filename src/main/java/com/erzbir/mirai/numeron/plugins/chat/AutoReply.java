@@ -51,8 +51,8 @@ public class AutoReply {
         e.getSubject().sendMessage("笑了");
     }
 
-    @GroupMessage(messageRule = MessageRule.REGEX, text = "s\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
-    public void regex(GroupMessageEvent e) {
+    @UserMessage(messageRule = MessageRule.REGEX, text = "s\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
+    public void regex(UserMessageEvent e) {
         e.getSubject().sendMessage("awa");
     }
 

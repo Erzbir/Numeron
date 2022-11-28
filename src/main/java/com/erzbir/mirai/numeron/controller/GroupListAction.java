@@ -21,9 +21,8 @@ public class GroupListAction extends Action {
     }
 
     @Override
-    public String add(Object id) {
+    public void add(Object id) {
         GroupList.INSTANCE.add((Long) id);
-        return "授权成功";
     }
 
     @Override
@@ -37,8 +36,7 @@ public class GroupListAction extends Action {
     }
 
     @Override
-    public String remove(Object id) {
+    public void remove(Object id) {
         GroupList.INSTANCE.remove((Long) id);
-        return "取消授权成功";
     }
 }
