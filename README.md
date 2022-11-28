@@ -124,7 +124,7 @@ public class Test {
 
 <b>以上被标记的所有方法都会在<code>MessageAnnotationProcessor</code>中通过工厂生产出特定的方法执行类, 并在执行类的<code>execute()</code>中开起一个线程反射调用</b>
 
-除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解, 这时就可以自动执行事件过滤
+除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解(这个注解的作用除了继承<code>@Component</code>, 就只有标记作用了), 这时就可以自动执行事件过滤
 
 ## 原理:
 

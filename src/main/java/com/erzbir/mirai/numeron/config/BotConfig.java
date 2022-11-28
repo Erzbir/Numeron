@@ -34,11 +34,11 @@ import java.util.Scanner;
 public class BotConfig {
     private static final String botName = "Numeron";
     private static final String deviceInfo = "device.json";
-    public static HashSet<String> illegalList; // 违禁词表
-    public static HashSet<Long> groupList; // 启用的群
-    public static HashSet<Long> blackList; // 黑名单
+    private static final HashSet<String> illegalList; // 违禁词表
+    private static final HashSet<Long> groupList; // 启用的群
+    private static final HashSet<Long> blackList; // 黑名单
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
-    public static HashSet<Long> whiteList; // 白名单
+    private static final HashSet<Long> whiteList; // 白名单
     private static Long master; // 主人
     private static Long account; // 帐号
     private static String password; // 密码

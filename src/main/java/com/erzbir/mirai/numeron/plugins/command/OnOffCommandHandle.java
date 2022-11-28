@@ -27,7 +27,7 @@ public class OnOffCommandHandle implements PluginRegister {
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
-        channel.subscribeAlways(MessageEvent.class, event -> {
+        bot.getEventChannel().subscribeAlways(MessageEvent.class, event -> {
             if (event.getMessage().contentToString().equals("/launch") && event.getSender().getId() == GlobalConfig.master) {
                 GlobalConfig.isOn = true;
                 event.getSubject().sendMessage("已开机");
