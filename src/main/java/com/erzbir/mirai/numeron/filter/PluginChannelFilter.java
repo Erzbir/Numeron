@@ -20,7 +20,7 @@ public class PluginChannelFilter implements PluginChannelFilterInter {
                     && !GlobalConfig.blackList.contains((event2).getSender().getId());
         } else {
             return GlobalConfig.isOn
-                    && !GlobalConfig.blackList.contains(((MessageEvent)event).getSender().getId());
+                    && !GlobalConfig.blackList.contains(((MessageEvent) event).getSender().getId());
         }
     }
 }

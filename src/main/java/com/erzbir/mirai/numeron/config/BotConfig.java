@@ -54,7 +54,7 @@ public class BotConfig {
         whiteList = WhiteList.INSTANCE.getWhite();
         blackList = BlackList.INSTANCE.getBlack();
         groupList = GroupList.INSTANCE.getGroup();
-
+        whiteList.add(master);
         log.info("违禁词列表: " + illegalList.toString());
         log.info("启用群列表: " + groupList.toString());
         log.info("黑名单列表: " + blackList.toString());

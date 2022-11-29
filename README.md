@@ -13,6 +13,7 @@
 可以把这个项目当成一个<b>脚手架</b>来使用,
 
 本项目使用的设计模式:
+
 - 简单工厂模式
 - 抽象工厂模式
 - 策略模式
@@ -35,6 +36,8 @@
 第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>
 save()</code>方法
 
+此项目用到了redis, 请先下载安装redis
+
 基本都有一个模板, plugins包下的command包下的<code>
 CommandExecutor</code>是普通写法示例, plugins包下的chat包下和qqmanage包下是利用注解处理的示例
 
@@ -48,11 +51,15 @@ CommandExecutor</code>是普通写法示例, plugins包下的chat包下和qqmana
 - 黑名单检测
 - 违禁词检测
 - 指令添加关键词回复
+- 防撤回
+- 自动保存图片和文件
+- 发送指定图片和文件 / 保存指定消息(图片等)
+- 从指定url下载文件
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
-> 
+>
 > 比如在A方法上加上<code>@GroupMessage</code>注解表示在监听到一个<code>GroupMessageEvent</code>后调用此方法进行对应处理(
-注意A方法所属的类必须加<code>@Listener</code>注解)
+> 注意A方法所属的类必须加<code>@Listener</code>注解)
 
 例子:
 
@@ -122,9 +129,11 @@ public class Test {
 }
 ```
 
-<b>以上被标记的所有方法都会在<code>MessageAnnotationProcessor</code>中通过工厂生产出特定的方法执行类, 并在执行类的<code>execute()</code>中开起一个线程反射调用</b>
+<b>以上被标记的所有方法都会在<code>MessageAnnotationProcessor</code>中通过工厂生产出特定的方法执行类, 并在执行类的<code>
+execute()</code>中开起一个线程反射调用</b>
 
-除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解(这个注解的作用除了继承<code>@Component</code>, 就只有标记作用了), 这时就可以自动执行事件过滤
+除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解(
+这个注解的作用除了继承<code>@Component</code>, 就只有标记作用了), 这时就可以自动执行事件过滤
 
 ## 原理:
 

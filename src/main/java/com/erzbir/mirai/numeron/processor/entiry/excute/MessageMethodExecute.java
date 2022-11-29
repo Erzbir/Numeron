@@ -12,6 +12,12 @@ import java.lang.reflect.Method;
  * @Date: 2022/11/28 10:32
  */
 public class MessageMethodExecute implements MethodExecute {
+    public static final MessageMethodExecute INSTANCE = new MessageMethodExecute();
+
+    private MessageMethodExecute() {
+
+    }
+
     @Override
     public void execute(Method method, Object bean, EventChannel<BotEvent> channel) {
         new Thread(() -> channel.subscribeAlways(MessageEvent.class, event -> {

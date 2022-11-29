@@ -3,9 +3,11 @@ package com.erzbir.mirai.numeron.processor.factory;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
-import com.erzbir.mirai.numeron.listener.other.GroupMember;
-import com.erzbir.mirai.numeron.listener.other.UserAction;
-import com.erzbir.mirai.numeron.processor.entiry.executor.*;
+import com.erzbir.mirai.numeron.processor.entiry.excute.GroupMessageMethodExecute;
+import com.erzbir.mirai.numeron.processor.entiry.excute.MessageMethodExecute;
+import com.erzbir.mirai.numeron.processor.entiry.excute.UserMessageMethodExecute;
+import com.erzbir.mirai.numeron.processor.entiry.executor.AbstractMethodExecutor;
+import com.erzbir.mirai.numeron.processor.entiry.executor.MethodExecutor;
 
 import java.lang.annotation.Annotation;
 
@@ -22,16 +24,16 @@ public class ExecutorFactory implements Factory {
 
     @Override
     public AbstractMethodExecutor create(Annotation annotation) {
+        MethodExecutor executor = MethodExecutor.INSTANCE;
         if (annotation instanceof GroupMessage) {
-            return GroupMessageMethodExecutor.INSTANCE;
+            executor.setExecute(GroupMessageMethodExecute.INSTANCE);
+            return executor;
         } else if (annotation instanceof UserMessage) {
-            return UserMessageMethodExecutor.INSTANCE;
+            executor.setExecute(UserMessageMethodExecute.INSTANCE);
+            return executor;
         } else if (annotation instanceof Message) {
-            return MessageMethodExecutor.INSTANCE;
-        } else if (annotation instanceof GroupMember) {
-            return MemberEventMethodExecutor.INSTANCE;
-        } else if (annotation instanceof UserAction) {
-            return UserEventMethodExecutor.INSTANCE;
+            executor.setExecute(MessageMethodExecute.INSTANCE);
+            return executor;
         }
         return null;
     }

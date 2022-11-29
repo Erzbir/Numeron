@@ -13,10 +13,6 @@ import lombok.Setter;
 public abstract class AbstractMethodExecutor {
     private MethodExecute execute;
 
-    public AbstractMethodExecutor(MethodExecute execute) {
-        this.execute = execute;
-    }
-
     public AbstractMethodExecutor() {
 
     }

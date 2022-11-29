@@ -12,6 +12,12 @@ import java.lang.reflect.Method;
  * @Date: 2022/11/28 10:30
  */
 public class GroupMessageMethodExecute implements MethodExecute {
+    public static final GroupMessageMethodExecute INSTANCE = new GroupMessageMethodExecute();
+
+    private GroupMessageMethodExecute() {
+
+    }
+
     @Override
     public void execute(Method method, Object bean, EventChannel<BotEvent> channel) {
         new Thread(() -> channel.subscribeAlways(GroupMessageEvent.class, event -> {

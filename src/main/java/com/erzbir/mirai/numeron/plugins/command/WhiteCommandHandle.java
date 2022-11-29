@@ -16,10 +16,10 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @SuppressWarnings("unused")
 public class WhiteCommandHandle {
 
-    @Message(text = "/permit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void permit(MessageEvent event) {
+    @Message(text = "/permit user\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    public void permit2(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2]);
+        long id = Long.parseLong(split[2].replaceAll("@", ""));
         WhiteListAction.getInstance().remove(id);
         WhiteListAction.getInstance().add(id, null, event.getSender().getId());
         event.getSubject().sendMessage(id + " 已添加到白名单");
