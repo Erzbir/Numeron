@@ -20,12 +20,12 @@ public class GroupMessageMethodExecute implements MethodExecute {
 
     @Override
     public void execute(Method method, Object bean, EventChannel<BotEvent> channel) {
-        new Thread(() -> channel.subscribeAlways(GroupMessageEvent.class, event -> {
+        channel.subscribeAlways(GroupMessageEvent.class, event -> {
             try {
                 method.invoke(bean, event);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
-        })).start();
+        });
     }
 }

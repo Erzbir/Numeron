@@ -34,18 +34,14 @@ public class CodeUtils {
             String line;
             try {
                 while ((line = in.readLine()) != null) {
-                    System.out.println("输出:" + line);
                     stringBuffer.append(line).append("\n");
                 }
                 while ((line = err.readLine()) != null) {
-                    System.out.println("错误:" + line);
                     errBuffer.append(line).append("\n");
                 }
-                System.out.println("read over");
             } catch (Exception e) {
                 errBuffer.append(e.getMessage()).append("\n");
             }
-            System.out.println("read over2");
         });
 
         try {
@@ -53,17 +49,13 @@ public class CodeUtils {
         } catch (Exception ignored) {
             if (process.isAlive()) {
                 process.destroyForcibly();
-                System.out.println("destroy");
             }
         } finally {
-            System.out.println("wait close");
             service.shutdown();
             in.close();
             err.close();
-            System.out.println("close");
         }
-        System.out.println("return data");
-        // TODO: 2022/11/7 这里不能超过5000
+        // 这里不能超过5000
         if (!errBuffer.isEmpty()) {
             throw new Exception(errBuffer.toString().trim());
         } else if (!stringBuffer.isEmpty()) {

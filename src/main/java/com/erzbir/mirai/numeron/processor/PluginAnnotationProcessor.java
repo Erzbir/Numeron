@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.processor;
 
+import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.filter.PluginChannelFilterInter;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import lombok.extern.slf4j.Slf4j;
@@ -42,19 +43,19 @@ public class PluginAnnotationProcessor implements ApplicationContextAware, Appli
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
         bot = MessageAnnotationProcessor.bot;
         channel = bot.getEventChannel();
-        log.info("开始过滤插件监听......");
+        MiraiLogUtil.info("开始过滤插件监听......");
         // 扫瞄插件过滤器
         context.getBeansOfType(PluginChannelFilterInter.class).forEach((k, v) -> {
-            log.info("扫瞄到" + k);
+            MiraiLogUtil.info("扫瞄到过滤器 " + k);
             channel = channel.filter(v::filter);
         });
-        log.info("插件监听过滤完成");
-        log.info("开始插件注册.......");
+        MiraiLogUtil.info("插件监听过滤完成\n");
+        MiraiLogUtil.info("开始注册插件监听.......");
         // 扫瞄插件
         context.getBeansOfType(PluginRegister.class).forEach((k, v) -> {
-            log.info("扫瞄到" + k);
+            MiraiLogUtil.info("扫瞄到插件 " + k);
             v.register(bot, channel);
         });
-        log.info("插件注册完毕");
+        MiraiLogUtil.info("插件监听注册完毕\n");
     }
 }

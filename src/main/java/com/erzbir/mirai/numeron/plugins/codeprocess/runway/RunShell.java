@@ -17,7 +17,7 @@ import java.util.UUID;
 public class RunShell extends RunCode {
     private static final Object key = new Object();
     private static volatile RunShell INSTANCE;
-    private static final String codeDir = GlobalConfig.HOME + "botCode/shell";
+    private static final String codeDir = GlobalConfig.HOME + "/botCode/shell";
 
     public static RunShell getInstance() {
         if (INSTANCE == null) {

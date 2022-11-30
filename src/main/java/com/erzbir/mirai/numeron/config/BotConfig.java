@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.config;
 
+import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.entity.BlackList;
 import com.erzbir.mirai.numeron.entity.GroupList;
 import com.erzbir.mirai.numeron.entity.IllegalList;
@@ -49,16 +50,17 @@ public class BotConfig {
 
     static {
         init();
-        log.info("开始载入数据库数据");
+        MiraiLogUtil.info("开始载入数据库数据");
         illegalList = IllegalList.INSTANCE.getIllegal();
         whiteList = WhiteList.INSTANCE.getWhite();
         blackList = BlackList.INSTANCE.getBlack();
         groupList = GroupList.INSTANCE.getGroup();
         whiteList.add(master);
-        log.info("违禁词列表: " + illegalList.toString());
-        log.info("启用群列表: " + groupList.toString());
-        log.info("黑名单列表: " + blackList.toString());
-        log.info("白名单列表: " + whiteList.toString());
+        MiraiLogUtil.info("违禁词列表: " + illegalList.toString());
+        MiraiLogUtil.info("启用群列表: " + groupList.toString());
+        MiraiLogUtil.info("黑名单列表: " + blackList.toString());
+        MiraiLogUtil.info("白名单列表: " + whiteList.toString());
+        MiraiLogUtil.info("载入数据成功\n");
     }
 
     public static Bot getBot() {
@@ -82,16 +84,17 @@ public class BotConfig {
                 }
             }
         }
-        log.info("加载机器人配置");
+        MiraiLogUtil.info("加载机器人配置");
         if (!properties.isEmpty() && properties.getProperty("enable").equals("true")) {
             master = Long.parseLong(properties.getProperty("master"));
             account = Long.parseLong(properties.getProperty("account"));
             password = properties.getProperty("password");
             heartbeatStrategy = BotConfiguration.HeartbeatStrategy.valueOf((properties.getProperty("heartbeatStrategy")));
             miraiProtocol = BotConfiguration.MiraiProtocol.valueOf((properties).getProperty("protocol"));
+            MiraiLogUtil.info("机器人配置加载成功");
             return;
         } else {
-            log.info("帐号配置为空或者未启用, 将手动输入");
+            MiraiLogUtil.info("帐号配置为空或者未启用, 将手动输入");
         }
         Scanner scan = new Scanner(System.in);
         while (account == null) {
@@ -112,12 +115,12 @@ public class BotConfig {
             master = scan.nextLong();
         }
         scan.close();
-        log.info("配置成功, 将保存配置....");
+        MiraiLogUtil.info("配置成功, 将保存配置....");
         save();
     }
 
     public static void save() {
-        log.info("开始保存配置......");
+        MiraiLogUtil.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
         File file = new File("./config");
@@ -136,7 +139,7 @@ public class BotConfig {
             properties.setProperty("heartbeatStrategy", heartbeatStrategy.name());
             properties.setProperty("enable", "true");
             properties.store(outputStream, null);
-            log.info("保存成功");
+            MiraiLogUtil.info("保存成功\n");
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

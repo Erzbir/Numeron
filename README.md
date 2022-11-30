@@ -52,7 +52,7 @@ save()</code>方法
 - 自动保存图片和文件
 - 发送指定图片和文件 / 保存指定消息(图片等)
 - 从指定url下载文件
-- 代码和命令执行, 支持Java/JavaScript/Python/Shell
+- 代码和命令执行, 支持JavaScript/Python/Shell
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 >

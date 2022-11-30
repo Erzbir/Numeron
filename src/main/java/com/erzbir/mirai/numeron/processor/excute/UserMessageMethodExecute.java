@@ -20,12 +20,12 @@ public class UserMessageMethodExecute implements MethodExecute {
 
     @Override
     public void execute(Method method, Object bean, EventChannel<BotEvent> channel) {
-        new Thread(() -> channel.subscribeAlways(UserMessageEvent.class, event -> {
+        channel.subscribeAlways(UserMessageEvent.class, event -> {
             try {
                 method.invoke(bean, event);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }
-        })).start();
+        });
     }
 }

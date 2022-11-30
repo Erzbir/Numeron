@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.processor;
 
+import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.filter.MessageChannelFilter;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
@@ -62,6 +63,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
      */
     private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E annotation) {
         ExecutorFactory.INSTANCE.create(annotation).getExecute().execute(method, bean, channel);
+
     }
 
     /**
@@ -73,18 +75,26 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
         bot = context.getBean(Bot.class);
         channel = bot.getEventChannel();
-        log.info("开始注册消息处理......");
+        MiraiLogUtil.verbose("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> {
             Object bean = context.getBean(k);
-            log.info("扫瞄到 " + k);
+            String name = bean.getClass().getName();
+            MiraiLogUtil.debug("扫瞄到 " + name);
             List.of(bean.getClass().getDeclaredMethods()).forEach(method -> {
                 Stream<Annotation> annotationStream = Arrays.stream(method.getAnnotations())
                         .filter(annotation -> annotation instanceof GroupMessage
                                 || annotation instanceof UserMessage
                                 || annotation instanceof Message);
-                annotationStream.forEach(annotation -> execute(bean, method, toFilter(channel, annotation), annotation));
+                annotationStream.forEach(annotation -> {
+                    String s = Arrays.toString(method.getParameterTypes())
+                            .replaceAll("\\[", "(")
+                            .replaceAll("]", ")");
+                    MiraiLogUtil.verbose("开始注册处理方法 " + name + "." + method.getName() + s);
+                    execute(bean, method, toFilter(channel, annotation), annotation);
+                    MiraiLogUtil.info(bean.getClass().getName() + "." + method.getName() + s + " 处理方法注册完毕");
+                });
             });
         });
-        log.info("消息处理注册完成");
+        MiraiLogUtil.verbose("注解消息处理监听注册完毕\n");
     }
 }

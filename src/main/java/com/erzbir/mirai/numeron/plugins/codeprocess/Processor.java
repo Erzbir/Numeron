@@ -6,7 +6,6 @@ import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runner.CodeRunner;
-import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunJava;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunJs;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunPy;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunShell;
@@ -26,24 +25,18 @@ public class Processor {
     @Message(text = "py\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void runPy(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunPy.getInstance());
-        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().split("\\s+")[1]));
+        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
     }
 
     @Message(text = "js\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void runJs(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunJs.getInstance());
-        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().split("\\s+")[1]));
+        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("js\\s+", "")));
     }
 
-    @Message(text = "java\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
-    public void runJava(MessageEvent event) throws IOException {
-        codeRunner.setRunCode(RunJava.getInstance());
-        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().split("\\s+")[1]));
-    }
-
-    @Message(text = "shell\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
+    @Message(text = "sh\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void runShell(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunShell.getInstance());
-        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().split("\\s+")[1]));
+        event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("sh\\s+", "")));
     }
 }
