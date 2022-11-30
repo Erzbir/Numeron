@@ -1,6 +1,6 @@
-package com.erzbir.mirai.numeron.processor.entiry.executor;
+package com.erzbir.mirai.numeron.processor.executor;
 
-import com.erzbir.mirai.numeron.processor.entiry.excute.MethodExecute;
+import com.erzbir.mirai.numeron.processor.excute.MethodExecute;
 import lombok.Getter;
 import lombok.Setter;
 

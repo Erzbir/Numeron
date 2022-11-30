@@ -36,10 +36,7 @@
 第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>
 save()</code>方法
 
-此项目用到了redis, 请先下载安装redis
-
-基本都有一个模板, plugins包下的command包下的<code>
-CommandExecutor</code>是普通写法示例, plugins包下的chat包下和qqmanage包下是利用注解处理的示例
+### 此项目部分功能用到了redis, 请先下载安装redis, 否则无法使用相应功能
 
 <b>将所有QQ机器人功能写在plugins目录下</b>
 
@@ -55,6 +52,7 @@ CommandExecutor</code>是普通写法示例, plugins包下的chat包下和qqmana
 - 自动保存图片和文件
 - 发送指定图片和文件 / 保存指定消息(图片等)
 - 从指定url下载文件
+- 代码和命令执行, 支持Java/JavaScript/Python/Shell
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 >

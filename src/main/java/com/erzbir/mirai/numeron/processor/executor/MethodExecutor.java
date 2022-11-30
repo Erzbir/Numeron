@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.processor.entiry.executor;
+package com.erzbir.mirai.numeron.processor.executor;
 
 /**
  * @author Erzbir

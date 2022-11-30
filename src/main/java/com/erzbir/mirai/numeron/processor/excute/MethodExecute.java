@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.processor.entiry.excute;
+package com.erzbir.mirai.numeron.processor.excute;
 
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;

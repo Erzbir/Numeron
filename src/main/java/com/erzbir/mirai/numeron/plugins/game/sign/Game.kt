@@ -20,6 +20,7 @@ import java.util.*
 object Game : PluginRegister {
     private val client = OkHttpClient()
     private suspend fun signIn(sender: Member, group: Group) {
+        val redisStore = RedisStore.getInstance()
         val avatarUrl = sender.avatarUrl
         val toMsg = MessageChainBuilder()
         val request = Request.Builder().get().url(avatarUrl).build()
@@ -27,14 +28,14 @@ object Game : PluginRegister {
         val inputStream = resp.body!!.byteStream()
         val uploadImage = group.uploadImage(inputStream)
         // 从redis获取个人数据
-        val userData = User.fromJson(RedisStore.get("user:data:${sender.id}")) ?: User(sender.id, 0, 0, 0, 0, 0)
+        val userData = User.fromJson(redisStore.get("user:data:${sender.id}")) ?: User(sender.id, 0, 0, 0, 0, 0)
         val addMeiLi = 3
         val addTiLi = 10
         val addCoins = Random().nextInt(100)
         // 累计签到计算
         val userLastSignIn = userData.lastSignIn
         val userLastSignInDay = Calendar.Builder().setInstant(userLastSignIn).build()
-        val prevSignIn = RedisStore.get("user:last:signIn") ?: Date().time.toString()
+        val prevSignIn = redisStore.get("user:last:signIn") ?: Date().time.toString()
         val prevSignDay = Calendar.Builder().setInstant(prevSignIn.toLong()).build()
         val toDay = Calendar.getInstance()
         // 如果上次签到不是今天,重置签到计数器
@@ -42,7 +43,7 @@ object Game : PluginRegister {
                 Calendar.DAY_OF_YEAR
             ))
         ) {
-            RedisStore.set("user:signIn:rank", "0")
+            redisStore.set("user:signIn:rank", "0", -1L)
         }
         if (userLastSignInDay.get(Calendar.YEAR) == toDay.get(Calendar.YEAR) && userLastSignInDay.get(Calendar.DAY_OF_YEAR) == toDay.get(
                 Calendar.DAY_OF_YEAR
@@ -63,19 +64,19 @@ object Game : PluginRegister {
             userData.alreadySignInDays = 1
             userData.lastSignIn = Date().time
         }
-        if (RedisStore.get("user:signIn:rank") == null) {
-            RedisStore.set("user:signIn:rank", "0")
+        if (redisStore.get("user:signIn:rank") == null) {
+            redisStore.set("user:signIn:rank", "0", -1L)
         }
-        var rank: Int = RedisStore.get("user:signIn:rank")!!.toInt()
+        var rank: Int = redisStore.get("user:signIn:rank")!!.toInt()
         rank += 1
-        RedisStore.set("user:signIn:rank", "$rank")
-        RedisStore.set("user:last:signIn", Date().time.toString())
+        redisStore.set("user:signIn:rank", "$rank", -1L)
+        redisStore.set("user:last:signIn", Date().time.toString(), -1L)
         with(userData) {
             tiLi += addTiLi
             meiLi += addMeiLi
             coins += addCoins
         }
-        RedisStore.set("user:data:${sender.id}", userData.toJson())
+        redisStore.set("user:data:${sender.id}", userData.toJson(), -1L)
         toMsg.append(Image.Builder.newBuilder(uploadImage.imageId).build())
         toMsg.append(PlainText("昵称: ${sender.nick}\n"))
         toMsg.append(PlainText("账号: ${sender.id}\n"))

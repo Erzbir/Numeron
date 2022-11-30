@@ -37,3 +37,6 @@ build/
 
 ### Fleet ###
 .fleet/
+
+### MacOS ###
+*._Store
