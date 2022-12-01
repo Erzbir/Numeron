@@ -56,7 +56,7 @@ save()</code>方法
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 >
-> 比如在A方法上加上<code>@GroupMessage</code>注解表示在监听到一个<code>GroupMessageEvent</code>后调用此方法进行对应处理(
+> 比如在A方法上加上<code>@GroupMessage()</code>注解表示在监听到一个<code>GroupMessageEvent</code>后调用此方法进行对应处理(
 > 注意A方法所属的类必须加<code>@Listener</code>注解)
 
 例子:
@@ -132,6 +132,9 @@ execute()</code>中开起一个线程反射调用</b>
 
 除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解(
 这个注解的作用除了继承<code>@Component</code>, 就只有标记作用了), 这时就可以自动执行事件过滤
+
+### 生成指令表:
+在方法上加上注解: <code>@Command()</code>自动生成指令表, 通过给机器人发送 "/help" 获取指令表
 
 ## 原理:
 
