@@ -13,7 +13,7 @@ import static com.erzbir.mirai.numeron.processor.CommandHelpProcessor.stringBuil
  */
 @Listener
 public class Help {
-    @Message(text = "/help", permission = PermissionType.WHITE)
+    @Message(text = "/help", permission = PermissionType.ALL)
     public void help(MessageEvent event) {
         event.getSubject().sendMessage(stringBuilder.toString());
     }
