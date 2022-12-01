@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.config;
+package com.erzbir.mirai.numeron.configs;
 
 import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.entity.BlackList;
@@ -40,6 +40,10 @@ public class BotConfig {
     private static final HashSet<Long> blackList; // 黑名单
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
     private static final HashSet<Long> whiteList; // 白名单
+    private static final String mainDir = "./erzbirnumeron/"; // 文件存储目录
+    private static final String configDir = mainDir + "config/"; // 配置文件目录
+    private static final String configName = "BotConfig.properties"; // 配置文件名
+    private static final String botDir = mainDir + "bots/"; // bot目录
     private static Long master; // 主人
     private static Long account; // 帐号
     private static String password; // 密码
@@ -71,7 +75,7 @@ public class BotConfig {
         FileInputStream fileInputStream = null;
         Properties properties = new Properties();
         try {
-            fileInputStream = new FileInputStream("./config/BotConfig.properties");
+            fileInputStream = new FileInputStream(configDir + configName);
             properties.load(fileInputStream);
         } catch (IOException ignored) {
 
@@ -123,14 +127,14 @@ public class BotConfig {
         MiraiLogUtil.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
-        File file = new File("./config");
+        File file = new File(configDir);
         if (!file.exists()) {
             if (!file.mkdir()) {
                 return;
             }
         }
         try {
-            outputStream = new FileOutputStream("./config/BotConfig.properties");
+            outputStream = new FileOutputStream(configDir + configName);
             properties = new Properties();
             properties.setProperty("master", String.valueOf(master));
             properties.setProperty("account", String.valueOf(account));
@@ -161,7 +165,7 @@ public class BotConfig {
         GlobalConfig.illegalList = illegalList;
         GlobalConfig.whiteList = whiteList;
         GlobalConfig.botName = botName;
-        WORKDIR = "./bots/" + account;
+        WORKDIR = botDir + account;
         File file = new File(WORKDIR);
         if (!file.exists()) {
             if (file.mkdirs()) {

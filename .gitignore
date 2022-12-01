@@ -4,8 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 data.sqlite
-/config
-bots
+erzbirnumeron
 
 ### STS ###
 .apt_generated
@@ -40,3 +39,4 @@ build/
 
 ### MacOS ###
 *._Store
+!/src/main/java/com/erzbir/mirai/numeron/test/
