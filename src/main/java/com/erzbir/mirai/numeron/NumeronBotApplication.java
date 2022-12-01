@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron;
 
-import com.erzbir.mirai.numeron.config.BotConfig;
+import com.erzbir.mirai.numeron.configs.BotConfig;
 import com.erzbir.mirai.numeron.processor.MessageAnnotationProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
