@@ -60,6 +60,7 @@ public class BotConfig {
         blackList = BlackList.INSTANCE.getBlack();
         groupList = GroupList.INSTANCE.getGroup();
         whiteList.add(master);
+        GlobalConfig.botDir = botDir;
         MiraiLogUtil.info("违禁词列表: " + illegalList.toString());
         MiraiLogUtil.info("启用群列表: " + groupList.toString());
         MiraiLogUtil.info("黑名单列表: " + blackList.toString());
@@ -165,7 +166,6 @@ public class BotConfig {
         GlobalConfig.illegalList = illegalList;
         GlobalConfig.whiteList = whiteList;
         GlobalConfig.botName = botName;
-        GlobalConfig.botDir = botDir;
         WORKDIR = botDir + account;
         GlobalConfig.workDir = WORKDIR;
         File file = new File(WORKDIR);
