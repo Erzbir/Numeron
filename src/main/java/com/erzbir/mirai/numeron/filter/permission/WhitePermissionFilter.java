@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.filter.permission;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**

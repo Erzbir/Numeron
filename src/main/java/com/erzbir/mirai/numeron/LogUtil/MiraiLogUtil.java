@@ -1,15 +1,14 @@
 package com.erzbir.mirai.numeron.LogUtil;
 
-import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.utils.MiraiLogger;
+import org.slf4j.Logger;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/30 12:46
  */
-@Slf4j
 public class MiraiLogUtil {
-    private static final MiraiLogger logger = MiraiLogger.Factory.INSTANCE.create(log.getClass());
+    private static final MiraiLogger logger = MiraiLogger.Factory.INSTANCE.create(Logger.class);
 
     public static void info(String s) {
         logger.info(s);

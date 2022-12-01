@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

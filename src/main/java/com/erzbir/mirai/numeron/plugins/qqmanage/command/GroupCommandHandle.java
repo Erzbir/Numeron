@@ -1,11 +1,12 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -20,6 +21,8 @@ import java.util.concurrent.atomic.AtomicReference;
 @Listener
 @SuppressWarnings("unused")
 public class GroupCommandHandle {
+
+    @Command(name = "禁言操作", dec = "禁言一个人", help = "/mute [@user] [time] 或者 /mute [qq] [time]")
     @Message(text = "/mute\\s+?@?\\d+?\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void muteSingle(MessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+");
@@ -40,6 +43,7 @@ public class GroupCommandHandle {
 
     }
 
+    @Command(name = "禁言操作", dec = "解禁一个人", help = "/unmute [@user] [time] 或者 /unmute [qq] [time]")
     @Message(text = "/unmute\\s+?@?\\d+?", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void unmuteSingle(MessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+");
@@ -59,6 +63,7 @@ public class GroupCommandHandle {
         }
     }
 
+    @Command(name = "禁言操作", dec = "禁言群", help = "/mute group [id]")
     @Message(text = "/mute group\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void muteGroup(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
@@ -66,6 +71,7 @@ public class GroupCommandHandle {
         Objects.requireNonNull(event.getBot().getGroup(id)).getSettings().setMuteAll(true);
     }
 
+    @Command(name = "禁言操作", dec = "解禁群", help = "/unmute [id]")
     @Message(text = "/unmute group\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void unmuteGroup(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");

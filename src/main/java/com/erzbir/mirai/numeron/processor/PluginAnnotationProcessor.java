@@ -3,7 +3,6 @@ package com.erzbir.mirai.numeron.processor;
 import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.filter.PluginChannelFilterInter;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
-import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -22,7 +21,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * </p>
  */
 @Processor
-@Slf4j
 @SuppressWarnings("unused")
 public class PluginAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     public static ApplicationContext context;
@@ -41,7 +39,7 @@ public class PluginAnnotationProcessor implements ApplicationContextAware, Appli
      */
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        bot = MessageAnnotationProcessor.bot;
+        bot = context.getBean(Bot.class);
         channel = bot.getEventChannel();
         MiraiLogUtil.info("开始过滤插件监听......");
         // 扫瞄插件过滤器

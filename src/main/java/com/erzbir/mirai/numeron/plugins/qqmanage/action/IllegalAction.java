@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;

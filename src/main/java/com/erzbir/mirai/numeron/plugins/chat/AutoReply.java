@@ -8,6 +8,7 @@ import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
 import com.erzbir.mirai.numeron.plugins.chat.entity.AutoReplyData;
+import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
@@ -32,6 +33,7 @@ public class AutoReply {
         }
     }
 
+    @Command(name = "自动回复", dec = "添加关键词回复", help = "/learn ques answer")
     @Message(messageRule = MessageRule.REGEX, text = "/learn\\s+?.*?\\s+?.*", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
     public void learn(MessageEvent e) {
         String[] split = e.getMessage().contentToString().split("\\s+");
@@ -39,6 +41,7 @@ public class AutoReply {
         e.getSubject().sendMessage("学会了");
     }
 
+    @Command(name = "自动回复", dec = "删除关键词回复", help = "/forget ques")
     @Message(messageRule = MessageRule.REGEX, text = "/forget\\s+?.*", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
     public void forget(MessageEvent e) {
         String[] split = e.getMessage().contentToString().split("\\s+");

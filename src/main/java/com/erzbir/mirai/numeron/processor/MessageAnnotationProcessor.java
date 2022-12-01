@@ -7,7 +7,6 @@ import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
 import com.erzbir.mirai.numeron.processor.factory.ExecutorFactory;
-import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -32,7 +31,7 @@ import java.util.stream.Stream;
  * </p>
  */
 @Processor
-@Slf4j
+@SuppressWarnings("unused")
 public class MessageAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     public static ApplicationContext context;
     public static EventChannel<BotEvent> channel;

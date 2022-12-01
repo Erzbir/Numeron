@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.config;
+package com.erzbir.mirai.numeron.configs;
 
 import java.util.HashSet;
 
@@ -10,6 +10,8 @@ import java.util.HashSet;
 public class GlobalConfig {
     public static final String OS = System.getProperty("os.name");
     public static final String HOME = System.getenv("HOME");
+    public static String workDir;
+    public static String botDir;
     public static String botName;
     public static boolean isOn = true;
     public static Long master;

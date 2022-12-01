@@ -165,7 +165,9 @@ public class BotConfig {
         GlobalConfig.illegalList = illegalList;
         GlobalConfig.whiteList = whiteList;
         GlobalConfig.botName = botName;
+        GlobalConfig.botDir = botDir;
         WORKDIR = botDir + account;
+        GlobalConfig.workDir = WORKDIR;
         File file = new File(WORKDIR);
         if (!file.exists()) {
             if (file.mkdirs()) {

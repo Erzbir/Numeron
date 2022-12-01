@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2022/11/30 10:40
  */
 public class DefaultStore {
-    public static volatile DefaultStore INSTANCE;
     private static final Object key = new Object();
     private static final ExpiringMap<Integer, MessageChain> data =
             ExpiringMap.builder()
@@ -20,6 +19,7 @@ public class DefaultStore {
                     .expiration(86400L, TimeUnit.SECONDS)
                     .expirationPolicy(ExpirationPolicy.ACCESSED)
                     .variableExpiration().build();
+    public static volatile DefaultStore INSTANCE;
 
     private DefaultStore() {
     }

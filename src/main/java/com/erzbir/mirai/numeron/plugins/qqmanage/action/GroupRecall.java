@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.plugins.Plugin;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
+import com.erzbir.mirai.numeron.processor.Command;
 import com.erzbir.mirai.numeron.store.DefaultStore;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
@@ -39,12 +40,14 @@ public class GroupRecall implements PluginRegister {
         });
     }
 
+    @Command(name = "防撤回", dec = "开启防撤回", help = "/prevent_recall enable")
     @Message(text = "/prevent_recall enable", permission = PermissionType.MASTER, filterRule = FilterRule.NONE)
     public void cantRecall(MessageEvent e) {
         preventRecall = true;
         e.getSubject().sendMessage("已开启防撤回功能");
     }
 
+    @Command(name = "防撤回", dec = "关闭防撤回", help = "/prevent_recall disable")
     @Message(text = "/prevent_recall disable", permission = PermissionType.MASTER, filterRule = FilterRule.NONE)
     public void canRecall(MessageEvent e) {
         preventRecall = true;

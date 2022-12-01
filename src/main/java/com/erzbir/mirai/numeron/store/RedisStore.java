@@ -16,18 +16,9 @@ import java.util.stream.Stream;
  * @Date: 2022/11/30 10:32
  */
 public class RedisStore {
-    public static volatile RedisStore INSTANCE;
     private static final Object key = new Object();
+    private static volatile RedisStore INSTANCE;
     private final Jedis client = new Jedis("localhost", 6379);
-
-    public final void set(@NotNull String key, @NotNull String value, long seconds) {
-        if (seconds == -1L) {
-            client.set(key, value);
-        } else {
-            client.setex(key, seconds, value);
-        }
-
-    }
 
     public static RedisStore getInstance() {
         if (INSTANCE == null) {
@@ -38,6 +29,15 @@ public class RedisStore {
             }
         }
         return INSTANCE;
+    }
+
+    public final void set(@NotNull String key, @NotNull String value, long seconds) {
+        if (seconds == -1L) {
+            client.set(key, value);
+        } else {
+            client.setex(key, seconds, value);
+        }
+
     }
 
     public final void del(@NotNull String key) {

@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess.runway;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.plugins.codeprocess.CodeUtils;
 
 import java.io.File;
@@ -16,8 +16,8 @@ import java.util.UUID;
  */
 public class RunJs extends RunCode {
     private static final Object key = new Object();
+    private static final String codeDir = GlobalConfig.workDir + "/botCode/js";
     private static volatile RunJs INSTANCE;
-    private static final String codeDir = GlobalConfig.HOME + "/botCode/js";
 
     public static RunJs getInstance() {
         if (INSTANCE == null) {

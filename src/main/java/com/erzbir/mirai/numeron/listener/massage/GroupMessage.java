@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface GroupMessage {
-    FilterRule filterRule();
+    FilterRule filterRule() default FilterRule.NONE;
 
     MessageRule messageRule() default MessageRule.EQUAL;
 

@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -13,6 +13,7 @@ import java.util.Objects;
 @Listener
 @SuppressWarnings("unused")
 public class BlackAction {
+
     @GroupMessage(text = ".*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
     public void scan(GroupMessageEvent event) {
         if (GlobalConfig.blackList.contains(event.getSender().getId())) {

@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -16,6 +17,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @SuppressWarnings("unused")
 public class IllegalCommandHandle {
 
+    @Command(name = "违禁词操作", dec = "添加违禁词", help = "/add illegal [key]")
     @Message(text = "/add illegal\\s+?.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void add(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
@@ -24,6 +26,7 @@ public class IllegalCommandHandle {
         event.getSubject().sendMessage("违禁词添加成功");
     }
 
+    @Command(name = "违禁词操作", dec = "删除违禁词", help = "/remove illegal [key]")
     @Message(text = "/remove illegal\\s+?.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void remove(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
@@ -32,6 +35,7 @@ public class IllegalCommandHandle {
         event.getSubject().sendMessage("违禁词删除成功");
     }
 
+    @Command(name = "违禁词操作", dec = "查询违禁词", help = "/query illegal [key]")
     @Message(text = "/query illegal\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void query(MessageEvent event) {
         event.getSubject().

@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess.runway;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.plugins.codeprocess.CodeUtils;
 
 import java.io.File;
@@ -16,8 +16,8 @@ import java.util.UUID;
  */
 public class RunShell extends RunCode {
     private static final Object key = new Object();
+    private static final String codeDir = GlobalConfig.workDir + "/botCode/shell";
     private static volatile RunShell INSTANCE;
-    private static final String codeDir = GlobalConfig.HOME + "/botCode/shell";
 
     public static RunShell getInstance() {
         if (INSTANCE == null) {

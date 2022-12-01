@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.Action;
 import com.erzbir.mirai.numeron.controller.BlackListAction;
 import com.erzbir.mirai.numeron.controller.WhiteListAction;

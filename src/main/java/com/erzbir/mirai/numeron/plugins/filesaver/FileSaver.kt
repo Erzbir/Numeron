@@ -1,8 +1,9 @@
 package com.erzbir.mirai.numeron.plugins.filesaver
 
-import com.erzbir.mirai.numeron.config.GlobalConfig
+import com.erzbir.mirai.numeron.configs.GlobalConfig
 import com.erzbir.mirai.numeron.plugins.Plugin
 import com.erzbir.mirai.numeron.plugins.PluginRegister
+import com.erzbir.mirai.numeron.processor.Command
 import com.erzbir.mirai.numeron.store.DefaultStore
 import com.erzbir.mirai.numeron.store.RedisStore
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +27,7 @@ import kotlin.io.path.absolutePathString
 @Plugin
 object FileSaver : PluginRegister {
     private var autoPick = false
-    private val storeLocation = Path.of(GlobalConfig.HOME, "qq_files")
+    private val storeLocation = Path.of(GlobalConfig.botDir, "qq_files")
     private val picStoreLocation: Path = Path.of(storeLocation.absolutePathString(), "pic")
     private val fileStoreLocation: Path = Path.of(storeLocation.absolutePathString(), "file")
     private val audioStoreLocation: Path = Path.of(storeLocation.absolutePathString(), "audio")
@@ -46,6 +47,7 @@ object FileSaver : PluginRegister {
         }
     }
 
+    @Command(name = "文件保存和发送", dec = "图片/文件/文本", help = "/fput  /fget  /dl")
     override fun register(bot: Bot, channel: EventChannel<BotEvent>) {
         channel.subscribeAlways<MessageEvent> { it ->
             val ids = it.source.ids
@@ -60,7 +62,7 @@ object FileSaver : PluginRegister {
                     if (m is Image) {
                         val picUrl = m.queryUrl()
                         try {
-                            NetUtils.downloadTo(picUrl, File(picStoreLocation.absolutePathString(), m.imageId))
+                            NetUtil.downloadTo(picUrl, File(picStoreLocation.absolutePathString(), m.imageId))
                             redisStore.set("pic_" + m.imageId, m.imageId, -1L)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -77,7 +79,7 @@ object FileSaver : PluginRegister {
                             val file = m.toAbsoluteFile(it.subject as Group)
                             file?.let { f ->
                                 try {
-                                    NetUtils.downloadTo(
+                                    NetUtil.downloadTo(
                                         f.getUrl()!!,
                                         File(fileStoreLocation.absolutePathString(), file.name)
                                     )
@@ -99,7 +101,7 @@ object FileSaver : PluginRegister {
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
                     if (command.size != 2) {
-                        it.subject.sendMessage("Usage: /put [filename]")
+                        it.subject.sendMessage("Usage: /fput [filename]")
                         return@subscribeAlways
                     }
                     val ids1 = it.message[QuoteReply.Key]!!.source.ids
@@ -116,7 +118,7 @@ object FileSaver : PluginRegister {
                                 it.subject.sendMessage("正在保存消息中的图片...")
                                 val picUrl = ele.queryUrl()
                                 try {
-                                    NetUtils.downloadTo(
+                                    NetUtil.downloadTo(
                                         picUrl,
                                         File(
                                             picStoreLocation.absolutePathString(),
@@ -166,7 +168,7 @@ object FileSaver : PluginRegister {
                                     file?.let { f ->
                                         it.subject.sendMessage("正在保存消息中的文件...")
                                         try {
-                                            NetUtils.downloadTo(
+                                            NetUtil.downloadTo(
                                                 f.getUrl()!!,
                                                 File(
                                                     fileStoreLocation.absolutePathString(),
@@ -203,7 +205,7 @@ object FileSaver : PluginRegister {
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
                     if (command.size != 3 && command.size != 5) {
-                        it.subject.sendMessage("Usage: /get [pic|file] [filename] or /get [pic|file] [filename] [width] [height]")
+                        it.subject.sendMessage("Usage: /fget [pic|file] [filename] or /get [pic|file] [filename] [width] [height]")
                         return@subscribeAlways
                     }
                     when (command[1]) {
@@ -345,7 +347,7 @@ object FileSaver : PluginRegister {
                     }
                     it.subject.sendMessage("正在下载文件...")
                     try {
-                        NetUtils.downloadTo(command[1], File(fileStoreLocation.absolutePathString(), command[2]))
+                        NetUtil.downloadTo(command[1], File(fileStoreLocation.absolutePathString(), command[2]))
                         redisStore.set("file_${command[2]}", command[2], -1L)
                     } catch (e: Exception) {
                         it.subject.sendMessage(

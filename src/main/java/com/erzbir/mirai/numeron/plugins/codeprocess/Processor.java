@@ -9,6 +9,7 @@ import com.erzbir.mirai.numeron.plugins.codeprocess.runner.CodeRunner;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunJs;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunPy;
 import com.erzbir.mirai.numeron.plugins.codeprocess.runway.RunShell;
+import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 import java.io.IOException;
@@ -22,18 +23,21 @@ import java.io.IOException;
 public class Processor {
     private final CodeRunner codeRunner = CodeRunner.getInstance();
 
+    @Command(name = "指令执行", dec = "执行py代码", help = "/py\nprint(1)")
     @Message(text = "py\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void runPy(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunPy.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
     }
 
+    @Command(name = "指令执行", dec = "执行js代码", help = "/py\nconsole.log(1)")
     @Message(text = "js\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void runJs(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunJs.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("js\\s+", "")));
     }
 
+    @Command(name = "指令执行", dec = "执行shell代码", help = "sh\necho 1")
     @Message(text = "sh\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     public void runShell(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunShell.getInstance());

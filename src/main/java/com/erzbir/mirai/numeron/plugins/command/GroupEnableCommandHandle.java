@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.controller.GroupListAction;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;

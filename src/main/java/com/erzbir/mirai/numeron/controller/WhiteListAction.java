@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.controller;
 
-import com.erzbir.mirai.numeron.config.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.entity.WhiteList;
 
 import java.util.Objects;
