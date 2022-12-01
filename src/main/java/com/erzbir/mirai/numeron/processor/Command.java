@@ -13,6 +13,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface Command {
     String name();
+
     String dec();
+
     String help();
 }

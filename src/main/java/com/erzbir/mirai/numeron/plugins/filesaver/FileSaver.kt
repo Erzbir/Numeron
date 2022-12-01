@@ -19,6 +19,7 @@ import net.mamoe.mirai.message.data.*
 import net.mamoe.mirai.message.data.Image.Key.queryUrl
 import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.*
@@ -115,7 +116,6 @@ object FileSaver : PluginRegister {
                         var saved = false
                         for (ele in m) {
                             if (ele is Image) {
-                                it.subject.sendMessage("正在保存消息中的图片...")
                                 val picUrl = ele.queryUrl()
                                 try {
                                     NetUtil.downloadTo(
@@ -125,7 +125,11 @@ object FileSaver : PluginRegister {
                                             "${command[1]}.${ele.imageType.name}"
                                         )
                                     )
-                                    redisStore.set("pic_" + ele.imageId, "${command[1]}.${ele.imageType.name}", -1L)
+                                    redisStore.set(
+                                        "pic_" + ele.imageId,
+                                        "${command[1]}.${ele.imageType.name.lowercase(Locale.getDefault())}",
+                                        -1L
+                                    )
                                     saved = true
                                 } catch (e: Exception) {
                                     it.subject.sendMessage(
@@ -142,7 +146,6 @@ object FileSaver : PluginRegister {
                                 it.subject.sendMessage("保存图片成功")
                             }
                             if (ele is PlainText) {
-                                it.subject.sendMessage("正在保存消息中的文本...")
                                 try {
                                     redisStore.set("plain_" + Date().time.toString(), ele.content, -1L)
                                 } catch (e: Exception) {
@@ -166,7 +169,6 @@ object FileSaver : PluginRegister {
                                 if (it.subject is Group) {
                                     val file = ele.toAbsoluteFile(it.subject as Group)
                                     file?.let { f ->
-                                        it.subject.sendMessage("正在保存消息中的文件...")
                                         try {
                                             NetUtil.downloadTo(
                                                 f.getUrl()!!,
@@ -175,7 +177,13 @@ object FileSaver : PluginRegister {
                                                     "${command[1]}.${file.extension}"
                                                 )
                                             )
-                                            redisStore.set("file_" + ele.id, "${command[1]}.${file.extension}", -1L)
+                                            redisStore.set(
+                                                "file_" + ele.id, "${command[1]}.${
+                                                    file.extension.lowercase(
+                                                        Locale.getDefault()
+                                                    )
+                                                }", -1L
+                                            )
                                             saved = true
                                         } catch (e: Exception) {
                                             it.subject.sendMessage(
@@ -211,7 +219,6 @@ object FileSaver : PluginRegister {
                     when (command[1]) {
                         "pic" -> {
                             if (Files.exists(Path.of(picStoreLocation.absolutePathString(), command[2]))) {
-                                it.subject.sendMessage("正在发送图片...")
                                 try {
                                     val uploadImage = it.subject.uploadImage(
                                         File(
@@ -248,7 +255,6 @@ object FileSaver : PluginRegister {
                         "file" -> {
                             if (Files.exists(Path.of(fileStoreLocation.absolutePathString(), command[2]))) {
                                 if (it.subject is Group) {
-                                    it.subject.sendMessage("正在发送文件...")
                                     try {
                                         val toExternalResource = File(
                                             Path.of(fileStoreLocation.absolutePathString(), command[2])
@@ -286,20 +292,20 @@ object FileSaver : PluginRegister {
                     }
                     when (command[1]) {
                         "pic" -> {
-                            val m = redisStore.pic.joinToString("\n")
-                            if (m.isEmpty()) {
-                                it.subject.sendMessage("暂无图片")
+                            val f = picStoreLocation.toFile().list()
+                            if (f == null || f.isEmpty()) {
+                                it.subject.sendMessage("暂无文件")
                             } else {
-                                it.subject.sendMessage(m)
+                                it.subject.sendMessage(Arrays.toString(f).replace(",", "\n"))
                             }
                         }
 
                         "file" -> {
-                            val m = redisStore.file.joinToString("\n")
-                            if (m.isEmpty()) {
+                            val f = fileStoreLocation.toFile().list()
+                            if (f == null || f.isEmpty()) {
                                 it.subject.sendMessage("暂无文件")
                             } else {
-                                it.subject.sendMessage(m)
+                                it.subject.sendMessage(Arrays.toString(f).replace(",", "\n"))
                             }
                         }
 
@@ -348,7 +354,6 @@ object FileSaver : PluginRegister {
                     it.subject.sendMessage("正在下载文件...")
                     try {
                         NetUtil.downloadTo(command[1], File(fileStoreLocation.absolutePathString(), command[2]))
-                        redisStore.set("file_${command[2]}", command[2], -1L)
                     } catch (e: Exception) {
                         it.subject.sendMessage(
                             PlainText("文件下载失败").plus(
@@ -361,6 +366,7 @@ object FileSaver : PluginRegister {
                         )
                         return@subscribeAlways
                     }
+                    redisStore.set("file_${command[2]}", command[2], -1L)
                     it.subject.sendMessage("文件${command[2]}下载完成")
                 }
 
@@ -370,13 +376,18 @@ object FileSaver : PluginRegister {
                     }
                     val command = content.split(" ")
                     if (command.size != 3) {
-                        it.subject.sendMessage("Usage: /rm [pic|file|plain] [filename]")
+                        it.subject.sendMessage("Usage: /frm [pic|file|plain] [filename]")
                         return@subscribeAlways
                     }
                     when (command[1]) {
                         "pic" -> {
                             withContext(Dispatchers.IO) {
-                                Files.delete(Path.of(picStoreLocation.absolutePathString(), command[2]))
+                                try {
+                                    Files.delete(Path.of(picStoreLocation.absolutePathString(), command[2]))
+                                } catch (e: IOException) {
+                                    it.subject.sendMessage("删除失败 ${e.message}")
+                                    return@withContext
+                                }
                             }
                             redisStore.removePic(command[2])
                             it.subject.sendMessage("删除图片[${command[2]}]成功")
@@ -384,7 +395,12 @@ object FileSaver : PluginRegister {
 
                         "file" -> {
                             withContext(Dispatchers.IO) {
-                                Files.delete(Path.of(fileStoreLocation.absolutePathString(), command[2]))
+                                try {
+                                    Files.delete(Path.of(fileStoreLocation.absolutePathString(), command[2]))
+                                } catch (e: IOException) {
+                                    it.subject.sendMessage("删除失败 ${e.message}")
+                                    return@withContext
+                                }
                             }
                             redisStore.removeFile(command[2])
                             it.subject.sendMessage("删除文件[${command[2]}]成功")

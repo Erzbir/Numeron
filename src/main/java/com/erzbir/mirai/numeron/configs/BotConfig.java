@@ -40,7 +40,7 @@ public class BotConfig {
     private static final HashSet<Long> blackList; // 黑名单
     //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
     private static final HashSet<Long> whiteList; // 白名单
-    private static final String mainDir = "./erzbirnumeron/"; // 文件存储目录
+    private static final String mainDir = "erzbirnumeron/"; // 文件存储目录
     private static final String configDir = mainDir + "config/"; // 配置文件目录
     private static final String configName = "BotConfig.properties"; // 配置文件名
     private static final String botDir = mainDir + "bots/"; // bot目录

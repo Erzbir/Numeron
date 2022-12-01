@@ -44,7 +44,7 @@ public class Game {
         InputStream inputStream = Objects.requireNonNull(response.body()).byteStream();
         Image uploadImage = Contact.uploadImage(group, inputStream);
         // 从redis获取个人数据
-        User userData = User.fromJson(redisStore.get("user:data:${sender.id}"));
+        User userData = User.fromJson(redisStore.get("user:data:" + member.getId()));
         if (userData == null) {
             userData = new User(member.getId(), 0, 0, 0, 0, 0);
         }
@@ -83,12 +83,12 @@ public class Game {
         }
         int rank = Integer.parseInt(redisStore.get("user:signIn:rank"));
         rank += 1;
-        redisStore.set("user:signIn:rank", "$rank", -1L);
+        redisStore.set("user:signIn:rank", String.valueOf(rank), -1L);
         redisStore.set("user:last:signIn", String.valueOf(new Date().getTime()), -1L);
         userData.tiLi += addTiLi;
         userData.meiLi += addMeiLi;
         userData.coins += addCoins;
-        redisStore.set("user:data:${sender.id}", User.toJson(userData), -1L);
+        redisStore.set("user:data:" + member.getId(), User.toJson(userData), -1L);
         toMsg.append(Image.Builder.newBuilder(uploadImage.getImageId()).build());
         toMsg.append(new PlainText("昵称: " + member.getNick() + "\n"));
         toMsg.append(new PlainText("账号: " + member.getId() + "\n"));
