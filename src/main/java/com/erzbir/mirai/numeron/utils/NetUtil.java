@@ -1,5 +1,8 @@
-package com.erzbir.mirai.numeron.plugins.filesaver;
+package com.erzbir.mirai.numeron.utils;
 
+import net.mamoe.mirai.contact.Contact;
+import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.message.data.Image;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -48,5 +51,22 @@ public class NetUtil {
                 throw new RuntimeException(e);
             }
         }).start();
+    }
+
+    public static InputStream open(String url) throws IOException {
+        Request request = new Request.Builder().get().url(url).build();
+        Response response = client.newCall(request).execute();
+        response.close();
+        return Objects.requireNonNull(response.body()).byteStream();
+    }
+
+    public static Image getImage(Group group, String url) throws IOException {
+        Image image;
+        try (InputStream inputStream = open(url)) {
+            image = Image.newBuilder(Contact.uploadImage(group, inputStream).getImageId()).build();
+        } catch (IOException e) {
+            throw new IOException(e);
+        }
+        return image;
     }
 }
