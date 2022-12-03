@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.LogUtil;
+package com.erzbir.mirai.numeron.utils;
 
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.slf4j.Logger;

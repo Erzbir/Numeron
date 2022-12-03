@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
-import com.erzbir.mirai.numeron.enums.FilterRule;
+import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
@@ -25,11 +25,11 @@ import net.mamoe.mirai.message.data.PlainText;
 @Listener
 @SuppressWarnings("unused")
 public class GroupRecall implements PluginRegister {
-    private boolean preventRecall = false;
+    private Boolean preventRecall = false;
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
-        bot.getEventChannel().subscribeAlways(MessageRecallEvent.GroupRecall.class, event -> {
+        channel.subscribeAlways(MessageRecallEvent.GroupRecall.class, event -> {
             if (preventRecall) {
                 MessageChain messageChain = DefaultStore.INSTANCE.find(event.getMessageIds()[0]);
                 assert messageChain != null;
@@ -40,17 +40,10 @@ public class GroupRecall implements PluginRegister {
         });
     }
 
-    @Command(name = "防撤回", dec = "开启防撤回", help = "/prevent_recall enable")
-    @Message(text = "/prevent_recall enable", permission = PermissionType.MASTER, filterRule = FilterRule.NONE)
+    @Command(name = "防撤回", dec = "开关启防撤回", help = "/prevent_recall [true|false]")
+    @Message(text = "/prevent_recall\\s+?(true|false)", permission = PermissionType.MASTER, messageRule = MessageRule.REGEX)
     public void cantRecall(MessageEvent e) {
-        preventRecall = true;
-        e.getSubject().sendMessage("已开启防撤回功能");
-    }
-
-    @Command(name = "防撤回", dec = "关闭防撤回", help = "/prevent_recall disable")
-    @Message(text = "/prevent_recall disable", permission = PermissionType.MASTER, filterRule = FilterRule.NONE)
-    public void canRecall(MessageEvent e) {
-        preventRecall = true;
-        e.getSubject().sendMessage("已关闭防撤回功能");
+        preventRecall = Boolean.valueOf(e.getMessage().contentToString().split("\\s+")[1]);
+        e.getSubject().sendMessage("防撤回功能 " + preventRecall);
     }
 }

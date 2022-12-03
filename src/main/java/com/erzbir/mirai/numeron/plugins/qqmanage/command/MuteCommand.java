@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Listener
 @SuppressWarnings("unused")
-public class GroupCommandHandle {
+public class MuteCommand {
 
     @Command(name = "禁言操作", dec = "禁言一个人", help = "/mute [@user] [time] 或者 /mute [qq] [time]")
     @Message(text = "/mute\\s+?@?\\d+?\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)

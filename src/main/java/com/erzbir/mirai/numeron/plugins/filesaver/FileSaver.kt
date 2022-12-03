@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.plugins.PluginRegister
 import com.erzbir.mirai.numeron.processor.Command
 import com.erzbir.mirai.numeron.store.DefaultStore
 import com.erzbir.mirai.numeron.store.RedisStore
+import com.erzbir.mirai.numeron.utils.NetUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.mamoe.mirai.Bot

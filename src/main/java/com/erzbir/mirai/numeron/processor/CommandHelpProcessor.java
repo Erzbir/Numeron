@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.plugins.Plugin;
+import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;

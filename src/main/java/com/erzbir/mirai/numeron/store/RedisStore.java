@@ -5,7 +5,6 @@ import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,14 +19,6 @@ public class RedisStore {
     private static final Object key = new Object();
     private static volatile RedisStore INSTANCE;
 
-    static {
-        try {
-            new ProcessBuilder().command("redis-cli").start().destroyForcibly();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private final Jedis client = new Jedis("localhost", 6379);
 
     public static RedisStore getInstance() {
@@ -41,7 +32,7 @@ public class RedisStore {
         return INSTANCE;
     }
 
-    public final void set(@NotNull String key, @NotNull String value, long seconds) {
+    public final void set(String key, String value, long seconds) {
         if (seconds == -1L) {
             client.set(key, value);
         } else {
@@ -50,16 +41,16 @@ public class RedisStore {
 
     }
 
-    public final void del(@NotNull String key) {
+    public final void del(String key) {
         client.del(key);
     }
 
-    public final String get(@NotNull String key) {
+    public final String get(String key) {
         return client.get(key);
     }
 
-    public final @NotNull List<String> getPic() throws Exception {
-        Set<String> keys = null;
+    public final List<String> getPic() throws Exception {
+        Set<String> keys;
         try {
             keys = client.keys("pic_*");
         } catch (Exception e) {
@@ -72,7 +63,7 @@ public class RedisStore {
         return list;
     }
 
-    public final @NotNull List<String> getFile() throws Exception {
+    public final List<String> getFile() throws Exception {
         Set<String> keys;
         try {
             keys = client.keys("file_*");
@@ -86,7 +77,7 @@ public class RedisStore {
         return list;
     }
 
-    public final @NotNull List<String> getPlain() throws Exception {
+    public final List<String> getPlain() throws Exception {
         Set<String> keys;
         try {
             keys = client.keys("plain_*");
@@ -101,7 +92,7 @@ public class RedisStore {
     }
 
 
-    public final void removePic(@NotNull String filename) throws Exception {
+    public final void removePic(String filename) throws Exception {
         Stream<String> stringStream;
         try {
             stringStream = client.keys("pic_*").stream().filter(v -> Objects.equals(v, filename));
@@ -121,7 +112,7 @@ public class RedisStore {
         stringStream.forEach(client::del);
     }
 
-    public final void removePlain(@NotNull String filename) throws Exception {
+    public final void removePlain(String filename) throws Exception {
         Stream<String> stringStream;
         try {
             stringStream = client.keys("plain_*").stream().filter(v -> Objects.equals(v, filename));
@@ -132,7 +123,7 @@ public class RedisStore {
 
     }
 
-    public final void useClient(@NotNull Function1<Jedis, Unit> function1) {
+    public final void useClient(Function1<Jedis, Unit> function1) {
         function1.invoke(client);
     }
 }

@@ -1,12 +1,12 @@
 package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.filter.MessageChannelFilter;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
 import com.erzbir.mirai.numeron.processor.factory.ExecutorFactory;
+import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;

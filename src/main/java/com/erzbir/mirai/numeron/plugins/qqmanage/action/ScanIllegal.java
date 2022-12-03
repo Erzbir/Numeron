@@ -39,11 +39,11 @@ public class ScanIllegal implements PluginRegister {
                         && GlobalConfig.illegalList.contains(event.getMessage().contentToString())
                         && event.getGroup().getBotPermission().getLevel() != 0)
                 .subscribeAlways(GroupMessageEvent.class, event -> {
-                    ((NormalMember)event.getSubject()).mute(30000);
+                    ((NormalMember) event.getSubject()).mute(30000);
                     Objects.requireNonNull(bot.getFriend(GlobalConfig.master))
                             .sendMessage(new PlainText("群: " + event.getGroup().getId() + "\n")
-                                    .plus( "发送人: " + event.getSender().getId() + "\n")
+                                    .plus("发送人: " + event.getSender().getId() + "\n")
                                     .plus("消息: " + event.getMessage().contentToString()));
-        });
+                });
     }
 }

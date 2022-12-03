@@ -1,10 +1,10 @@
 package com.erzbir.mirai.numeron.configs;
 
-import com.erzbir.mirai.numeron.LogUtil.MiraiLogUtil;
 import com.erzbir.mirai.numeron.entity.BlackList;
 import com.erzbir.mirai.numeron.entity.GroupList;
 import com.erzbir.mirai.numeron.entity.IllegalList;
 import com.erzbir.mirai.numeron.entity.WhiteList;
+import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;

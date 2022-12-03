@@ -89,7 +89,7 @@ public class Game {
         userData.meiLi += addMeiLi;
         userData.coins += addCoins;
         redisStore.set("user:data:" + member.getId(), User.toJson(userData), -1L);
-        toMsg.append(Image.Builder.newBuilder(uploadImage.getImageId()).build());
+        toMsg.append(Image.Builder.newBuilder(uploadImage.getImageId()).build()).append("\n");
         toMsg.append(new PlainText("昵称: " + member.getNick() + "\n"));
         toMsg.append(new PlainText("账号: " + member.getId() + "\n"));
         toMsg.append(new PlainText("排行: 第 " + rank + " 位签到\n"));
