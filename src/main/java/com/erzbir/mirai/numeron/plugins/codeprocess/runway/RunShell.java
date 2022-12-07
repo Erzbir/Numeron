@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Erzbir
@@ -31,7 +32,7 @@ public class RunShell extends RunCode {
     }
 
     @Override
-    public String execute(String code) throws IOException {
+    public String execute(String code) throws IOException, ExecutionException, InterruptedException {
         File file;
         if (!(file = new File(codeDir)).exists()) {
             file.mkdirs();
@@ -55,12 +56,18 @@ public class RunShell extends RunCode {
         Process process;
         String result;
         try {
-            process = Runtime.getRuntime().exec(String.format("%s %s", executable, of), null, file);
+            process = Runtime.getRuntime().exec(String.format("%s %s", executable, filename), null, file);
             result = CodeUtils.readResult(process, 30, "sh");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            result = e.getMessage();
         } finally {
-            Files.delete(of);
+            new Thread(() -> {
+                try {
+                    Files.delete(of);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
         return result;
     }

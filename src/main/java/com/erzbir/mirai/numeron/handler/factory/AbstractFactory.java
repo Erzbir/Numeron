@@ -1,6 +1,6 @@
-package com.erzbir.mirai.numeron.processor.factory;
+package com.erzbir.mirai.numeron.handler.factory;
 
-import com.erzbir.mirai.numeron.processor.executor.AbstractMethodExecutor;
+import com.erzbir.mirai.numeron.handler.executor.AbstractMethodExecutor;
 
 import java.lang.annotation.Annotation;
 

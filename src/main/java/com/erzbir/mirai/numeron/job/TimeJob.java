@@ -1,42 +1,63 @@
 package com.erzbir.mirai.numeron.job;
 
+import cn.hutool.cron.Scheduler;
 import cn.hutool.cron.pattern.CronPattern;
-import cn.hutool.cron.task.CronTask;
-import cn.hutool.cron.task.Task;
+import com.erzbir.mirai.numeron.job.inter.STask;
+import com.erzbir.mirai.numeron.job.inter.TimeAction;
+import lombok.Getter;
+import lombok.Setter;
+import net.mamoe.mirai.contact.Contact;
+
+import java.util.UUID;
 
 /**
  * @author Erzbir
  * @Date: 2022/12/2 10:44
+ * 这里使用装饰者模式
  */
-public class TimeJob implements Task {
-    private final String id;
-    private TimeAction action;
+@Getter
+@Setter
+public class TimeJob implements STask {
+    private CronPattern cron; // cron表达式
+    private Scheduler scheduler = new Scheduler(); // 使用
+    private String name;
+    private TimeAction task;
+    private Contact contact;
 
-    private TimeJob(String id) {
-        this.id = id;
+    private TimeJob(String name, CronPattern cron, TimeAction task) {
+        this.task = task;
+        this.cron = cron;
+        this.name = name;
+        scheduler.schedule(UUID.randomUUID().toString(), cron, this);
+        scheduler.setDaemon(true);
+        scheduler.setMatchSecond(true);
     }
 
-    public static CronTask createTask(String id, String cron) {
-        return new CronTask(id, CronPattern.of(cron), new TimeJob(id));
+    public static TimeJob createTask(String name, String cron, TimeAction task) {
+        return new TimeJob(name, CronPattern.of(cron), task);
     }
 
-    public static CronTask createTask(String id, String cron, TimeAction action) {
-        return new CronTask(id, CronPattern.of(cron), new TimeJob(id).setAction(action));
-    }
-
-    public static void main(String[] args) {
-    }
-
-    public TimeJob setAction(TimeAction action) {
-        this.action = action;
-        this.action.setId(id);
+    public TimeJob setAction(TimeAction task) {
+        this.task = task;
         return this;
     }
 
     @Override
     public void execute() {
-        if (action != null) {
-            action.run();
+        if (task != null) {
+            task.execute();
         }
+    }
+
+    public void start() {
+        scheduler.start();
+    }
+
+    public void stop() {
+        scheduler.stop();
+        scheduler = null;
+        cron = null;
+        task = null;
+        name = null;
     }
 }

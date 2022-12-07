@@ -1,26 +1,26 @@
-package com.erzbir.mirai.numeron.processor.excute;
+package com.erzbir.mirai.numeron.handler.excute;
 
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.MessageEvent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
  * @author Erzbir
- * @Date: 2022/11/28 10:30
+ * @Date: 2022/11/28 10:32
  */
-public class GroupMessageMethodExecute implements MethodExecute {
-    public static final GroupMessageMethodExecute INSTANCE = new GroupMessageMethodExecute();
+public class MessageMethodExecute implements MethodExecute {
+    public static final MessageMethodExecute INSTANCE = new MessageMethodExecute();
 
-    private GroupMessageMethodExecute() {
+    private MessageMethodExecute() {
 
     }
 
     @Override
     public void execute(Method method, Object bean, EventChannel<BotEvent> channel) {
-        channel.subscribeAlways(GroupMessageEvent.class, event -> {
+        channel.subscribeAlways(MessageEvent.class, event -> {
             try {
                 method.invoke(bean, event);
             } catch (IllegalAccessException | InvocationTargetException e) {

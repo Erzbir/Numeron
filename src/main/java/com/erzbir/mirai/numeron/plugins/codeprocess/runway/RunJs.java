@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Erzbir
@@ -31,28 +32,32 @@ public class RunJs extends RunCode {
     }
 
     @Override
-    public String execute(String code) throws IOException {
+    public String execute(String code) throws IOException, ExecutionException, InterruptedException {
         File file;
         if (!(file = new File(codeDir)).exists()) {
             file.mkdirs();
         }
-        String id = UUID.randomUUID().toString().replace("-", "");
-        String filename = id + ".js";
+        String filename = UUID.randomUUID().toString().replace("-", "") + ".js";
         Path of = Path.of(codeDir, filename);
         try (FileWriter fileWriter = new FileWriter(of.toFile())) {
             fileWriter.write(code);
             fileWriter.flush();
         }
-
         Process process;
         String result;
         try {
             process = Runtime.getRuntime().exec(String.format("node %s", filename), null, file);
             result = CodeUtils.readResult(process, 30, "js");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            result = e.getMessage();
         } finally {
-            Files.delete(of);
+            new Thread(() -> {
+                try {
+                    Files.delete(of);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
         return result;
     }

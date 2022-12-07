@@ -1,11 +1,11 @@
 package com.erzbir.mirai.numeron.processor;
 
 import com.erzbir.mirai.numeron.filter.MessageChannelFilter;
+import com.erzbir.mirai.numeron.handler.factory.ExecutorFactory;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
-import com.erzbir.mirai.numeron.processor.factory.ExecutorFactory;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
@@ -76,10 +76,9 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
         channel = bot.getEventChannel();
         MiraiLogUtil.verbose("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> {
-            Object bean = context.getBean(k);
-            String name = bean.getClass().getName();
+            String name = v.getClass().getName();
             MiraiLogUtil.debug("扫瞄到 " + name);
-            List.of(bean.getClass().getDeclaredMethods()).forEach(method -> {
+            List.of(v.getClass().getDeclaredMethods()).forEach(method -> {
                 Stream<Annotation> annotationStream = Arrays.stream(method.getAnnotations())
                         .filter(annotation -> annotation instanceof GroupMessage
                                 || annotation instanceof UserMessage
@@ -89,8 +88,8 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                             .replaceAll("\\[", "(")
                             .replaceAll("]", ")");
                     MiraiLogUtil.verbose("开始注册处理方法 " + name + "." + method.getName() + s);
-                    execute(bean, method, toFilter(channel, annotation), annotation);
-                    MiraiLogUtil.info(bean.getClass().getName() + "." + method.getName() + s + " 处理方法注册完毕");
+                    execute(v, method, toFilter(channel, annotation), annotation);
+                    MiraiLogUtil.info(name + "." + method.getName() + s + " 处理方法注册完毕");
                 });
             });
         });

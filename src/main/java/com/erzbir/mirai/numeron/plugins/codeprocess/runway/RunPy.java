@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Erzbir
@@ -31,28 +32,33 @@ public class RunPy extends RunCode {
     }
 
     @Override
-    public String execute(String code) throws IOException {
+    public String execute(String code) throws IOException, ExecutionException, InterruptedException {
         File file;
         if (!(file = new File(codeDir)).exists()) {
             file.mkdirs();
         }
-        String id = UUID.randomUUID().toString().replace("-", "");
-        String filename = id + ".py";
+        String filename = UUID.randomUUID().toString().replace("-", "") + ".py";
         Path of = Path.of(codeDir, filename);
         try (FileWriter fileWriter = new FileWriter(of.toFile())) {
             fileWriter.write(code);
             fileWriter.flush();
         }
-        String r = null;
+        String result;
         Process process;
         try {
             process = Runtime.getRuntime().exec(String.format("python3.11 %s", filename), null, file);
-            r = CodeUtils.readResult(process, 30, "py");
+            result = CodeUtils.readResult(process, 30, "py");
         } catch (Exception e) {
-            e.printStackTrace();
+            result = e.getMessage();
         } finally {
-            Files.delete(of);
+            new Thread(() -> {
+                try {
+                    Files.delete(of);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
-        return r;
+        return result;
     }
 }
