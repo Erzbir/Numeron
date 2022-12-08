@@ -60,4 +60,12 @@ public class TimeJob implements STask {
         task = null;
         name = null;
     }
+
+    public void stop(boolean clean) {
+        scheduler.stop(clean);
+        scheduler = null;
+        cron = null;
+        task = null;
+        name = null;
+    }
 }

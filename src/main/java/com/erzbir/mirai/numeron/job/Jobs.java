@@ -15,22 +15,33 @@ public class Jobs {
     private static final HashMap<String, HashMap<String, TimeJob>> JOBS = new HashMap<>();
 
     public static void add(TimeJob task) {
-        System.out.println(task.getTask().getClass().getName());
         HashMap<String, TimeJob> stringTimeJobHashMap = JOBS.computeIfAbsent(task.getTask().getClass().getName(), k -> new HashMap<>());
-        stringTimeJobHashMap.put(task.getName(), task);
-        System.out.println(task.getName());
+        Class<? extends TimeAction> aClass = task.getTask().getClass();
+        String name = task.getName();
+        if (exist(aClass, name)) {
+            remove(aClass, name);
+        }
+        stringTimeJobHashMap.put(name, task);
         task.start();
     }
 
 
     public static void remove(Class<? extends TimeAction> id, String name) {
-        System.out.println(id.getName());
         JOBS.get(id.getName()).get(name).stop();
         JOBS.get(id.getName()).remove(name);
     }
 
     public static TimeJob get(Class<? extends TimeAction> id, String name) {
         return JOBS.get(id.getName()).get(name);
+    }
+
+    private static boolean exist(Class<? extends TimeAction> id, String name) {
+        return JOBS.get(id.getName()).get(name) != null;
+    }
+
+
+    public static void clean() {
+        JOBS.forEach((k, v) -> v.forEach((h, o) -> o.stop(true)));
     }
 
     public static String getString() {
