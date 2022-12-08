@@ -15,11 +15,14 @@ import java.util.stream.Stream;
  * @author Erzbir
  * @Date: 2022/11/30 10:32
  */
-public class RedisStore {
+public final class RedisStore {
     private static final Object key = new Object();
+    private static final Jedis client = new Jedis("localhost", 6379);
     private static volatile RedisStore INSTANCE;
 
-    private final Jedis client = new Jedis("localhost", 6379);
+    private RedisStore() {
+
+    }
 
     public static RedisStore getInstance() {
         if (INSTANCE == null) {
@@ -32,7 +35,7 @@ public class RedisStore {
         return INSTANCE;
     }
 
-    public final void set(String key, String value, long seconds) {
+    public void set(String key, String value, long seconds) {
         if (seconds == -1L) {
             client.set(key, value);
         } else {
@@ -41,15 +44,15 @@ public class RedisStore {
 
     }
 
-    public final void del(String key) {
+    public void del(String key) {
         client.del(key);
     }
 
-    public final String get(String key) {
+    public String get(String key) {
         return client.get(key);
     }
 
-    public final List<String> getPic() throws Exception {
+    public List<String> getPic() throws Exception {
         Set<String> keys;
         try {
             keys = client.keys("pic_*");
@@ -63,7 +66,7 @@ public class RedisStore {
         return list;
     }
 
-    public final List<String> getFile() throws Exception {
+    public List<String> getFile() throws Exception {
         Set<String> keys;
         try {
             keys = client.keys("file_*");
@@ -77,7 +80,7 @@ public class RedisStore {
         return list;
     }
 
-    public final List<String> getPlain() throws Exception {
+    public List<String> getPlain() throws Exception {
         Set<String> keys;
         try {
             keys = client.keys("plain_*");
@@ -92,7 +95,7 @@ public class RedisStore {
     }
 
 
-    public final void removePic(String filename) throws Exception {
+    public void removePic(String filename) throws Exception {
         Stream<String> stringStream;
         try {
             stringStream = client.keys("pic_*").stream().filter(v -> Objects.equals(v, filename));
@@ -102,7 +105,7 @@ public class RedisStore {
         stringStream.forEach(client::del);
     }
 
-    public final void removeFile(@NotNull String filename) throws Exception {
+    public void removeFile(@NotNull String filename) throws Exception {
         Stream<String> stringStream;
         try {
             stringStream = client.keys("file_*").stream().filter(v -> Objects.equals(v, filename));
@@ -112,7 +115,7 @@ public class RedisStore {
         stringStream.forEach(client::del);
     }
 
-    public final void removePlain(String filename) throws Exception {
+    public void removePlain(String filename) throws Exception {
         Stream<String> stringStream;
         try {
             stringStream = client.keys("plain_*").stream().filter(v -> Objects.equals(v, filename));
@@ -123,7 +126,7 @@ public class RedisStore {
 
     }
 
-    public final void useClient(Function1<Jedis, Unit> function1) {
+    public void useClient(Function1<Jedis, Unit> function1) {
         function1.invoke(client);
     }
 }

@@ -22,9 +22,9 @@ import java.util.Set;
 @Processor
 @SuppressWarnings("unused")
 public class CommandAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
+    public final static HashMap<String, Set<String>> helpMap = new HashMap<>();
     public static ApplicationContext context;
     public static StringBuilder stringBuilder = new StringBuilder();
-    public static HashMap<String, Set<String>> helpMap = new HashMap<>();
 
     @Override
     public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {

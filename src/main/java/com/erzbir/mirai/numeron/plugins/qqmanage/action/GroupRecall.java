@@ -31,7 +31,7 @@ public class GroupRecall implements PluginRegister {
     public void register(Bot bot, EventChannel<BotEvent> channel) {
         channel.subscribeAlways(MessageRecallEvent.GroupRecall.class, event -> {
             if (preventRecall) {
-                MessageChain messageChain = DefaultStore.INSTANCE.find(event.getMessageIds()[0]);
+                MessageChain messageChain = DefaultStore.getInstance().find(event.getMessageIds()[0]);
                 assert messageChain != null;
                 if (!messageChain.contains(FileMessage.Key)) {
                     event.getGroup().sendMessage(new PlainText(event.getAuthor().getId() + "撤回了一条消息: ").plus("\n\n").plus(messageChain));

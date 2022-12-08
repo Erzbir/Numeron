@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.plugins.game.sign;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
-import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.plugins.game.sign.entity.User;
 import com.erzbir.mirai.numeron.processor.Command;
 import com.erzbir.mirai.numeron.store.RedisStore;
@@ -102,7 +102,7 @@ public class Game {
     }
 
     @Command(name = "签到", dec = "签到", help = "发送 \"签到\" 即可")
-    @Message(text = "签到", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
+    @GroupMessage(text = "签到", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
     public void sign(GroupMessageEvent event) throws IOException {
         event.getSubject().sendMessage(sign(event.getSender(), event.getGroup()));
     }

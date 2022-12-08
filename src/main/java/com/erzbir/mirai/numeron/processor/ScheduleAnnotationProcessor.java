@@ -11,7 +11,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @author Erzbir
  * @Date: 2022/12/7 10:08
  */
-public class ScheduleAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
+public final class ScheduleAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
     private ApplicationContext context;
 
     @Override

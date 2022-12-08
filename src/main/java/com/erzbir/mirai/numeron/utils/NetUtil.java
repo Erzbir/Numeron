@@ -17,6 +17,10 @@ import java.util.Objects;
 public class NetUtil {
     private static final OkHttpClient client = new OkHttpClient();
 
+    private NetUtil() {
+
+    }
+
     private static void downloadTo2(String url, File file) throws IOException {
         Request request = new Request.Builder().get().url(url).build();
         Response resp = client.newCall(request).execute();

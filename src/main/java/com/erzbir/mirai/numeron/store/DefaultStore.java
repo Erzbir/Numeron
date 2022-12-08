@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * @author Erzbir
  * @Date: 2022/11/30 10:40
  */
-public class DefaultStore {
+public final class DefaultStore {
     private static final Object key = new Object();
     private static final ExpiringMap<Integer, MessageChain> data =
             ExpiringMap.builder()
@@ -19,7 +19,7 @@ public class DefaultStore {
                     .expiration(86400L, TimeUnit.SECONDS)
                     .expirationPolicy(ExpirationPolicy.ACCESSED)
                     .variableExpiration().build();
-    public static volatile DefaultStore INSTANCE;
+    private static volatile DefaultStore INSTANCE;
 
     private DefaultStore() {
     }
@@ -35,12 +35,12 @@ public class DefaultStore {
         return INSTANCE;
     }
 
-    public final void save(int id, MessageChain message) {
+    public void save(int id, MessageChain message) {
         data.put(id, message);
     }
 
     @Nullable
-    public final MessageChain find(int id) {
+    public MessageChain find(int id) {
         return data.get(id);
     }
 }

@@ -10,6 +10,10 @@ import org.slf4j.Logger;
 public class MiraiLogUtil {
     private static final MiraiLogger logger = MiraiLogger.Factory.INSTANCE.create(Logger.class);
 
+    private MiraiLogUtil() {
+
+    }
+
     public static void info(String s) {
         logger.info(s);
     }
