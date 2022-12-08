@@ -60,7 +60,7 @@ save()</code>方法
 >
 > 比如在A方法上加上<code>@GroupMessage()</code>注解表示在监听到一个<code>GroupMessageEvent</code>
 > 后调用此方法进行对应处理(
-> 注意A方法所属的类必须加<code>@Listener</code>注解)
+`> 注意A方法所属的类必须加<code>@Listener</code>注解)
 
 例子:
 
@@ -130,8 +130,9 @@ public class Test {
 }
 ```
 
-<b>以上被标记的所有方法都会在<code>MessageAnnotationProcessor</code>中通过工厂生产出特定的方法执行类, 并在执行类的<code>
-execute()</code>中开起一个线程反射调用</b>
+<b>以上被标记的所有方法都会在<code>MessageAnnotationProcessor</code>中通过handle包的工厂生产出特定的方法执行类,
+并在方法执行类的<code>
+execute()</code>中反射调用</b>
 
 除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解(
 这个注解的作用除了继承<code>@Component</code>, 就只有标记作用了), 这时就可以自动执行事件过滤
@@ -146,7 +147,17 @@ execute()</code>中开起一个线程反射调用</b>
 
 1. <code>MessageAnnotationProcessor</code>:
 
-   获取所有消息处理方法上的注解, 根据注解的值将Channel进行过滤, 再通过反射调用到匹配到的方法
+   获取所有消息处理方法上的注解, 根据注解的值将Channel进行过滤, 再通过反射调用到匹配到的方法.
+
+   此类会用到handler包和listener包, handler包下实现过滤channel进行消息匹配.
+   > listener包下主要是注解, 用于标注方法的作用域(群消息事件/联系人消息事件/所有消息事件),
+   这些注解在`MessageAnnotationProcessor`
+   > 被扫瞄到, 通过反射获取到注解, 再通过handler下的工厂生产出对应的处理器(
+   > 规则过滤处理器/权限过滤处理器/消息匹配处理器)(策略模式).
+   >
+   > 执行这些处理器的处理方法后就会将监听出册到mirai中(一个注解就会注册一个对应的监听, 所以可以看成一个只精确匹配一种或一个消息事件的监听.
+   >
+   > 当监听到对应事件时mirai会执行监听中的方法, 而这个方法就是由我们自己实现的反射调用, 调用相应注解标注的方法
 
 2. <code>PluginAnnotationProcessor</code>:
    如果你不喜欢用注解来实现的方式, 你可以通过实现<code>PluginRegister</code>接口, 当你实现了<code>register()</code>方法后,
@@ -154,7 +165,7 @@ execute()</code>中开起一个线程反射调用</b>
    再扫瞄实现了<code>PluginRegister</code>接口的类并为他们注册, 同时为他们传递一个过滤后的<code>Channel</code>
 
    > 实现过滤的做法是: 将所有把实现了<code>ChannelFilterInter</code>的bean对象取出来,
-   执行过滤方法之后再放进去
+   执行过滤方法之后将过滤的channel传入
 
 权限控制/消息匹配/规则过滤 的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
 
