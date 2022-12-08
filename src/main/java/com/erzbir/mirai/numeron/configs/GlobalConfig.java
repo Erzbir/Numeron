@@ -20,7 +20,7 @@ public class GlobalConfig {
     public static HashSet<Long> blackList;
     public static HashSet<Long> whiteList;
 
-    public static String toStrings() {
+    public static String getInfo() {
         return "\tName: " + botName + "\n\n" +
                 "\tOS: " + OS + "\n\n" +
                 "\tHOME: " + HOME + "\n\n" +

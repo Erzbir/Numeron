@@ -1,7 +1,7 @@
 package com.erzbir.mirai.numeron.plugins.command;
 
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
-import com.erzbir.mirai.numeron.controller.BlackListAction;
+import com.erzbir.mirai.numeron.controller.BlackListManager;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -24,7 +24,7 @@ public class BlackCommandHandle {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2].replaceAll("@", ""));
         GlobalConfig.whiteList.remove(id);
-        BlackListAction.getInstance().add(id, null, event.getSender().getId());
+        BlackListManager.getInstance().add(id, null, event.getSender().getId());
         event.getSubject().sendMessage(id + " 添加到黑名单");
     }
 
@@ -33,7 +33,7 @@ public class BlackCommandHandle {
     public void remove(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2].replaceAll("@", ""));
-        BlackListAction.getInstance().remove(id);
+        BlackListManager.getInstance().remove(id);
         event.getSubject().sendMessage(id + " 已移出黑名单");
     }
 
@@ -41,7 +41,7 @@ public class BlackCommandHandle {
     @Message(text = "/query black\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void query(MessageEvent event) {
         event.getSubject().
-                sendMessage(BlackListAction.getInstance()
+                sendMessage(BlackListManager.getInstance()
                         .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }

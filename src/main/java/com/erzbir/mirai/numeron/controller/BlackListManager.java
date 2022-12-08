@@ -9,15 +9,15 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/13 17:27
  */
-public class BlackListAction implements Action {
-    private static BlackListAction INSTANCE;
+public class BlackListManager implements Action {
+    private static BlackListManager INSTANCE;
 
-    private BlackListAction() {
+    private BlackListManager() {
 
     }
 
-    public static BlackListAction getInstance() {
-        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new BlackListAction());
+    public static BlackListManager getInstance() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new BlackListManager());
     }
 
     @Override

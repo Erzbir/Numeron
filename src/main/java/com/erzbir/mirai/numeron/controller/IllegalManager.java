@@ -9,16 +9,15 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/13 17:30
  */
-public class IllegalAction implements Action {
+public class IllegalManager implements Action {
+    private static IllegalManager INSTANCE;
 
-    private static IllegalAction INSTANCE;
-
-    private IllegalAction() {
+    private IllegalManager() {
 
     }
 
-    public static IllegalAction getInstance() {
-        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new IllegalAction());
+    public static IllegalManager getInstance() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new IllegalManager());
     }
 
     @Override

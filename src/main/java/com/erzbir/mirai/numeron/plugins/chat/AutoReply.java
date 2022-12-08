@@ -49,6 +49,18 @@ public class AutoReply {
         e.getSubject().sendMessage("忘掉了");
     }
 
+
+    @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    public void sayGoodNight(MessageEvent e) {
+//        Image image = Contact.uploadImage(e.getSender(), new File("pix1001_4.jpg"));
+        e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
+    }
+
+    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    public void sayH(MessageEvent e) {
+        e.getSubject().sendMessage("你好");
+    }
+
     @UserMessage(text = "hi, 你好, 我不好, 哈哈", permission = PermissionType.ALL, filterRule = FilterRule.BLACK, messageRule = MessageRule.IN)
     public void test(UserMessageEvent e) {
         e.getSubject().sendMessage("笑了");
@@ -62,17 +74,6 @@ public class AutoReply {
     @UserMessage(text = "hi", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
     public void sayHello(UserMessageEvent e) {
         e.getSubject().sendMessage("hi");
-    }
-
-    @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
-    public void sayGoodNight(MessageEvent e) {
-//        Image image = Contact.uploadImage(e.getSender(), new File("pix1001_4.jpg"));
-        e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
-    }
-
-    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
-    public void sayH(MessageEvent e) {
-        e.getSubject().sendMessage("你好");
     }
 
     @GroupMessage(messageRule = MessageRule.CONTAINS, text = "小黑子", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)

@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 /**
  * @author Erzbir
  * @Date: 2022/11/18 14:32
+ * 所有消息事件
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

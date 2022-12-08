@@ -9,15 +9,15 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/22 00:42
  */
-public class GroupListAction implements Action {
-    private static GroupListAction INSTANCE;
+public class GroupListManager implements Action {
+    private static GroupListManager INSTANCE;
 
-    private GroupListAction() {
+    private GroupListManager() {
 
     }
 
-    public static GroupListAction getInstance() {
-        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new GroupListAction());
+    public static GroupListManager getInstance() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new GroupListManager());
     }
 
     @Override

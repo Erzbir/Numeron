@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 /**
  * @author Erzbir
  * @Date: 2022/11/18 14:27
+ * 一个标记, 用于获取bean
  */
 @Component
 @Retention(RetentionPolicy.RUNTIME)

@@ -9,15 +9,15 @@ import java.util.Objects;
  * @author Erzbir
  * @Date: 2022/11/13 23:13
  */
-public class WhiteListAction implements Action {
-    private static WhiteListAction INSTANCE;
+public class WhiteListManager implements Action {
+    private static WhiteListManager INSTANCE;
 
-    private WhiteListAction() {
+    private WhiteListManager() {
 
     }
 
-    public static WhiteListAction getInstance() {
-        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new WhiteListAction());
+    public static WhiteListManager getInstance() {
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new WhiteListManager());
     }
 
     @Override
