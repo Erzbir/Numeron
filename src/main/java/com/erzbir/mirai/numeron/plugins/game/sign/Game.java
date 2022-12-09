@@ -34,33 +34,34 @@ import java.util.Random;
 @SuppressWarnings("unused")
 public class Game {
     private final OkHttpClient client = new OkHttpClient();
+    private static final Calendar toDay = Calendar.getInstance();
+
+    private static final int addMeiLi = 3;
+    private static final int addTiLi = 10;
+    private static final int addCoinsBound = 100;
 
     private net.mamoe.mirai.message.data.Message sign(Member member, Group group) throws IOException {
         RedisStore redisStore = RedisStore.getInstance();
-        String avatarUrl = member.getAvatarUrl();
         MessageChainBuilder toMsg = new MessageChainBuilder();
-        Request request = new Request.Builder().get().url(avatarUrl).build();
-        Response response = client.newCall(request).execute();
-        InputStream inputStream = Objects.requireNonNull(response.body()).byteStream();
-        Image uploadImage = Contact.uploadImage(group, inputStream);
         // 从redis获取个人数据
         User userData = User.fromJson(redisStore.get("user:data:" + member.getId()));
         if (userData == null) {
             userData = new User(member.getId(), 0, 0, 0, 0, 0);
         }
-        int addMeiLi = 3;
-        int addTiLi = 10;
-        int addCoins = new Random().nextInt(100);
         // 累计签到计算
         long userLastSignIn = userData.lastSignIn;
         Calendar userLastSignInDay = new Calendar.Builder().setInstant(userLastSignIn).build();
+        if (userLastSignInDay.get(Calendar.YEAR) == toDay.get(Calendar.YEAR)
+                && userLastSignInDay.get(Calendar.DAY_OF_YEAR) == toDay.get(Calendar.DAY_OF_YEAR)) {
+            toMsg.append(new At(member.getId()));
+            toMsg.append(new PlainText(" 你今天已经签到过了哦"));
+            return toMsg.build();
+        }
         String prevSignIn = redisStore.get("user:last:signIn");
         if (prevSignIn == null) {
             prevSignIn = String.valueOf(new Date().getTime());
         }
         Calendar prevSignDay = new Calendar.Builder().setInstant(Long.parseLong(prevSignIn)).build();
-        Calendar toDay = Calendar.getInstance();
-        // 如果上次签到不是今天,重置签到计数器
         if (!(prevSignDay.get(Calendar.YEAR) == toDay.get(Calendar.YEAR)
                 && prevSignDay.get(Calendar.DAY_OF_YEAR) == toDay.get(Calendar.DAY_OF_YEAR))) {
             redisStore.set("user:signIn:rank", "0", -1L);
@@ -68,16 +69,10 @@ public class Game {
         if (userLastSignInDay.get(Calendar.YEAR) == toDay.get(Calendar.YEAR)
                 && userLastSignInDay.get(Calendar.DAY_OF_YEAR) == toDay.get(Calendar.DAY_OF_YEAR) - 1) {
             userData.alreadySignInDays += 1;
-            userData.lastSignIn = new Date().getTime();
-        } else if (userLastSignInDay.get(Calendar.YEAR) == toDay.get(Calendar.YEAR)
-                && userLastSignInDay.get(Calendar.DAY_OF_YEAR) == toDay.get(Calendar.DAY_OF_YEAR)) {
-            toMsg.append(new At(member.getId()));
-            toMsg.append(new PlainText(" 你今天已经签到过了哦"));
-            return toMsg.build();
         } else {
             userData.alreadySignInDays = 1;
-            userData.lastSignIn = new Date().getTime();
         }
+        userData.lastSignIn = new Date().getTime();
         if (redisStore.get("user:signIn:rank") == null) {
             redisStore.set("user:signIn:rank", "0", -1L);
         }
@@ -87,8 +82,10 @@ public class Game {
         redisStore.set("user:last:signIn", String.valueOf(new Date().getTime()), -1L);
         userData.tiLi += addTiLi;
         userData.meiLi += addMeiLi;
+        int addCoins = new Random().nextInt(addCoinsBound);
         userData.coins += addCoins;
         redisStore.set("user:data:" + member.getId(), User.toJson(userData), -1L);
+        Image uploadImage = getAvaImage(member.getAvatarUrl(), group);
         toMsg.append(Image.Builder.newBuilder(uploadImage.getImageId()).build()).append("\n");
         toMsg.append(new PlainText("昵称: " + member.getNick() + "\n"));
         toMsg.append(new PlainText("账号: " + member.getId() + "\n"));
@@ -96,9 +93,17 @@ public class Game {
         toMsg.append(new PlainText("累签: " + userData.alreadySignInDays + " 天\n"));
         toMsg.append(new PlainText("魅力: " + userData.meiLi + "\n"));
         toMsg.append(new PlainText("体力: " + userData.tiLi + "\n"));
-        toMsg.append(new PlainText("金币: " + addCoins + "\n"));
+        toMsg.append(new PlainText("获得金币: " + addCoins + "\n"));
         toMsg.append(new PlainText("金币余额: " + userData.coins));
         return toMsg.build();
+    }
+
+    private Image getAvaImage(String url, Group group) throws IOException {
+        Request request = new Request.Builder().get().url(url).build();
+        Response response = client.newCall(request).execute();
+        try (response; InputStream inputStream = Objects.requireNonNull(response.body()).byteStream()) {
+            return Contact.uploadImage(group, inputStream);
+        }
     }
 
     @Command(name = "签到", dec = "签到", help = "发送 \"签到\" 即可")
