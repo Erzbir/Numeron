@@ -11,7 +11,7 @@ import java.sql.DriverManager;
  * </p>
  */
 public class SqlConnection {
-    public static Connection connection;
+    private static Connection connection;
 
     static {
         try {
@@ -24,5 +24,9 @@ public class SqlConnection {
     }
 
     private SqlConnection() {
+    }
+
+    public static Connection getConnection() {
+        return connection;
     }
 }

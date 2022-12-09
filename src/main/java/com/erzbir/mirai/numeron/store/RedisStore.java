@@ -44,6 +44,15 @@ public final class RedisStore {
 
     }
 
+    private List<String> toList(Set<String> keys) {
+        List<String> list = new ArrayList<>();
+        if (keys != null) {
+            keys.forEach(v -> list.add(client.get(v)));
+        }
+        return list;
+    }
+
+
     public void del(String key) {
         client.del(key);
     }
@@ -52,46 +61,16 @@ public final class RedisStore {
         return client.get(key);
     }
 
-    public List<String> getPic() throws Exception {
-        Set<String> keys;
-        try {
-            keys = client.keys("pic_*");
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-        List<String> list = new ArrayList<>();
-        if (keys != null) {
-            keys.forEach(v -> list.add(client.get(v)));
-        }
-        return list;
+    public @NotNull List<String> getPic() {
+        return toList(client.keys("pic_*"));
     }
 
-    public List<String> getFile() throws Exception {
-        Set<String> keys;
-        try {
-            keys = client.keys("file_*");
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-        List<String> list = new ArrayList<>();
-        if (keys != null) {
-            keys.forEach(v -> list.add(client.get(v)));
-        }
-        return list;
+    public @NotNull List<String> getFile() {
+        return toList(client.keys("file_*"));
     }
 
-    public List<String> getPlain() throws Exception {
-        Set<String> keys;
-        try {
-            keys = client.keys("plain_*");
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-        List<String> list = new ArrayList<>();
-        if (keys != null) {
-            keys.forEach(v -> list.add(client.get(v)));
-        }
-        return list;
+    public @NotNull List<String> getPlain() {
+        return toList(client.keys("plain_*"));
     }
 
 
@@ -126,7 +105,7 @@ public final class RedisStore {
 
     }
 
-    public void useClient(Function1<Jedis, Unit> function1) {
+    public void useClient(@NotNull Function1<Jedis, Unit> function1) {
         function1.invoke(client);
     }
 }

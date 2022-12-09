@@ -1,11 +1,10 @@
 package com.erzbir.mirai.numeron.entity;
 
-import com.erzbir.mirai.numeron.sql.SqlConnection;
+import com.erzbir.mirai.numeron.utils.SqlUtil;
 import lombok.Getter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.HashSet;
 
@@ -26,16 +25,21 @@ public class IllegalList {
                     )
                 """;
         String findAll = "SELECT * FROM ILLEGALS";
-        ResultSet resultSet = null;
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            statement.executeUpdate(sql);
-            resultSet = statement.executeQuery(findAll);
-            while (resultSet.next()) {
-                String key = resultSet.getString("KEY");
-                INSTANCE.illegal.add(key);
-            }
+        try {
+            SqlUtil.listInit(sql, findAll, INSTANCE.illegal, "KEY", String.class);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    private final HashSet<String> illegal = new HashSet<>();
+
+    private boolean exist(String value) {
+        String sql = "SELECT * FROM ILLEGALS WHERE KEY = '" + value + "'";
+        ResultSet resultSet = SqlUtil.getResultSet(sql);
+        try {
+            return resultSet == null;
         } finally {
             try {
                 if (resultSet != null) {
@@ -47,53 +51,25 @@ public class IllegalList {
         }
     }
 
-    private final HashSet<String> illegal = new HashSet<>();
-
-    private boolean exist(String value) {
-        ResultSet resultSet;
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            String sql = "SELECT * FROM ILLEGALS WHERE KEY = '" + value + "'";
-            resultSet = statement.executeQuery(sql);
-            if (resultSet.next()) {
-                return true;
-            }
-            resultSet.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-        return false;
-    }
-
     private void addS(String value, Long id) {
         if (exist(value)) {
             return;
         }
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            String sql = "INSERT INTO ILLEGALS(KEY, OP_ID, OP_TIME) VALUES(" + value + ", " + id + ", '" + LocalTime.now() + "' " + ")";
-            statement.executeUpdate(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
+        String sql = "INSERT INTO ILLEGALS(KEY, OP_ID, OP_TIME) VALUES(" + value + ", " + id + ", '" + LocalTime.now() + "' " + ")";
+        SqlUtil.executeUpdateSQL(sql);
     }
 
     private void removeS(String value) {
         if (!exist(value)) {
             return;
         }
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            String sql = "DELETE FROM ILLEGALS WHERE KEY = " + value;
-            statement.executeUpdate(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
+        String sql = "DELETE FROM ILLEGALS WHERE KEY = " + value;
+        SqlUtil.executeUpdateSQL(sql);
     }
 
 
     private void addD(String value) {
-        illegal.remove(value);
+        illegal.add(value);
     }
 
     private void removeD(String value) {

@@ -1,11 +1,10 @@
 package com.erzbir.mirai.numeron.plugins.chat.entity;
 
-import com.erzbir.mirai.numeron.sql.SqlConnection;
+import com.erzbir.mirai.numeron.utils.SqlUtil;
 import lombok.Getter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalTime;
 import java.util.HashMap;
 
@@ -28,9 +27,9 @@ public class AutoReplyData {
                 """;
         String findAll = "SELECT * from CHAT";
         ResultSet resultSet = null;
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            statement.executeUpdate(sql);
-            resultSet = statement.executeQuery(findAll);
+        try {
+            SqlUtil.executeUpdateSQL(sql);
+            resultSet = SqlUtil.getResultSet(findAll);
             while (resultSet.next()) {
                 String key = resultSet.getString("KEY");
                 String answer = resultSet.getString("ANSWER");
@@ -78,25 +77,15 @@ public class AutoReplyData {
         if (exist(key)) {
             sql = "UPDATE CHAT SET ANSWER = '" + answer + "' WHERE KEY = '" + answer + "'";
         }
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            statement.executeUpdate(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
+        SqlUtil.executeUpdateSQL(sql);
     }
 
     private void removeS(String key, String answer) {
         if (!exist(key)) {
             return;
         }
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            String sql = "DELETE FROM CHAT WHERE KEY = '" + key + "' and ANSWER = '" + answer + "'";
-            statement.executeUpdate(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
+        String sql = "DELETE FROM CHAT WHERE KEY = '" + key + "' and ANSWER = '" + answer + "'";
+        SqlUtil.executeUpdateSQL(sql);
     }
 
     public String getAnswer(String key) {
@@ -104,18 +93,8 @@ public class AutoReplyData {
     }
 
     public boolean exist(String key) {
-        ResultSet resultSet;
-        try (Statement statement = SqlConnection.connection.createStatement()) {
-            String sql = "SELECT * FROM CHAT WHERE KEY = '" + key + "'";
-            resultSet = statement.executeQuery(sql);
-            if (resultSet.next()) {
-                return true;
-            }
-            resultSet.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-        return false;
+        String sql = "SELECT * FROM CHAT WHERE KEY = '" + key + "'";
+        ResultSet resultSet = SqlUtil.getResultSet(sql);
+        return resultSet == null;
     }
 }
