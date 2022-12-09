@@ -13,7 +13,6 @@ import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Erzbir
@@ -26,21 +25,21 @@ public class Processor {
 
     @Command(name = "指令执行", dec = "执行py代码", help = "/py\nprint(1)")
     @Message(text = "py\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
-    public void runPy(MessageEvent event) throws IOException, ExecutionException, InterruptedException {
+    private void runPy(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunPy.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
     }
 
     @Command(name = "指令执行", dec = "执行js代码", help = "/py\nconsole.log(1)")
     @Message(text = "js\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
-    public void runJs(MessageEvent event) throws IOException, ExecutionException, InterruptedException {
+    private void runJs(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunJs.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("js\\s+", "")));
     }
 
     @Command(name = "指令执行", dec = "执行shell代码", help = "sh\necho 1")
     @Message(text = "sh\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
-    public void runShell(MessageEvent event) throws IOException, ExecutionException, InterruptedException {
+    private void runShell(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunShell.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("sh\\s+", "")));
     }

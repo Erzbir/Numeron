@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.filter.permission;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.entity.WhiteList;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -16,7 +16,7 @@ public class WhitePermissionFilter extends AbstractPermissionFilter {
 
     @Override
     public Boolean filter(MessageEvent event, String text) {
-        return GlobalConfig.whiteList.contains(event.getSender().getId());
+        return WhiteList.INSTANCE.contains(event.getSender().getId());
     }
 
 }

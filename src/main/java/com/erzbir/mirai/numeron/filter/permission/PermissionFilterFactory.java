@@ -10,7 +10,7 @@ import static com.erzbir.mirai.numeron.enums.PermissionType.*;
  * @Date: 2022/11/26 17:00
  */
 public class PermissionFilterFactory implements FilterFactory {
-    public static PermissionFilterFactory INSTANCE = new PermissionFilterFactory();
+    public final static PermissionFilterFactory INSTANCE = new PermissionFilterFactory();
 
     private PermissionFilterFactory() {
 

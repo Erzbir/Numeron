@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.filesaver
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig
+import com.erzbir.mirai.numeron.configs.entity.WhiteList
 import com.erzbir.mirai.numeron.plugins.Plugin
 import com.erzbir.mirai.numeron.plugins.PluginRegister
 import com.erzbir.mirai.numeron.processor.Command
@@ -29,7 +29,9 @@ import kotlin.io.path.absolutePathString
 @Plugin
 object FileSaver : PluginRegister {
     private var autoPick = false
-    private val storeLocation = Path.of(GlobalConfig.botDir, "qq_files")
+    private const val mainDir = "erzbirnumeron/"
+    private const val botDir = mainDir + "bots/"
+    private val storeLocation = Path.of(botDir, "qq_files")
     private val picStoreLocation: Path = Path.of(storeLocation.absolutePathString(), "pic")
     private val fileStoreLocation: Path = Path.of(storeLocation.absolutePathString(), "file")
     private val audioStoreLocation: Path = Path.of(storeLocation.absolutePathString(), "audio")
@@ -98,7 +100,7 @@ object FileSaver : PluginRegister {
             }
             when {
                 content.startsWith("/fput") -> {
-                    if (!GlobalConfig.whiteList.contains(sender)) {
+                    if (!WhiteList.INSTANCE.contains(sender)) {
                         return@subscribeAlways
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
@@ -209,7 +211,7 @@ object FileSaver : PluginRegister {
                 }
 
                 content.startsWith("/fget") -> {
-                    if (!GlobalConfig.whiteList.contains(sender)) {
+                    if (!WhiteList.INSTANCE.contains(sender)) {
                         return@subscribeAlways
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
@@ -283,7 +285,7 @@ object FileSaver : PluginRegister {
                 }
 
                 content.startsWith("/fls") -> {
-                    if (!GlobalConfig.whiteList.contains(sender)) {
+                    if (!WhiteList.INSTANCE.contains(sender)) {
                         return@subscribeAlways
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
@@ -322,7 +324,7 @@ object FileSaver : PluginRegister {
                 }
 
                 content.startsWith("/auto_pick") -> {
-                    if (!GlobalConfig.whiteList.contains(sender)) {
+                    if (!WhiteList.INSTANCE.contains(sender)) {
                         return@subscribeAlways
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
@@ -344,7 +346,7 @@ object FileSaver : PluginRegister {
                 }
 
                 content.startsWith("/dl") -> {
-                    if (!GlobalConfig.whiteList.contains(sender)) {
+                    if (!WhiteList.INSTANCE.contains(sender)) {
                         return@subscribeAlways
                     }
                     val command = content.split(" ").filter { it.isNotEmpty() }
@@ -372,7 +374,7 @@ object FileSaver : PluginRegister {
                 }
 
                 content.startsWith("/frm") -> {
-                    if (!GlobalConfig.whiteList.contains(sender)) {
+                    if (!WhiteList.INSTANCE.contains(sender)) {
                         return@subscribeAlways
                     }
                     val command = content.split(" ")

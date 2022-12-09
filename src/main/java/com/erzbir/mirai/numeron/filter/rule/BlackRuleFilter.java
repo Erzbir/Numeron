@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.filter.rule;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.entity.BlackList;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -11,6 +11,6 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class BlackRuleFilter extends AbstractRuleFilter {
     @Override
     public Boolean filter(MessageEvent event, String text) {
-        return !GlobalConfig.blackList.contains(event.getSender().getId());
+        return !BlackList.INSTANCE.contains(event.getSender().getId());
     }
 }

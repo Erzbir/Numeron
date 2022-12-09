@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
  * 消息事件过滤类, 这个类计划作为一个子类
  */
 public class MessageChannelFilter {
-    public static MessageChannelFilter INSTANCE = new MessageChannelFilter();
+    public final static MessageChannelFilter INSTANCE = new MessageChannelFilter();
 
     private MessageChannelFilter() {
 
@@ -27,7 +27,6 @@ public class MessageChannelFilter {
 
     public Boolean filter(BotEvent event, Annotation annotation) {
         Class<? extends Annotation> aClass = annotation.annotationType();
-        assert aClass != null;
         MessageEvent event1 = (MessageEvent) event;
         boolean flag = GlobalConfig.isOn;
         FilterRule filterRule;

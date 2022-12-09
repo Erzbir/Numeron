@@ -1,9 +1,9 @@
 package com.erzbir.mirai.numeron.configs;
 
-import com.erzbir.mirai.numeron.entity.BlackList;
-import com.erzbir.mirai.numeron.entity.GroupList;
-import com.erzbir.mirai.numeron.entity.IllegalList;
-import com.erzbir.mirai.numeron.entity.WhiteList;
+import com.erzbir.mirai.numeron.configs.entity.BlackList;
+import com.erzbir.mirai.numeron.configs.entity.GroupList;
+import com.erzbir.mirai.numeron.configs.entity.IllegalList;
+import com.erzbir.mirai.numeron.configs.entity.WhiteList;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -34,12 +34,9 @@ import java.util.Scanner;
 //@PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
     private static final String botName = "Numeron";
+    private static final String OS = System.getProperty("os.name");
+    private static final String HOME = System.getenv("HOME");
     private static final String deviceInfo = "device.json";
-    private static final HashSet<String> illegalList; // 违禁词表
-    private static final HashSet<Long> groupList; // 启用的群
-    private static final HashSet<Long> blackList; // 黑名单
-    //@Value ("#{T(java.util.HashSet).addAll(T(java.util.Arrays).stream('${whiteList}'.split(',')))}")
-    private static final HashSet<Long> whiteList; // 白名单
     private static final String mainDir = "erzbirnumeron/"; // 文件存储目录
     private static final String configDir = mainDir + "config/"; // 配置文件目录
     private static final String configName = "BotConfig.properties"; // 配置文件名
@@ -55,16 +52,10 @@ public class BotConfig {
     static {
         init();
         MiraiLogUtil.info("开始载入数据库数据");
-        illegalList = IllegalList.INSTANCE.getIllegal();
-        whiteList = WhiteList.INSTANCE.getWhite();
-        blackList = BlackList.INSTANCE.getBlack();
-        groupList = GroupList.INSTANCE.getGroup();
-        whiteList.add(master);
-        GlobalConfig.botDir = botDir;
-        MiraiLogUtil.info("违禁词列表: " + illegalList.toString());
-        MiraiLogUtil.info("启用群列表: " + groupList.toString());
-        MiraiLogUtil.info("黑名单列表: " + blackList.toString());
-        MiraiLogUtil.info("白名单列表: " + whiteList.toString());
+        MiraiLogUtil.info("违禁词列表: " + IllegalList.INSTANCE);
+        MiraiLogUtil.info("启用群列表: " + GroupList.INSTANCE);
+        MiraiLogUtil.info("黑名单列表: " + BlackList.INSTANCE);
+        MiraiLogUtil.info("白名单列表: " + WhiteList.INSTANCE);
         MiraiLogUtil.info("载入数据成功\n");
     }
 
@@ -124,7 +115,7 @@ public class BotConfig {
         save();
     }
 
-    public static void save() {
+    private static void save() {
         MiraiLogUtil.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
@@ -158,16 +149,32 @@ public class BotConfig {
         }
     }
 
+    public static String getInfo() {
+        return "\tName: " + botName + "\n\n" +
+                "\tOS: " + OS + "\n\n" +
+                "\tHOME: " + HOME + "\n\n" +
+                "\tMaster: " + master + "\n\n" +
+                "\tIllegalList: " + IllegalList.INSTANCE + "\n\n" +
+                "\tGroupList: " + GroupList.INSTANCE + "\n\n" +
+                "\tBlackList: " + BlackList.INSTANCE + "\n\n" +
+                "\tWhiteList: " + WhiteList.INSTANCE + "\n\n";
+    }
+
+    public static boolean isMaster(Long id) {
+        return Objects.equals(id, master);
+    }
+
+    public static String getWORKDIR() {
+        return WORKDIR;
+    }
+
+    public static Long getMaster() {
+        return master;
+    }
+
     @Bean
-    public Bot bot() {
-        GlobalConfig.master = master;
-        GlobalConfig.blackList = blackList;
-        GlobalConfig.groupList = groupList;
-        GlobalConfig.illegalList = illegalList;
-        GlobalConfig.whiteList = whiteList;
-        GlobalConfig.botName = botName;
+    Bot bot() {
         WORKDIR = botDir + account;
-        GlobalConfig.workDir = WORKDIR;
         File file = new File(WORKDIR);
         if (!file.exists()) {
             if (file.mkdirs()) {

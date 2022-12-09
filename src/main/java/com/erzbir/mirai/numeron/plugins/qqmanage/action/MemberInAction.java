@@ -28,8 +28,9 @@ import java.util.HashMap;
  */
 @Plugin
 @Listener
+@SuppressWarnings("unused")
 public class MemberInAction implements PluginRegister {
-    HashMap<Long, Boolean> isOn = new HashMap<>();
+    private final HashMap<Long, Boolean> isOn = new HashMap<>();
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
@@ -58,7 +59,7 @@ public class MemberInAction implements PluginRegister {
 
     @Command(name = "入群欢迎", dec = "开关入群欢迎", help = "/welcome [true|false]")
     @GroupMessage(text = "/welcome\\s+?(true|false)", permission = PermissionType.WHITE, messageRule = MessageRule.REGEX)
-    public void onOff(GroupMessageEvent event) {
+    private void onOff(GroupMessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+?");
         isOn.put(event.getGroup().getId(), Boolean.parseBoolean(s[2]));
         event.getSubject().sendMessage(isOn.toString());

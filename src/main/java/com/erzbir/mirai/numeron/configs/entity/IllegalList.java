@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.entity;
+package com.erzbir.mirai.numeron.configs.entity;
 
 import com.erzbir.mirai.numeron.utils.SqlUtil;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.HashSet;
  */
 @Getter
 public class IllegalList {
-    public static IllegalList INSTANCE = new IllegalList();
+    public final static IllegalList INSTANCE = new IllegalList();
 
     static {
         String sql = """
@@ -67,6 +67,9 @@ public class IllegalList {
         SqlUtil.executeUpdateSQL(sql);
     }
 
+    public boolean contains(String s) {
+        return illegal.contains(s);
+    }
 
     private void addD(String value) {
         illegal.add(value);
@@ -84,5 +87,20 @@ public class IllegalList {
     public void remove(String value) {
         removeD(value);
         new Thread(() -> removeS(value)).start();
+    }
+
+    public String query(String s) {
+        if (s.equals("0")) {
+            return toString();
+        }
+        if (contains(s)) {
+            return "在黑名单中";
+        }
+        return "查无此人";
+    }
+
+    @Override
+    public String toString() {
+        return illegal.toString();
     }
 }

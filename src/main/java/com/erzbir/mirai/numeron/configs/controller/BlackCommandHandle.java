@@ -1,7 +1,7 @@
-package com.erzbir.mirai.numeron.plugins.command;
+package com.erzbir.mirai.numeron.configs.controller;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
-import com.erzbir.mirai.numeron.controller.BlackListManager;
+import com.erzbir.mirai.numeron.configs.entity.BlackList;
+import com.erzbir.mirai.numeron.configs.entity.WhiteList;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -20,28 +20,26 @@ public class BlackCommandHandle {
 
     @Command(name = "黑名单操作", dec = "拉入黑名单", help = "/ban user [@user] 或者 /ban user [qq]")
     @Message(text = "/ban user\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void ban(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2].replaceAll("@", ""));
-        GlobalConfig.whiteList.remove(id);
-        BlackListManager.getInstance().add(id, null, event.getSender().getId());
+    private void ban(MessageEvent event) {
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2].replaceAll("@", ""));
+        WhiteList.INSTANCE.remove(id);
+        WhiteList.INSTANCE.add(id, event.getSender().getId());
         event.getSubject().sendMessage(id + " 添加到黑名单");
     }
 
     @Command(name = "黑名单操作", dec = "移出黑名单", help = "/noban user [@user] 或者 /noban user [qq]")
     @Message(text = "/noban user\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void remove(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2].replaceAll("@", ""));
-        BlackListManager.getInstance().remove(id);
+    private void remove(MessageEvent event) {
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2].replaceAll("@", ""));
+        WhiteList.INSTANCE.remove(id);
         event.getSubject().sendMessage(id + " 已移出黑名单");
     }
 
     @Command(name = "黑名单操作", dec = "查询黑名单", help = "/query black [qq]")
     @Message(text = "/query black\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void query(MessageEvent event) {
+    private void query(MessageEvent event) {
         event.getSubject().
-                sendMessage(BlackListManager.getInstance()
+                sendMessage(BlackList.INSTANCE
                         .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }

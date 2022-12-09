@@ -13,7 +13,7 @@ import static com.erzbir.mirai.numeron.enums.MessageRule.*;
  * </p>
  */
 public class MessageFilterFactory implements FilterFactory {
-    public static MessageFilterFactory INSTANCE = new MessageFilterFactory();
+    public final static MessageFilterFactory INSTANCE = new MessageFilterFactory();
 
     private MessageFilterFactory() {
 
@@ -36,7 +36,7 @@ public class MessageFilterFactory implements FilterFactory {
         } else if (e.equals(REGEX)) {
             return RegexMessageFilter.INSTANCE;
         } else if (e.equals(IN)) {
-            return RegexMessageFilter.INSTANCE;
+            return InMessageFilter.INSTANCE;
         }
         return null;
     }

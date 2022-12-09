@@ -103,7 +103,7 @@ public class Game {
 
     @Command(name = "签到", dec = "签到", help = "发送 \"签到\" 即可")
     @GroupMessage(text = "签到", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
-    public void sign(GroupMessageEvent event) throws IOException {
+    private void sign(GroupMessageEvent event) throws IOException {
         event.getSubject().sendMessage(sign(event.getSender(), event.getGroup()));
     }
 }

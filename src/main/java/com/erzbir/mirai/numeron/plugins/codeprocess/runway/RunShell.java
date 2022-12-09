@@ -1,20 +1,18 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess.runway;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.plugins.codeprocess.CodeUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/30 08:17
  */
-public class RunShell extends RunCode {
+public class RunShell implements RunCode {
     private static final Object key = new Object();
-    private static final String codeDir = GlobalConfig.workDir + "/botCode/shell";
+    private static final String codeDir = workDir + "/botCode/shell";
     private static volatile RunShell INSTANCE;
 
     public static RunShell getInstance() {
@@ -29,7 +27,7 @@ public class RunShell extends RunCode {
     }
 
     @Override
-    public String execute(String code) throws IOException, ExecutionException, InterruptedException {
+    public String execute(String code) throws IOException {
         String id = UUID.randomUUID().toString().replace("-", "");
         String OS = System.getProperty("os.name");
         String executable;

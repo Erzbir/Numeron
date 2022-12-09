@@ -1,6 +1,6 @@
-package com.erzbir.mirai.numeron.plugins.command;
+package com.erzbir.mirai.numeron.configs.controller;
 
-import com.erzbir.mirai.numeron.controller.IllegalManager;
+import com.erzbir.mirai.numeron.configs.entity.IllegalList;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -19,27 +19,27 @@ public class IllegalCommandHandle {
 
     @Command(name = "违禁词操作", dec = "添加违禁词", help = "/add illegal [key]")
     @Message(text = "/add illegal\\s+?.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void add(MessageEvent event) {
+    private void add(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         String s = split[2];
-        IllegalManager.getInstance().add(s, null, event.getSender().getId());
+        IllegalList.INSTANCE.add(s, event.getSender().getId());
         event.getSubject().sendMessage("违禁词添加成功");
     }
 
     @Command(name = "违禁词操作", dec = "删除违禁词", help = "/remove illegal [key]")
     @Message(text = "/remove illegal\\s+?.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void remove(MessageEvent event) {
+    private void remove(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         String s = split[2];
-        IllegalManager.getInstance().remove(s);
+        IllegalList.INSTANCE.remove(s);
         event.getSubject().sendMessage("违禁词删除成功");
     }
 
     @Command(name = "违禁词操作", dec = "查询违禁词", help = "/query illegal [key]")
     @Message(text = "/query illegal\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void query(MessageEvent event) {
+    private void query(MessageEvent event) {
         event.getSubject().
-                sendMessage(IllegalManager.getInstance()
+                sendMessage(IllegalList.INSTANCE
                         .query(event.getMessage().contentToString().split("\\s+")[2]));
     }
 }

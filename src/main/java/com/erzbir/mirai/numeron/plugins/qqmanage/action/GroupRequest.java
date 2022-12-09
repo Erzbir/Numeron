@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.entity.BlackList;
 import com.erzbir.mirai.numeron.plugins.Plugin;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import net.mamoe.mirai.Bot;
@@ -22,7 +22,7 @@ public class GroupRequest implements PluginRegister {
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
-        channel.filter(f -> f instanceof MemberJoinRequestEvent event && !GlobalConfig.blackList.contains(event.getFromId()))
+        channel.filter(f -> f instanceof MemberJoinRequestEvent event && !BlackList.INSTANCE.contains(event.getFromId()))
                 .subscribeAlways(MemberJoinRequestEvent.class, event -> {
                     Group group = event.getGroup();
                     if (group != null) {

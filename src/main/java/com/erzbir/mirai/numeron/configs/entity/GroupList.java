@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.entity;
+package com.erzbir.mirai.numeron.configs.entity;
 
 import com.erzbir.mirai.numeron.utils.SqlUtil;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.HashSet;
  */
 @Getter
 public class GroupList {
-    public static GroupList INSTANCE = new GroupList();
+    public final static GroupList INSTANCE = new GroupList();
 
     static {
         String sql = """
@@ -34,6 +34,10 @@ public class GroupList {
     }
 
     private final HashSet<Long> group = new HashSet<>();
+
+    public boolean contains(Long id) {
+        return group.contains(id);
+    }
 
     private boolean exist(Long value) {
         String sql = "SELECT * FROM GROUPS WHERE ID = " + value;
@@ -85,5 +89,20 @@ public class GroupList {
     public void remove(Long value) {
         removeD(value);
         new Thread(() -> removeS(value)).start();
+    }
+
+    public String query(Long id) {
+        if (id == 0) {
+            return toString();
+        }
+        if (contains(id)) {
+            return "授权中";
+        }
+        return "没有授权";
+    }
+
+    @Override
+    public String toString() {
+        return group.toString();
     }
 }

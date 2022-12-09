@@ -1,6 +1,6 @@
-package com.erzbir.mirai.numeron.plugins.command;
+package com.erzbir.mirai.numeron.configs.controller;
 
-import com.erzbir.mirai.numeron.controller.WhiteListManager;
+import com.erzbir.mirai.numeron.configs.entity.WhiteList;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -17,26 +17,24 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class WhiteCommandHandle {
 
     @Message(text = "/permit user\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void permit2(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2].replaceAll("@", ""));
-        WhiteListManager.getInstance().remove(id);
-        WhiteListManager.getInstance().add(id, null, event.getSender().getId());
+    private void permit2(MessageEvent event) {
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2].replaceAll("@", ""));
+        WhiteList.INSTANCE.remove(id);
+        WhiteList.INSTANCE.add(id, event.getSender().getId());
         event.getSubject().sendMessage(id + " 已添加到白名单");
     }
 
     @Message(text = "/unpermit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void noPermit(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2]);
-        WhiteListManager.getInstance().remove(id);
+    private void noPermit(MessageEvent event) {
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2]);
+        WhiteList.INSTANCE.remove(id);
         event.getSubject().sendMessage(id + " 已移出白名单");
     }
 
     @Message(text = "/query white\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void query(MessageEvent event) {
+    private void query(MessageEvent event) {
         event.getSubject().
-                sendMessage(WhiteListManager.getInstance()
+                sendMessage(WhiteList.INSTANCE
                         .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }

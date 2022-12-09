@@ -42,7 +42,7 @@ public class GroupRecall implements PluginRegister {
 
     @Command(name = "防撤回", dec = "开关启防撤回", help = "/prevent_recall [true|false]")
     @Message(text = "/prevent_recall\\s+?(true|false)", permission = PermissionType.MASTER, messageRule = MessageRule.REGEX)
-    public void cantRecall(MessageEvent e) {
+    private void cantRecall(MessageEvent e) {
         preventRecall = Boolean.valueOf(e.getMessage().contentToString().split("\\s+")[1]);
         e.getSubject().sendMessage("防撤回功能 " + preventRecall);
     }

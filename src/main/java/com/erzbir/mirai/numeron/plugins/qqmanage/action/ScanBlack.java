@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.entity.BlackList;
 import com.erzbir.mirai.numeron.plugins.Plugin;
 import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import net.mamoe.mirai.Bot;
@@ -21,7 +22,7 @@ public class ScanBlack implements PluginRegister {
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
         bot.getEventChannel().filter(f -> GlobalConfig.isOn && f instanceof GroupMessageEvent event
-                        && GlobalConfig.blackList.contains(event.getSender().getId())
+                        && BlackList.INSTANCE.contains(event.getSender().getId())
                         && event.getGroup().getBotPermission().getLevel() != 0)
                 .subscribeAlways(GroupMessageEvent.class, event -> ((NormalMember) event.getSender()).kick("黑名单用户"));
     }

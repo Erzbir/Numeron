@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.filter.rule;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.entity.GroupList;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -14,7 +14,7 @@ public class NormalRuleFilter extends AbstractRuleFilter {
     @Override
     public Boolean filter(MessageEvent event, String text) {
         if (event instanceof GroupMessageEvent event1) {
-            return GlobalConfig.groupList.contains(event1.getGroup().getId());
+            return GroupList.INSTANCE.contains(event1.getGroup().getId());
         }
         return true;
     }

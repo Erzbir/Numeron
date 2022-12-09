@@ -1,20 +1,18 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess.runway;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.plugins.codeprocess.CodeUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/30 08:17
  */
-public class RunPy extends RunCode {
+public class RunPy implements RunCode {
     private static final Object key = new Object();
-    private static final String codeDir = GlobalConfig.workDir + "/botCode/py";
+    private static final String codeDir = workDir + "/botCode/py";
     private static volatile RunPy INSTANCE;
 
     public static RunPy getInstance() {
@@ -29,7 +27,7 @@ public class RunPy extends RunCode {
     }
 
     @Override
-    public String execute(String code) throws IOException, ExecutionException, InterruptedException {
+    public String execute(String code) throws IOException {
         String filename = UUID.randomUUID().toString().replace("-", "") + ".py";
         File file = CodeUtil.createCodeFile(codeDir, filename, code);
         return CodeUtil.execute("python3", filename, file);

@@ -16,12 +16,13 @@ import java.util.regex.Pattern;
  * @Date: 2022/12/5 10:37
  */
 @Listener
+@SuppressWarnings("unused")
 public class TimeEventListener {
 
     // time\s+?job\s+?(MessageAction|MuteAction|UnMuteAction)\s+?\S+?\s+?.*?\s+?enable
 
     @Message(text = "AllMessageTimeAction\\s+?(\\S+?)\\s+?(enable|disable)\\s*(\\S*)\\s*(.*)", messageRule = MessageRule.REGEX, permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
-    public void onMessage1(MessageEvent event) {
+    private void onMessage1(MessageEvent event) {
         Matcher matcher = Pattern.compile("AllMessageTimeAction\\s+?(\\S+?)\\s+?(enable|disable)\\s*(\\S*)\\s*?(.*)").matcher(event.getMessage().contentToString());
         String s1 = null;
         String s2 = "";
@@ -49,7 +50,7 @@ public class TimeEventListener {
     // time\s+?job\s+?(MessageAction|MuteAction|UnMuteAction)\s+?\S+?\s+?.*?\s+?enable
 
     @Message(text = "asas", messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void onMessage3(MessageEvent event) {
+    private void onMessage3(MessageEvent event) {
         event.getSubject().sendMessage(Jobs.getString());
     }
 }

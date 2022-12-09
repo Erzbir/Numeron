@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
+import com.erzbir.mirai.numeron.configs.entity.GroupList;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -24,7 +24,7 @@ public class MuteCommand {
 
     @Command(name = "禁言操作", dec = "禁言一个人", help = "/mute [@user] [time] 或者 /mute [qq] [time]")
     @Message(text = "/mute\\s+?@?\\d+?\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void muteSingle(MessageEvent event) {
+    private void muteSingle(MessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+");
         long id;
         int time;
@@ -35,7 +35,7 @@ public class MuteCommand {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
             AtomicReference<NormalMember> member = new AtomicReference<>();
-            GlobalConfig.groupList.forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            GroupList.INSTANCE.getGroup().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
             if (member.get().getPermission().getLevel() < 1) {
                 member.get().mute(time);
             }
@@ -45,7 +45,7 @@ public class MuteCommand {
 
     @Command(name = "禁言操作", dec = "解禁一个人", help = "/unmute [@user] [time] 或者 /unmute [qq] [time]")
     @Message(text = "/unmute\\s+?@?\\d+?", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void unmuteSingle(MessageEvent event) {
+    private void unmuteSingle(MessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+");
         long id;
         int time;
@@ -56,7 +56,7 @@ public class MuteCommand {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
             AtomicReference<NormalMember> member = new AtomicReference<>();
-            GlobalConfig.groupList.forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            GroupList.INSTANCE.getGroup().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
             if (member.get().getPermission().getLevel() < 1) {
                 member.get().unmute();
             }
@@ -65,7 +65,7 @@ public class MuteCommand {
 
     @Command(name = "禁言操作", dec = "禁言群", help = "/mute group [id]")
     @Message(text = "/mute group\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void muteGroup(MessageEvent event) {
+    private void muteGroup(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
         Objects.requireNonNull(event.getBot().getGroup(id)).getSettings().setMuteAll(true);
@@ -73,7 +73,7 @@ public class MuteCommand {
 
     @Command(name = "禁言操作", dec = "解禁群", help = "/unmute [id]")
     @Message(text = "/unmute group\\s+?\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void unmuteGroup(MessageEvent event) {
+    private void unmuteGroup(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
         Objects.requireNonNull(event.getBot().getGroup(id)).getSettings().setMuteAll(false);

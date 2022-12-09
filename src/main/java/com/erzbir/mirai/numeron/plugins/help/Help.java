@@ -11,9 +11,10 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @Date: 2022/12/1 21:27
  */
 @Listener
+@SuppressWarnings("unused")
 public class Help {
     @Message(text = "/help", permission = PermissionType.ALL)
-    public void help(MessageEvent event) {
+    private void help(MessageEvent event) {
         event.getSubject().sendMessage(CommandAnnotationProcessor.stringBuilder.toString());
     }
 }

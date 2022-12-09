@@ -1,5 +1,6 @@
-package com.erzbir.mirai.numeron.plugins.command;
+package com.erzbir.mirai.numeron.configs.controller;
 
+import com.erzbir.mirai.numeron.configs.BotConfig;
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -24,7 +25,7 @@ public class OnOffCommandHandle implements PluginRegister {
 
     @Command(name = "开关机", dec = "关机", help = "/shutdown")
     @Message(text = "/shutdown", filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
-    public void shutdown(MessageEvent e) {
+    private void shutdown(MessageEvent e) {
         e.getSubject().sendMessage("已关机");
         GlobalConfig.isOn = false;
     }
@@ -33,7 +34,7 @@ public class OnOffCommandHandle implements PluginRegister {
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
         bot.getEventChannel().subscribeAlways(MessageEvent.class, event -> {
-            if (event.getMessage().contentToString().equals("/launch") && event.getSender().getId() == GlobalConfig.master) {
+            if (event.getMessage().contentToString().equals("/launch") && BotConfig.isMaster(event.getSender().getId())) {
                 GlobalConfig.isOn = true;
                 event.getSubject().sendMessage("已开机");
             }

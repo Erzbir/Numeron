@@ -1,7 +1,6 @@
-package com.erzbir.mirai.numeron.plugins.command;
+package com.erzbir.mirai.numeron.configs.controller;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
-import com.erzbir.mirai.numeron.controller.GroupListManager;
+import com.erzbir.mirai.numeron.configs.entity.GroupList;
 import com.erzbir.mirai.numeron.enums.FilterRule;
 import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
@@ -18,27 +17,23 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class GroupEnableCommandHandle {
 
     @Message(text = "/enable group\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void enable(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2]);
-        GroupListManager.getInstance().add(id, null, event.getSender().getId());
+    private void enable(MessageEvent event) {
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2]);
+        GroupList.INSTANCE.add(id, event.getSender().getId());
         event.getSubject().sendMessage("群: " + id + " 已授权");
-        System.out.println(GlobalConfig.groupList);
     }
 
     @Message(text = "/disable group\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void disable(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
-        long id = Long.parseLong(split[2]);
-        GroupListManager.getInstance().remove(id);
+    private void disable(MessageEvent event) {
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2]);
+        GroupList.INSTANCE.remove(id);
         event.getSubject().sendMessage("群: " + id + " 已取消授权");
-        System.out.println(GlobalConfig.groupList);
     }
 
     @Message(text = "/query group\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void query(MessageEvent event) {
+    private void query(MessageEvent event) {
         event.getSubject().
-                sendMessage(GroupListManager.getInstance()
+                sendMessage(GroupList.INSTANCE
                         .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }

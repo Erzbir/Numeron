@@ -1,10 +1,9 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess;
 
-import com.erzbir.mirai.numeron.configs.GlobalConfig;
-
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -13,7 +12,7 @@ import java.nio.file.Path;
  */
 public class CodeUtil {
     private static Charset getCharset() {
-        if (GlobalConfig.OS.startsWith("Windows")) {
+        if (System.getProperty("os.name").startsWith("Windows")) {
             return Charset.forName("GBK");
         }
         return StandardCharsets.UTF_8;
@@ -61,25 +60,32 @@ public class CodeUtil {
     public static String execute(String type, String filename, File file) {
         String result;
         try {
-            result = CodeUtil.readResult(Runtime.getRuntime().exec(type + " " + filename, null, file));
+            result = CodeUtil.readResult(Runtime.getRuntime().exec(type + " " + filename, null, file.getParentFile()));
         } catch (Exception e) {
             result = e.getMessage();
         } finally {
-            new Thread(file::delete).start();
+            new Thread(() -> {
+                try {
+                    Files.delete(file.getAbsoluteFile().toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
         return result;
     }
 
-    public static File createCodeFile(String dir, String filename, String code) {
+    public static File createCodeFile(String dir, String filename, String code) throws IOException {
         File file;
         if (!(file = new File(dir)).exists()) {
-            file.mkdirs();
+            if (!file.mkdirs()) {
+                throw new IOException("创建文件夹失败");
+            }
         }
-        try (FileWriter fileWriter = new FileWriter(Path.of(dir, filename).toFile())) {
+        file = Path.of(dir, filename).toFile();
+        try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(code);
             fileWriter.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return file;
     }

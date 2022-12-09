@@ -10,7 +10,7 @@ import static com.erzbir.mirai.numeron.enums.FilterRule.*;
  * @Date: 2022/11/26 16:30
  */
 public class RuleFilterFactory implements FilterFactory {
-    public static RuleFilterFactory INSTANCE = new RuleFilterFactory();
+    public final static RuleFilterFactory INSTANCE = new RuleFilterFactory();
 
     private RuleFilterFactory() {
 

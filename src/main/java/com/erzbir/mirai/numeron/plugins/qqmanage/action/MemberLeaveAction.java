@@ -21,8 +21,9 @@ import java.util.HashMap;
  */
 @Plugin
 @Listener
+@SuppressWarnings("unused")
 public class MemberLeaveAction implements PluginRegister {
-    HashMap<Long, Boolean> isOn = new HashMap<>();
+    private final HashMap<Long, Boolean> isOn = new HashMap<>();
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
@@ -34,7 +35,7 @@ public class MemberLeaveAction implements PluginRegister {
     }
 
     @GroupMessage(text = "/leave\\s+?feedback\\s+?(true|false)", permission = PermissionType.WHITE, messageRule = MessageRule.REGEX)
-    public void onOff(GroupMessageEvent event) {
+    private void onOff(GroupMessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+?");
         isOn.put(event.getGroup().getId(), Boolean.parseBoolean(s[2]));
         event.getSubject().sendMessage(isOn.toString());

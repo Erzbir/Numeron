@@ -16,7 +16,7 @@ import java.lang.annotation.Annotation;
  * @Date: 2022/11/28 01:03
  */
 public class ExecutorFactory implements AbstractFactory {
-    public static ExecutorFactory INSTANCE = new ExecutorFactory();
+    public final static ExecutorFactory INSTANCE = new ExecutorFactory();
 
     private ExecutorFactory() {
 

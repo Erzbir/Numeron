@@ -88,6 +88,7 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
                             .replaceAll("\\[", "(")
                             .replaceAll("]", ")");
                     MiraiLogUtil.verbose("开始注册处理方法 " + name + "." + method.getName() + s);
+                    method.setAccessible(true);
                     execute(v, method, toFilter(channel, annotation), annotation);
                     MiraiLogUtil.info(name + "." + method.getName() + s + " 处理方法注册完毕");
                 });
