@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.sql;
+package com.erzbir.mirai.numeron.store;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.sql.DriverManager;
  * @author Erzbir
  * @Date: 2022/11/20 00:37
  * <p>
- * 数据库操作工具类, 目前的实现非常难以维护, 目标是通过获取注解的值来执行sql语句并注入进变量, 并且通过扫瞄实现了特定接口的类来为他们创建表
+ * 数据库链接
  * </p>
  */
 public class SqlConnection {

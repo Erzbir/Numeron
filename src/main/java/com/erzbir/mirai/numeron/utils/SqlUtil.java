@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.utils;
 
-import com.erzbir.mirai.numeron.sql.SqlConnection;
+import com.erzbir.mirai.numeron.store.SqlConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,6 +11,7 @@ import java.util.Set;
 /**
  * @author Erzbir
  * @Date: 2022/12/9 18:11
+ * <p>数据库工具类</p>
  */
 public class SqlUtil {
     private final static Connection connection = SqlConnection.getConnection();

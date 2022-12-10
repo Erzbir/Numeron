@@ -13,6 +13,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/27 22:49
+ * <p>
+ * 黑名单的相关命令
+ * </p>
  */
 @Listener
 @SuppressWarnings("unused")

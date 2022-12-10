@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 /**
  * @author Erzbir
  * @Date: 2022/11/30 12:46
+ * <p>日志输出工具类</p>
  */
 public class MiraiLogUtil {
     private static final MiraiLogger logger = MiraiLogger.Factory.INSTANCE.create(Logger.class);

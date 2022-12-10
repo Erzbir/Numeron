@@ -1,14 +1,10 @@
 # Mirai-Numeron
 
-# <b>请给本项目点一个星吧!</b>
-
 ## 介绍:
 
 这是一个SpringBoot开发基于Mirai的QQ机器人.
 
 此项目也可作为java基础的实训项目
-
-这个项目的话只需要熟悉反射和会一点SpringBoot就可以了, 希望有个朋友能戳最后面的联系方式
 
 可以把这个项目当成一个<b>脚手架</b>来使用,
 
@@ -21,9 +17,9 @@
 
 三个消息处理注解:
 
-- <code>@Message</code> 可以标记在所有消息事件类型的处理方法上
-- <code>@GroupMessage</code> 标记在群消息事件处理的方法上
-- <code>@UserMessage</code> 标记在好友消息事件处理的方法上
+- <code>[@Message](src/main/java/com/erzbir/mirai/numeron/listener/massage/Message.java)</code> 可以标记在所有消息事件类型的处理方法上
+- <code>[@GroupMessage](src/main/java/com/erzbir/mirai/numeron/listener/massage/GroupMessage.java)</code> 标记在群消息事件处理的方法上
+- <code>[@UserMessage](src/main/java/com/erzbir/mirai/numeron/listener/massage/UserMessage.java)</code> 标记在联系人消息事件处理的方法上
 
 可以用消息处理注解做到什么?
 
@@ -33,12 +29,13 @@
 
 ## 说明:
 
-第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧, 在<code>BotConfig</code>类的<code>
+第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧,
+在<code>[BotConfig](src/main/java/com/erzbir/mirai/numeron/configs/BotConfig.java)</code>类的<code>
 save()</code>方法
 
 ### 此项目部分功能用到了redis, 请先下载安装redis, 否则无法使用相应功能
 
-<b>将所有QQ机器人功能写在plugins目录下</b>
+<b>将所有QQ机器人功能写在[plugins](src/main/java/com/erzbir/mirai/numeron/plugins)目录下</b>
 
 ### plugins包下实现的功能:
 
@@ -58,9 +55,11 @@ save()</code>方法
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 >
-> 比如在A方法上加上<code>@GroupMessage()</code>注解表示在监听到一个<code>GroupMessageEvent</code>
+>
+比如在A方法上加上<code>[@GroupMessage](src/main/java/com/erzbir/mirai/numeron/listener/massage/GroupMessage.java)</code>
+注解表示在监听到一个<code>GroupMessageEvent</code>
 > 后调用此方法进行对应处理(
-`> 注意A方法所属的类必须加<code>@Listener</code>注解)
+`> 注意A方法所属的类必须加<code>[@Listener](src/main/java/com/erzbir/mirai/numeron/listener/Listener.java)</code>注解)
 
 例子:
 
@@ -130,12 +129,15 @@ public class Test {
 }
 ```
 
-<b>以上被标记的所有方法都会在<code>MessageAnnotationProcessor</code>中通过handle包的工厂生产出特定的方法执行类,
+<b>
+以上被标记的所有方法都会在<code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>
+中通过handle包的工厂生产出特定的方法执行类,
 并在方法执行类的<code>
 execute()</code>中反射调用</b>
 
-除了以上方式, 你也可以实现<code>PluginRegister</code>接口, 并在实现类上打上<code>@Plugin</code>注解(
-这个注解的作用除了继承<code>@Component</code>, 就只有标记作用了), 这时就可以自动执行事件过滤
+除了以上方式,
+也可以实现<code>[PluginRegister](src/main/java/com/erzbir/mirai/numeron/plugins/PluginRegister.java)</code>接口,
+并在实现类上打上<code>[@Plugin](src/main/java/com/erzbir/mirai/numeron/plugins/Plugin.java)</code>注解, 这时就可以自动执行事件过滤
 
 ### 生成指令表:
 
@@ -143,15 +145,16 @@ execute()</code>中反射调用</b>
 
 ## 原理:
 
-在processor包下的两个类 <code>MessageAnnotationProcessor</code>和<code>PluginAnnotationProcessor</code>
+在processor包下的两个类 <code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>
+和<code>[PluginAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/PluginAnnotationProcessor.java)</code>
 
-1. <code>MessageAnnotationProcessor</code>:
+1. <code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>:
 
    获取所有消息处理方法上的注解, 根据注解的值将Channel进行过滤, 再通过反射调用到匹配到的方法.
 
    此类会用到handler包和listener包, handler包下实现过滤channel进行消息匹配.
    > listener包下主要是注解, 用于标注方法的作用域(群消息事件/联系人消息事件/所有消息事件),
-   这些注解在`MessageAnnotationProcessor`
+   这些注解在<code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>
    > 被扫瞄到, 通过反射获取到注解, 再通过handler下的工厂生产出对应的处理器(
    > 规则过滤处理器/权限过滤处理器/消息匹配处理器)(策略模式).
    >
@@ -159,19 +162,28 @@ execute()</code>中反射调用</b>
    >
    > 当监听到对应事件时mirai会执行监听中的方法, 而这个方法就是由我们自己实现的反射调用, 调用相应注解标注的方法
 
-2. <code>PluginAnnotationProcessor</code>:
-   如果你不喜欢用注解来实现的方式, 你可以通过实现<code>PluginRegister</code>接口, 当你实现了<code>register()</code>方法后,
+2. <code>[PluginAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/PluginAnnotationProcessor.java)</code>:
+   如果你不喜欢用注解来实现的方式,
+   你可以通过实现<code>[PluginRegister](src/main/java/com/erzbir/mirai/numeron/plugins/PluginRegister.java)</code>接口,
+   当你实现了<code>register()</code>方法后,
    这个类会先获取所有过滤器执行过滤方法,
-   再扫瞄实现了<code>PluginRegister</code>接口的类并为他们注册, 同时为他们传递一个过滤后的<code>Channel</code>
+   再扫瞄实现了<code>[PluginRegister](src/main/java/com/erzbir/mirai/numeron/plugins/PluginRegister.java)</code>
+   接口的类并为他们注册, 同时为他们传递一个过滤后的<code>Channel</code>
 
-   > 实现过滤的做法是: 将所有把实现了<code>ChannelFilterInter</code>的bean对象取出来,
+   > 实现过滤的做法是:
+   将所有把实现了<code>[ChannelFilterInter](src/main/java/com/erzbir/mirai/numeron/filter/ChannelFilterInter.java)</code>
+   的bean对象取出来,
    执行过滤方法之后将过滤的channel传入
 
-权限控制/消息匹配/规则过滤 的原理都是通过过滤<code>Channel</code>实现, 在<code>MessageAnnotationProcessor</code>中实现
+权限控制/消息匹配/规则过滤 的原理都是通过过滤<code>Channel</code>实现,
+在<code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>
+中实现
 
 ## 联系方式:
 
-email: 2978086497@qq.com
+email:
+
+- 2978086497@qq.com
 
 ## 博客:
 

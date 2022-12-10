@@ -17,6 +17,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/27 09:26
+ * <p>
+ * 开关机命令
+ * </p>
  */
 @Listener
 @Plugin

@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 /**
  * @author Erzbir
  * @Date: 2022/11/28 10:30
+ * <P>群消息处理方法</P>
  */
 public class GroupMessageMethodExecute implements MethodExecute {
     public static final GroupMessageMethodExecute INSTANCE = new GroupMessageMethodExecute();

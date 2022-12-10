@@ -25,7 +25,7 @@ import java.util.Scanner;
  * @author Erzbir
  * @Date: 2022/11/16 21:14
  * <p>
- * 配置类
+ * 配置类, 机器人的配置
  * </p>
  */
 @Configuration

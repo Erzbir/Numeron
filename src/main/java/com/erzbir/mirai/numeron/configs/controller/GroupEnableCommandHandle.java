@@ -11,6 +11,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/27 22:54
+ * <p>
+ * 群列表相关命令
+ * </p>
  */
 @Listener
 @SuppressWarnings("unused")

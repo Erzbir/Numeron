@@ -11,6 +11,9 @@ import java.util.HashSet;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 13:38
+ * <p>
+ * 白名单
+ * </p>
  */
 @Getter
 public class WhiteList {

@@ -11,6 +11,9 @@ import java.util.HashSet;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 13:29
+ * <p>
+ * 开启机器人的群
+ * </p>
  */
 @Getter
 public class GroupList {

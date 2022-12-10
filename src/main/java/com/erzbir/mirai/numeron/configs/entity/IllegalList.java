@@ -11,6 +11,9 @@ import java.util.HashSet;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 13:32
+ * <p>
+ * 违禁词
+ * </p>
  */
 @Getter
 public class IllegalList {
