@@ -33,12 +33,11 @@ import java.util.Random;
 @Listener
 @SuppressWarnings("unused")
 public class Game {
-    private final OkHttpClient client = new OkHttpClient();
     private static final Calendar toDay = Calendar.getInstance();
-
     private static final int addMeiLi = 3;
     private static final int addTiLi = 10;
     private static final int addCoinsBound = 100;
+    private final OkHttpClient client = new OkHttpClient();
 
     private net.mamoe.mirai.message.data.Message sign(Member member, Group group) throws IOException {
         RedisStore redisStore = RedisStore.getInstance();

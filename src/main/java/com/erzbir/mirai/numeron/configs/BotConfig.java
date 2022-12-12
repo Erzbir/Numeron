@@ -5,13 +5,9 @@ import com.erzbir.mirai.numeron.configs.entity.GroupList;
 import com.erzbir.mirai.numeron.configs.entity.IllegalList;
 import com.erzbir.mirai.numeron.configs.entity.WhiteList;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,10 +24,6 @@ import java.util.Scanner;
  * 配置类, 机器人的配置
  * </p>
  */
-@Configuration
-@Slf4j
-@ComponentScan(basePackages = "com.erzbir.mirai.numeron")
-//@PropertySource (value = "classpath:application.properties", encoding = "utf-8")
 public class BotConfig {
     private static final String botName = "Numeron";
     private static final String OS = System.getProperty("os.name");
@@ -44,8 +36,8 @@ public class BotConfig {
     private static Long master; // 主人
     private static Long account; // 帐号
     private static String password; // 密码
-    private static Bot bot; // 唯一bot实例
-    private static String WORKDIR; // 工作目录
+    private static final Bot bot; // 唯一bot实例
+    private static final String WORKDIR; // 工作目录
     private static BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
     private static BotConfiguration.MiraiProtocol miraiProtocol = BotConfiguration.MiraiProtocol.ANDROID_PAD;
 
@@ -57,6 +49,25 @@ public class BotConfig {
         MiraiLogUtil.info("黑名单列表: " + BlackList.INSTANCE);
         MiraiLogUtil.info("白名单列表: " + WhiteList.INSTANCE);
         MiraiLogUtil.info("载入数据成功\n");
+        WORKDIR = botDir + account;
+        File file = new File(WORKDIR);
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+                System.exit(-1);
+            }
+        }
+        bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
+            {
+                setWorkingDir(new File(WORKDIR)); // 工作目录
+                setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
+                setProtocol(miraiProtocol); // 登陆协议
+                fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
+            }
+        });
+    }
+
+    private BotConfig() {
+
     }
 
     public static Bot getBot() {
@@ -121,9 +132,7 @@ public class BotConfig {
         Properties properties;
         File file = new File(configDir);
         if (!file.exists()) {
-            if (!file.mkdir()) {
-                return;
-            }
+            file.mkdirs();
         }
         try {
             outputStream = new FileOutputStream(configDir + configName);
@@ -170,25 +179,5 @@ public class BotConfig {
 
     public static Long getMaster() {
         return master;
-    }
-
-    @Bean
-    Bot bot() {
-        WORKDIR = botDir + account;
-        File file = new File(WORKDIR);
-        if (!file.exists()) {
-            if (file.mkdirs()) {
-                return bot;
-            }
-        }
-        bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
-            {
-                setWorkingDir(new File(WORKDIR)); // 工作目录
-                setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
-                setProtocol(miraiProtocol); // 登陆协议
-                fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
-            }
-        });
-        return bot;
     }
 }

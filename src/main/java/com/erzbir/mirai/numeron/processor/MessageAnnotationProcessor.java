@@ -1,5 +1,7 @@
 package com.erzbir.mirai.numeron.processor;
 
+import com.erzbir.mirai.numeron.boot.classloder.AppContext;
+import com.erzbir.mirai.numeron.configs.BotConfig;
 import com.erzbir.mirai.numeron.filter.MessageChannelFilter;
 import com.erzbir.mirai.numeron.handler.factory.ExecutorFactory;
 import com.erzbir.mirai.numeron.listener.Listener;
@@ -11,11 +13,6 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -30,17 +27,10 @@ import java.util.stream.Stream;
  * 此类为消息处理类, 从bean容器中获取有特定注解的bean, 并根据方法上的注解执行 过滤channel/执行对应方法等
  * </p>
  */
-@Processor
 @SuppressWarnings("unused")
-public class MessageAnnotationProcessor implements ApplicationContextAware, ApplicationListener<ContextRefreshedEvent> {
-    public static ApplicationContext context;
+public class MessageAnnotationProcessor implements Processor {
     public static EventChannel<BotEvent> channel;
     public static Bot bot;
-
-    @Override
-    public void setApplicationContext(@NotNull ApplicationContext context) throws BeansException {
-        MessageAnnotationProcessor.context = context;
-    }
 
     /**
      * 通过过滤监听, 最终过滤到一个确定的事件, 过滤规则由注解标记
@@ -67,12 +57,11 @@ public class MessageAnnotationProcessor implements ApplicationContextAware, Appl
 
     /**
      * 这个方法是spring自动调用的, 用来扫瞄有规定注解的方法
-     *
-     * @param event the event to respond to
      */
     @Override
-    public void onApplicationEvent(@NotNull ContextRefreshedEvent event) {
-        bot = context.getBean(Bot.class);
+    public void onApplicationEvent() {
+        AppContext context = AppContext.INSTANT;
+        bot = BotConfig.getBot();
         channel = bot.getEventChannel();
         MiraiLogUtil.verbose("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> {

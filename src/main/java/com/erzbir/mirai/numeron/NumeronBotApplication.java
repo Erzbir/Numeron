@@ -1,15 +1,10 @@
 package com.erzbir.mirai.numeron;
 
-import com.erzbir.mirai.numeron.configs.BotConfig;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.erzbir.mirai.numeron.boot.Starter;
 
-@SpringBootApplication
 public class NumeronBotApplication {
-
     public static void main(String[] args) {
-        SpringApplication.run(BotConfig.class, args);
-        BotConfig.getBot().login();
+        Starter.boot();
         System.out.println("""
                 | \\ | |_   _ _ __ ___   ___ _ __ ___  _ __ \s
                 |  \\| | | | | '_ ` _ \\ / _ \\ '__/ _ \\| '_ \\\s

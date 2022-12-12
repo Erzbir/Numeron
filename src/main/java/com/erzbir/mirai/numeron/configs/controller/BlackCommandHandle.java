@@ -41,8 +41,6 @@ public class BlackCommandHandle {
     @Command(name = "黑名单操作", dec = "查询黑名单", help = "/query black [qq]")
     @Message(text = "/query black\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     private void query(MessageEvent event) {
-        event.getSubject().
-                sendMessage(BlackList.INSTANCE
-                        .query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
+        event.getSubject().sendMessage(BlackList.INSTANCE.query(Long.parseLong(event.getMessage().contentToString().split("\\s+")[2])));
     }
 }

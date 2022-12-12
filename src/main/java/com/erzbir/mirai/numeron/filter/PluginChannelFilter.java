@@ -14,6 +14,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * 插件消息事件过滤类
  */
 @Filter
+@SuppressWarnings("unused")
 public class PluginChannelFilter implements PluginChannelFilterInter {
     @Override
     public Boolean filter(BotEvent event) {
