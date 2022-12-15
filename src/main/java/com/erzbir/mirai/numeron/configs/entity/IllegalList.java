@@ -18,8 +18,9 @@ import java.util.HashSet;
 @Getter
 public class IllegalList {
     public final static IllegalList INSTANCE = new IllegalList();
+    private final HashSet<String> illegal = new HashSet<>();
 
-    static {
+    private IllegalList() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS ILLEGALS(
                     KEY BIGINT PRIMARY KEY NOT NULL,
@@ -29,14 +30,12 @@ public class IllegalList {
                 """;
         String findAll = "SELECT * FROM ILLEGALS";
         try {
-            SqlUtil.listInit(sql, findAll, INSTANCE.illegal, "KEY", String.class);
+            SqlUtil.listInit(sql, findAll, illegal, "KEY", String.class);
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-
-    private final HashSet<String> illegal = new HashSet<>();
 
     private boolean exist(String value) {
         String sql = "SELECT * FROM ILLEGALS WHERE KEY = '" + value + "'";

@@ -27,12 +27,12 @@ public class ScanIllegal implements PluginRegister {
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
-        channel.filter(f -> GlobalConfig.isOn && f instanceof GroupMessageEvent event
+        channel.filter(f -> GlobalConfig.OPEN && f instanceof GroupMessageEvent event
                         && IllegalList.INSTANCE.contains(event.getMessage().contentToString())
                         && event.getGroup().getBotPermission().getLevel() != 0)
                 .subscribeAlways(GroupMessageEvent.class, event -> {
                     ((NormalMember) event.getSubject()).mute(30000);
-                    Objects.requireNonNull(bot.getFriend(BotConfig.getMaster()))
+                    Objects.requireNonNull(bot.getFriend(BotConfig.INSTANCE.getMaster()))
                             .sendMessage(new PlainText("群: " + event.getGroup().getId() + "\n")
                                     .plus("发送人: " + event.getSender().getId() + "\n")
                                     .plus("消息: " + event.getMessage().contentToString()));

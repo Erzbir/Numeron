@@ -30,6 +30,7 @@ import java.util.Objects;
 /**
  * @author Erzbir
  * @Date: 2022/12/12 20:41
+ * 由群友提供kt代码, 我改为java代码
  */
 @Plugin
 public class FileSaver implements PluginRegister {

@@ -18,8 +18,9 @@ import java.util.HashSet;
 @Getter
 public class WhiteList {
     public final static WhiteList INSTANCE = new WhiteList();
+    private final HashSet<Long> white = new HashSet<>();
 
-    static {
+    private WhiteList() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS WHITES(
                     ID BIGINT PRIMARY KEY NOT NULL,
@@ -29,14 +30,12 @@ public class WhiteList {
                 """;
         String findAll = "SELECT * FROM WHITES";
         try {
-            SqlUtil.listInit(sql, findAll, INSTANCE.white, "ID", Long.class);
+            SqlUtil.listInit(sql, findAll, white, "ID", Long.class);
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-
-    private final HashSet<Long> white = new HashSet<>();
 
     public boolean contains(Long id) {
         return white.contains(id);

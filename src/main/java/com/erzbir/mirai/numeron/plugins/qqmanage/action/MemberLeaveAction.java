@@ -27,8 +27,8 @@ public class MemberLeaveAction implements PluginRegister {
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
-        bot.getEventChannel().filter(f -> GlobalConfig.isOn).subscribeAlways(MemberLeaveEvent.class, event -> {
-            if (isOn.get(event.getGroupId())) {
+        bot.getEventChannel().filter(f -> GlobalConfig.OPEN).subscribeAlways(MemberLeaveEvent.class, event -> {
+            if (isOn.containsKey(event.getGroupId())) {
                 event.getGroup().sendMessage(event.getMember().getNick() + " 离开了我们...");
             }
         });

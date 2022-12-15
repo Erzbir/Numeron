@@ -18,17 +18,17 @@ import java.lang.reflect.InvocationTargetException;
  * @Date: 2022/11/28 13:13
  * 消息事件过滤类, 这个类计划作为一个子类
  */
-public class MessageChannelFilter {
-    public final static MessageChannelFilter INSTANCE = new MessageChannelFilter();
+public class MessageFilterExecutor {
+    public final static MessageFilterExecutor INSTANCE = new MessageFilterExecutor();
 
-    private MessageChannelFilter() {
+    private MessageFilterExecutor() {
 
     }
 
     public Boolean filter(BotEvent event, Annotation annotation) {
         Class<? extends Annotation> aClass = annotation.annotationType();
         MessageEvent event1 = (MessageEvent) event;
-        boolean flag = GlobalConfig.isOn;
+        boolean flag = GlobalConfig.OPEN;
         FilterRule filterRule;
         MessageRule messageRule;
         String text;

@@ -19,8 +19,9 @@ import java.util.HashSet;
 @Getter
 public class BlackList {
     public final static BlackList INSTANCE = new BlackList();
+    private final HashSet<Long> black = new HashSet<>();
 
-    static {
+    private BlackList() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS BLACKS(
                     ID BIGINT PRIMARY KEY NOT NULL,
@@ -30,14 +31,12 @@ public class BlackList {
                 """;
         String findAll = "SELECT * from BLACKS";
         try {
-            SqlUtil.listInit(sql, findAll, INSTANCE.black, "ID", Long.class);
+            SqlUtil.listInit(sql, findAll, black, "ID", Long.class);
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-
-    private final HashSet<Long> black = new HashSet<>();
 
     private boolean exist(Long value) {
         String sql = "SELECT * FROM BLACKS WHERE ID = " + value;

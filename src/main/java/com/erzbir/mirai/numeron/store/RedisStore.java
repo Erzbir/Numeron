@@ -16,8 +16,8 @@ import java.util.stream.Stream;
  */
 public final class RedisStore {
     private static final Object key = new Object();
-    private static final JedisPooled client = new JedisPooled("localhost", 6379);
     private static volatile RedisStore INSTANCE;
+    private final JedisPooled client = new JedisPooled("localhost", 6379);
 
     private RedisStore() {
 

@@ -18,8 +18,9 @@ import java.util.HashSet;
 @Getter
 public class GroupList {
     public final static GroupList INSTANCE = new GroupList();
+    private final HashSet<Long> group = new HashSet<>();
 
-    static {
+    private GroupList() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS GROUPS(
                     ID BIGINT PRIMARY KEY NOT NULL,
@@ -29,14 +30,12 @@ public class GroupList {
                 """;
         String findAll = "SELECT * FROM GROUPS";
         try {
-            SqlUtil.listInit(sql, findAll, INSTANCE.group, "ID", Long.class);
+            SqlUtil.listInit(sql, findAll, group, "ID", Long.class);
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(0);
         }
     }
-
-    private final HashSet<Long> group = new HashSet<>();
 
     public boolean contains(Long id) {
         return group.contains(id);

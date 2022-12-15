@@ -15,7 +15,7 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class AppContext implements BeanFactory {
     public static final AppContext INSTANT = new AppContext();
-    private final static String packageName = "com.erzbir.mirai.numeron";
+    private static final String packageName = "com.erzbir.mirai.numeron";
     private final HashMap<String, Object> context = new HashMap<>();
 
     private AppContext() {

@@ -5,9 +5,9 @@ import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.plugins.Plugin;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,13 +36,14 @@ public class CommandAnnotationProcessor implements Processor {
     private void scanBeans(Object bean) {
         String name = bean.getClass().getName();
         MiraiLogUtil.debug("扫瞄到 " + name);
-        List.of(bean.getClass().getDeclaredMethods()).forEach(method -> {
+        for (Method method : bean.getClass().getDeclaredMethods()) {
             Command command = method.getDeclaredAnnotation(Command.class);
-            if (command != null) {
-                Set<String> set = helpMap.computeIfAbsent(command.name(), k -> new HashSet<>());
-                set.add(command.dec() + "\n" + command.help() + "\n");
+            if (command == null) {
+                return;
             }
-        });
+            Set<String> set = helpMap.computeIfAbsent(command.name(), k -> new HashSet<>());
+            set.add(command.dec() + "\n" + command.help() + "\n");
+        }
     }
 }
 

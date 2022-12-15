@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.configs.controller;
+package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
 import com.erzbir.mirai.numeron.configs.entity.BlackList;
 import com.erzbir.mirai.numeron.configs.entity.WhiteList;

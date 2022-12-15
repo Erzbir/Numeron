@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron;
 
 import com.erzbir.mirai.numeron.boot.Starter;
+import com.erzbir.mirai.numeron.plugins.terminalsend.TerminalScanner;
 
 public class NumeronBotApplication {
     public static void main(String[] args) {
@@ -11,6 +12,7 @@ public class NumeronBotApplication {
                 | |\\  | |_| | | | | | |  __/ | | (_) | | | |
                 |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|""".indent(1));
         System.out.println("欢迎使用Numeron!!!");
+        new Thread(new TerminalScanner()).start();
     }
 }
 

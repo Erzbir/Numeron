@@ -21,7 +21,7 @@ public class ScanBlack implements PluginRegister {
 
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
-        bot.getEventChannel().filter(f -> GlobalConfig.isOn && f instanceof GroupMessageEvent event
+        bot.getEventChannel().filter(f -> GlobalConfig.OPEN && f instanceof GroupMessageEvent event
                         && BlackList.INSTANCE.contains(event.getSender().getId())
                         && event.getGroup().getBotPermission().getLevel() != 0)
                 .subscribeAlways(GroupMessageEvent.class, event -> ((NormalMember) event.getSender()).kick("黑名单用户"));

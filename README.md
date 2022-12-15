@@ -42,14 +42,17 @@ save()</code>方法
 - 全体禁言
 - 黑名单检测
 - 违禁词检测
-- 指令添加关键词回复
+- 精准问答
 - 防撤回
+- 入群欢迎/退群反馈
 - 自动保存图片和文件
 - 发送指定图片和文件 / 保存指定消息(图片等)
 - 从指定url下载文件
 - 代码和命令执行, 支持JavaScript/Python/Shell
-- 定时消息推送 / 定时禁言和解禁言 / 其他定时任务
+- 群签到功能
+- 定时消息推送
 - 发送/help获取自动生成的命令表(在方法上加上`@Command`注解生成)
+- 在命令行发送消息
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 >
@@ -127,11 +130,10 @@ public class Test {
 }
 ```
 
-<b>
-以上被标记的所有方法都会在<code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>
-中通过handle包的工厂生产出特定的方法执行类,
+以上被标记的所有方法都会在</b><code>[MessageAnnotationProcessor](src/main/java/com/erzbir/mirai/numeron/processor/MessageAnnotationProcessor.java)</code>
+<b>中通过handle包的工厂生产出特定的方法执行类,
 并在方法执行类的<code>
-execute()</code>中反射调用</b>
+execute()</code>中反射调用, 并为此方法在mirai中注册一个监听</b>
 
 除了以上方式,
 也可以实现<code>[PluginRegister](src/main/java/com/erzbir/mirai/numeron/plugins/PluginRegister.java)</code>接口,

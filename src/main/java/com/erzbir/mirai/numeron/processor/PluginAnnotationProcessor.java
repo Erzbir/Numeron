@@ -27,7 +27,7 @@ public class PluginAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANT;
-        bot = BotConfig.getBot();
+        bot = BotConfig.INSTANCE.getBot();
         channel = bot.getEventChannel();
         MiraiLogUtil.info("开始过滤插件监听......");
         // 扫瞄插件过滤器

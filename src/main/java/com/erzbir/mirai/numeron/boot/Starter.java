@@ -27,6 +27,6 @@ public class Starter {
             e.printStackTrace();
             System.exit(-1);
         }
-        BotConfig.getBot().login();
+        BotConfig.INSTANCE.getBot().login();
     }
 }

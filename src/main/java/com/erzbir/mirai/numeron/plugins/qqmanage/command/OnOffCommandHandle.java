@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.configs.controller;
+package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
 import com.erzbir.mirai.numeron.configs.BotConfig;
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
@@ -30,15 +30,15 @@ public class OnOffCommandHandle implements PluginRegister {
     @Message(text = "/shutdown", filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     private void shutdown(MessageEvent e) {
         e.getSubject().sendMessage("已关机");
-        GlobalConfig.isOn = false;
+        GlobalConfig.OPEN = false;
     }
 
     @Command(name = "开关机", dec = "开机", help = "/launch")
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
         bot.getEventChannel().subscribeAlways(MessageEvent.class, event -> {
-            if (event.getMessage().contentToString().equals("/launch") && BotConfig.isMaster(event.getSender().getId())) {
-                GlobalConfig.isOn = true;
+            if (event.getMessage().contentToString().equals("/launch") && BotConfig.INSTANCE.isMaster(event.getSender().getId())) {
+                GlobalConfig.OPEN = true;
                 event.getSubject().sendMessage("已开机");
             }
         });

@@ -16,6 +16,6 @@ public class MasterPermissionFilter extends AbstractPermissionFilter {
 
     @Override
     public Boolean filter(MessageEvent event, String text) {
-        return BotConfig.isMaster(event.getSender().getId());
+        return BotConfig.INSTANCE.isMaster(event.getSender().getId());
     }
 }

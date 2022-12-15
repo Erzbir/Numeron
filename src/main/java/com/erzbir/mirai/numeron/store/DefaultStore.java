@@ -13,13 +13,13 @@ import java.util.concurrent.TimeUnit;
  */
 public final class DefaultStore {
     private static final Object key = new Object();
-    private static final ExpiringMap<Integer, MessageChain> data =
+    private static volatile DefaultStore INSTANCE;
+    private final ExpiringMap<Integer, MessageChain> data =
             ExpiringMap.builder()
                     .maxSize(1000)
                     .expiration(86400L, TimeUnit.SECONDS)
                     .expirationPolicy(ExpirationPolicy.ACCESSED)
                     .variableExpiration().build();
-    private static volatile DefaultStore INSTANCE;
 
     private DefaultStore() {
     }

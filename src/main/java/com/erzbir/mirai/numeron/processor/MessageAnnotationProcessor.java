@@ -2,7 +2,7 @@ package com.erzbir.mirai.numeron.processor;
 
 import com.erzbir.mirai.numeron.boot.classloder.AppContext;
 import com.erzbir.mirai.numeron.configs.BotConfig;
-import com.erzbir.mirai.numeron.filter.MessageChannelFilter;
+import com.erzbir.mirai.numeron.filter.MessageFilterExecutor;
 import com.erzbir.mirai.numeron.handler.factory.ExecutorFactory;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
@@ -17,8 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * @author Erzbir
@@ -41,7 +39,7 @@ public class MessageAnnotationProcessor implements Processor {
      */
     @NotNull
     private <E extends Annotation> EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> channel, E annotation) {
-        return channel.filter(event -> MessageChannelFilter.INSTANCE.filter(event, annotation));
+        return channel.filter(event -> MessageFilterExecutor.INSTANCE.filter(event, annotation));
     }
 
     /**
@@ -61,27 +59,26 @@ public class MessageAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANT;
-        bot = BotConfig.getBot();
+        bot = BotConfig.INSTANCE.getBot();
         channel = bot.getEventChannel();
         MiraiLogUtil.verbose("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> {
             String name = v.getClass().getName();
             MiraiLogUtil.debug("扫瞄到 " + name);
-            List.of(v.getClass().getDeclaredMethods()).forEach(method -> {
-                Stream<Annotation> annotationStream = Arrays.stream(method.getAnnotations())
+            for (Method method : v.getClass().getDeclaredMethods()) {
+                Arrays.stream(method.getAnnotations())
                         .filter(annotation -> annotation instanceof GroupMessage
                                 || annotation instanceof UserMessage
-                                || annotation instanceof Message);
-                annotationStream.forEach(annotation -> {
-                    String s = Arrays.toString(method.getParameterTypes())
-                            .replaceAll("\\[", "(")
-                            .replaceAll("]", ")");
-                    MiraiLogUtil.verbose("开始注册处理方法 " + name + "." + method.getName() + s);
-                    method.setAccessible(true);
-                    execute(v, method, toFilter(channel, annotation), annotation);
-                    MiraiLogUtil.info(name + "." + method.getName() + s + " 处理方法注册完毕");
-                });
-            });
+                                || annotation instanceof Message).forEach(annotation -> {
+                            String s = Arrays.toString(method.getParameterTypes())
+                                    .replaceAll("\\[", "(")
+                                    .replaceAll("]", ")");
+                            MiraiLogUtil.verbose("开始注册处理方法 " + name + "." + method.getName() + s);
+                            method.setAccessible(true);
+                            execute(v, method, toFilter(channel, annotation), annotation);
+                            MiraiLogUtil.info(name + "." + method.getName() + s + " 处理方法注册完毕");
+                        });
+            }
         });
         MiraiLogUtil.verbose("注解消息处理监听注册完毕\n");
     }

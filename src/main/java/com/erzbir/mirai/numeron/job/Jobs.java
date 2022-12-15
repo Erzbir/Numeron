@@ -1,10 +1,9 @@
 package com.erzbir.mirai.numeron.job;
 
-import com.erzbir.mirai.numeron.job.inter.TimeAction;
+import cn.hutool.cron.CronUtil;
+import com.erzbir.mirai.numeron.job.inter.TimeTask;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * @author Erzbir
@@ -12,54 +11,38 @@ import java.util.Set;
  * 定时任务全部放到这个包装类
  */
 public class Jobs {
-    private static final HashMap<String, HashMap<String, TimeJob>> JOBS = new HashMap<>();
+    public static Jobs INSTANCE = new Jobs();
+    private final HashMap<String, TimeTask> jobSet = new HashMap<>();
 
-    public static void add(TimeJob task) {
-        HashMap<String, TimeJob> stringTimeJobHashMap = JOBS.computeIfAbsent(task.getTask().getClass().getName(), k -> new HashMap<>());
-        Class<? extends TimeAction> aClass = task.getTask().getClass();
-        String name = task.getName();
-        if (exist(aClass, name)) {
-            remove(aClass, name);
+    private Jobs() {
+        CronUtil.setMatchSecond(true);
+    }
+
+    public void add(TimeTask task) {
+        String id = task.getId() + task.getClass();
+        jobSet.put(id, task);
+        if (CronUtil.getScheduler().isStarted()) {
+            CronUtil.stop();
         }
-        stringTimeJobHashMap.put(name, task);
-        task.start();
+        jobSet.forEach((k, v) -> CronUtil.schedule(k, v.getCron(), v));
+        CronUtil.start();
     }
 
-
-    public static void remove(Class<? extends TimeAction> id, String name) {
-        JOBS.get(id.getName()).get(name).stop();
-        JOBS.get(id.getName()).remove(name);
+    public void remove(String id, Class<? extends TimeTask> jobType) {
+        jobSet.remove(id + jobType);
+        CronUtil.remove(id + jobType);
     }
 
-    public static TimeJob get(Class<? extends TimeAction> id, String name) {
-        return JOBS.get(id.getName()).get(name);
+    public boolean exist(TimeTask task) {
+        return jobSet.containsKey(task.getId() + task.getClass());
     }
 
-    private static boolean exist(Class<? extends TimeAction> id, String name) {
-        return JOBS.get(id.getName()).get(name) != null;
+    public void clean() {
+        jobSet.forEach((k, v) -> CronUtil.remove(k));
     }
 
-
-    public static void clean() {
-        JOBS.forEach((k, v) -> v.forEach((h, o) -> o.stop(true)));
-    }
-
-    public static String getString() {
-        StringBuilder ret = new StringBuilder();
-        JOBS.forEach((k, v) -> {
-            ret.append(k);
-            ret.append("{");
-            Set<String> keySet = v.keySet();
-            Iterator<String> iterator = keySet.iterator();
-            while (iterator.hasNext()) {
-                ret.append(iterator.next());
-                if (iterator.hasNext()) {
-                    ret.append(", ");
-                }
-            }
-            ret.append("}");
-        });
-        return ret.toString();
+    public String getString() {
+        return CronUtil.getScheduler().toString();
     }
 }
 

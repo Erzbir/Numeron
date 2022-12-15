@@ -25,23 +25,18 @@ import java.util.Scanner;
  * </p>
  */
 public class BotConfig {
-    private static final String botName = "Numeron";
-    private static final String OS = System.getProperty("os.name");
-    private static final String HOME = System.getenv("HOME");
-    private static final String deviceInfo = "device.json";
-    private static final String mainDir = "erzbirnumeron/"; // 文件存储目录
-    private static final String configDir = mainDir + "config/"; // 配置文件目录
-    private static final String configName = "BotConfig.properties"; // 配置文件名
-    private static final String botDir = mainDir + "bots/"; // bot目录
-    private static Long master; // 主人
-    private static Long account; // 帐号
-    private static String password; // 密码
-    private static final Bot bot; // 唯一bot实例
-    private static final String WORKDIR; // 工作目录
-    private static BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
-    private static BotConfiguration.MiraiProtocol miraiProtocol = BotConfiguration.MiraiProtocol.ANDROID_PAD;
+    public static final BotConfig INSTANCE = new BotConfig();
+    private final String deviceInfo = "device.json";
+    private final String configDir = GlobalConfig.MAIN_DIR + "config/"; // 配置文件目录
+    private final String configName = "BotConfig.properties"; // 配置文件名
+    private final Bot bot; // 唯一bot实例
+    private Long master; // 主人
+    private Long account; // 帐号
+    private String password; // 密码
+    private BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
+    private BotConfiguration.MiraiProtocol miraiProtocol = BotConfiguration.MiraiProtocol.ANDROID_PAD;
 
-    static {
+    private BotConfig() {
         init();
         MiraiLogUtil.info("开始载入数据库数据");
         MiraiLogUtil.info("违禁词列表: " + IllegalList.INSTANCE);
@@ -49,8 +44,9 @@ public class BotConfig {
         MiraiLogUtil.info("黑名单列表: " + BlackList.INSTANCE);
         MiraiLogUtil.info("白名单列表: " + WhiteList.INSTANCE);
         MiraiLogUtil.info("载入数据成功\n");
-        WORKDIR = botDir + account;
-        File file = new File(WORKDIR);
+        // bot目录
+        String workDir = GlobalConfig.MAIN_DIR + "bots/" + account;
+        File file = new File(workDir);
         if (!file.exists()) {
             if (file.mkdirs()) {
                 System.exit(-1);
@@ -58,7 +54,7 @@ public class BotConfig {
         }
         bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
             {
-                setWorkingDir(new File(WORKDIR)); // 工作目录
+                setWorkingDir(new File(workDir)); // 工作目录
                 setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
                 setProtocol(miraiProtocol); // 登陆协议
                 fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
@@ -66,15 +62,11 @@ public class BotConfig {
         });
     }
 
-    private BotConfig() {
-
-    }
-
-    public static Bot getBot() {
+    public Bot getBot() {
         return bot;
     }
 
-    private static void init() {
+    private void init() {
         FileInputStream fileInputStream = null;
         Properties properties = new Properties();
         try {
@@ -126,7 +118,7 @@ public class BotConfig {
         save();
     }
 
-    private static void save() {
+    private void save() {
         MiraiLogUtil.info("开始保存配置......");
         FileOutputStream outputStream = null;
         Properties properties;
@@ -158,10 +150,11 @@ public class BotConfig {
         }
     }
 
-    public static String getInfo() {
-        return "\tName: " + botName + "\n\n" +
-                "\tOS: " + OS + "\n\n" +
-                "\tHOME: " + HOME + "\n\n" +
+    @Override
+    public String toString() {
+        return "\tName: " + "Numeron" + "\n\n" +
+                "\tOS: " + System.getProperty("os.name") + "\n\n" +
+                "\tHOME: " + System.getenv("HOME") + "\n\n" +
                 "\tMaster: " + master + "\n\n" +
                 "\tIllegalList: " + IllegalList.INSTANCE + "\n\n" +
                 "\tGroupList: " + GroupList.INSTANCE + "\n\n" +
@@ -169,15 +162,11 @@ public class BotConfig {
                 "\tWhiteList: " + WhiteList.INSTANCE + "\n\n";
     }
 
-    public static boolean isMaster(Long id) {
+    public boolean isMaster(Long id) {
         return Objects.equals(id, master);
     }
 
-    public static String getWORKDIR() {
-        return WORKDIR;
-    }
-
-    public static Long getMaster() {
+    public Long getMaster() {
         return master;
     }
 }

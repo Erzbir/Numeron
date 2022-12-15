@@ -47,7 +47,7 @@ public class SqlUtil {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static void listInit(String sql, String find, Set set, String columnLabel, Class<?> type) throws SQLException {
         executeUpdateSQL(sql);
         ResultSet resultSet = SqlUtil.getResultSet(find);

@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.configs.controller;
+package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
 import com.erzbir.mirai.numeron.configs.entity.WhiteList;
 import com.erzbir.mirai.numeron.enums.FilterRule;
@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.enums.MessageRule;
 import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -19,6 +20,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @SuppressWarnings("unused")
 public class WhiteCommandHandle {
 
+    @Command(name = "白名单操作", dec = "添加白名单", help = "/permit user [@user] 或者 /permit user [qq]")
     @Message(text = "/permit user\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     private void permit2(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2].replaceAll("@", ""));
@@ -27,13 +29,15 @@ public class WhiteCommandHandle {
         event.getSubject().sendMessage(id + " 已添加到白名单");
     }
 
-    @Message(text = "/unpermit user\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Command(name = "白名单操作", dec = "移出白名单", help = "/unpermit user [@user] 或者 /unpermit user [qq]")
+    @Message(text = "/unpermit user\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     private void noPermit(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2]);
+        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+")[2].replaceAll("@", ""));
         WhiteList.INSTANCE.remove(id);
         event.getSubject().sendMessage(id + " 已移出白名单");
     }
 
+    @Command(name = "白名单操作", dec = "查询白名单", help = "/query white [id]")
     @Message(text = "/query white\\s+\\d+", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     private void query(MessageEvent event) {
         event.getSubject().
