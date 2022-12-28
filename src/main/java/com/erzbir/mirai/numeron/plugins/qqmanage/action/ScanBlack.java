@@ -2,8 +2,8 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
 import com.erzbir.mirai.numeron.configs.entity.BlackList;
-import com.erzbir.mirai.numeron.plugins.Plugin;
-import com.erzbir.mirai.numeron.plugins.PluginRegister;
+import com.erzbir.mirai.numeron.processor.Plugin;
+import com.erzbir.mirai.numeron.processor.PluginRegister;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.EventChannel;

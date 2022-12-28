@@ -1,8 +1,8 @@
-package com.erzbir.mirai.numeron.store;
+package com.erzbir.mirai.numeron.plugins.common.store;
 
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
-import redis.clients.jedis.JedisPooled;
+import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +16,13 @@ import java.util.stream.Stream;
  */
 public final class RedisStore {
     private static final Object key = new Object();
+    private static final String userName = "";
+    private static final String password = "";
     private static volatile RedisStore INSTANCE;
-    private final JedisPooled client = new JedisPooled("localhost", 6379);
+    private final Jedis client = new Jedis("localhost", 6379);
 
     private RedisStore() {
-
+        client.auth(userName, password);
     }
 
     public static RedisStore getInstance() {
@@ -104,7 +106,7 @@ public final class RedisStore {
 
     }
 
-    public void useClient(Function1<JedisPooled, Object> function1) {
+    public void useClient(Function1<Jedis, Object> function1) {
         function1.invoke(client);
     }
 }

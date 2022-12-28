@@ -1,11 +1,11 @@
 package com.erzbir.mirai.numeron.plugins.filesaver;
 
 import com.erzbir.mirai.numeron.configs.entity.WhiteList;
-import com.erzbir.mirai.numeron.plugins.Plugin;
-import com.erzbir.mirai.numeron.plugins.PluginRegister;
+import com.erzbir.mirai.numeron.plugins.common.store.DefaultStore;
+import com.erzbir.mirai.numeron.plugins.common.store.RedisStore;
 import com.erzbir.mirai.numeron.processor.Command;
-import com.erzbir.mirai.numeron.store.DefaultStore;
-import com.erzbir.mirai.numeron.store.RedisStore;
+import com.erzbir.mirai.numeron.processor.Plugin;
+import com.erzbir.mirai.numeron.processor.PluginRegister;
 import com.erzbir.mirai.numeron.utils.NetUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Contact;

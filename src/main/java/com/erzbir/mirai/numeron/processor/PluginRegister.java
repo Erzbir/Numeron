@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins;
+package com.erzbir.mirai.numeron.processor;
 
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;

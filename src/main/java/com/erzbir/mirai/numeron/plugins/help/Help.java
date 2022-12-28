@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.help;
 
-import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.processor.CommandAnnotationProcessor;

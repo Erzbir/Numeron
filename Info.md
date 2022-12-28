@@ -16,6 +16,8 @@
 所有代码均在 Numeron/src/main/java/com/erzbir/mirai/numeron/ 下
 结构如下:
 
+- [boot](src/main/java/com/erzbir/mirai/numeron/boot)
+  > 这个包下实现包扫瞄和加载class, 并将实例化的对象放进容器, 插件扫瞄和加载也是在此包下.
 - [configs](src/main/java/com/erzbir/mirai/numeron/configs)
   > 基础数据库数据/基础配置文件 解析到这个包的类中
 - [enums](src/main/java/com/erzbir/mirai/numeron/enums)

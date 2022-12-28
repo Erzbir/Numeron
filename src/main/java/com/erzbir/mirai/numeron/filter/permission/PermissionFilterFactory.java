@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.filter.permission;
 import com.erzbir.mirai.numeron.filter.ChannelFilterInter;
 import com.erzbir.mirai.numeron.filter.FilterFactory;
 
-import static com.erzbir.mirai.numeron.enums.PermissionType.*;
+import static com.erzbir.mirai.numeron.filter.permission.PermissionType.*;
 
 /**
  * @author Erzbir

@@ -2,8 +2,8 @@ package com.erzbir.mirai.numeron.configs;
 
 import com.erzbir.mirai.numeron.configs.entity.BlackList;
 import com.erzbir.mirai.numeron.configs.entity.GroupList;
-import com.erzbir.mirai.numeron.configs.entity.IllegalList;
 import com.erzbir.mirai.numeron.configs.entity.WhiteList;
+import com.erzbir.mirai.numeron.plugins.qqmanage.action.IllegalList;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
@@ -27,7 +27,8 @@ import java.util.Scanner;
 public class BotConfig {
     public static final BotConfig INSTANCE = new BotConfig();
     private final String deviceInfo = "device.json";
-    private final String configDir = GlobalConfig.MAIN_DIR + "config/"; // 配置文件目录
+    private final String mainDir = "erzbirnumeron/";
+    private final String configDir = mainDir + "config/"; // 配置文件目录
     private final String configName = "BotConfig.properties"; // 配置文件名
     private final Bot bot; // 唯一bot实例
     private Long master; // 主人
@@ -45,7 +46,7 @@ public class BotConfig {
         MiraiLogUtil.info("白名单列表: " + WhiteList.INSTANCE);
         MiraiLogUtil.info("载入数据成功\n");
         // bot目录
-        String workDir = GlobalConfig.MAIN_DIR + "bots/" + account;
+        String workDir = mainDir + "bots/" + account;
         File file = new File(workDir);
         if (!file.exists()) {
             if (file.mkdirs()) {

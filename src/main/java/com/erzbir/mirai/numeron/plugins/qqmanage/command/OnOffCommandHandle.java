@@ -2,13 +2,13 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
 import com.erzbir.mirai.numeron.configs.BotConfig;
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
-import com.erzbir.mirai.numeron.enums.FilterRule;
-import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
-import com.erzbir.mirai.numeron.plugins.Plugin;
-import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import com.erzbir.mirai.numeron.processor.Command;
+import com.erzbir.mirai.numeron.processor.Plugin;
+import com.erzbir.mirai.numeron.processor.PluginRegister;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;

@@ -1,12 +1,12 @@
 package com.erzbir.mirai.numeron.plugins.game.sign;
 
-import com.erzbir.mirai.numeron.enums.FilterRule;
-import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
+import com.erzbir.mirai.numeron.plugins.common.store.RedisStore;
 import com.erzbir.mirai.numeron.plugins.game.sign.entity.User;
 import com.erzbir.mirai.numeron.processor.Command;
-import com.erzbir.mirai.numeron.store.RedisStore;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.Member;
@@ -33,10 +33,10 @@ import java.util.Random;
 @Listener
 @SuppressWarnings("unused")
 public class Game {
-    private static final Calendar toDay = Calendar.getInstance();
-    private static final int addMeiLi = 3;
-    private static final int addTiLi = 10;
-    private static final int addCoinsBound = 100;
+    private final Calendar toDay = Calendar.getInstance();
+    private final int addMeiLi = 3;
+    private final int addTiLi = 10;
+    private final int addCoinsBound = 100;
     private final OkHttpClient client = new OkHttpClient();
 
     private net.mamoe.mirai.message.data.Message sign(Member member, Group group) throws IOException {

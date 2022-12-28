@@ -67,7 +67,7 @@ save()</code>方法
 ```java
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
-import com.erzbir.mirai.numeron.enums.MessageRule;
+import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
 import org.jetbrains.annotations.NotNull;

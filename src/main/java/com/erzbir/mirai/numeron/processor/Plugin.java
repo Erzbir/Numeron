@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins;
+package com.erzbir.mirai.numeron.processor;
 
 import com.erzbir.mirai.numeron.boot.classloder.Component;
 

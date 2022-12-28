@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.listener.massage;
 
-import com.erzbir.mirai.numeron.enums.FilterRule;
-import com.erzbir.mirai.numeron.enums.MessageRule;
-import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.filter.message.MessageRule;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.enums;
+package com.erzbir.mirai.numeron.filter.message;
 
 /**
  * @author Erzbir

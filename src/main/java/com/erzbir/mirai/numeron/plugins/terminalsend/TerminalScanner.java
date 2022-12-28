@@ -1,7 +1,12 @@
 package com.erzbir.mirai.numeron.plugins.terminalsend;
 
 import com.erzbir.mirai.numeron.configs.BotConfig;
+import com.erzbir.mirai.numeron.processor.Plugin;
+import com.erzbir.mirai.numeron.processor.PluginRegister;
+import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Contact;
+import net.mamoe.mirai.event.EventChannel;
+import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.message.data.Message;
 import net.mamoe.mirai.message.data.PlainText;
 
@@ -16,7 +21,8 @@ import java.util.Objects;
  * @Date: 2022/12/13 16:44
  * [消息] [id] 发送
  */
-public class TerminalScanner implements Runnable {
+@Plugin
+public class TerminalScanner implements Runnable, PluginRegister {
     private final Object key = new Object();
 
     @Override
@@ -48,5 +54,10 @@ public class TerminalScanner implements Runnable {
 
     public void send(Message message, Contact contact) {
         contact.sendMessage(message);
+    }
+
+    @Override
+    public void register(Bot bot, EventChannel<BotEvent> channel) {
+        new Thread(new TerminalScanner()).start();
     }
 }

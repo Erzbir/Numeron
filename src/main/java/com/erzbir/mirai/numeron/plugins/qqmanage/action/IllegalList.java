@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.configs.entity;
+package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
 import com.erzbir.mirai.numeron.utils.SqlUtil;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.store;
+package com.erzbir.mirai.numeron.plugins.common.store;
 
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;

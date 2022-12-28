@@ -2,7 +2,6 @@ package com.erzbir.mirai.numeron.processor;
 
 import com.erzbir.mirai.numeron.boot.classloder.AppContext;
 import com.erzbir.mirai.numeron.listener.Listener;
-import com.erzbir.mirai.numeron.plugins.Plugin;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 
 import java.lang.reflect.Method;

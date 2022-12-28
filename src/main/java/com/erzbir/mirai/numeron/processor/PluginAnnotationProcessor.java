@@ -3,7 +3,6 @@ package com.erzbir.mirai.numeron.processor;
 import com.erzbir.mirai.numeron.boot.classloder.AppContext;
 import com.erzbir.mirai.numeron.configs.BotConfig;
 import com.erzbir.mirai.numeron.filter.PluginChannelFilterInter;
-import com.erzbir.mirai.numeron.plugins.PluginRegister;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;

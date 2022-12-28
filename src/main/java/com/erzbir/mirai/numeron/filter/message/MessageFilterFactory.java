@@ -3,7 +3,7 @@ package com.erzbir.mirai.numeron.filter.message;
 import com.erzbir.mirai.numeron.filter.ChannelFilterInter;
 import com.erzbir.mirai.numeron.filter.FilterFactory;
 
-import static com.erzbir.mirai.numeron.enums.MessageRule.*;
+import static com.erzbir.mirai.numeron.filter.message.MessageRule.*;
 
 /**
  * @author Erzbir

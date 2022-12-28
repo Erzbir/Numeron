@@ -6,6 +6,5 @@ package com.erzbir.mirai.numeron.configs;
  * <p>全局配置, 目前只有开关机</p>
  */
 public class GlobalConfig {
-    public static final String MAIN_DIR = "erzbirnumeron/"; // 文件存储目录
     public static boolean OPEN = true;
 }

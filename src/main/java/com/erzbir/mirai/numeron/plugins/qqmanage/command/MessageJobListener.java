@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 
-import com.erzbir.mirai.numeron.enums.FilterRule;
-import com.erzbir.mirai.numeron.enums.MessageRule;
-import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.filter.message.MessageRule;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.job.Jobs;
 import com.erzbir.mirai.numeron.job.MessageTimeJob;
 import com.erzbir.mirai.numeron.listener.Listener;

@@ -1,11 +1,11 @@
 package com.erzbir.mirai.numeron.filter;
 
 import com.erzbir.mirai.numeron.configs.GlobalConfig;
-import com.erzbir.mirai.numeron.enums.FilterRule;
-import com.erzbir.mirai.numeron.enums.MessageRule;
-import com.erzbir.mirai.numeron.enums.PermissionType;
 import com.erzbir.mirai.numeron.filter.message.MessageFilterFactory;
+import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionFilterFactory;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.filter.rule.RuleFilterFactory;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.MessageEvent;

@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.plugins.chat;
 
-import com.erzbir.mirai.numeron.enums.FilterRule;
-import com.erzbir.mirai.numeron.enums.MessageRule;
-import com.erzbir.mirai.numeron.enums.PermissionType;
+import com.erzbir.mirai.numeron.filter.message.MessageRule;
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
@@ -12,8 +12,6 @@ import com.erzbir.mirai.numeron.processor.Command;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
-import net.mamoe.mirai.message.data.Image;
-import net.mamoe.mirai.message.data.PlainText;
 
 /**
  * @author Erzbir
@@ -54,7 +52,8 @@ public class AutoReply {
     @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
     private void sayGoodNight(MessageEvent e) {
 //        Image image = Contact.uploadImage(e.getSender(), new File("pix1001_4.jpg"));
-        e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
+        // e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
+        e.getSubject().sendMessage("晚安");
     }
 
     @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
