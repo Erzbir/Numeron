@@ -9,35 +9,31 @@
   > 这是一个封装了QQ各种api和协议的一个框架,
   > 包含QQ的所有基本功能, 也就是可以通过这个框架 发消息/发公告/加好友等等QQ的相关操作
 
->
-
 ## 项目结构:
 
 所有代码均在 Numeron/src/main/java/com/erzbir/mirai/numeron/ 下
 结构如下:
 
-- [boot](src/main/java/com/erzbir/mirai/numeron/boot)
-  > 这个包下实现包扫瞄和加载class, 并将实例化的对象放进容器, 插件扫瞄和加载也是在此包下.
-- [configs](src/main/java/com/erzbir/mirai/numeron/configs)
+- [configs](numeron-boot/src/main/java/com/erzbir/mirai/configs)
   > 基础数据库数据/基础配置文件 解析到这个包的类中
-- [enums](src/main/java/com/erzbir/mirai/numeron/enums)
+- [enums](numeron-core/src/main/java/com/erzbir/mirai/numeron/enums)
   > 定义的枚举
-- [filter](src/main/java/com/erzbir/mirai/numeron/filter)
-  > 监听事件过滤器, 分别是 [消息过滤](src/main/java/com/erzbir/mirai/numeron/filter/message)/
-  > [权限过滤](src/main/java/com/erzbir/mirai/numeron/filter/permission)/[规则过滤](src/main/java/com/erzbir/mirai/numeron/filter/rule)
-- [handler](src/main/java/com/erzbir/mirai/numeron/handler)
+- [filter](numeron-core/src/main/java/com/erzbir/mirai/numeron/filter)
+  > 监听事件过滤器, 分别是 [消息过滤](numeron-core/src/main/java/com/erzbir/mirai/numeron/filter/message)/
+  > [权限过滤](numeron-core/src/main/java/com/erzbir/mirai/numeron/filter/permission)/[规则过滤](numeron-core/src/main/java/com/erzbir/mirai/numeron/filter/rule)
+- [handler](numeron-core/src/main/java/com/erzbir/mirai/numeron/handler)
   > 监听到不同事件后的不同处理方法
-- [job](src/main/java/com/erzbir/mirai/numeron/job)
+- [job](numeron-core/src/main/java/com/erzbir/mirai/numeron/job)
   > 定时器任务
-- [listener](src/main/java/com/erzbir/mirai/numeron/listener)
+- [listener](numeron-core/src/main/java/com/erzbir/mirai/numeron/listener)
   > 这里暂时只放了注解, 被这个包下的注解标注的方法将在监听到符合注解中的规定的事件后执行
-- [plugins](src/main/java/com/erzbir/mirai/numeron/plugins)
+- [plugins](numeron-core/src/main/java/com/erzbir/mirai/numeron/plugins)
   > 所有实际与QQ相关的功能
-- [processor](src/main/java/com/erzbir/mirai/numeron/processor)
+- [processor](numeron-boot/src/main/java/com/erzbir/mirai/boot/processor)
   > 注解处理器, 对标注了注解的方法和类等进行处理
-- [store](src/main/java/com/erzbir/mirai/numeron/store)
+- [store](numeron-core/src/main/java/com/erzbir/mirai/numeron/plugins/common/store)
   > 数据库相关
-- [utils](src/main/java/com/erzbir/mirai/numeron/utils)
+- [utils](numeron-core/src/main/java/com/erzbir/mirai/numeron/utils)
   > 一些工具类
 
 其他细节看[README](README.md)

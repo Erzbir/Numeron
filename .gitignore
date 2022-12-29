@@ -39,4 +39,4 @@ build/
 
 ### MacOS ###
 *._Store
-!/src/main/java/com/erzbir/mirai/numeron/test/
+!/numeron-core/src/main/java/com/erzbir/mirai/numeron/test/
