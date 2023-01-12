@@ -34,7 +34,7 @@ public final class RedisStore {
             e.printStackTrace();
         }
         client = new Jedis(host, port);
-        if (user != null || password != null) {
+        if (!user.isEmpty() || !password.isEmpty()) {
             client.auth(user, password);
         }
     }
