@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.boot.processor;
 
 import com.erzbir.mirai.numeron.boot.classloader.AppContext;
+import com.erzbir.mirai.numeron.boot.configs.BotConfig;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.filter.PluginChannelFilterInter;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
@@ -27,7 +28,7 @@ public class PluginAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANT;
-        bot = NumeronBot.INSTANCE.getBot();
+        bot = BotConfig.INSTANCE.getBot();
         channel = bot.getEventChannel();
         MiraiLogUtil.info("开始过滤插件监听......");
         // 扫瞄插件过滤器
