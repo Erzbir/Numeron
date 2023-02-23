@@ -9,6 +9,7 @@ import net.mamoe.mirai.Bot;
 public class NumeronBot {
     public static final NumeronBot INSTANCE = new NumeronBot();
     private long master = 0;
+    private String workDir = "";
     private boolean open = true;
     private Bot bot;
 
@@ -38,6 +39,14 @@ public class NumeronBot {
 
     public void setBot(Bot bot) {
         this.bot = bot;
+    }
+
+    public void setWorkDir(String dir) {
+        this.workDir = dir;
+    }
+
+    public String getWorkDir() {
+        return this.workDir;
     }
 
     public void turnOn() {

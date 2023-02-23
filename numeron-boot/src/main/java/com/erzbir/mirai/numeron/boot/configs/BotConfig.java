@@ -5,6 +5,7 @@ import com.erzbir.mirai.numeron.entity.GroupList;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.entity.WhiteList;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
+import com.sun.tools.javac.Main;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;
@@ -57,6 +58,7 @@ public class BotConfig {
         MiraiLogUtil.info("载入数据成功\n");
         NumeronBot.INSTANCE.setMaster(master);
         NumeronBot.INSTANCE.setBot(bot);
+        NumeronBot.INSTANCE.setWorkDir(MAIN_DIR);
     }
 
     public Bot getBot() {

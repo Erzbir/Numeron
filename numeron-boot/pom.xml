@@ -16,10 +16,5 @@
             <artifactId>numeron-core</artifactId>
             <version>2.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.erzbir.mirai</groupId>
-            <artifactId>numeron-plugin</artifactId>
-            <version>2.2</version>
-        </dependency>
     </dependencies>
 </project>

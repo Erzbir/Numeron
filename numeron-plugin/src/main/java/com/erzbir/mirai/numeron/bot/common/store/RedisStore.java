@@ -1,11 +1,15 @@
 package com.erzbir.mirai.numeron.bot.common.store;
 
+import com.erzbir.mirai.numeron.entity.NumeronBot;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -24,8 +28,20 @@ public final class RedisStore {
 
     private RedisStore() {
         Properties properties = new Properties();
+        String workDir = NumeronBot.INSTANCE.getWorkDir() + "plugin-configs/sql/";
+        String confFile = workDir + "redisconfig.properties";
         try {
-            properties.load(new FileReader("numeron-plugin/configs/redisconfig.properties"));
+            File file = new File(workDir);
+            File file1 = new File(confFile);
+            if (!file.exists()) {
+                if (file.mkdirs()) {
+                    file1.createNewFile();
+                }
+            }
+            if (!file1.exists()) {
+                file1.createNewFile();
+            }
+            properties.load(new FileReader(confFile));
             host = properties.getProperty("host");
             port = Integer.parseInt(properties.getProperty("port"));
             user = properties.getProperty("user");
