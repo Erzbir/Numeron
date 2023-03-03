@@ -23,6 +23,7 @@ import java.util.Objects;
  * [消息] [id] 发送
  */
 @Plugin
+@SuppressWarnings("unused")
 public class TerminalScanner implements Runnable, PluginRegister {
     private final Object key = new Object();
     private Bot bot;

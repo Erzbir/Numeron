@@ -5,7 +5,6 @@ import com.erzbir.mirai.numeron.entity.GroupList;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.entity.WhiteList;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
-import com.sun.tools.javac.Main;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;

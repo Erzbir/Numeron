@@ -41,12 +41,12 @@ public class NumeronBot {
         this.bot = bot;
     }
 
-    public void setWorkDir(String dir) {
-        this.workDir = dir;
-    }
-
     public String getWorkDir() {
         return this.workDir;
+    }
+
+    public void setWorkDir(String dir) {
+        this.workDir = dir;
     }
 
     public void turnOn() {
