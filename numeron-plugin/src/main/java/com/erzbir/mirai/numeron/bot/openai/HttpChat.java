@@ -1,10 +1,9 @@
-package com.erzbir.mirai.numeron.bot.chat.chatgpt;
+package com.erzbir.mirai.numeron.bot.openai;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.filter.rule.FilterRule;
-import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import net.mamoe.mirai.event.events.MessageEvent;
 import okhttp3.*;
@@ -21,9 +20,8 @@ import java.util.concurrent.TimeUnit;
  * @author Erzbir
  * @Date: 2023/3/2 11:07
  */
-@Listener
-@SuppressWarnings("unused")
-public class Chat {
+
+public class HttpChat {
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static Request.Builder requestBuilder;
     private static JSONObject postJson;
@@ -40,8 +38,8 @@ public class Chat {
             Properties properties = new Properties();
             properties.load(new FileReader(file));
             String API_KEY = properties.getProperty("API_KEY");
-            String API_URL = properties.getProperty("API_URL");
-            String model = properties.getProperty("model");
+            String API_URL = "https://api.openai.com/v1/completions";
+            String model = "text-davinci-003";
             int max_tokens = Integer.parseInt(properties.getProperty("max_tokens"));
             double temperature = Double.parseDouble(properties.getProperty("temperature"));
             double top_p = Double.parseDouble(properties.getProperty("top_p"));
@@ -85,20 +83,19 @@ public class Chat {
         RequestBody requestBody = RequestBody.create(postJson.toString(), JSON);
         requestBuilder.post(requestBody);
         try (Response response = client.newCall(requestBuilder.build()).execute()) {
-            if (response.body() != null) {
-                JSONObject responseJson = new JSONObject(response.body().string());
-                System.out.println(event.getMessage().contentToString().replaceAll("t", ""));
-                System.out.println(responseJson);
-                String text = "";
-                if (model.equals("gpt-3.5-turbo")) {
-                     text = responseJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
-                } else if (model.equals("text-davinci-003")){
-                    text = responseJson.getJSONArray("choices").getJSONObject(0).getString("text");
-                }
-                text = text.replaceFirst("\\n\\n", "").replaceFirst("？", "");
-                event.getSubject().sendMessage(text);
-                System.out.println(text);
+            if (response.code() != 200) {
+                return;
             }
+            JSONObject responseJson = new JSONObject(response.body().string());
+            String text = "";
+            if (model.equals("gpt-3.5-turbo")) {
+                text = responseJson.getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content");
+            } else if (model.equals("text-davinci-003")) {
+                text = responseJson.getJSONArray("choices").getJSONObject(0).getString("text");
+            }
+            text = text.replaceFirst("\\n\\n", "").replaceFirst("？", "");
+            event.getSubject().sendMessage(text);
+            System.out.println(text);
         }
     }
 }

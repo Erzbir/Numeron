@@ -31,12 +31,8 @@ public final class RedisStore {
         try {
             File file = new File(workDir);
             File file1 = new File(confFile);
-            if (!file.exists()) {
-                if (file.mkdirs()) {
-                    file1.createNewFile();
-                }
-            }
-            if (!file1.exists()) {
+            if (!file.exists() || !file1.exists()) {
+                file.mkdirs();
                 file1.createNewFile();
             }
             properties.load(new FileReader(confFile));

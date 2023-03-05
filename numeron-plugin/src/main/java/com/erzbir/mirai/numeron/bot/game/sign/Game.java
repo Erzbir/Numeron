@@ -37,7 +37,6 @@ public class Game {
     private static final int addMeiLi = 3;
     private static final int addTiLi = 10;
     private static final int addCoinsBound = 100;
-    private final OkHttpClient client = new OkHttpClient();
 
     private net.mamoe.mirai.message.data.Message sign(Member member, Group group) throws IOException {
         RedisStore redisStore = RedisStore.getInstance();
@@ -99,6 +98,7 @@ public class Game {
 
     private Image getAvaImage(String url, Group group) throws IOException {
         Request request = new Request.Builder().get().url(url).build();
+        OkHttpClient client = new OkHttpClient();
         Response response = client.newCall(request).execute();
         try (response; InputStream inputStream = Objects.requireNonNull(response.body()).byteStream()) {
             return Contact.uploadImage(group, inputStream);

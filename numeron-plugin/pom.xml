@@ -37,35 +37,10 @@
             <artifactId>okhttp</artifactId>
             <version>4.10.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.theokanning.openai-gpt3-java</groupId>
+            <artifactId>service</artifactId>
+            <version>0.11.0</version>
+        </dependency>
     </dependencies>
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <artifactId>maven-assembly-plugin</artifactId>-->
-    <!--                <groupId>org.apache.maven.plugins</groupId>-->
-    <!--                <version>2.5.5</version>-->
-    <!--                <configuration>-->
-    <!--                    <classifier>exec</classifier>-->
-    <!--                    <archive>-->
-    <!--                        <manifest>-->
-    <!--                            <mainClass>com.erzbir.mirai.numeron.NumeronBotApplication</mainClass>-->
-    <!--                        </manifest>-->
-    <!--                    </archive>-->
-    <!--                    <descriptorRefs>-->
-    <!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
-    <!--                    </descriptorRefs>-->
-    <!--                </configuration>-->
-    <!--                <executions>-->
-    <!--                    <execution>-->
-    <!--                        <id>make-assembly</id>-->
-    <!--                        <phase>package</phase>-->
-    <!--                        <goals>-->
-    <!--                            <goal>single</goal>-->
-    <!--                        </goals>-->
-    <!--                    </execution>-->
-    <!--                </executions>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
 </project>

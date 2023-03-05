@@ -25,23 +25,11 @@ public class NetUtil {
     private static void downloadTo2(String url, File file) throws IOException {
         Request request = new Request.Builder().get().url(url).build();
         try (Response resp = client.newCall(request).execute()) {
-            InputStream inputStream;
-            OutputStream fos = null;
-            try {
-                inputStream = Objects.requireNonNull(resp.body()).byteStream();
-                fos = new FileOutputStream(file);
+            try (OutputStream fos = new FileOutputStream(file); InputStream inputStream = Objects.requireNonNull(resp.body()).byteStream()) {
                 fos.write(inputStream.readAllBytes());
                 fos.flush();
             } catch (IOException e) {
                 throw new RuntimeException();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }

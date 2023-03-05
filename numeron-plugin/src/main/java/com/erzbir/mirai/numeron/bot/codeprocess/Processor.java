@@ -23,14 +23,14 @@ import java.io.IOException;
 public class Processor {
     private final CodeRunner codeRunner = CodeRunner.getInstance();
 
-    @Command(name = "指令执行", dec = "执行py代码", help = "/py\nprint(1)")
+    @Command(name = "指令执行", dec = "执行py代码", help = "py\nprint(1)")
     @Message(text = "py\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     private void runPy(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunPy.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
     }
 
-    @Command(name = "指令执行", dec = "执行js代码", help = "/py\nconsole.log(1)")
+    @Command(name = "指令执行", dec = "执行js代码", help = "py\nconsole.log(1)")
     @Message(text = "js\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
     private void runJs(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunJs.getInstance());
