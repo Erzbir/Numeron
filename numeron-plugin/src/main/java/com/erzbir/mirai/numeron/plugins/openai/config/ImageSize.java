@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.bot.openai.config;
+package com.erzbir.mirai.numeron.plugins.openai.config;
 
 /**
  * @author Erzbir

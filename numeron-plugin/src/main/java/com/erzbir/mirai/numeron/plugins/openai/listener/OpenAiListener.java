@@ -1,8 +1,8 @@
-package com.erzbir.mirai.numeron.bot.openai.listener;
+package com.erzbir.mirai.numeron.plugins.openai.listener;
 
-import com.erzbir.mirai.numeron.bot.openai.Conversation;
-import com.erzbir.mirai.numeron.bot.openai.ParseImage;
-import com.erzbir.mirai.numeron.bot.openai.config.*;
+import com.erzbir.mirai.numeron.plugins.openai.Conversation;
+import com.erzbir.mirai.numeron.plugins.openai.ParseImage;
+import com.erzbir.mirai.numeron.plugins.openai.config.*;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.filter.rule.FilterRule;
@@ -44,39 +44,39 @@ public class OpenAiListener {
     private final ChatCompletionRequest chatCompletionRequest = chatConfig.load();
     private final CompletionRequest question = questionConfig.load();
 
-    @Command(name = "OpenAI-画图", dec = "识别i开头", help = "i美女")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.BEGIN_WITH, text = "i", permission = PermissionType.ALL)
+    @Command(name = "OpenAI-画图", dec = "i [prompt]", help = "i美女")
+    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^i\\s*?\\S+?", permission = PermissionType.ALL)
     private void image(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("i", "");
+        String s = event.getMessage().contentToString().replaceFirst("^i\\s*?", "");
         createRequest(s, ImageConfig.class);
         MessageChain singleMessages = buildImageMessage(openAiService.createImage(imageRequest).getData(), event);
         event.getSubject().sendMessage(singleMessages);
     }
 
-    @Command(name = "OpenAI-聊天", dec = "识别c开头", help = "c你叫什么")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.BEGIN_WITH, text = "c", permission = PermissionType.ALL)
+    @Command(name = "OpenAI-聊天", dec = "c [message]", help = "c你叫什么")
+    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^c\\s*?\\S+?", permission = PermissionType.ALL)
     private void chat(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("c", "");
+        String s = event.getMessage().contentToString().replaceFirst("c\\s*?", "");
         createRequest(s, ChatConfig.class);
         ChatMessage message = openAiService.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
         sendMessage(event, message.getContent().replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", ""));
         conversation.add(message);
     }
 
-    @Command(name = "OpenAI-补全", dec = "识别f开头", help = "f水面")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.BEGIN_WITH, text = "f", permission = PermissionType.ALL)
+    @Command(name = "OpenAI-补全", dec = "f [prompt]", help = "f水面")
+    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^f\\s*?\\S+?", permission = PermissionType.ALL)
     private void completion(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("f", "");
+        String s = event.getMessage().contentToString().replaceFirst("^f\\s*?", "");
         createRequest(s, CompletionConfig.class);
         String text = openAiService.createCompletion(completionRequest).getChoices().get(0).getText();
         text = text.replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", "");
         sendMessage(event, text);
     }
 
-    @Command(name = "OpenAI-问答", dec = "识别q开头", help = "q今天天气如何")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.BEGIN_WITH, text = "q", permission = PermissionType.ALL)
+    @Command(name = "OpenAI-问答", dec = "q [prompt]", help = "q今天天气如何")
+    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^q\\s*?\\S+?", permission = PermissionType.ALL)
     private void question(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("q", "");
+        String s = event.getMessage().contentToString().replaceFirst("^q\\s*?", "");
         createRequest(s, QuestionConfig.class);
         String text = openAiService.createCompletion(question).getChoices().get(0).getText();
         text = text.replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", "");
@@ -117,6 +117,7 @@ public class OpenAiListener {
             conversation.add(chatMessage);
             chatCompletionRequest.setMessages(conversation);
         } else if (type.equals(CompletionConfig.class)) {
+            completionRequest.setPrompt("text-davinci-003");
             completionRequest.setPrompt(content);
         } else if (type.equals(ImageConfig.class)) {
             imageRequest.setPrompt(content);

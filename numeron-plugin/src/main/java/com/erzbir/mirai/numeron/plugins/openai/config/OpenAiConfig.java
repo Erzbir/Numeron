@@ -1,6 +1,6 @@
-package com.erzbir.mirai.numeron.bot.openai.config;
+package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.bot.openai.JsonUtil;
+import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 
 import java.io.File;

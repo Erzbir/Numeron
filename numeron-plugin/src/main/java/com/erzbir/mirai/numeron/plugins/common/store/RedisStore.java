@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.bot.common.store;
+package com.erzbir.mirai.numeron.plugins.common.store;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import kotlin.jvm.functions.Function1;

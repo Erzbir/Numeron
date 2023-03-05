@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.bot.openai;
+package com.erzbir.mirai.numeron.plugins.openai;
 
 import com.theokanning.openai.image.Image;
 

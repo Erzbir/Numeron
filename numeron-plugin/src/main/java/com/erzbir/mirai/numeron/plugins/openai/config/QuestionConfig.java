@@ -1,53 +1,54 @@
-package com.erzbir.mirai.numeron.bot.openai.config;
+package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.bot.openai.JsonUtil;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
+import com.theokanning.openai.completion.CompletionRequest;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 
 /**
  * @author Erzbir
- * @Date: 2023/3/3 23:52
+ * @Date: 2023/3/3 23:54
  */
-public class ChatConfig implements Serializable {
-
-    private String model = "gpt-3.5-turbo";
-    private int max_tokens = 512;
-    private double temperature = 0.9;
+public class QuestionConfig implements Serializable {
+    private String model = "text-davinci-003";
+    private int max_tokens = 2048;
+    private double temperature = 0.0;
     private double top_p = 1.0;
-    private double presence_penalty = 0.6;
-    private double frequency_penalty = 0.0;
+    private double presence_penalty;
+    private double frequency_penalty;
+    private int n = 1;
 
-    public ChatConfig() {
+    public QuestionConfig() {
 
     }
 
-    public ChatConfig(String model, int maxTokens, double temperature, long timeout) {
+    public QuestionConfig(String model, int maxTokens, double temperature, int number) {
         this.model = model;
         this.max_tokens = maxTokens;
         this.temperature = temperature;
+        this.n = number;
     }
 
-    public ChatConfig(String model, int maxTokens, double temperature, double topP, double presencePenalty, double frequencyPenalty, long timeout) {
+    public QuestionConfig(String model, int max_tokens, double temperature, double top_p, double presence_penalty, double frequency_penalty, int n) {
         this.model = model;
-        this.max_tokens = maxTokens;
+        this.max_tokens = max_tokens;
         this.temperature = temperature;
-        this.top_p = topP;
-        this.presence_penalty = presencePenalty;
-        this.frequency_penalty = frequencyPenalty;
+        this.top_p = top_p;
+        this.presence_penalty = presence_penalty;
+        this.frequency_penalty = frequency_penalty;
+        this.n = n;
     }
 
-    public static ChatConfig getInstance() {
-        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/chat.json", ChatConfig.class);
-        //  return new ChatConfig();
+    public static QuestionConfig getInstance() {
+        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/question.json", QuestionConfig.class);
+        //return new QuestionConfig();
     }
 
-    public ChatCompletionRequest load() {
-        return ChatCompletionRequest.builder()
+    public CompletionRequest load() {
+        return CompletionRequest.builder()
                 .maxTokens(max_tokens)
                 .model(model)
-                .messages(new LinkedList<>())
+                .n(n)
                 .presencePenalty(presence_penalty)
                 .topP(top_p)
                 .frequencyPenalty(frequency_penalty)
@@ -100,5 +101,13 @@ public class ChatConfig implements Serializable {
 
     public void setFrequency_penalty(double frequency_penalty) {
         this.frequency_penalty = frequency_penalty;
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
     }
 }
