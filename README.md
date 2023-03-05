@@ -2,6 +2,30 @@
 
 ## 介绍:
 
+### 实现的功能:
+
+- 消息回复
+- @禁言, qq号禁言
+- 全体禁言
+- 黑名单检测
+- 违禁词检测
+- 精准问答
+- 防撤回
+- 入群欢迎/退群反馈
+- 自动保存图片和文件
+- 发送指定图片和文件 / 保存指定消息(图片等)
+- 从指定url下载文件
+- 代码和命令执行, 支持JavaScript/Python/Shell
+- 群签到功能
+- 定时消息推送
+- 发送/help获取自动生成的命令表(在方法上加上`@Command`注解生成)
+- 对接openai
+  - 聊天
+  - 补全
+  - 问答
+  - 绘画
+- 游戏王查卡
+
 三个消息处理注解:
 
 - <code>[@Message](numeron-core/src/main/java/com/erzbir/mirai/numeron/listener/massage/Message.java)</code>
@@ -25,27 +49,7 @@ save()</code>方法
 
 ### 此项目部分功能用到了redis, 请先下载安装redis, 否则无法使用相应功能
 
-<b>将所有QQ机器人功能写在[plugins](numeron-core/src/main/java/com/erzbir/mirai/numeron/plugins)目录下</b>
-
-### plugins包下实现的功能:
-
-- 消息回复
-- @禁言, qq号禁言
-- 全体禁言
-- 黑名单检测
-- 违禁词检测
-- 精准问答
-- 防撤回
-- 入群欢迎/退群反馈
-- 自动保存图片和文件
-- 发送指定图片和文件 / 保存指定消息(图片等)
-- 从指定url下载文件
-- 代码和命令执行, 支持JavaScript/Python/Shell
-- 群签到功能
-- 定时消息推送
-- 发送/help获取自动生成的命令表(在方法上加上`@Command`注解生成)
-- 在命令行发送消息
-- 对接openai
+<b>将所有QQ机器人功能写在[numeron-plugin](numeron-core/src/main/java/com/erzbir/mirai/numeron/numeron-plugin)目录下</b>
 
 > 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 >
@@ -53,7 +57,10 @@ save()</code>方法
 比如在A方法上加上<code>[@GroupMessage](numeron-core/src/main/java/com/erzbir/mirai/numeron/listener/massage/GroupMessage.java)</code>
 注解表示在监听到一个<code>GroupMessageEvent</code>
 > 后调用此方法进行对应处理
-> (注意A方法所属的类必须加<code>[@Listener](numeron-core/src/main/java/com/erzbir/mirai/numeron/listener/Listener.java)</code>注解)
+> (
+>
+注意A方法所属的类必须加<code>[@Listener](numeron-core/src/main/java/com/erzbir/mirai/numeron/listener/Listener.java)</code>
+> 注解)
 
 例子:
 
@@ -69,32 +76,32 @@ import org.jetbrains.annotations.NotNull;
 public class Test {
     // 消息匹配规则设置了默认值, 默认是equals()完全匹配
 
-    @GroupMessage(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @GroupMessage(messageRule = MessageRule.REGEX, cardText = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
     public void regex(@NotNull GroupMessageEvent event) {
         event.getSubject().sendMessage("这是一个数字");
     }
 
-    @UserMessage(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
+    @UserMessage(cardText = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
     // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
     public void sayHello(@NotNull UserMessageEvent event) {
         event.getSubject().sendMessage("hi");
     }
 
-    @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    @Message(cardText = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
     // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
     public void sayGoodNight(@NotNull MessageEvent event) {
         event.getSubject().sendMessage("晚安");
     }
 
     // 权限是所有人, 不过滤
-    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    @Message(cardText = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
     public void sayH(@NotNull MessageEvent e) {
         e.getSubject().sendMessage("你好");
     }
 
     // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
-    @Message(text = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Message(cardText = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
     public void muteSingle(@NotNull MessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+");
         long id;
@@ -114,7 +121,7 @@ public class Test {
     }
 
     // 这个例子是检测黑名单用户, 正则匹配所有, 不进行任何过滤和权限限制以达到实时检测所有消息发送者的目的. 这样的实现很不好, 因为会时刻都在执行这个方法, 会重新写一个只针对黑名单用户的检测
-    @GroupMessage(text = ".*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
+    @GroupMessage(cardText = ".*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
     public void scan(GroupMessageEvent event) {
         if (GlobalConfig.blackList.contains(event.getSender().getId())) {
             Objects.requireNonNull(event.getGroup().get(event.getSender().getId())).kick("踢出黑名单用户", true);
@@ -141,7 +148,6 @@ execute()</code>中反射调用, 并为此方法在mirai中注册一个监听</b
 ## 原理:
 
 三个子模块, 核心为core, 实际功能在plugin, 启动器在boot
-
 
 在processor包下的两个类 <code>[MessageAnnotationProcessor](numeron-boot/src/main/java/com/erzbir/mirai/boot/processor/MessageAnnotationProcessor.java)</code>
 和<code>[PluginAnnotationProcessor](numeron-boot/src/main/java/com/erzbir/mirai/boot/processor/PluginAnnotationProcessor.java)</code>
