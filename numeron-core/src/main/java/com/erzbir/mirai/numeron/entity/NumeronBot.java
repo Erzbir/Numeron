@@ -25,7 +25,7 @@ public class NumeronBot implements Serializable {
     private long master = 0L;    // 主人
     private long account = 0L;   // 帐号
     private String password = "";    // 密码
-    private String folder = "erzbirnumeron/";  // 文件存储目录
+    private transient String folder = "erzbirnumeron/";  // 文件存储目录
     private boolean enable = true;
     private transient Bot bot;
     private BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
@@ -96,10 +96,6 @@ public class NumeronBot implements Serializable {
         ConfigCreateUtil.createFile(configFile);
         try (FileReader fileReader = new FileReader(configFile)) {
             JsonObject bot1 = JsonParser.parseReader(fileReader).getAsJsonObject().getAsJsonObject("bot");
-            this.folder = bot1.get("folder").getAsString();
-            if (!this.folder.endsWith("/")) {
-                this.folder = this.folder + "/";
-            }
             this.account = bot1.get("account").getAsLong();
             this.master = bot1.get("master").getAsLong();
             this.enable = bot1.get("enable").getAsBoolean();
