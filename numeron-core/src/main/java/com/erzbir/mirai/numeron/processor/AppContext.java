@@ -1,5 +1,6 @@
-package com.erzbir.mirai.numeron.boot.classloader;
+package com.erzbir.mirai.numeron.processor;
 
+import com.erzbir.mirai.numeron.classloader.ClassScanner;
 import com.erzbir.mirai.numeron.handler.Component;
 
 import java.io.IOException;

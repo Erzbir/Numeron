@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.boot.help;
 
-import com.erzbir.mirai.numeron.boot.processor.CommandAnnotationProcessor;
+import com.erzbir.mirai.numeron.processor.CommandAnnotationProcessor;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;

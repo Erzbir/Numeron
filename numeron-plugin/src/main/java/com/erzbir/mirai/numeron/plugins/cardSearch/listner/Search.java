@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.cardSearch;
+package com.erzbir.mirai.numeron.plugins.cardSearch.listner;
 
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.plugins.cardSearch.Card;
 import com.google.gson.Gson;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.MessageEvent;

@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.boot.classloader;
+package com.erzbir.mirai.numeron.processor;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;

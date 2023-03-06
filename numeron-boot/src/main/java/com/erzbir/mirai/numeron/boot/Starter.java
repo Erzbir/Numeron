@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.boot;
 
-import com.erzbir.mirai.numeron.boot.classloader.ClassScanner;
+import com.erzbir.mirai.numeron.classloader.ClassScanner;
 import com.erzbir.mirai.numeron.boot.configs.BotConfig;
-import com.erzbir.mirai.numeron.boot.processor.Processor;
+import com.erzbir.mirai.numeron.processor.Processor;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 
 import java.lang.reflect.InvocationTargetException;

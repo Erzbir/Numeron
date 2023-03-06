@@ -1,6 +1,5 @@
-package com.erzbir.mirai.numeron.boot.processor;
+package com.erzbir.mirai.numeron.processor;
 
-import com.erzbir.mirai.numeron.boot.classloader.AppContext;
 import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.listener.Listener;

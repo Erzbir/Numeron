@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.chat;
+package com.erzbir.mirai.numeron.plugins.chat.listner;
 
 import com.erzbir.mirai.numeron.plugins.chat.entity.AutoReplyData;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;

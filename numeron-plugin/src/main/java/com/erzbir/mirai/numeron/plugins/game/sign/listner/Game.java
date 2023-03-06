@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.game.sign;
+package com.erzbir.mirai.numeron.plugins.game.sign.listner;
 
 import com.erzbir.mirai.numeron.plugins.common.store.RedisStore;
 import com.erzbir.mirai.numeron.plugins.game.sign.entity.User;

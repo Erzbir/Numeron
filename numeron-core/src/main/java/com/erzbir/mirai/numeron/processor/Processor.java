@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.boot.processor;
+package com.erzbir.mirai.numeron.processor;
 
 /**
  * @author Erzbir

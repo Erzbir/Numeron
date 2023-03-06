@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.boot.classloader;
+package com.erzbir.mirai.numeron.classloader;
 
 import java.io.File;
 import java.io.IOException;
