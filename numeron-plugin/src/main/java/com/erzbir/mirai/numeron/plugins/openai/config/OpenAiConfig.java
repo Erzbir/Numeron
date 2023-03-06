@@ -1,22 +1,20 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
-
-import java.io.File;
+import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
+import com.erzbir.mirai.numeron.utils.JsonUtil;
 
 /**
  * @author Erzbir
  * @Date: 2023/3/3 23:53
  */
 public class OpenAiConfig {
-    public static final String dir = NumeronBot.INSTANCE.getWorkDir() + "plugin/chatgpt/";
+    public static final String dir = NumeronBot.INSTANCE.getFolder() + "plugin/chatgpt/";
+    private static final Object key = new Object();
+    private static volatile OpenAiConfig INSTANCE;
 
     static {
-        File file = new File(dir);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
+        ConfigCreateUtil.createDir(dir);
     }
 
     private long timeout = 30L;
@@ -25,20 +23,19 @@ public class OpenAiConfig {
     private boolean chat_by_at = false;
     private int limit = 20;
 
-    public OpenAiConfig() {
+    private OpenAiConfig() {
 
-    }
-
-    public OpenAiConfig(long timeout, String token, boolean reply, boolean chatByAt, int limit) {
-        this.timeout = timeout;
-        this.token = token;
-        this.reply = reply;
-        this.chat_by_at = chatByAt;
-        this.limit = limit;
     }
 
     public static OpenAiConfig getInstance() {
-        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/openai.json", OpenAiConfig.class);
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/openai.json", OpenAiConfig.class);
+                }
+            }
+        }
+        return INSTANCE == null ? new OpenAiConfig() : INSTANCE;
         //return new OpenAiConfig();
     }
 

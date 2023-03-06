@@ -9,7 +9,7 @@ import java.net.URLClassLoader;
 import java.util.Properties;
 import java.util.jar.JarException;
 
-public class PluginLoader extends ClassLoader{
+public class PluginLoader extends ClassLoader {
     private final static String PROPERTIES_NAME = "numeron.plugin.properties";
     private final static String MAIN_CLASS = "mainClass";
 

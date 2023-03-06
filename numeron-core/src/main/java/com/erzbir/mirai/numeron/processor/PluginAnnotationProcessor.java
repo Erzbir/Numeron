@@ -21,7 +21,6 @@ public class PluginAnnotationProcessor implements Processor {
     public static Bot bot;
 
 
-
     /**
      * 此方法扫瞄实现了规定接口的类
      */

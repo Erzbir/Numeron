@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
+import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.completion.CompletionRequest;
 
 import java.io.Serializable;
@@ -12,6 +12,8 @@ import java.util.Map;
  * @Date: 2023/3/3 23:52
  */
 public class CompletionConfig implements Serializable {
+    private static final Object key = new Object();
+    private static volatile CompletionConfig INSTANCE;
     private String model = "text-davinci-003";
     private int max_tokens = 1024;
     private double temperature = 1.0;
@@ -25,27 +27,19 @@ public class CompletionConfig implements Serializable {
     private Map<String, Integer> logit_bias = null;
     private String suffix = null;
 
-    public CompletionConfig() {
+    private CompletionConfig() {
 
-    }
-
-    public CompletionConfig(String model, int max_tokens, double temperature, double top_p, double presence_penalty, double frequency_penalty, int number, boolean echo, List<String> stop, int best_of, Map<String, Integer> logit_bias, String suffix) {
-        this.model = model;
-        this.max_tokens = max_tokens;
-        this.temperature = temperature;
-        this.top_p = top_p;
-        this.presence_penalty = presence_penalty;
-        this.frequency_penalty = frequency_penalty;
-        this.number = number;
-        this.echo = echo;
-        this.stop = stop;
-        this.best_of = best_of;
-        this.logit_bias = logit_bias;
-        this.suffix = suffix;
     }
 
     public static CompletionConfig getInstance() {
-        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/completion.json", CompletionConfig.class);
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/completion.json", CompletionConfig.class);
+                }
+            }
+        }
+        return INSTANCE == null ? new CompletionConfig() : INSTANCE;
         //return new CompletionConfig();
     }
 

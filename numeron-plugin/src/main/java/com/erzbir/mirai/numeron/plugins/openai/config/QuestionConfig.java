@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
+import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.completion.CompletionRequest;
 
 import java.io.Serializable;
@@ -10,6 +10,8 @@ import java.io.Serializable;
  * @Date: 2023/3/3 23:54
  */
 public class QuestionConfig implements Serializable {
+    private static final Object key = new Object();
+    private static volatile QuestionConfig INSTANCE;
     private String model = "text-davinci-003";
     private int max_tokens = 2048;
     private double temperature = 0.0;
@@ -18,29 +20,19 @@ public class QuestionConfig implements Serializable {
     private double frequency_penalty;
     private int n = 1;
 
-    public QuestionConfig() {
+    private QuestionConfig() {
 
-    }
-
-    public QuestionConfig(String model, int maxTokens, double temperature, int number) {
-        this.model = model;
-        this.max_tokens = maxTokens;
-        this.temperature = temperature;
-        this.n = number;
-    }
-
-    public QuestionConfig(String model, int max_tokens, double temperature, double top_p, double presence_penalty, double frequency_penalty, int n) {
-        this.model = model;
-        this.max_tokens = max_tokens;
-        this.temperature = temperature;
-        this.top_p = top_p;
-        this.presence_penalty = presence_penalty;
-        this.frequency_penalty = frequency_penalty;
-        this.n = n;
     }
 
     public static QuestionConfig getInstance() {
-        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/question.json", QuestionConfig.class);
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/question.json", QuestionConfig.class);
+                }
+            }
+        }
+        return INSTANCE == null ? new QuestionConfig() : INSTANCE;
         //return new QuestionConfig();
     }
 

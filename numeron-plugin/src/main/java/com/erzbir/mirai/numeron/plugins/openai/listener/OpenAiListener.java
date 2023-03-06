@@ -1,14 +1,14 @@
 package com.erzbir.mirai.numeron.plugins.openai.listener;
 
-import com.erzbir.mirai.numeron.plugins.openai.Conversation;
-import com.erzbir.mirai.numeron.plugins.openai.ParseImage;
-import com.erzbir.mirai.numeron.plugins.openai.config.*;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.plugins.openai.Conversation;
+import com.erzbir.mirai.numeron.plugins.openai.ParseImage;
+import com.erzbir.mirai.numeron.plugins.openai.config.*;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;

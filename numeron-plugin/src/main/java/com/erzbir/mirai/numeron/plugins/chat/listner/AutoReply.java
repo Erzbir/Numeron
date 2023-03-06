@@ -1,6 +1,5 @@
 package com.erzbir.mirai.numeron.plugins.chat.listner;
 
-import com.erzbir.mirai.numeron.plugins.chat.entity.AutoReplyData;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.filter.rule.FilterRule;
@@ -9,6 +8,7 @@ import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
+import com.erzbir.mirai.numeron.plugins.chat.entity.AutoReplyData;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;

@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
+import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 
 import java.io.Serializable;
@@ -12,6 +12,8 @@ import java.util.LinkedList;
  */
 public class ChatConfig implements Serializable {
 
+    private static final Object key = new Object();
+    private static volatile ChatConfig INSTANCE;
     private String model = "gpt-3.5-turbo";
     private int max_tokens = 512;
     private double temperature = 0.9;
@@ -19,27 +21,19 @@ public class ChatConfig implements Serializable {
     private double presence_penalty = 0.6;
     private double frequency_penalty = 0.0;
 
-    public ChatConfig() {
+    private ChatConfig() {
 
-    }
-
-    public ChatConfig(String model, int maxTokens, double temperature, long timeout) {
-        this.model = model;
-        this.max_tokens = maxTokens;
-        this.temperature = temperature;
-    }
-
-    public ChatConfig(String model, int maxTokens, double temperature, double topP, double presencePenalty, double frequencyPenalty, long timeout) {
-        this.model = model;
-        this.max_tokens = maxTokens;
-        this.temperature = temperature;
-        this.top_p = topP;
-        this.presence_penalty = presencePenalty;
-        this.frequency_penalty = frequencyPenalty;
     }
 
     public static ChatConfig getInstance() {
-        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/chat.json", ChatConfig.class);
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/chat.json", ChatConfig.class);
+                }
+            }
+        }
+        return INSTANCE == null ? new ChatConfig() : INSTANCE;
         //  return new ChatConfig();
     }
 

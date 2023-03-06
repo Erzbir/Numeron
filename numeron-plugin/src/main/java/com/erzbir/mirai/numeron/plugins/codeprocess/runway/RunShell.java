@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.plugins.codeprocess.runway;
 
 
-import com.erzbir.mirai.numeron.plugins.codeprocess.CodeUtil;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
+import com.erzbir.mirai.numeron.plugins.codeprocess.CodeUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class RunShell implements RunCode {
     private static final Object key = new Object();
-    private static final String codeDir = NumeronBot.INSTANCE.getWorkDir() + "/botCode/shell";
+    private static final String codeDir = NumeronBot.INSTANCE.getFolder() + "/botCode/shell";
     private static volatile RunShell INSTANCE;
 
     public static RunShell getInstance() {

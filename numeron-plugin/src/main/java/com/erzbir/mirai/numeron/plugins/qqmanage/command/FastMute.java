@@ -27,7 +27,7 @@ public class FastMute {
     private final List<Long> group = new ArrayList<>();
 
     {
-        String dir = NumeronBot.INSTANCE.getWorkDir() + "plugin-configs/qqmanage";
+        String dir = NumeronBot.INSTANCE.getFolder() + "plugin-configs/qqmanage";
         String confFile = dir + "/config.conf";
         File file = new File(dir);
         File file1 = new File(confFile);

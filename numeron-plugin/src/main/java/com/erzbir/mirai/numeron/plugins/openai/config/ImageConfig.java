@@ -1,6 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
-import com.erzbir.mirai.numeron.plugins.openai.JsonUtil;
+import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.image.CreateImageRequest;
 
 import java.io.File;
@@ -11,6 +11,8 @@ import java.io.Serializable;
  * @Date: 2023/3/3 23:53
  */
 public class ImageConfig implements Serializable {
+    private static final Object key = new Object();
+    private static volatile ImageConfig INSTANCE;
     private int n = 1;
     private String size = ImageSize.LARGE;
     private String format = "b64_json";
@@ -18,20 +20,19 @@ public class ImageConfig implements Serializable {
     private boolean save = false;
 
 
-    public ImageConfig() {
+    private ImageConfig() {
 
-    }
-
-    public ImageConfig(int n, String size, String format, String folder, boolean save) {
-        this.n = n;
-        this.size = size;
-        this.format = format;
-        this.folder = folder;
-        this.save = save;
     }
 
     public static ImageConfig getInstance() {
-        return JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/image.json", ImageConfig.class);
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/image.json", ImageConfig.class);
+                }
+            }
+        }
+        return INSTANCE == null ? new ImageConfig() : INSTANCE;
         //return new ImageConfig();
     }
 

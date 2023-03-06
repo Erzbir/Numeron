@@ -65,8 +65,8 @@ public class MessageAnnotationProcessor implements Processor {
     }
 
     /**
-     *
      * 执行消息处理方法的注册方法
+     *
      * @param v bean对象
      */
     private void registerMethods(Object v) {

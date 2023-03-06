@@ -41,7 +41,7 @@ public class MessageFilterExecutor {
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-        return NumeronBot.INSTANCE.isOpen() && RuleFilterFactory.INSTANCE.create(filterRule).filter(event1, text)
+        return NumeronBot.INSTANCE.isEnable() && RuleFilterFactory.INSTANCE.create(filterRule).filter(event1, text)
                 && MessageFilterFactory.INSTANCE.create(messageRule).filter(event1, text)
                 && PermissionFilterFactory.INSTANCE.create(permission).filter(event1, text);
     }

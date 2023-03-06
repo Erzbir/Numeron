@@ -1,69 +1,51 @@
 package com.erzbir.mirai.numeron.plugins.rss.config;
 
-import com.erzbir.mirai.numeron.plugins.rss.Model;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
-import com.google.gson.Gson;
+import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
+import com.erzbir.mirai.numeron.utils.JsonUtil;
+import net.mamoe.mirai.contact.Contact;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  * @author Erzbir
  * @Date: 2023/3/6 00:02
  */
 public class RssConfig {
-    protected List<String> urlList; // 订阅列表
+    private static final String configFile = NumeronBot.INSTANCE.getFolder() + "plugin/rss/config.json";
+    private static final Object key = new Object();
+    private static volatile RssConfig INSTANCE;
+
+    static {
+        ConfigCreateUtil.createFile(configFile);
+    }
+
+    protected HashMap<Contact, String> urlList; // 订阅列表
     protected long receiver;    //  接收方
-    protected Model model;  // 推送模式
     protected long delay;   //更新间隔
     protected String maxSub; // 最大订阅数量
     protected String proxy_type;    // 代理类型
-    protected String proxy_address;	// 代理地址
+    protected String proxy_address;    // 代理地址
     protected String proxy_port;    // 代理端口
     protected String proxy_username;    // 代理用户名
     protected String proxy_password;    // 代理密码
 
-    public RssConfig(List<String> urlList, long receiver, Model model, long delay) {
-        this.urlList = urlList;
-        this.receiver = receiver;
-        this.model = model;
-        this.delay = delay;
-    }
-
-    public RssConfig(List<String> urlList, long receiver, Model model, long delay, String maxSub, String proxy_type, String proxy_address, String proxy_port, String proxy_username, String proxy_password) {
-        this.urlList = urlList;
-        this.receiver = receiver;
-        this.model = model;
-        this.delay = delay;
-        this.maxSub = maxSub;
-        this.proxy_type = proxy_type;
-        this.proxy_address = proxy_address;
-        this.proxy_port = proxy_port;
-        this.proxy_username = proxy_username;
-        this.proxy_password = proxy_password;
-    }
-
-    public static RssConfig load() {
-        File file = new File(NumeronBot.INSTANCE.getWorkDir() + "plugin/rss/config.json");
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+    public static RssConfig getInstance() {
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = JsonUtil.load(configFile, RssConfig.class);
+                }
+            }
         }
-        Gson gson = new Gson();
-        try {
-            return gson.fromJson(new BufferedReader(new FileReader(file)), RssConfig.class);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        return INSTANCE == null ? new RssConfig() : INSTANCE;
     }
 
-    public List<String> getUrlList() {
+    public HashMap<Contact, String> getUrlList() {
         return urlList;
     }
 
-    public void setUrlList(List<String> urlList) {
+    public void setUrlList(HashMap<Contact, String> urlList) {
         this.urlList = urlList;
     }
 
@@ -73,14 +55,6 @@ public class RssConfig {
 
     public void setReceiver(long receiver) {
         this.receiver = receiver;
-    }
-
-    public Model getModel() {
-        return model;
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
     }
 
     public long getDelay() {

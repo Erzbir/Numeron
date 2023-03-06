@@ -1,6 +1,5 @@
 package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
-import com.erzbir.mirai.numeron.plugins.common.store.DefaultStore;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.handler.Command;
@@ -8,6 +7,7 @@ import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.plugins.common.store.DefaultStore;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;

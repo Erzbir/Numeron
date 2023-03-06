@@ -1,9 +1,8 @@
 package com.erzbir.mirai.numeron.boot;
 
 import com.erzbir.mirai.numeron.classloader.ClassScanner;
-import com.erzbir.mirai.numeron.boot.configs.BotConfig;
-import com.erzbir.mirai.numeron.processor.Processor;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
+import com.erzbir.mirai.numeron.processor.Processor;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -13,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Starter {
     public static void boot() {
-        BotConfig instance = BotConfig.INSTANCE;
         NumeronBot numeronBot = NumeronBot.INSTANCE;
         ClassScanner scanner = new ClassScanner("com.erzbir.mirai.numeron", true, t -> true, null);
         try {
