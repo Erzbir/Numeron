@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.cardSearch;
+package com.erzbir.mirai.numeron.plugins.cardsearch;
 
 import java.io.Serializable;
 
