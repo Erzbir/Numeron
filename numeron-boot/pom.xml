@@ -35,6 +35,7 @@
                             <mainClass>com.erzbir.mirai.numeron.NumeronBotApplication</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>numeron${project.version}</finalName>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>

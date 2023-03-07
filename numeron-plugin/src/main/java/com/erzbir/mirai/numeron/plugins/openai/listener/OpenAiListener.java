@@ -105,7 +105,6 @@ public class OpenAiListener {
             event.getSubject().sendMessage(new MessageChainBuilder().append(new QuoteReply(event.getMessage())).append(messages).build());
         } else {
             event.getSubject().sendMessage(new MessageChainBuilder().append(messages).build());
-
         }
     }
 

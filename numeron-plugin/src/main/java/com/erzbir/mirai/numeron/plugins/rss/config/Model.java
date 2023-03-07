@@ -2,8 +2,9 @@ package com.erzbir.mirai.numeron.plugins.rss.config;
 
 /**
  * @author Erzbir
- * @Date: 2023/3/6 00:21
+ * @Date: 2023/3/7 11:39
  */
-public class XmlUtil {
-
+public enum Model {
+    INSTANT,
+    TIMING
 }
