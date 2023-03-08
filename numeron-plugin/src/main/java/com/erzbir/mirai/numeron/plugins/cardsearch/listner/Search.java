@@ -38,7 +38,12 @@ public class Search {
     private static final String PIC_URL = "https://cdn.233.momobako.com/ygopro/pics/";
 
     @Command(name = "游戏王查卡", dec = "cq [cardname]", help = "cq 青眼白龙")
-    @Message(text = "^sr\\s*?\\S+?", filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, permission = PermissionType.ALL)
+    @Message(
+            text = "^sr\\s*?\\S+?",
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ALL
+    )
     private void search(MessageEvent event) throws IOException {
         String s = event.getMessage().contentToString().replaceFirst("^sr\\s*?", "");
         String string = sendRequest(s);

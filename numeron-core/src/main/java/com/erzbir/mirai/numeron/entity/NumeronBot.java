@@ -86,7 +86,7 @@ public class NumeronBot implements Serializable {
         new Thread(() -> {
             MiraiLogUtil.info("开始保存配置......");
             String configFile = folder + "config/botconfig.json";
-            JsonUtil.dump(configFile, this);
+            JsonUtil.dump(configFile, this, this.getClass());
             MiraiLogUtil.info("保存成功\n");
         });
     }

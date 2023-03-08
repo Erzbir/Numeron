@@ -27,9 +27,9 @@ public final class RedisStore {
     private RedisStore() {
         Properties properties = new Properties();
         String confFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/sql/redisconfig.properties";
-        try {
+        try (FileReader fileReader = new FileReader(confFile)) {
             ConfigCreateUtil.createFile(confFile);
-            properties.load(new FileReader(confFile));
+            properties.load(fileReader);
             host = properties.getProperty("host");
             port = Integer.parseInt(properties.getProperty("port"));
             user = properties.getProperty("user");

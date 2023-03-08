@@ -57,7 +57,7 @@ public class AutoReply {
         e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
     }
 
-    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
+    @Message(text = "你好啊", permission = PermissionType.MASTER, filterRule = FilterRule.NONE)
     private void sayH(MessageEvent e) {
         e.getSubject().sendMessage("你好");
     }
@@ -77,7 +77,7 @@ public class AutoReply {
         e.getSubject().sendMessage("hi");
     }
 
-    @GroupMessage(messageRule = MessageRule.CONTAINS, text = "小黑子", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
+    @GroupMessage(messageRule = MessageRule.EQUAL, text = "小黑子", permission = PermissionType.ADMIN, filterRule = FilterRule.BLACK)
     private void sayZ(GroupMessageEvent e) {
         e.getSubject().sendMessage("只因你太美");
     }

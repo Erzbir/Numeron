@@ -8,5 +8,7 @@ package com.erzbir.mirai.numeron.filter.permission;
 public enum PermissionType {
     ALL,
     MASTER,
-    WHITE
+    WHITE,
+    ADMIN,
+    FRIEND
 }

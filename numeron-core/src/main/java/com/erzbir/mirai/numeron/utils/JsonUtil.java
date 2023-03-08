@@ -26,14 +26,15 @@ public class JsonUtil {
         }
     }
 
-    public static void dump(String file, Object object) {
+    public static boolean dump(String file, Object object, Class<?> type) {
         Gson gson = new Gson();
-        try {
-            gson.toJson(object, new BufferedWriter(new FileWriter(file)));
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+            gson.toJson(object, type, bufferedWriter);
         } catch (IOException e) {
             MiraiLogUtil.err("保存出错");
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+        return true;
     }
 }

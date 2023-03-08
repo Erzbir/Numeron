@@ -1,7 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.rss.utils;
 
-import com.erzbir.mirai.numeron.plugins.rss.RssInfo;
-import com.erzbir.mirai.numeron.plugins.rss.RssItem;
+import com.erzbir.mirai.numeron.plugins.rss.entity.RssInfo;
 import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;

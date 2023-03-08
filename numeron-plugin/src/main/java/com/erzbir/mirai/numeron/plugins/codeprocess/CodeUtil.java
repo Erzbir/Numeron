@@ -38,7 +38,7 @@ public class CodeUtil {
         StringBuilder errBuilder = new StringBuilder();
         BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), use));
         BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream(), use));
-        try {
+        try (in; err) {
             stringBuilder = readResultS(in);
             errBuilder = readResultS(err);
         } catch (Exception e) {

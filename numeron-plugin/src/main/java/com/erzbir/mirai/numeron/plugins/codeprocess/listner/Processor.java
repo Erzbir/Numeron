@@ -24,21 +24,35 @@ public class Processor {
     private final CodeRunner codeRunner = CodeRunner.getInstance();
 
     @Command(name = "指令执行", dec = "执行py代码", help = "py\nprint(1)")
-    @Message(text = "py\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
+    @Message(
+            text = "py\n",
+            messageRule = MessageRule.BEGIN_WITH,
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
     private void runPy(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunPy.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
     }
 
     @Command(name = "指令执行", dec = "执行js代码", help = "py\nconsole.log(1)")
-    @Message(text = "js\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
+    @Message(text = "js\n",
+            messageRule = MessageRule.BEGIN_WITH,
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
     private void runJs(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunJs.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("js\\s+", "")));
     }
 
     @Command(name = "指令执行", dec = "执行shell代码", help = "sh\necho 1")
-    @Message(text = "sh\n", messageRule = MessageRule.BEGIN_WITH, filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
+    @Message(
+            text = "sh\n",
+            messageRule = MessageRule.BEGIN_WITH,
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
     private void runShell(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunShell.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("sh\\s+", "")));

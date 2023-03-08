@@ -1,7 +1,6 @@
 package com.erzbir.mirai.numeron.utils;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
-import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.ContactList;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;

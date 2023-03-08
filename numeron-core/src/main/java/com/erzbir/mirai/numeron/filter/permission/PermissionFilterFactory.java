@@ -28,6 +28,10 @@ public class PermissionFilterFactory implements FilterFactory {
             return MasterPermissionFilter.INSTANCE;
         } else if (e.equals(WHITE)) {
             return WhitePermissionFilter.INSTANCE;
+        } else if (e.equals(ADMIN)) {
+            return AdminPermissionFilter.INSTANCE;
+        } else if (e.equals(FRIEND)) {
+            return FriendPermissionFilter.INSTANCE;
         }
         return null;
     }

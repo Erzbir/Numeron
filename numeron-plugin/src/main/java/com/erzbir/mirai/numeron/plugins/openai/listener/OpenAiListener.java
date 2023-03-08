@@ -32,7 +32,6 @@ import java.util.List;
 @Listener
 public class OpenAiListener {
     private final Conversation conversation = new Conversation(2048);
-    private final Conversation conversation2 = new Conversation(2048);
     private final OpenAiConfig openAiConfig = OpenAiConfig.getInstance();
     private final ImageConfig imageConfig = ImageConfig.getInstance();
     private final ChatConfig chatConfig = ChatConfig.getInstance();
@@ -45,7 +44,12 @@ public class OpenAiListener {
     private final CompletionRequest question = questionConfig.load();
 
     @Command(name = "OpenAI-画图", dec = "i [prompt]", help = "i美女")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^i\\s*?\\S+?", permission = PermissionType.ALL)
+    @Message(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^i\\s*?\\S+?",
+            permission = PermissionType.ALL
+    )
     private void image(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^i\\s*?", "");
         createRequest(s, ImageConfig.class);
@@ -54,7 +58,12 @@ public class OpenAiListener {
     }
 
     @Command(name = "OpenAI-聊天", dec = "c [message]", help = "c你叫什么")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^c\\s*?\\S+?", permission = PermissionType.ALL)
+    @Message(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^c\\s*?\\S+?",
+            permission = PermissionType.ALL
+    )
     private void chat(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("c\\s*?", "");
         createRequest(s, ChatConfig.class);
@@ -64,7 +73,11 @@ public class OpenAiListener {
     }
 
     @Command(name = "OpenAI-补全", dec = "f [prompt]", help = "f水面")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^f\\s*?\\S+?", permission = PermissionType.ALL)
+    @Message(filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^f\\s*?\\S+?",
+            permission = PermissionType.ALL
+    )
     private void completion(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^f\\s*?", "");
         createRequest(s, CompletionConfig.class);
@@ -74,7 +87,12 @@ public class OpenAiListener {
     }
 
     @Command(name = "OpenAI-问答", dec = "q [prompt]", help = "q今天天气如何")
-    @Message(filterRule = FilterRule.BLACK, messageRule = MessageRule.REGEX, text = "^q\\s*?\\S+?", permission = PermissionType.ALL)
+    @Message(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^q\\s*?\\S+?",
+            permission = PermissionType.ALL
+    )
     private void question(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^q\\s*?", "");
         createRequest(s, QuestionConfig.class);
