@@ -1,5 +1,7 @@
-package com.erzbir.mirai.numeron.plugins.rss;
+package com.erzbir.mirai.numeron.plugins.rss.utils;
 
+import com.erzbir.mirai.numeron.plugins.rss.RssInfo;
+import com.erzbir.mirai.numeron.plugins.rss.RssItem;
 import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -11,16 +13,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Erzbir
  * @Date: 2023/3/7 00:45
  */
-public class ParseRss {
-    public static List<RssInfo> getRssInfoList(String rss) throws IOException {
+public class RssUtil {
+    public static List<RssInfo> getRssInfoList(String url) throws IOException {
         List<RssInfo> retList = new ArrayList<>();
-        URL url = new URL(rss);
-        try (XmlReader xmlReader = new XmlReader(url.openConnection().getInputStream())) {
+        URL url2 = new URL(url);
+        try (XmlReader xmlReader = new XmlReader(url2.openConnection().getInputStream())) {
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(xmlReader);
             List<SyndEntry> entries = feed.getEntries();
@@ -29,10 +33,15 @@ public class ParseRss {
                 rssInfo.setTitle(entry.getTitle());
                 rssInfo.setLink(entry.getLink());
                 SyndContent content = entry.getDescription();
-                rssInfo.setDescription(content.getValue());
                 rssInfo.setPublishedDate(entry.getPublishedDate());
                 rssInfo.setAuthor(entry.getAuthor());
-                rssInfo.setUrl(entry.getUri());
+                Pattern pattern = Pattern.compile("<img src=\"(.+?)\"");
+                Matcher matcher = pattern.matcher(content.getValue());
+                if (matcher.find()) {
+                    rssInfo.setUrl(matcher.group(1));
+                }
+                rssInfo.setDescription(content.getValue());
+
                 retList.add(rssInfo);
             }
         } catch (FeedException e) {
@@ -41,7 +50,16 @@ public class ParseRss {
         return retList;
     }
 
-    public static RssInfo getNewest(List<RssInfo> entries) {
+    public static RssInfo getRssInfo(String url) {
+        try {
+            List<RssInfo> rssList = getRssInfoList(url);
+            return getNewest(rssList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static RssInfo getNewest(List<RssInfo> entries) {
         return entries.stream()
                 .max((o1, o2) ->
                         (int) (o1.getPublishedDate().getTime() - o2.getPublishedDate().getTime())).orElse(null);

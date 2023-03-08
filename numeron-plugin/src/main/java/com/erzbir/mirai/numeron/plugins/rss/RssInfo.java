@@ -1,12 +1,12 @@
 package com.erzbir.mirai.numeron.plugins.rss;
 
+import cn.hutool.core.date.DateTime;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -24,10 +24,11 @@ public class RssInfo implements Serializable {
     public MessageChain getMessageChain(Contact contact) throws IOException {
         return new MessageChainBuilder()
                 .append(title).append("\n")
-                .append("--").append(description).append("\n")
-                .append(Contact.uploadImage(contact, new URL(url).openStream())).append("\n")
+ //               .append("--").append(description.replaceAll("<br>.*>", "")).append("\n")
+  //              .append(Contact.uploadImage(contact, new URL(url).openStream())).append("\n")
+                .append(link).append("\n")
                 .append(author).append("\n")
-                .append(publishedDate.toString())
+                .append(DateTime.of(publishedDate.getTime()).toString())
                 .build();
     }
 

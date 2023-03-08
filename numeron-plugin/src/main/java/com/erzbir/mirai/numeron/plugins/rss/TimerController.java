@@ -1,8 +1,8 @@
 package com.erzbir.mirai.numeron.plugins.rss;
 
+import com.erzbir.mirai.numeron.plugins.rss.config.Model;
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import net.mamoe.mirai.contact.Contact;
-import net.mamoe.mirai.event.events.MessageEvent;
 
 import java.io.IOException;
 import java.util.*;
@@ -12,57 +12,97 @@ import java.util.*;
  * @Date: 2023/3/6 00:20
  */
 public class TimerController {
-    private static final HashMap<Contact, Timer> timerMap = new HashMap<>();
-    private static final HashMap<Contact, Timer> scanMap = new HashMap<>();
+    private static final HashMap<Long, HashMap<Long, Timer>> timerMap = new HashMap<>();
+    private static final HashMap<Long, HashMap<Long, Timer>> scanMap = new HashMap<>();
 
-    private static TimerTask getTimerTask(MessageEvent event) {
+    static {
+        RssConfig.getInstance().getRssMap().forEach((k, v) -> v.forEach((m, n) -> {
+            HashMap<Long, Timer> hashMap = new HashMap<>();
+            hashMap.put(n.getId(), new Timer());
+            if (n.getModel().equals(Model.instant)) {
+                scanMap.put(k, hashMap);
+            } else if (n.getModel().equals(Model.timing)) {
+                timerMap.put(k, hashMap);
+            }
+        }));
+    }
+
+    private static TimerTask getTimerTask(Contact contact, long id) {
         return new TimerTask() {
             @Override
             public void run() {
+                RssItem rssItem = RssConfig.getInstance().getRssMap().get(contact.getId()).get(12313L);
                 try {
-                    event.getSubject().sendMessage(RssConfig.getInstance().getRssMap().getMap().get(event.getSubject()).getUpdate().getMessageChain(event.getSubject()));
+                    contact.sendMessage(rssItem.updateInfo().getMessageChain(contact));
                 } catch (IOException e) {
-                    event.getSubject().sendMessage("订阅出错");
                     e.printStackTrace();
-                } catch (NullPointerException e) {
-                    event.getSubject().sendMessage("没有此订阅");
                 }
             }
         };
     }
 
-    public static void enableTimingPush(MessageEvent event, Calendar date) {
+    public static void enableAll(Contact contact) {
+        System.out.println(RssConfig.getInstance().getRssMap());
+        scanMap.get(contact.getId()).forEach((k, v) -> {
+            addScan(contact, k);
+        });
+    }
+
+    public static void addTimingPush(Contact contact, long id, Calendar date) {
         if (date.getTime().before(new Date())) {
             date.add(Calendar.DATE, 1);
         }
-        TimerTask task = getTimerTask(event);
+    //    TimerTask task = getTimerTask(contact, id);
         Timer timer = new Timer();
-        timer.schedule(task, date.getTime(), 24 * 60 * 60 * 1000);
-        timerMap.put(event.getSubject(), timer);
+     //   timer.schedule(task, date.getTime(), 24 * 60 * 60 * 1000);
+        HashMap<Long, Timer> hashMap = new HashMap<>();
+        hashMap.put(id, timer);
+        timerMap.put(contact.getId(), hashMap);
     }
 
-    public static void disableTimingPush(Contact contact) {
-        Timer timer = timerMap.remove(contact);
-        timer.cancel();
+    public static void disableTimingPush(long contactId, long id) {
+        timerMap.get(contactId).get(id).cancel();
     }
 
-    private static void disableScan(Contact contact) {
-        Timer timer = scanMap.remove(contact);
-        timer.cancel();
+    private static void disableScan(long contactId, long id) {
+        scanMap.get(contactId).get(id).cancel();
     }
 
-    private static void enableScan(MessageEvent event, long delay) {
-        TimerTask task = getTimerTask(event);
+    private static void disableAll(long contactId) {
+        timerMap.get(contactId).forEach((k, v) -> v.cancel());
+        scanMap.get(contactId).forEach((k, v) -> v.cancel());
+    }
+
+    private static void deleteTiming(long contactId, long id) {
+        timerMap.get(contactId).remove(id).cancel();
+    }
+
+    private static void deleteScan(long contactId, long id) {
+        scanMap.get(contactId).remove(id).cancel();
+    }
+
+    private static void deleteAll(long contactId) {
+        HashMap<Long, Timer> remove = scanMap.remove(contactId);
+        remove.forEach((k, v) -> remove.remove(k).cancel());
+        HashMap<Long, Timer> remove2 = timerMap.remove(contactId);
+        remove2.forEach((k, v) -> remove.remove(k).cancel());
+    }
+
+    public static void addScan(Contact contact, long id) {
+        TimerTask task = getTimerTask(contact, id);
         Timer timer = new Timer();
+        long delay = RssConfig.getInstance().getDelay();
         timer.schedule(task, delay);
-        scanMap.put(event.getSubject(), timer);
+        HashMap<Long, Timer> hashMap = new HashMap<>();
+        hashMap.put(id, timer);
+        scanMap.put(contact.getId(), hashMap);
     }
 
-    public static HashMap<Contact, Timer> getTimerMap() {
+    public static HashMap<Long, HashMap<Long, Timer>> getTimerMap() {
         return timerMap;
     }
 
-    public static HashMap<Contact, Timer> getScanMap() {
+    public static HashMap<Long, HashMap<Long, Timer>> getScanMap() {
         return scanMap;
     }
 

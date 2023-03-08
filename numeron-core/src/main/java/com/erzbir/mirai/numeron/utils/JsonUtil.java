@@ -17,9 +17,11 @@ public class JsonUtil {
             return gson.fromJson(bufferedReader, tClass);
         } catch (FileNotFoundException e) {
             MiraiLogUtil.err("无配置文件" + e);
+            e.printStackTrace();
             throw new RuntimeException(e);
         } catch (IOException e) {
             MiraiLogUtil.err("读取出错" + e);
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -30,6 +32,7 @@ public class JsonUtil {
             gson.toJson(object, new BufferedWriter(new FileWriter(file)));
         } catch (IOException e) {
             MiraiLogUtil.err("保存出错");
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

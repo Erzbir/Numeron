@@ -7,6 +7,7 @@ import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.UserMessage;
+import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
 import net.mamoe.mirai.event.events.UserMessageEvent;
 
 import java.io.BufferedReader;
@@ -27,22 +28,8 @@ public class FastMute {
     private final List<Long> group = new ArrayList<>();
 
     {
-        String dir = NumeronBot.INSTANCE.getFolder() + "plugin-configs/qqmanage";
-        String confFile = dir + "/config.conf";
-        File file = new File(dir);
-        File file1 = new File(confFile);
-        try {
-            if (!file.exists()) {
-                if (file.mkdirs()) {
-                    file1.createNewFile();
-                }
-            }
-            if (!file1.exists()) {
-                file1.createNewFile();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String confFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/qqmanage" + "/config.conf";
+        ConfigCreateUtil.createFile(confFile);
         try (BufferedReader in = new BufferedReader(new FileReader(confFile))) {
             String s;
             while ((s = in.readLine()) != null) {
