@@ -21,6 +21,7 @@ import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.QuoteReply;
+import retrofit2.HttpException;
 
 import java.time.Duration;
 import java.util.List;
@@ -43,54 +44,62 @@ public class OpenAiListener {
     private final ChatCompletionRequest chatCompletionRequest = chatConfig.load();
     private final CompletionRequest question = questionConfig.load();
 
-    @Command(name = "OpenAI-画图", dec = "i [prompt]", help = "i美女")
+    @Command(name = "OpenAI-画图", dec = "/i [prompt]", help = "i美女")
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^i\\s*?\\S+?",
+            text = "^/i\\s*?\\S+?",
             permission = PermissionType.ALL
     )
     private void image(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("^i\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/i\\s*?", "");
         createRequest(s, ImageConfig.class);
         MessageChain singleMessages = buildImageMessage(openAiService.createImage(imageRequest).getData(), event);
         event.getSubject().sendMessage(singleMessages);
     }
 
-    @Command(name = "OpenAI-聊天", dec = "c [message]", help = "c你叫什么")
+    @Command(name = "OpenAI-聊天", dec = "/c [message]", help = "/c你叫什么")
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^c\\s*?\\S+?",
+            text = "^/c\\s*?\\S+?",
             permission = PermissionType.ALL
     )
     private void chat(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("c\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/c\\s*?", "");
         createRequest(s, ChatConfig.class);
-        ChatMessage message = openAiService.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
-        sendMessage(event, message.getContent().replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", ""));
-        conversation.add(message);
+        ChatMessage message = null;
+        try {
+            message = openAiService.createChatCompletion(chatCompletionRequest).getChoices().get(0).getMessage();
+            conversation.add(message);
+        } catch (HttpException e) {
+            conversation.reduce();
+        }
+        if (message != null) {
+            sendMessage(event, message.getContent().replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", ""));
+        }
+
     }
 
-    @Command(name = "OpenAI-补全", dec = "f [prompt]", help = "f水面")
+    @Command(name = "OpenAI-补全", dec = "/f [prompt]", help = "/f 水面")
     @Message(filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^f\\s*?\\S+?",
             permission = PermissionType.ALL
     )
     private void completion(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("^f\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/f\\s*?", "");
         createRequest(s, CompletionConfig.class);
         String text = openAiService.createCompletion(completionRequest).getChoices().get(0).getText();
         text = text.replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", "");
         sendMessage(event, text);
     }
 
-    @Command(name = "OpenAI-问答", dec = "q [prompt]", help = "q今天天气如何")
+    @Command(name = "OpenAI-问答", dec = "/q [prompt]", help = "/q今天天气如何")
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^q\\s*?\\S+?",
+            text = "/^q\\s*?\\S+?",
             permission = PermissionType.ALL
     )
     private void question(MessageEvent event) {

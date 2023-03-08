@@ -9,6 +9,7 @@ import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.config.api.PublishApi;
 import com.erzbir.mirai.numeron.plugins.rss.config.api.ViewApi;
+import com.erzbir.mirai.numeron.plugins.rss.timer.TimerController;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -17,6 +18,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
  */
 @Listener
 public class RssCommand {
+    static {
+        TimerController.loadAllScan();
+    }
 
     @Command(name = "添加订阅", dec = "#sub [url]", help = "#sub https://xxx.xxx")
     @Message(

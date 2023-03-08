@@ -2,6 +2,7 @@ package com.erzbir.mirai.numeron.plugins.rss.entity;
 
 import cn.hutool.core.date.DateTime;
 import net.mamoe.mirai.contact.Contact;
+import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
@@ -23,11 +24,19 @@ public class RssInfo implements Serializable {
     private Date publishedDate;
 
     public MessageChain getMessageChain(Contact contact) throws IOException {
-        return new MessageChainBuilder()
-                .append(title).append("\n")
-                .append("--").append(description.replaceAll("<br>.*>", "")).append("\n")
-                .append(Contact.uploadImage(contact, new URL(url).openStream())).append("\n")
-                .append(link).append("\n")
+        Image image = null;
+        try {
+            image = Contact.uploadImage(contact, new URL(url).openStream());
+        } catch (Exception e) {
+            System.out.println("没有图片");
+        }
+        MessageChainBuilder chainBuilder = new MessageChainBuilder();
+        chainBuilder.append(title).append("\n")
+                .append("--").append(description.replaceAll("<br>.*>", "")).append("\n");
+        if (image != null) {
+            chainBuilder.append(image);
+        }
+        return chainBuilder.append(link).append("\n")
                 .append(author).append("\n")
                 .append(DateTime.of(publishedDate.getTime()).toString())
                 .build();

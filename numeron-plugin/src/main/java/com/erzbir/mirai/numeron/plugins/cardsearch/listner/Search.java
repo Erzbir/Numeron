@@ -37,9 +37,9 @@ public class Search {
     private static final String API = "https://ygocdb.com/api/v0/?search=";
     private static final String PIC_URL = "https://cdn.233.momobako.com/ygopro/pics/";
 
-    @Command(name = "游戏王查卡", dec = "cq [cardname]", help = "cq 青眼白龙")
+    @Command(name = "游戏王查卡", dec = "#sr [cardname]", help = "sr 青眼白龙")
     @Message(
-            text = "^sr\\s*?\\S+?",
+            text = "^#sr\\s*?\\S+?",
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.ALL

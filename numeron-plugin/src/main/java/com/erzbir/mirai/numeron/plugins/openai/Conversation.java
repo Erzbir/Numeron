@@ -30,7 +30,7 @@ public class Conversation implements List<ChatMessage> {
         return size + len > limit;
     }
 
-    private void reduce() {
+    public void reduce() {
         while (overLimit()) {
             remove(0);
         }

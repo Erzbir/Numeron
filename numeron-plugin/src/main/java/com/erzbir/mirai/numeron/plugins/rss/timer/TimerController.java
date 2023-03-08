@@ -23,15 +23,11 @@ public class TimerController {
         return thread;
     });
 
-    static {
-        loadAllScan();
-    }
-
-
     private static TimerTask getTimerTask(String id) {
         return new TimerTask() {
             @Override
             public void run() {
+                System.out.println("21");
                 RssItem rssItem = RssConfig.getInstance().getRssMap().get(id);
                 if (rssItem == null) {
                     return;
@@ -51,6 +47,7 @@ public class TimerController {
                     try {
                         if (rssItem.isEnable()) {
                             friend.sendMessage((rssItem.updateInfo().getMessageChain(friend)));
+                            System.out.println("asadsad");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
