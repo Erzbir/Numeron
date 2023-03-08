@@ -19,7 +19,6 @@ public class RssInfo implements Serializable {
     private String url = "";
     private String title = "";
     private String link = "";
-    private String description = "";
     private String author = "";
     private Date publishedDate;
 
@@ -31,8 +30,7 @@ public class RssInfo implements Serializable {
             System.out.println("没有图片");
         }
         MessageChainBuilder chainBuilder = new MessageChainBuilder();
-        chainBuilder.append(title).append("\n")
-                .append("--").append(description.replaceAll("<br>.*>", "")).append("\n");
+        chainBuilder.append(title).append("\n");
         if (image != null) {
             chainBuilder.append(image);
         }
@@ -48,7 +46,6 @@ public class RssInfo implements Serializable {
                 "url='" + url + '\'' +
                 ", title='" + title + '\'' +
                 ", link='" + link + '\'' +
-                ", description='" + description + '\'' +
                 ", author='" + author + '\'' +
                 ", publishedDate=" + publishedDate +
                 '}';
@@ -76,14 +73,6 @@ public class RssInfo implements Serializable {
 
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getAuthor() {

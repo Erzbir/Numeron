@@ -11,6 +11,7 @@ import com.rometools.rome.io.XmlReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,8 +40,6 @@ public class RssUtil {
                 if (matcher.find()) {
                     rssInfo.setUrl(matcher.group(1));
                 }
-                rssInfo.setDescription(content.getValue());
-
                 retList.add(rssInfo);
             }
         } catch (FeedException e) {
@@ -60,7 +59,6 @@ public class RssUtil {
 
     private static RssInfo getNewest(List<RssInfo> entries) {
         return entries.stream()
-                .max((o1, o2) ->
-                        (int) (o1.getPublishedDate().getTime() - o2.getPublishedDate().getTime())).orElse(null);
+                .max(Comparator.comparingLong(o -> o.getPublishedDate().getTime())).orElse(null);
     }
 }
