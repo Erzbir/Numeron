@@ -10,12 +10,19 @@ import java.io.IOException;
 public class ConfigCreateUtil {
     public static void createFile(String confFile) {
         File file = new File(confFile);
+        if (!file.isFile()) {
+            try {
+                if (file.createNewFile()) {
+                    return;
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
             try {
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
+                file.createNewFile();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

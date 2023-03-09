@@ -1,7 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
-import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 
 /**
@@ -12,10 +11,6 @@ public class OpenAiConfig {
     public static final String dir = NumeronBot.INSTANCE.getFolder() + "plugin/chatgpt/";
     private static final Object key = new Object();
     private static volatile OpenAiConfig INSTANCE;
-
-    static {
-        ConfigCreateUtil.createDir(dir);
-    }
 
     private long timeout = 30L;
     private String token = "";

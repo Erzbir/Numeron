@@ -9,9 +9,9 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Scanner;
 
@@ -39,35 +39,36 @@ public class NumeronBot implements Serializable {
         Scanner scanner = new Scanner(System.in);
         String configFile = this.folder + "config/botconfig.json";
         ConfigCreateUtil.createFile(configFile);
-        load(new File(configFile));
-        if (notVerify()) {
-            if (account == 0) {
-                MiraiLogUtil.err("帐号为空");
-                while (account == 0) {
-                    System.out.print("输入帐号: ");
-                    try {
-                        account = scanner.nextLong();
-                    } catch (IllegalArgumentException e) {
-                        MiraiLogUtil.err("请输入数字帐号!");
-                    }
+        if (load(new File(configFile))) {
+            return;
+        }
+        if (account == 0) {
+            MiraiLogUtil.err("帐号为空");
+            while (account == 0) {
+                System.out.print("输入帐号: ");
+                try {
+                    account = scanner.nextLong();
+                    scanner.nextLine();
+                } catch (IllegalArgumentException e) {
+                    MiraiLogUtil.err("请输入数字帐号!");
                 }
             }
-            if (password == null || password.isEmpty()) {
-                MiraiLogUtil.err("密码为空");
-                while (password.isEmpty()) {
-                    System.out.print("输入密码: ");
-                    password = scanner.nextLine();
-                }
+        }
+        if (password == null || password.isEmpty()) {
+            MiraiLogUtil.err("密码为空");
+            while (password.isEmpty()) {
+                System.out.print("输入密码: ");
+                password = scanner.next();
             }
-            if (master == 0) {
-                MiraiLogUtil.err("主人未设置");
-                while (master == 0) {
-                    System.out.print("输入主人帐号: ");
-                    try {
-                        master = scanner.nextLong();
-                    } catch (IllegalArgumentException e) {
-                        MiraiLogUtil.err("请输入数字帐号!");
-                    }
+        }
+        if (master == 0) {
+            MiraiLogUtil.err("主人未设置");
+            while (master == 0) {
+                System.out.print("输入主人帐号: ");
+                try {
+                    master = scanner.nextLong();
+                } catch (IllegalArgumentException e) {
+                    MiraiLogUtil.err("请输入数字帐号!");
                 }
             }
         }
@@ -91,23 +92,23 @@ public class NumeronBot implements Serializable {
             String configFile = folder + "config/botconfig.json";
             JsonUtil.dump(configFile, this, this.getClass());
             MiraiLogUtil.info("保存成功\n");
-        });
+        }).start();
     }
 
-    private void load(File file) {
-        try (FileReader fileReader = new FileReader(file)) {
-            JsonObject bot1 = JsonParser.parseReader(fileReader).getAsJsonObject().getAsJsonObject("bot");
-            this.account = bot1.get("account").getAsLong();
-            this.master = bot1.get("master").getAsLong();
-            this.enable = bot1.get("enable").getAsBoolean();
-            this.password = bot1.get("password").getAsString();
-            this.heartbeatStrategy = BotConfiguration.HeartbeatStrategy.valueOf(bot1.get("heartbeatStrategy").getAsString());
-            this.miraiProtocol = BotConfiguration.MiraiProtocol.valueOf(bot1.get("miraiProtocol").getAsString());
-        } catch (IOException e) {
-            MiraiLogUtil.err("配置文件加载失败");
-            throw new RuntimeException(e);
+    private boolean load(File file) {
+        JsonObject bot1;
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
+            bot1 = JsonParser.parseReader(fileReader).getAsJsonObject().getAsJsonObject("bot");
+        } catch (Exception e) {
+            return false;
         }
-
+        this.account = bot1.get("account").getAsLong();
+        this.master = bot1.get("master").getAsLong();
+        this.enable = bot1.get("enable").getAsBoolean();
+        this.password = bot1.get("password").getAsString();
+        this.heartbeatStrategy = BotConfiguration.HeartbeatStrategy.valueOf(bot1.get("heartbeatStrategy").getAsString());
+        this.miraiProtocol = BotConfiguration.MiraiProtocol.valueOf(bot1.get("miraiProtocol").getAsString());
+        return !notVerify();
     }
 
     private Bot createBot() {

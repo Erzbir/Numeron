@@ -28,7 +28,6 @@ public class TimerController {
             RssInfo rssInfo = rssItem.updateInfo();
             if (rssInfo != null) {
                 rssItem.getGroupList().forEach(t -> {
-
                     Group group = MiraiContactUtils.getGroup(t);
                     try {
                         if (rssItem.isEnable()) {
@@ -65,6 +64,6 @@ public class TimerController {
 
     public static void addScan(String id, Long delay) {
         Runnable task = getTimerTask(id);
-        executorService.scheduleWithFixedDelay(task, 1, delay, TimeUnit.MINUTES);
+        executorService.scheduleAtFixedRate(task, 1, delay, TimeUnit.MINUTES);
     }
 }

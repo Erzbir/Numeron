@@ -27,11 +27,11 @@ public final class RedisStore {
     private RedisStore() {
         Properties properties = new Properties();
         String confFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/sql/redisconfig.properties";
+        ConfigCreateUtil.createFile(confFile);
         try (FileReader fileReader = new FileReader(confFile)) {
-            ConfigCreateUtil.createFile(confFile);
             properties.load(fileReader);
-            host = properties.getProperty("host");
-            port = Integer.parseInt(properties.getProperty("port"));
+            host = Objects.requireNonNullElse(properties.getProperty("host"), "localhost");
+            port = Integer.parseInt(Objects.requireNonNullElse(properties.getProperty("port"), "6379"));
             user = properties.getProperty("user");
             password = properties.getProperty("password");
         } catch (IOException e) {

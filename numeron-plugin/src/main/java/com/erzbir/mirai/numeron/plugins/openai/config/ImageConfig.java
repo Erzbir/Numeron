@@ -19,7 +19,6 @@ public class ImageConfig implements Serializable {
     private String folder = "";
     private boolean save = false;
 
-
     private ImageConfig() {
 
     }
