@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.processor;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ public interface BeanFactory {
     <T> Map<String, T> getBeansWithAnnotation(Class<? extends Annotation> annotationType);
 
     default <T> T create(Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Constructor<T> constructor = clazz.getConstructor();
+        constructor.setAccessible(true);
         return clazz.getConstructor().newInstance();
     }
 }

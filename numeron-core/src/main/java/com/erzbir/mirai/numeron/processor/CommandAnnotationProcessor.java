@@ -24,17 +24,29 @@ public class CommandAnnotationProcessor implements Processor {
         return stringBuilder.toString();
     }
 
+    private static void getDoc() {
+        helpMap.forEach((k, v) -> {
+            stringBuilder.append(k).append(": \n");
+            v.forEach(stringBuilder::append);
+            stringBuilder.append("\n");
+        });
+    }
+
+    private static void addToDocMap(Command command) {
+        if (command == null) {
+            return;
+        }
+        Set<String> set = helpMap.computeIfAbsent(command.name(), k -> new HashSet<>());
+        set.add(command.dec() + "\n" + command.help() + "\n");
+    }
+
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANT;
         MiraiLogUtil.verbose("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
         context.getBeansWithAnnotation(Plugin.class).forEach((k, v) -> scanBeans(v));
-        helpMap.forEach((k, v) -> {
-            stringBuilder.append(k).append(": \n");
-            v.forEach(stringBuilder::append);
-            stringBuilder.append("\n");
-        });
+        getDoc();
         MiraiLogUtil.verbose("命令帮助文档生成完成");
     }
 
@@ -43,11 +55,7 @@ public class CommandAnnotationProcessor implements Processor {
         MiraiLogUtil.debug("扫瞄到 " + name);
         for (Method method : bean.getClass().getDeclaredMethods()) {
             Command command = method.getDeclaredAnnotation(Command.class);
-            if (command == null) {
-                return;
-            }
-            Set<String> set = helpMap.computeIfAbsent(command.name(), k -> new HashSet<>());
-            set.add(command.dec() + "\n" + command.help() + "\n");
+            addToDocMap(command);
         }
     }
 }

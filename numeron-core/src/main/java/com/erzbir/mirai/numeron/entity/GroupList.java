@@ -5,7 +5,7 @@ import com.erzbir.mirai.numeron.utils.SqlUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 
 /**
@@ -62,7 +62,7 @@ public final class GroupList {
             return;
         }
         String sql = "INSERT INTO GROUPS(ID, OP_ID, OP_TIME) " +
-                "VALUES(" + value + ", " + id + ", '" + LocalTime.now() + "' " + ")";
+                "VALUES(" + value + ", " + id + ", '" + LocalDateTime.now() + "' " + ")";
         SqlUtil.executeUpdateSQL(sql);
     }
 

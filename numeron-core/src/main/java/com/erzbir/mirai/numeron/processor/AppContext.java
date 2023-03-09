@@ -5,7 +5,6 @@ import com.erzbir.mirai.numeron.handler.Component;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,22 +25,32 @@ public class AppContext implements BeanFactory {
         try {
             ClassScanner scanner = new ClassScanner(packageName, true, s -> true, s -> true);
             Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class); // 扫瞄带有@Component注解的class
-            classes.forEach(e -> {
-                try {
-                    if (!e.isAnnotation() && !e.isEnum() && !e.isInterface()) {
-                        Constructor<Object> constructor = (Constructor<Object>) e.getConstructor();
-                        constructor.setAccessible(true);
-                        context.put(e.getSimpleName(), constructor.newInstance());
-                    }
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                         NoSuchMethodException ex) {
-                    ex.printStackTrace();
-                }
-            });
+            addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    private void addAllToContext(Set<Class<?>> classes) {
+        classes.forEach(e -> {
+            try {
+                if (isConstructClass(e)) {
+                    addToContext(e);  // 判断是否为可实例化的类
+                }
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    private void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        context.put(bean.getSimpleName(), create(bean));
+    }
+
+    private boolean isConstructClass(Class<?> bean) {
+        return !bean.isAnnotation() && !bean.isEnum() && !bean.isInterface();
     }
 
     @Override

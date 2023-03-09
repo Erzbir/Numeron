@@ -8,7 +8,7 @@ import java.util.List;
  * @author Erzbir
  * @Date: 2023/3/8 14:55
  */
-public class AdminList {
+public final class AdminList {
     public static AdminList INSTANCE = new AdminList();
     private final HashMap<Long, List<Long>> adminMap = new HashMap<>();
 

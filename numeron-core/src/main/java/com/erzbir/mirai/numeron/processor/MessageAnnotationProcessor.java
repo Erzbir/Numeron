@@ -58,6 +58,10 @@ public class MessageAnnotationProcessor implements Processor {
 
     }
 
+    /**
+     * @param annotation 注解
+     * @return 是否是需要的注解
+     */
     private boolean isNeededAnnotation(Annotation annotation) {
         return annotation instanceof GroupMessage
                 || annotation instanceof UserMessage
@@ -78,14 +82,14 @@ public class MessageAnnotationProcessor implements Processor {
                         String s = Arrays.toString(method.getParameterTypes())
                                 .replaceAll("\\[", "(")
                                 .replaceAll("]", ")");
-                        MiraiLogUtil.verbose("开始注册处理方法 " + name + "." + method.getName() + s);
+                        MiraiLogUtil.verbose("开始注册处理方法 " + method.getName() + s);
                         method.setAccessible(true);
                         try {
                             execute(v, method, toFilter(channel, annotation), annotation);
                         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
-                        MiraiLogUtil.info(name + "." + method.getName() + s + " 处理方法注册完毕");
+                        MiraiLogUtil.info(method.getName() + s + " 处理方法注册完毕");
                     });
         }
     }

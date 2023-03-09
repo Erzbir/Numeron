@@ -11,18 +11,30 @@ import java.lang.reflect.InvocationTargetException;
  * @Date: 2022/12/12 22:45
  */
 public class Starter {
-    public static void boot() {
+    static {
         NumeronBot numeronBot = NumeronBot.INSTANCE;  // 这里是为了提前初始化, 不然会出现空指针异常
+    }
+
+    private final String basePackage;
+
+    public Starter(String packageName) {
+        basePackage = packageName;
+    }
+
+    public void boot() {
+        bootFromBasePackage();
+    }
+
+    private void bootFromBasePackage() {
         // 包扫瞄器扫瞄所有class
-        ClassScanner scanner = new ClassScanner(
-                "com.erzbir.mirai.numeron",
-                true,
-                t -> true,
-                null);
+        scanProcessor();
+        NumeronBot.INSTANCE.getBot().login();
+    }
+
+    private void scanProcessor() {
+        ClassScanner scanner = new ClassScanner(basePackage, true, t -> true, null);
         try {
-            /*
-             * 扫瞄实现了{@code Processor}接口的类
-             */
+            // 扫瞄实现了{@code Processor}接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {
                 try {
                     Processor processor = (Processor) e.getConstructor().newInstance();
@@ -36,6 +48,5 @@ public class Starter {
             e.printStackTrace();
             System.exit(-1);
         }
-        NumeronBot.INSTANCE.getBot().login();
     }
 }
