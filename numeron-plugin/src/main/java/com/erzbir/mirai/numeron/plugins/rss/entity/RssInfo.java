@@ -20,7 +20,7 @@ public class RssInfo implements Serializable {
     private String title = "";
     private String link = "";
     private String author = "";
-    private Date publishedDate;
+    private Date publishedDate = new Date(0);
 
     public MessageChain getMessageChain(Contact contact) throws IOException {
         Image image = null;
@@ -49,6 +49,10 @@ public class RssInfo implements Serializable {
                 ", author='" + author + '\'' +
                 ", publishedDate=" + publishedDate +
                 '}';
+    }
+
+    private void clear() {
+
     }
 
     public String getUrl() {

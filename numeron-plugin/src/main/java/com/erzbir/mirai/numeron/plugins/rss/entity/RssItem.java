@@ -44,7 +44,12 @@ public class RssItem implements Serializable {
     }
 
     public RssInfo updateInfo() {
-        return RssUtil.getRssInfo(url);
+        RssInfo rssInfo1 = RssUtil.getRssInfo(url);
+        if (rssInfo.getPublishedDate().getTime() - rssInfo1.getPublishedDate().getTime() >= 0) {
+            return null;
+        }
+        this.rssInfo = rssInfo1;
+        return rssInfo1;
     }
 
     public long getId() {

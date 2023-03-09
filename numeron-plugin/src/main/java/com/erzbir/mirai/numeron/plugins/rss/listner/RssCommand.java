@@ -36,13 +36,13 @@ public class RssCommand {
 
     @Command(name = "取消订阅", dec = "#nosub <id>", help = "#nosub 1)")
     @Message(
-            text = "^nosub\\s*?\\d+",
+            text = "^#nosub\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
             permission = PermissionType.MASTER
     )
     private void cancel(MessageEvent event) {
-        String id = event.getMessage().contentToString().replaceFirst("#nosub\\s*?", "");
+        String id = event.getMessage().contentToString().replaceFirst("#nosub\\s+?", "");
         PublishApi.disablePublish(id);
     }
 
