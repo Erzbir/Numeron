@@ -21,17 +21,19 @@ import java.util.stream.Collectors;
  */
 public class ClassScanner {
 
-    private final String basePackage;
-    private final boolean recursive;
+    private final String basePackage; // 主包
+    private final boolean recursive;  // 是否递归扫瞄
     private final Predicate<String> packagePredicate;
     private final Predicate<Class<?>> classPredicate;
-    private Set<Class<?>> classes;
+    private Set<Class<?>> classes;  // 扫瞄后将字节码放到这个Set
+
 
     /**
-     * Instantiates a new Class scanner.
      *
      * @param basePackage 主包
-     * @param recursive   是否递归扫描
+     * @param recursive 是否递归
+     * @param packagePredicate 用于过滤
+     * @param classPredicate 用于过滤
      */
     public ClassScanner(String basePackage, boolean recursive, Predicate<String> packagePredicate,
                         Predicate<Class<?>> classPredicate) {
@@ -41,6 +43,11 @@ public class ClassScanner {
         this.classPredicate = classPredicate;
     }
 
+    /**
+     *
+     * @return 包含所有class的Set
+     * <p>扫瞄所有class</p>
+     */
     public Set<Class<?>> scanAllClasses() throws IOException, ClassNotFoundException {
         Set<Class<?>> classes = new LinkedHashSet<>();
         String packageName = basePackage;
@@ -54,7 +61,6 @@ public class ClassScanner {
             String protocol = resource.getProtocol();
             if ("file".equals(protocol)) {
                 String filePath = URLDecoder.decode(resource.getFile(), StandardCharsets.UTF_8);
-                // 扫描文件夹中的包和类
                 scanPackageClassesByFile(classes, packageName, filePath);
             } else if ("jar".equals(protocol)) {
                 scanPackageClassesByJar(packageName, resource, classes);
@@ -137,13 +143,20 @@ public class ClassScanner {
         }
     }
 
+    /**
+     *
+     * @param type 注解字节码
+     * @return  返回Set
+     * <p>扫瞄有{@param type}注解的类</p>
+     */
     public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type) throws ClassNotFoundException, IOException {
+        // 如果为空就先执行扫瞄再用Stream流过滤, 不为空就注解过滤
         if (classes == null) {
             classes = scanAllClasses();
         }
         return classes.stream().filter(t -> {
-            boolean flag = !t.isAnnotation();
-            Annotation[] annotations = t.getAnnotations();
+            boolean flag = !t.isAnnotation(); // 排除注解, 因为注解也会有注解
+            Annotation[] annotations = t.getAnnotations();  // 取出t上的所有类注解
             for (Annotation annotation : annotations) {
                 return getAnnotationFromAnnotation(annotation, type) != null && flag;
             }
@@ -151,10 +164,23 @@ public class ClassScanner {
         }).collect(Collectors.toSet());
     }
 
+    /**
+     *
+     * @param annotation 要扫瞄的注解
+     * @param clazz 要获取的注解的字节码
+     * @return 返回注解类型, 如果获取到就不为空反之空,
+     * 用于判断{@param annotation}注解上是否有{@param clazz注解}
+     */
     public Annotation getAnnotationFromAnnotation(Annotation annotation, Class<? extends Annotation> clazz) {
         return annotation.annotationType().getAnnotation(clazz);
     }
 
+    /**
+     *
+     * @param interfaceType 接口的字节码
+     * @return  返回一个Set
+     * <p>此方法扫瞄实现了{@param interfaceType}的类</p>
+     */
     public Set<Class<?>> scanWithInterface(Class<?> interfaceType) throws IOException, ClassNotFoundException {
         if (classes == null) {
             classes = scanAllClasses();

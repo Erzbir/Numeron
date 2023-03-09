@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author Erzbir
  * @Date: 2022/11/28 13:13
- * 消息事件过滤类, 这个类计划作为一个子类
+ * <p>消息事件过滤类, 这个类计划作为一个子类</p>
  */
 public class MessageFilterExecutor {
     public final static MessageFilterExecutor INSTANCE = new MessageFilterExecutor();

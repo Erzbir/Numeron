@@ -6,7 +6,7 @@ import java.lang.annotation.*;
  * @author Erzbir
  * @Date: 2022/12/12 01:25
  * <p>
- * 只有被此注解显示或隐式标注的才会被{@code}ClassScanner 扫瞄
+ * 只有被此注解显示或隐式(继承)标注的才会被{@code ClassScanner}扫瞄
  * </p>
  */
 @Inherited

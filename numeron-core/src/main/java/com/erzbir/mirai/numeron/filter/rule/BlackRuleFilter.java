@@ -8,7 +8,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 15:54
- * 实体规则过滤类
+ * <p>过滤黑名单</p>
  */
 public class BlackRuleFilter extends AbstractRuleFilter {
     @Override

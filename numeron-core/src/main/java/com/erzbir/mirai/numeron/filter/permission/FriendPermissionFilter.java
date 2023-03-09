@@ -7,6 +7,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2023/3/8 16:51
+ * <p>好友权限过滤类, 过滤掉(舍弃)不是好友的event</p>
  */
 public class FriendPermissionFilter extends AbstractPermissionFilter {
     public static final FriendPermissionFilter INSTANCE = new FriendPermissionFilter();

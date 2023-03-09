@@ -8,6 +8,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2023/3/8 14:54
+ * <p>群管理员权限过滤类, 过滤掉(舍弃)不是群管理员的event</p>
  */
 public class AdminPermissionFilter extends AbstractPermissionFilter {
     public static final AdminPermissionFilter INSTANCE = new AdminPermissionFilter();

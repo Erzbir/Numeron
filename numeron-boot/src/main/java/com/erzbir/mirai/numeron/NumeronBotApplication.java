@@ -4,7 +4,7 @@ import com.erzbir.mirai.numeron.boot.Starter;
 
 public class NumeronBotApplication {
     public static void main(String[] args) {
-        Starter.boot();
+        Starter.boot(); // 调用boot方法启动
         System.out.println("""
                 | \\ | |_   _ _ __ ___   ___ _ __ ___  _ __ \s
                 |  \\| | | | | '_ ` _ \\ / _ \\ '__/ _ \\| '_ \\\s

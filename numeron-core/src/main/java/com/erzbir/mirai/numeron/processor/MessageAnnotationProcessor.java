@@ -90,9 +90,6 @@ public class MessageAnnotationProcessor implements Processor {
         }
     }
 
-    /**
-     * 这个方法启动时调用
-     */
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANT;

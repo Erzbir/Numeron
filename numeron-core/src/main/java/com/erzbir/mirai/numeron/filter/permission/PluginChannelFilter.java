@@ -13,7 +13,8 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/17 09:43
- * 插件消息事件过滤类
+ * <p>插件消息事件过滤类</p>
+ * <p>没有完善, 只是个雏形</p>
  */
 @Filter
 @SuppressWarnings("unused")

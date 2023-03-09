@@ -6,7 +6,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 15:48
- * 抽象规则过滤类
+ * <p>抽象规则过滤类</p>
  */
 public abstract class AbstractRuleFilter implements ChannelFilterInter {
 

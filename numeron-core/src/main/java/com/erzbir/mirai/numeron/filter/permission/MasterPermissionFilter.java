@@ -6,7 +6,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 16:03
- * 实体权限过滤类
+ * <p>主人权限过滤类, 过滤掉(舍弃)不是主人的event</p>
  */
 public class MasterPermissionFilter extends AbstractPermissionFilter {
     public static final MasterPermissionFilter INSTANCE = new MasterPermissionFilter();

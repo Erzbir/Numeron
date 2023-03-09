@@ -7,7 +7,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 16:03
- * 实体规则过滤类
+ * <p>过滤掉为授权的群</p>
  */
 public class NormalRuleFilter extends AbstractRuleFilter {
 

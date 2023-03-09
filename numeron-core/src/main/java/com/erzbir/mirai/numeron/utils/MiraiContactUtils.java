@@ -8,6 +8,7 @@ import net.mamoe.mirai.contact.Group;
 /**
  * @author Erzbir
  * @Date: 2023/3/7 17:50
+ * <p>用于获取联系人</p>
  */
 public class MiraiContactUtils {
     private static final ContactList<Friend> friendList = NumeronBot.INSTANCE.getBot().getFriends();

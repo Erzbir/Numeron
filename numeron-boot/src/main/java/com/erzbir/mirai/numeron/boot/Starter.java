@@ -12,9 +12,17 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class Starter {
     public static void boot() {
-        NumeronBot numeronBot = NumeronBot.INSTANCE;
-        ClassScanner scanner = new ClassScanner("com.erzbir.mirai.numeron", true, t -> true, null);
+        NumeronBot numeronBot = NumeronBot.INSTANCE;  // 这里是为了提前初始化, 不然会出现空指针异常
+        // 包扫瞄器扫瞄所有class
+        ClassScanner scanner = new ClassScanner(
+                "com.erzbir.mirai.numeron",
+                true,
+                t -> true,
+                null);
         try {
+            /*
+             * 扫瞄实现了{@code Processor}接口的类
+             */
             scanner.scanWithInterface(Processor.class).forEach(e -> {
                 try {
                     Processor processor = (Processor) e.getConstructor().newInstance();

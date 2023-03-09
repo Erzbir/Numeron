@@ -8,6 +8,7 @@ import static com.erzbir.mirai.numeron.filter.rule.FilterRule.*;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 16:30
+ * <p>规则过滤器工厂</p>
  */
 public class RuleFilterFactory implements FilterFactory {
     public final static RuleFilterFactory INSTANCE = new RuleFilterFactory();

@@ -6,7 +6,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 15:54
- * 实体权限过滤类
+ * <p>白名单权限过滤类, 过滤掉(舍弃)不是白名单的event</p>
  */
 public class WhitePermissionFilter extends AbstractPermissionFilter {
     public static final WhitePermissionFilter INSTANCE = new WhitePermissionFilter();

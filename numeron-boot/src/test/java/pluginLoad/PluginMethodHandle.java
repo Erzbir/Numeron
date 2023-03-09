@@ -1,4 +1,5 @@
-package com.erzbir.mirai.numeron.boot.pluginLoad;
+package pluginLoad;
+
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -8,6 +9,7 @@ import java.lang.reflect.Method;
 /**
  * @author Erzbir
  * @Date: 2022/12/16 00:15
+ * <p>测试</p>
  */
 public class PluginMethodHandle {
     public static void execute() throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {

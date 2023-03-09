@@ -7,6 +7,7 @@ import java.io.*;
 /**
  * @author Erzbir
  * @Date: 2023/3/4 19:04
+ * <p>用于序列化和反序列话json文件</p>
  */
 public class JsonUtil {
     public static <T> T load(String file, Class<T> tClass) {

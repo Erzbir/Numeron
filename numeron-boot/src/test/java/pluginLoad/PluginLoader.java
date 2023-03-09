@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.boot.pluginLoad;
+package pluginLoad;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +9,10 @@ import java.net.URLClassLoader;
 import java.util.Properties;
 import java.util.jar.JarException;
 
+/**
+ * @author Erzbir
+ * @Date: 2023/3/3 15:11
+ */
 public class PluginLoader extends ClassLoader {
     private final static String PROPERTIES_NAME = "numeron.plugin.properties";
     private final static String MAIN_CLASS = "mainClass";
@@ -45,7 +49,7 @@ public class PluginLoader extends ClassLoader {
      * @return 返回加载的properties
      */
     private static Properties getProperties(ClassLoader classLoader) throws IOException {
-        InputStream propertiesStream = classLoader.getResourceAsStream(PluginLoader.PROPERTIES_NAME);
+        InputStream propertiesStream = classLoader.getResourceAsStream(PROPERTIES_NAME);
         Properties properties = new Properties();
         properties.load(propertiesStream);
         if (propertiesStream != null) {
@@ -62,6 +66,4 @@ public class PluginLoader extends ClassLoader {
     private static Class<?> loadClass(ClassLoader classLoader, String className) throws ClassNotFoundException {
         return classLoader.loadClass(className);
     }
-
 }
-

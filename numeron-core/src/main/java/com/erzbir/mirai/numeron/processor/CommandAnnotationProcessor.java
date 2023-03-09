@@ -13,6 +13,7 @@ import java.util.Set;
 /**
  * @author Erzbir
  * @Date: 2022/12/1 20:34
+ * <p>用于生成指令表, 扫瞄有@Command注解的方法<p/>
  */
 @SuppressWarnings("unused")
 public class CommandAnnotationProcessor implements Processor {

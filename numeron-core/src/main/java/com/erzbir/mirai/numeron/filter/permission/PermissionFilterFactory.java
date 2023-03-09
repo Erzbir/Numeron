@@ -8,6 +8,7 @@ import static com.erzbir.mirai.numeron.filter.permission.PermissionType.*;
 /**
  * @author Erzbir
  * @Date: 2022/11/26 17:00
+ * <p>工厂</P>
  */
 public class PermissionFilterFactory implements FilterFactory {
     public final static PermissionFilterFactory INSTANCE = new PermissionFilterFactory();
