@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -40,6 +41,7 @@ public class NumeronBot implements Serializable {
         String configFile = this.folder + "config/botconfig.json";
         ConfigCreateUtil.createFile(configFile);
         if (load(new File(configFile))) {
+            bot = createBot();
             return;
         }
         if (account == 0) {
@@ -74,7 +76,7 @@ public class NumeronBot implements Serializable {
         }
         scanner.close();
         if (notVerify()) {
-            return;
+            throw new RuntimeException();
         }
         ConfigCreateUtil.createDir(folder + "bots/" + account + "/");
         bot = createBot();
@@ -90,7 +92,9 @@ public class NumeronBot implements Serializable {
         new Thread(() -> {
             MiraiLogUtil.info("开始保存配置......");
             String configFile = folder + "config/botconfig.json";
-            JsonUtil.dump(configFile, this, this.getClass());
+            HashMap<String, NumeronBot> hashMap = new HashMap<>();
+            hashMap.put("bot", this);
+            JsonUtil.dump(configFile,hashMap , HashMap.class);
             MiraiLogUtil.info("保存成功\n");
         }).start();
     }
