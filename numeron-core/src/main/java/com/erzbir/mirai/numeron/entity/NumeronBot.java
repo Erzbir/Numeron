@@ -37,7 +37,9 @@ public class NumeronBot implements Serializable {
 
     public void init() {
         Scanner scanner = new Scanner(System.in);
-        load();
+        String configFile = this.folder + "config/botconfig.json";
+        ConfigCreateUtil.createFile(configFile);
+        load(new File(configFile));
         if (notVerify()) {
             if (account == 0) {
                 MiraiLogUtil.err("帐号为空");
@@ -73,8 +75,8 @@ public class NumeronBot implements Serializable {
         if (notVerify()) {
             return;
         }
+        ConfigCreateUtil.createDir(folder + "bots/" + account + "/");
         bot = createBot();
-        MiraiLogUtil.info("配置成功, 将保存配置....");
         save();
     }
 
@@ -83,6 +85,7 @@ public class NumeronBot implements Serializable {
     }
 
     private void save() {
+        MiraiLogUtil.info("配置成功, 将保存配置....");
         new Thread(() -> {
             MiraiLogUtil.info("开始保存配置......");
             String configFile = folder + "config/botconfig.json";
@@ -91,10 +94,8 @@ public class NumeronBot implements Serializable {
         });
     }
 
-    private void load() {
-        String configFile = this.folder + "config/botconfig.json";
-        ConfigCreateUtil.createFile(configFile);
-        try (FileReader fileReader = new FileReader(configFile)) {
+    private void load(File file) {
+        try (FileReader fileReader = new FileReader(file)) {
             JsonObject bot1 = JsonParser.parseReader(fileReader).getAsJsonObject().getAsJsonObject("bot");
             this.account = bot1.get("account").getAsLong();
             this.master = bot1.get("master").getAsLong();

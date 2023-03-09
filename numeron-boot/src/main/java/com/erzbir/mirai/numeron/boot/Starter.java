@@ -17,7 +17,7 @@ public class Starter {
         try {
             scanner.scanWithInterface(Processor.class).forEach(e -> {
                 try {
-                    Processor processor = e.getConstructor().newInstance();
+                    Processor processor = (Processor) e.getConstructor().newInstance();
                     processor.onApplicationEvent();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException ex) {

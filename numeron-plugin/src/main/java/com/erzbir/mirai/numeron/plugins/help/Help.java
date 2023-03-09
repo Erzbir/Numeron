@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.boot.help;
+package com.erzbir.mirai.numeron.plugins.help;
 
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.listener.Listener;
@@ -15,6 +15,6 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class Help {
     @Message(text = "/help", permission = PermissionType.ALL)
     private void help(MessageEvent event) {
-        event.getSubject().sendMessage(CommandAnnotationProcessor.stringBuilder.toString());
+        event.getSubject().sendMessage(CommandAnnotationProcessor.getHelp());
     }
 }

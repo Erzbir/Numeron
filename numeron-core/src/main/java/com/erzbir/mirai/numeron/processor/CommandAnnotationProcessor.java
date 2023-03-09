@@ -16,8 +16,12 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class CommandAnnotationProcessor implements Processor {
-    public final static HashMap<String, Set<String>> helpMap = new HashMap<>();
-    public final static StringBuilder stringBuilder = new StringBuilder();
+    private final static HashMap<String, Set<String>> helpMap = new HashMap<>();
+    private final static StringBuilder stringBuilder = new StringBuilder();
+
+    public static String getHelp() {
+        return stringBuilder.toString();
+    }
 
     @Override
     public void onApplicationEvent() {

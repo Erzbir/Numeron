@@ -24,11 +24,11 @@ public class AppContext implements BeanFactory {
     private AppContext() {
         try {
             ClassScanner scanner = new ClassScanner(packageName, true, s -> true, s -> true);
-            Set<Class<Object>> classes = scanner.scanWithAnnotation(Component.class);
+            Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class);
             classes.forEach(e -> {
                 try {
                     if (!e.isAnnotation() && !e.isEnum() && !e.isInterface()) {
-                        Constructor<Object> constructor = e.getConstructor();
+                        Constructor<Object> constructor = (Constructor<Object>) e.getConstructor();
                         constructor.setAccessible(true);
                         context.put(e.getSimpleName(), constructor.newInstance());
                     }

@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.boot.help;
+package com.erzbir.mirai.numeron.plugins.help;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;

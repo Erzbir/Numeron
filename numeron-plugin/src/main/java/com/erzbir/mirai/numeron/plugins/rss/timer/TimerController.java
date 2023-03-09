@@ -27,7 +27,6 @@ public class TimerController {
         return new TimerTask() {
             @Override
             public void run() {
-                System.out.println("21");
                 RssItem rssItem = RssConfig.getInstance().getRssMap().get(id);
                 if (rssItem == null) {
                     return;
