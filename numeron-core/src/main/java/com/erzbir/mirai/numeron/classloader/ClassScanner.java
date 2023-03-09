@@ -29,11 +29,10 @@ public class ClassScanner {
 
 
     /**
-     *
-     * @param basePackage 主包
-     * @param recursive 是否递归
+     * @param basePackage      主包
+     * @param recursive        是否递归
      * @param packagePredicate 用于过滤
-     * @param classPredicate 用于过滤
+     * @param classPredicate   用于过滤
      */
     public ClassScanner(String basePackage, boolean recursive, Predicate<String> packagePredicate,
                         Predicate<Class<?>> classPredicate) {
@@ -44,7 +43,6 @@ public class ClassScanner {
     }
 
     /**
-     *
      * @return 包含所有class的Set
      * <p>扫瞄所有class</p>
      */
@@ -144,9 +142,8 @@ public class ClassScanner {
     }
 
     /**
-     *
      * @param type 注解字节码
-     * @return  返回Set
+     * @return 返回Set
      * <p>扫瞄有{@param type}注解的类</p>
      */
     public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type) throws ClassNotFoundException, IOException {
@@ -165,9 +162,8 @@ public class ClassScanner {
     }
 
     /**
-     *
      * @param annotation 要扫瞄的注解
-     * @param clazz 要获取的注解的字节码
+     * @param clazz      要获取的注解的字节码
      * @return 返回注解类型, 如果获取到就不为空反之空,
      * 用于判断{@param annotation}注解上是否有{@param clazz注解}
      */
@@ -176,9 +172,8 @@ public class ClassScanner {
     }
 
     /**
-     *
      * @param interfaceType 接口的字节码
-     * @return  返回一个Set
+     * @return 返回一个Set
      * <p>此方法扫瞄实现了{@param interfaceType}的类</p>
      */
     public Set<Class<?>> scanWithInterface(Class<?> interfaceType) throws IOException, ClassNotFoundException {

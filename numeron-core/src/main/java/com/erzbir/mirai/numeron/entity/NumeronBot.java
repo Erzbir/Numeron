@@ -94,7 +94,7 @@ public class NumeronBot implements Serializable {
             String configFile = folder + "config/botconfig.json";
             HashMap<String, NumeronBot> hashMap = new HashMap<>();
             hashMap.put("bot", this);
-            JsonUtil.dump(configFile,hashMap , HashMap.class);
+            JsonUtil.dump(configFile, hashMap, HashMap.class);
             MiraiLogUtil.info("保存成功\n");
         }).start();
     }
