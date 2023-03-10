@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.rss.config.api;
+package com.erzbir.mirai.numeron.plugins.rss.api;
 
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
@@ -11,7 +11,7 @@ import com.erzbir.mirai.numeron.plugins.rss.timer.TimerController;
 public class PublishApi {
     public static void addPublish(String url) {
         RssConfig instance = RssConfig.getInstance();
-        RssItem rssItem = new RssItem(System.currentTimeMillis(), url, true);
+        RssItem rssItem = new RssItem(String.valueOf(System.currentTimeMillis()), url, true);
         instance.addPublish(rssItem);
         TimerController.addScan(String.valueOf(instance.getRssMap().size() + 1), instance.getDelay());
     }

@@ -44,7 +44,12 @@ public class OpenAiListener {
     private final ChatCompletionRequest chatCompletionRequest = chatConfig.load();
     private final CompletionRequest question = questionConfig.load();
 
-    @Command(name = "OpenAI-画图", dec = "/i [prompt]", help = "i美女")
+    @Command(
+            name = "OpenAI-画图",
+            dec = "/i [prompt]",
+            help = "i美女",
+            permission = PermissionType.ALL
+    )
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
@@ -58,7 +63,12 @@ public class OpenAiListener {
         event.getSubject().sendMessage(singleMessages);
     }
 
-    @Command(name = "OpenAI-聊天", dec = "/c [message]", help = "/c你叫什么")
+    @Command(
+            name = "OpenAI-聊天",
+            dec = "/c [message]",
+            help = "/c你叫什么",
+            permission = PermissionType.ALL
+    )
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
@@ -81,8 +91,14 @@ public class OpenAiListener {
 
     }
 
-    @Command(name = "OpenAI-补全", dec = "/f [prompt]", help = "/f 水面")
-    @Message(filterRule = FilterRule.BLACK,
+    @Command(
+            name = "OpenAI-补全",
+            dec = "/f [prompt]",
+            help = "/f 水面",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^f\\s*?\\S+?",
             permission = PermissionType.ALL
@@ -95,7 +111,11 @@ public class OpenAiListener {
         sendMessage(event, text);
     }
 
-    @Command(name = "OpenAI-问答", dec = "/q [prompt]", help = "/q今天天气如何")
+    @Command(name = "OpenAI-问答",
+            dec = "/q [prompt]",
+            help = "/q今天天气如何",
+            permission = PermissionType.ALL
+    )
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,

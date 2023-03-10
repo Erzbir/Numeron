@@ -25,14 +25,23 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @SuppressWarnings("unused")
 public class OnOffCommandHandle implements PluginRegister {
 
-    @Command(name = "开关机", dec = "关机", help = "/shutdown")
-    @Message(text = "/shutdown", filterRule = FilterRule.NONE, permission = PermissionType.MASTER)
+    @Command(
+            name = "开关机",
+            dec = "关机",
+            help = "/shutdown",
+            permission = PermissionType.ADMIN
+    )
+    @Message(text = "/shutdown", filterRule = FilterRule.NONE, permission = PermissionType.ADMIN)
     private void shutdown(MessageEvent e) {
         e.getSubject().sendMessage("已关机");
         NumeronBot.INSTANCE.turnOff();
     }
 
-    @Command(name = "开关机", dec = "开机", help = "/launch")
+    @Command(name = "开关机",
+            dec = "开机",
+            help = "/launch",
+            permission = PermissionType.MASTER
+    )
     @Override
     public void register(Bot bot, EventChannel<BotEvent> channel) {
         bot.getEventChannel().subscribeAlways(MessageEvent.class, event -> {

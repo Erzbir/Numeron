@@ -82,7 +82,6 @@ public class MessageAnnotationProcessor implements Processor {
                         String s = Arrays.toString(method.getParameterTypes())
                                 .replaceAll("\\[", "(")
                                 .replaceAll("]", ")");
-                        MiraiLogUtil.verbose("开始注册处理方法 " + method.getName() + s);
                         method.setAccessible(true);
                         try {
                             execute(v, method, toFilter(channel, annotation), annotation);

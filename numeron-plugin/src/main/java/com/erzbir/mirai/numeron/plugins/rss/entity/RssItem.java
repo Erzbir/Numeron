@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class RssItem implements Serializable {
     @SerializedName("id")
-    private long id = 0;
+    private String name = "";
     @SerializedName("url")
     private String url;
     @SerializedName("groups")
@@ -28,14 +28,14 @@ public class RssItem implements Serializable {
 
     }
 
-    public RssItem(long id, String url, boolean enable) {
-        this.id = id;
+    public RssItem(String name, String url, boolean enable) {
+        this.name = name;
         this.url = url;
         this.enable = enable;
     }
 
-    public RssItem(long id, String url, Set<Long> groupList, Set<Long> userList, boolean enable, RssInfo rssInfo) {
-        this.id = id;
+    public RssItem(String name, String url, Set<Long> groupList, Set<Long> userList, boolean enable, RssInfo rssInfo) {
+        this.name = name;
         this.url = url;
         this.groupList = groupList;
         this.userList = userList;
@@ -52,12 +52,12 @@ public class RssItem implements Serializable {
         return rssInfo1;
     }
 
-    public long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public RssInfo getRssInfo() {
@@ -102,7 +102,7 @@ public class RssItem implements Serializable {
 
     @Override
     public String toString() {
-        return "id: " + id + '\n' +
+        return "name: " + name + '\n' +
                 "url: " + url + '\n' +
                 "groupList: " + groupList + '\n' +
                 "userList: " + userList + '\n' +

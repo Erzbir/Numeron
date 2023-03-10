@@ -37,7 +37,7 @@ public class CommandAnnotationProcessor implements Processor {
             return;
         }
         Set<String> set = helpMap.computeIfAbsent(command.name(), k -> new HashSet<>());
-        set.add(command.dec() + "\n" + command.help() + "\n");
+        set.add(command.dec() + "\n" + command.help() + "\n" + command.permission() + "\n");
     }
 
     @Override

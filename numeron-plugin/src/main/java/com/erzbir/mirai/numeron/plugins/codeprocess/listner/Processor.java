@@ -23,7 +23,12 @@ import java.io.IOException;
 public class Processor {
     private final CodeRunner codeRunner = CodeRunner.getInstance();
 
-    @Command(name = "指令执行", dec = "执行py代码", help = "py\nprint(1)")
+    @Command(
+            name = "指令执行",
+            dec = "执行py代码",
+            help = "py\nprint(1)",
+            permission = PermissionType.MASTER
+    )
     @Message(
             text = "py\n",
             messageRule = MessageRule.BEGIN_WITH,
@@ -35,7 +40,12 @@ public class Processor {
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
     }
 
-    @Command(name = "指令执行", dec = "执行js代码", help = "py\nconsole.log(1)")
+    @Command(
+            name = "指令执行",
+            dec = "执行js代码",
+            help = "py\nconsole.log(1)",
+            permission = PermissionType.MASTER
+    )
     @Message(text = "js\n",
             messageRule = MessageRule.BEGIN_WITH,
             filterRule = FilterRule.NONE,
@@ -46,7 +56,12 @@ public class Processor {
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("js\\s+", "")));
     }
 
-    @Command(name = "指令执行", dec = "执行shell代码", help = "sh\necho 1")
+    @Command(
+            name = "指令执行",
+            dec = "执行shell代码",
+            help = "sh\necho 1",
+            permission = PermissionType.MASTER
+    )
     @Message(
             text = "sh\n",
             messageRule = MessageRule.BEGIN_WITH,

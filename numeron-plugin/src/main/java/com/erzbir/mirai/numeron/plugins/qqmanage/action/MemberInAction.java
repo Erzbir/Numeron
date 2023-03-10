@@ -57,8 +57,17 @@ public class MemberInAction implements PluginRegister {
         });
     }
 
-    @Command(name = "入群欢迎", dec = "开关入群欢迎", help = "/welcome [true|false]")
-    @GroupMessage(text = "/welcome\\s+?(true|false)", permission = PermissionType.WHITE, messageRule = MessageRule.REGEX)
+    @Command(
+            name = "入群欢迎",
+            dec = "开关入群欢迎",
+            help = "/welcome [true|false]",
+            permission = PermissionType.ADMIN
+    )
+    @GroupMessage(
+            text = "/welcome\\s+?(true|false)",
+            permission = PermissionType.WHITE,
+            messageRule = MessageRule.REGEX
+    )
     private void onOff(GroupMessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+?");
         isOn.put(event.getGroup().getId(), Boolean.parseBoolean(s[2]));

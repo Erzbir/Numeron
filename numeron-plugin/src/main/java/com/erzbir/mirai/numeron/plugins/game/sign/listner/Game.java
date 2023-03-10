@@ -105,8 +105,17 @@ public class Game {
         }
     }
 
-    @Command(name = "签到", dec = "签到", help = "发送 \"签到\" 即可")
-    @GroupMessage(text = "签到", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
+    @Command(
+            name = "签到",
+            dec = "签到",
+            help = "发送 \"签到\" 即可",
+            permission = PermissionType.ALL
+    )
+    @GroupMessage(
+            text = "签到",
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.ALL
+    )
     private void sign(GroupMessageEvent event) throws IOException {
         event.getSubject().sendMessage(sign(event.getSender(), event.getGroup()));
     }

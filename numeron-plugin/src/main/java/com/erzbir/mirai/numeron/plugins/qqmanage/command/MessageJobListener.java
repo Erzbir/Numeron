@@ -3,6 +3,7 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.command;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.filter.rule.FilterRule;
+import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.job.Jobs;
 import com.erzbir.mirai.numeron.job.MessageTimeJob;
 import com.erzbir.mirai.numeron.listener.Listener;
@@ -23,7 +24,18 @@ public class MessageJobListener {
 
     // time\s+?job\s+?(MessageAction|MuteAction|UnMuteAction)\s+?\S+?\s+?.*?\s+?enable
 
-    @Message(text = "MessageCronJob\\s+?(\\S+?)\\s+?(enable|disable)\\s*(\\S*)\\s*(.*)", messageRule = MessageRule.REGEX, permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
+    @Command(
+            name = "定时发送消息",
+            dec = "开关定时消息",
+            help = "满足此正则: MessageCronJob\\s+?(\\S+?)\\s+?(enable|disable)\\s*(\\S*)\\s*(.*)",
+            permission = PermissionType.ADMIN
+    )
+    @Message(
+            text = "MessageCronJob\\s+?(\\S+?)\\s+?(enable|disable)\\s*(\\S*)\\s*(.*)",
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ADMIN,
+            filterRule = FilterRule.NORMAL
+    )
     private void onMessage1(MessageEvent event) {
         Matcher matcher = Pattern.compile("MessageCronJob\\s+?(\\S+?)\\s+?(enable|disable)\\s*(\\S*)\\s*(.*)").matcher(event.getMessage().contentToString());
         String s1 = null;

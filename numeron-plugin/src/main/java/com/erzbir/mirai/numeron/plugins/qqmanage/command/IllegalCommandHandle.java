@@ -21,29 +21,59 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @SuppressWarnings("unused")
 public class IllegalCommandHandle {
 
-    @Command(name = "违禁词操作", dec = "添加违禁词", help = "/add illegal [key]")
-    @Message(text = "/add illegal\\s+?.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Command(
+            name = "违禁词操作",
+            dec = "添加违禁词",
+            help = "/add illegal [key]",
+            permission = PermissionType.WHITE
+    )
+    @Message(
+            text = "/add\\s+?illegal\\s+?.*",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void add(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
+        String[] split = event.getMessage().contentToString().split("\\s+?");
         String s = split[2];
         IllegalList.INSTANCE.add(s, event.getSender().getId());
         event.getSubject().sendMessage("违禁词添加成功");
     }
 
-    @Command(name = "违禁词操作", dec = "删除违禁词", help = "/remove illegal [key]")
-    @Message(text = "/remove illegal\\s+?.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Command(
+            name = "违禁词操作",
+            dec = "删除违禁词",
+            help = "/remove illegal [key]",
+            permission = PermissionType.WHITE
+    )
+    @Message(
+            text = "/remove\\s+?illegal\\s+?.*",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void remove(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+");
+        String[] split = event.getMessage().contentToString().split("\\s+?");
         String s = split[2];
         IllegalList.INSTANCE.remove(s);
         event.getSubject().sendMessage("违禁词删除成功");
     }
 
-    @Command(name = "违禁词操作", dec = "查询违禁词", help = "/query illegal [key]")
-    @Message(text = "/query illegal\\s+\\.*", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Command(
+            name = "违禁词操作",
+            dec = "查询违禁词",
+            help = "/query illegal [key]",
+            permission = PermissionType.WHITE
+    )
+    @Message(
+            text = "/query\\s+?illegal\\s+?\\.*",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void query(MessageEvent event) {
         event.getSubject().
                 sendMessage(IllegalList.INSTANCE
-                        .query(event.getMessage().contentToString().split("\\s+")[2]));
+                        .query(event.getMessage().contentToString().split("\\s+?")[2]));
     }
 }

@@ -39,15 +39,35 @@ public class FastMute {
         }
     }
 
-    @Command(name = "打卡解/禁言", dec = "打卡禁言", help = "#打卡禁言")
-    @UserMessage(text = "#打卡禁言", filterRule = FilterRule.BLACK, messageRule = MessageRule.EQUAL, permission = PermissionType.ALL)
+    @Command(
+            name = "打卡解/禁言",
+            dec = "打卡禁言",
+            help = "#打卡禁言",
+            permission = PermissionType.ALL
+    )
+    @UserMessage(
+            text = "#打卡禁言",
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.EQUAL,
+            permission = PermissionType.ALL
+    )
     private void fastMute(UserMessageEvent event) {
         System.out.println(group);
         group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t)).getSettings().setMuteAll(true));
     }
 
-    @Command(name = "打卡解/禁言", dec = "打卡解禁", help = "#打卡禁言")
-    @UserMessage(text = "#打卡解禁", filterRule = FilterRule.BLACK, messageRule = MessageRule.EQUAL, permission = PermissionType.ALL)
+    @Command(
+            name = "打卡解/禁言",
+            dec = "打卡解禁",
+            help = "#打卡禁言",
+            permission = PermissionType.ALL
+    )
+    @UserMessage(
+            text = "#打卡解禁",
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.EQUAL,
+            permission = PermissionType.ALL
+    )
     private void fastUnMute(UserMessageEvent event) {
         group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t)).getSettings().setMuteAll(false));
     }

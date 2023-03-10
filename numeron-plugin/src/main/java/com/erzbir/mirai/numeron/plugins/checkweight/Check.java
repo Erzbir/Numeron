@@ -3,6 +3,7 @@ package com.erzbir.mirai.numeron.plugins.checkweight;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
 import com.erzbir.mirai.numeron.filter.rule.FilterRule;
+import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -19,6 +20,11 @@ import java.net.URL;
 public class Check {
     private static final String API = "http://tfapi.top/API/qqqz.php?type=json&qq=";
 
+    @Command(
+            name = "查权重",
+            dec = "查权重 [qq]",
+            permission = PermissionType.ALL
+    )
     @Message(
             text = "^查权重\\s+?\\d*",
             filterRule = FilterRule.BLACK,

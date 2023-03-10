@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.rss.config.api;
+package com.erzbir.mirai.numeron.plugins.rss.api;
 
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
@@ -14,7 +14,9 @@ public class ViewApi {
 
     public static String viewAllRss() {
         StringBuilder sb = new StringBuilder();
-        RssConfig.getInstance().getRssMap().forEach((k, v) -> sb.append(v.toString()).append("\n"));
+        RssConfig.getInstance().getRssMap().forEach((k, v) ->
+                sb.append("id: ").append(k).append("\n")
+                        .append(v.toString()).append("\n"));
         return sb.toString();
     }
 

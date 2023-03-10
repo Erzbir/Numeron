@@ -16,7 +16,7 @@ public final class SqlConnection {
     static {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:data.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + NumeronBot.INSTANCE.getFolder() + "config/data.sqlite");
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);

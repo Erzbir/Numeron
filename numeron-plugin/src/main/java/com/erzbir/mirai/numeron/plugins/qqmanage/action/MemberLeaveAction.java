@@ -3,6 +3,7 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
 import com.erzbir.mirai.numeron.listener.Listener;
@@ -34,7 +35,17 @@ public class MemberLeaveAction implements PluginRegister {
         });
     }
 
-    @GroupMessage(text = "/leave\\s+?feedback\\s+?(true|false)", permission = PermissionType.WHITE, messageRule = MessageRule.REGEX)
+    @Command(
+            name = "退群提示",
+            dec = "开关退群",
+            help = "/welcome [true|false]",
+            permission = PermissionType.ADMIN
+    )
+    @GroupMessage(
+            text = "/leave\\s+?feedback\\s+?(true|false)",
+            permission = PermissionType.ADMIN,
+            messageRule = MessageRule.REGEX
+    )
     private void onOff(GroupMessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+?");
         isOn.put(event.getGroup().getId(), Boolean.parseBoolean(s[2]));

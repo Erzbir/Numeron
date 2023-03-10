@@ -1,4 +1,4 @@
-package com.erzbir.mirai.numeron.plugins.rss.config.api;
+package com.erzbir.mirai.numeron.plugins.rss.api;
 
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import net.mamoe.mirai.contact.Contact;
@@ -14,8 +14,8 @@ public class EditApi {
         RssConfig.getInstance().getRssMap().get(id).setUrl(url);
     }
 
-    public static void editId(String id, long newId) {
-        RssConfig.getInstance().getRssMap().get(id).setId(newId);
+    public static void editName(String id, String newName) {
+        RssConfig.getInstance().getRssMap().get(id).setName(newName);
     }
 
     public static class EditReceiveListApi {

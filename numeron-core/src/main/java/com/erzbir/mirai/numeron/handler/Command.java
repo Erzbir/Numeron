@@ -1,6 +1,8 @@
 package com.erzbir.mirai.numeron.handler;
 
 
+import com.erzbir.mirai.numeron.filter.permission.PermissionType;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -18,5 +20,7 @@ public @interface Command {
 
     String dec();
 
-    String help();
+    PermissionType permission();
+
+    String help() default "";
 }
