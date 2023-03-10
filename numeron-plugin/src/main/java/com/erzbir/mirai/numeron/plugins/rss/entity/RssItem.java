@@ -12,7 +12,7 @@ import java.util.Set;
  * @Date: 2023/3/7 01:31
  */
 public class RssItem implements Serializable {
-    @SerializedName("id")
+    @SerializedName("name")
     private String name = "";
     @SerializedName("url")
     private String url;

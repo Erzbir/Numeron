@@ -11,6 +11,8 @@ import com.erzbir.mirai.numeron.plugins.rss.api.ViewApi;
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import net.mamoe.mirai.event.events.MessageEvent;
 
+import java.util.Arrays;
+
 /**
  * @author Erzbir
  * @Date: 2023/3/10 10:48
@@ -24,13 +26,13 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Message(
-            text = "^#rename\\s+?\\d+?\\s+?\\S+",
+            text = "^#rename\\s+?\\d+?\\s+?.+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ADMIN
     )
     private void rename(MessageEvent event) {
-        String[] s = event.getMessage().contentToString().replaceFirst("^#rename\\s+?\\d+?\\s+?\\S+", "").split("\\s+");
+        String[] s = event.getMessage().contentToString().replaceFirst("^#rename\\s+?", "").split("\\s+?");
         EditApi.editName(s[0], s[1]);
     }
 
@@ -41,13 +43,13 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Message(
-            text = "^#url\\s+?\\d+?\\s+?(http[s]*://.*)",
+            text = "^#url\\s+?\\d+?\\s+?(http[s]*://.+)",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ADMIN
     )
     private void renameUrl(MessageEvent event) {
-        String[] s = event.getMessage().contentToString().replaceFirst("^#url\\s+?\\d+?\\s+?(https*://.*)", "").split("\\s+");
+        String[] s = event.getMessage().contentToString().replaceFirst("^#url\\s+?", "").split("\\s+?");
         EditApi.editUrl(s[0], s[1]);
     }
 
