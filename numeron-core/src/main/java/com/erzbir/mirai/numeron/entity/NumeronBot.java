@@ -1,9 +1,6 @@
 package com.erzbir.mirai.numeron.entity;
 
-import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
-import com.erzbir.mirai.numeron.utils.ConfigWriteException;
-import com.erzbir.mirai.numeron.utils.JsonUtil;
-import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
+import com.erzbir.mirai.numeron.utils.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.mamoe.mirai.Bot;
@@ -168,6 +165,7 @@ public class NumeronBot implements Serializable {
     private Bot createBot() {
         String s = folder + "bots/" + account + "/";
         ConfigCreateUtil.createDir(s);
+        FixProtocolVersion.INSTANCE.fix();
         return BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
             {
                 setWorkingDir(new File(s)); // 工作目录

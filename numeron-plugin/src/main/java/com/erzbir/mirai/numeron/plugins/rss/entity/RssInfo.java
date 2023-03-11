@@ -1,7 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.rss.entity;
 
 import cn.hutool.core.date.DateTime;
-import com.erzbir.mirai.numeron.plugins.rss.exception.ImageGetException;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -26,18 +25,19 @@ public class RssInfo implements Serializable {
     /**
      * @param contact 联系人
      * @return 消息链
-     * @throws ImageGetException 获取图片失败时返回图片获取异常
      */
-    public MessageChain getMessageChain(Contact contact) throws ImageGetException {
-        Image image;
+    public MessageChain getMessageChain(Contact contact) {
+        Image image = null;
         try {
             image = Contact.uploadImage(contact, new URL(url).openStream());
-        } catch (IOException e) {
-            throw new ImageGetException("get picture exception", e);
+        } catch (IOException ignored) {
+
         }
         MessageChainBuilder chainBuilder = new MessageChainBuilder();
         chainBuilder.append(title).append("\n");
-        chainBuilder.append(image);
+        if (image != null) {
+            chainBuilder.append(image);
+        }
         return chainBuilder.append(link).append("\n")
                 .append(author).append("\n")
                 .append(DateTime.of(publishedDate.getTime()).toString())

@@ -3,7 +3,6 @@ package com.erzbir.mirai.numeron.plugins.rss.timer;
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssInfo;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
-import com.erzbir.mirai.numeron.plugins.rss.exception.ImageGetException;
 import com.erzbir.mirai.numeron.utils.MiraiContactUtils;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
@@ -36,7 +35,7 @@ public class TimerController {
                                 group.sendMessage((rssInfo.getMessageChain(group)));
                                 flag = 0;
                             }
-                        } catch (ImageGetException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             flag--;
                         }
@@ -51,7 +50,7 @@ public class TimerController {
                                 friend.sendMessage((rssInfo.getMessageChain(friend)));
                                 flag = 0;
                             }
-                        } catch (ImageGetException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                             flag--;
                         }
