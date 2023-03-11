@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.entity;
 
 import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
+import com.erzbir.mirai.numeron.utils.ConfigWriteException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.erzbir.mirai.numeron.utils.MiraiLogUtil;
 import com.google.gson.JsonObject;
@@ -9,10 +10,7 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -36,10 +34,58 @@ public class NumeronBot implements Serializable {
         init();
     }
 
-    public void init() {
+    public NumeronBot(long account, String password,
+                      long master, String folder,
+                      BotConfiguration.HeartbeatStrategy heartbeatStrategy,
+                      BotConfiguration.MiraiProtocol miraiProtocol) {
+        this.account = account;
+        this.password = password;
+        this.folder = folder;
+        this.heartbeatStrategy = heartbeatStrategy;
+        this.master = master;
+        this.miraiProtocol = miraiProtocol;
+        this.bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
+            {
+                setWorkingDir(new File(folder + "bots/" + account + "/")); // 工作目录
+                setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
+                setProtocol(miraiProtocol); // 登陆协议
+                fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
+            }
+        });
+    }
+
+    public NumeronBot(long account, String password, long master, String folder, BotConfiguration botConfiguration) {
+        this.account = account;
+        this.master = master;
+        this.password = password;
+        this.folder = folder;
+        this.bot = BotFactory.INSTANCE.newBot(account, password, botConfiguration);
+    }
+
+    public NumeronBot(long account, String password, long master, String folder) {
+        this.master = master;
+        this.account = account;
+        this.password = password;
+        this.folder = folder;
+        this.bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
+            {
+                setWorkingDir(new File(folder + "bots/" + account + "/")); // 工作目录
+                setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
+                setProtocol(miraiProtocol); // 登陆协议
+                fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
+            }
+        });
+    }
+
+
+    private void init() {
         Scanner scanner = new Scanner(System.in);
         String configFile = this.folder + "config/botconfig.json";
-        ConfigCreateUtil.createFile(configFile);
+        try {
+            ConfigCreateUtil.createFile(configFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if (load(new File(configFile))) {
             bot = createBot();
             return;
@@ -94,7 +140,11 @@ public class NumeronBot implements Serializable {
             String configFile = folder + "config/botconfig.json";
             HashMap<String, NumeronBot> hashMap = new HashMap<>();
             hashMap.put("bot", this);
-            JsonUtil.dump(configFile, hashMap, HashMap.class);
+            try {
+                JsonUtil.dump(configFile, hashMap, HashMap.class);
+            } catch (ConfigWriteException e) {
+                throw new RuntimeException(e);
+            }
             MiraiLogUtil.info("保存成功\n");
         }).start();
     }
@@ -116,14 +166,24 @@ public class NumeronBot implements Serializable {
     }
 
     private Bot createBot() {
+        String s = folder + "bots/" + account + "/";
+        ConfigCreateUtil.createDir(s);
         return BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
             {
-                setWorkingDir(new File(folder + "bots/" + account + "/")); // 工作目录
+                setWorkingDir(new File(s)); // 工作目录
                 setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
                 setProtocol(miraiProtocol); // 登陆协议
                 fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
             }
         });
+    }
+
+    public void login() {
+        bot.login();
+    }
+
+    public long getAccount() {
+        return account;
     }
 
     public long getMaster() {

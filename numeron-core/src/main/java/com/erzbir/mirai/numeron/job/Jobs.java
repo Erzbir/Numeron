@@ -11,7 +11,7 @@ import java.util.HashMap;
  * 定时任务全部放到这个包装类
  */
 public final class Jobs {
-    public static Jobs INSTANCE = new Jobs();
+    public static final Jobs INSTANCE = new Jobs();
     private final HashMap<String, TimeTask> jobSet = new HashMap<>();
 
     private Jobs() {

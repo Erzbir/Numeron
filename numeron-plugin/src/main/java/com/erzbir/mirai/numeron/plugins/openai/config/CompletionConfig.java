@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
+import com.erzbir.mirai.numeron.utils.ConfigReadException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.completion.CompletionRequest;
 
@@ -35,7 +36,11 @@ public class CompletionConfig implements Serializable {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
-                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/completion.json", CompletionConfig.class);
+                    try {
+                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/completion.json", CompletionConfig.class);
+                    } catch (ConfigReadException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

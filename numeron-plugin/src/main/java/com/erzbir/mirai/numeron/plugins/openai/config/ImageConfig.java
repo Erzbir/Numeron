@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
+import com.erzbir.mirai.numeron.utils.ConfigReadException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.image.CreateImageRequest;
 
@@ -27,7 +28,11 @@ public class ImageConfig implements Serializable {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
-                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/image.json", ImageConfig.class);
+                    try {
+                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/image.json", ImageConfig.class);
+                    } catch (ConfigReadException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

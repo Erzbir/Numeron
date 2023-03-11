@@ -3,9 +3,12 @@ package com.erzbir.mirai.numeron.plugins.rss.config;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
 import com.erzbir.mirai.numeron.utils.ConfigCreateUtil;
+import com.erzbir.mirai.numeron.utils.ConfigReadException;
+import com.erzbir.mirai.numeron.utils.ConfigWriteException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -19,7 +22,11 @@ public class RssConfig implements Serializable {
     private static volatile RssConfig INSTANCE;
 
     static {
-        ConfigCreateUtil.createFile(configFile);
+        try {
+            ConfigCreateUtil.createFile(configFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @SerializedName("proxy_type")
@@ -37,13 +44,17 @@ public class RssConfig implements Serializable {
     @SerializedName("rss")
     private HashMap<String, RssItem> rss = new HashMap<>(); // 订阅
     @SerializedName("delay")
-    private int delay = 3;   //  更新间隔
+    private int delay = 1;   //  更新间隔
 
     public static RssConfig getInstance() {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
-                    INSTANCE = JsonUtil.load(configFile, RssConfig.class);
+                    try {
+                        INSTANCE = JsonUtil.load(configFile, RssConfig.class);
+                    } catch (ConfigReadException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
@@ -139,7 +150,13 @@ public class RssConfig implements Serializable {
     }
 
     public boolean save() {
-        return JsonUtil.dump(configFile, this, this.getClass());
+        try {
+            JsonUtil.dump(configFile, this, this.getClass());
+            return true;
+        } catch (ConfigWriteException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override

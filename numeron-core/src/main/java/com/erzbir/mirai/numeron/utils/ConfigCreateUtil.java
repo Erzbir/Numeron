@@ -9,24 +9,16 @@ import java.io.IOException;
  * <p>用于创建文件和目录</p>
  */
 public class ConfigCreateUtil {
-    public static void createFile(String confFile) {
+    public static void createFile(String confFile) throws IOException {
         File file = new File(confFile);
         if (!file.isFile()) {
-            try {
-                if (file.createNewFile()) {
-                    return;
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (file.createNewFile()) {
+                return;
             }
         }
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            file.createNewFile();
         }
     }
 

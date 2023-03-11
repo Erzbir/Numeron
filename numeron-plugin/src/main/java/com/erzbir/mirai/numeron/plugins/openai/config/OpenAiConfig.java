@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
+import com.erzbir.mirai.numeron.utils.ConfigReadException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 
 /**
@@ -26,7 +27,11 @@ public class OpenAiConfig {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
-                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/openai.json", OpenAiConfig.class);
+                    try {
+                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/openai.json", OpenAiConfig.class);
+                    } catch (ConfigReadException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
@@ -72,9 +77,5 @@ public class OpenAiConfig {
 
     public void setLimit(int limit) {
         this.limit = limit;
-    }
-
-    public String getDir() {
-        return dir;
     }
 }

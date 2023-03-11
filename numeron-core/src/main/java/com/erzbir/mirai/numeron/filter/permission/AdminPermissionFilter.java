@@ -21,7 +21,8 @@ public class AdminPermissionFilter extends AbstractPermissionFilter {
     public Boolean filter(MessageEvent event, String text) {
         long id = event.getSender().getId();
         if (event instanceof GroupMessageEvent event1) {
-            return NumeronBot.INSTANCE.getMaster() == id || (AdminList.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackList.INSTANCE.contains(id));
+            return NumeronBot.INSTANCE.getMaster() == id ||
+                    (AdminList.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackList.INSTANCE.contains(id));
         }
         return NumeronBot.INSTANCE.getMaster() == id;
     }

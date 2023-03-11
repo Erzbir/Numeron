@@ -18,8 +18,6 @@
         <module>numeron-core</module>
         <module>numeron-boot</module>
         <module>numeron-plugin</module>
-        <module>numeron-api</module>
-        <module>numeron-util</module>
         <module>buildSrc</module>
     </modules>
 

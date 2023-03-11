@@ -15,6 +15,8 @@ import net.mamoe.mirai.event.events.UserMessageEvent;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.PlainText;
 
+import java.sql.SQLException;
+
 /**
  * @author Erzbir
  * @Date: 2022/11/18 20:17
@@ -55,7 +57,11 @@ public class AutoReply {
     )
     private void forget(MessageEvent e) {
         String[] split = e.getMessage().contentToString().split("\\s+");
-        AutoReplyData.INSTANCE.remove(split[1], split[2]);
+        try {
+            AutoReplyData.INSTANCE.remove(split[1], split[2]);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
         e.getSubject().sendMessage("忘掉了");
     }
 

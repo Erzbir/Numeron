@@ -16,13 +16,13 @@ import java.util.Set;
  */
 public class SqlUtil {
     private final static Connection connection = SqlConnection.getConnection();
-    private static Statement statement;
+    private static final Statement statement;
 
     static {
         try {
             statement = connection.createStatement();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -30,22 +30,12 @@ public class SqlUtil {
 
     }
 
-    public static ResultSet getResultSet(String sql) {
-        ResultSet resultSet = null;
-        try {
-            resultSet = statement.executeQuery(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return resultSet;
+    public static ResultSet getResultSet(String sql) throws SQLException {
+        return statement.executeQuery(sql);
     }
 
-    public static void executeUpdateSQL(String sql) {
-        try {
-            statement.executeUpdate(sql);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void executeUpdateSQL(String sql) throws SQLException {
+        statement.executeUpdate(sql);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

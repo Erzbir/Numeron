@@ -1,9 +1,12 @@
 package com.erzbir.mirai.numeron.boot;
 
+import com.erzbir.mirai.numeron.boot.exception.ProcessorException;
 import com.erzbir.mirai.numeron.classloader.ClassScanner;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.processor.Processor;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -17,7 +20,7 @@ public class Starter {
 
     private final String basePackage;
 
-    public Starter(String packageName) {
+    public Starter(@NotNull String packageName) {
         basePackage = packageName;
     }
 
@@ -28,7 +31,7 @@ public class Starter {
     private void bootFromBasePackage() {
         // 包扫瞄器扫瞄所有class
         scanProcessor();
-        NumeronBot.INSTANCE.getBot().login();
+        NumeronBot.INSTANCE.login();
     }
 
     private void scanProcessor() {
@@ -36,17 +39,17 @@ public class Starter {
         try {
             // 扫瞄实现了{@code Processor}接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {
+                Processor processor;
                 try {
-                    Processor processor = (Processor) e.getConstructor().newInstance();
-                    processor.onApplicationEvent();
+                    processor = (Processor) e.getConstructor().newInstance();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException ex) {
-                    throw new RuntimeException(ex);
+                    throw new ProcessorException(ex);
                 }
+                processor.onApplicationEvent();
             });
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(-1);
+        } catch (IOException | ClassNotFoundException e) {
+            throw new ProcessorException(e);
         }
     }
 }

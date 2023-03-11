@@ -33,7 +33,7 @@ public class MessageFilterExecutor {
         String text;
         PermissionType permission;
         try {
-            // 以下操作通过反射调用注解的方法, 再强制类型转换成对应的类型
+            // 以下操作通过反射调用注解的方法(注解的属性实际上是一个有返回值的方法), 再强制类型转换成对应的类型
             filterRule = (FilterRule) aClass.getDeclaredMethod("filterRule").invoke(annotation);
             messageRule = (MessageRule) aClass.getDeclaredMethod("messageRule").invoke(annotation);
             text = (String) aClass.getDeclaredMethod("text").invoke(annotation);

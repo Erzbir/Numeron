@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.plugins.rss.entity;
 
 import cn.hutool.core.date.DateTime;
+import com.erzbir.mirai.numeron.plugins.rss.exception.ImageGetException;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -22,18 +23,21 @@ public class RssInfo implements Serializable {
     private String author = "";
     private Date publishedDate = new Date(0);
 
-    public MessageChain getMessageChain(Contact contact) throws IOException {
-        Image image = null;
+    /**
+     * @param contact 联系人
+     * @return 消息链
+     * @throws ImageGetException 获取图片失败时返回图片获取异常
+     */
+    public MessageChain getMessageChain(Contact contact) throws ImageGetException {
+        Image image;
         try {
             image = Contact.uploadImage(contact, new URL(url).openStream());
-        } catch (Exception e) {
-            System.out.println("没有图片");
+        } catch (IOException e) {
+            throw new ImageGetException("get picture exception", e);
         }
         MessageChainBuilder chainBuilder = new MessageChainBuilder();
         chainBuilder.append(title).append("\n");
-        if (image != null) {
-            chainBuilder.append(image);
-        }
+        chainBuilder.append(image);
         return chainBuilder.append(link).append("\n")
                 .append(author).append("\n")
                 .append(DateTime.of(publishedDate.getTime()).toString())
@@ -52,7 +56,10 @@ public class RssInfo implements Serializable {
     }
 
     private void clear() {
-
+        this.link = null;
+        this.author = null;
+        this.title = null;
+        this.publishedDate = null;
     }
 
     public String getUrl() {

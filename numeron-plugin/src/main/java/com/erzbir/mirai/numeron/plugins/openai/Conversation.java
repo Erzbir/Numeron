@@ -14,6 +14,10 @@ public class Conversation implements List<ChatMessage> {
     private int size;
     private int limit = 2048;
 
+    public Conversation() {
+
+    }
+
     public Conversation(int limit) {
         this.limit = limit;
     }

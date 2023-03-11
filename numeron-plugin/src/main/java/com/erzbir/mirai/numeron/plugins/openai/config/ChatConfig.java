@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.openai.config;
 
+import com.erzbir.mirai.numeron.utils.ConfigReadException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 
@@ -29,7 +30,11 @@ public class ChatConfig implements Serializable {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
-                    INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/chat.json", ChatConfig.class);
+                    try {
+                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/chat.json", ChatConfig.class);
+                    } catch (ConfigReadException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

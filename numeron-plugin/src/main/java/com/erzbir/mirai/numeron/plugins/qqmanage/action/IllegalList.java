@@ -3,7 +3,6 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 
 import com.erzbir.mirai.numeron.utils.SqlUtil;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -37,34 +36,12 @@ public final class IllegalList {
         }
     }
 
-    private boolean exist(String value) {
-        String sql = "SELECT * FROM ILLEGALS WHERE KEY = '" + value + "'";
-        ResultSet resultSet = SqlUtil.getResultSet(sql);
-        try {
-            return resultSet == null;
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void addS(String value, Long id) {
-        if (exist(value)) {
-            return;
-        }
+    private void addS(String value, Long id) throws SQLException {
         String sql = "INSERT INTO ILLEGALS(KEY, OP_ID, OP_TIME) VALUES(" + value + ", " + id + ", '" + LocalTime.now() + "' " + ")";
         SqlUtil.executeUpdateSQL(sql);
     }
 
-    private void removeS(String value) {
-        if (!exist(value)) {
-            return;
-        }
+    private void removeS(String value) throws SQLException {
         String sql = "DELETE FROM ILLEGALS WHERE KEY = " + value;
         SqlUtil.executeUpdateSQL(sql);
     }
@@ -83,12 +60,24 @@ public final class IllegalList {
 
     public void add(String value, Long id) {
         addD(value);
-        new Thread(() -> addS(value, id)).start();
+        new Thread(() -> {
+            try {
+                addS(value, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
     public void remove(String value) {
         removeD(value);
-        new Thread(() -> removeS(value)).start();
+        new Thread(() -> {
+            try {
+                removeS(value);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
     public String query(String s) {

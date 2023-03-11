@@ -1,10 +1,10 @@
 package com.erzbir.mirai.numeron.handler.excute;
 
+import com.erzbir.mirai.numeron.exception.ErrorReporter;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -16,8 +16,8 @@ public interface RegisterEventHandle {
         channel.subscribeAlways(MessageEvent.class, event -> {
             try {
                 method.invoke(bean, event);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                ErrorReporter.add(e);
             }
         });
     }

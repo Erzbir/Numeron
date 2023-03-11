@@ -2,7 +2,6 @@ package com.erzbir.mirai.numeron.entity;
 
 import com.erzbir.mirai.numeron.utils.SqlUtil;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -30,69 +29,57 @@ public final class WhiteList {
         try {
             SqlUtil.listInit(sql, findAll, white, "ID", Long.class);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.exit(0);
+            throw new RuntimeException(e);
         }
     }
 
-    public boolean contains(Long id) {
+    public boolean contains(long id) {
         return white.contains(id);
     }
 
-    private boolean exist(Long value) {
-        String sql = "SELECT * FROM WHITES WHERE ID = " + value;
-        ResultSet resultSet = SqlUtil.getResultSet(sql);
-        try {
-            return resultSet == null;
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void addS(Long value, Long id) {
-        if (exist(value)) {
-            return;
-        }
-
+    private void addS(long value, long id) throws SQLException {
         String sql = "INSERT INTO WHITES(ID, OP_ID, OP_TIME) " +
                 "VALUES(" + value + ", " + id + ", '" + LocalDateTime.now() + "' " + ")";
         SqlUtil.executeUpdateSQL(sql);
     }
 
-    private void removeS(Long value) {
-        if (!exist(value)) {
-            return;
-        }
+    private void removeS(long value) throws SQLException {
         String sql = "DELETE FROM WHITES WHERE ID = " + value;
         SqlUtil.executeUpdateSQL(sql);
     }
 
 
-    private void addD(Long value) {
+    private void addD(long value) {
         white.add(value);
     }
 
-    private void removeD(Long value) {
+    private void removeD(long value) {
         white.remove(value);
     }
 
-    public void add(Long value, Long id) {
+    public void add(long value, long id) {
         addD(value);
-        new Thread(() -> addS(value, id)).start();
+        new Thread(() -> {
+            try {
+                addS(value, id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
-    public void remove(Long value) {
+    public void remove(long value) {
         removeD(value);
-        new Thread(() -> removeS(value)).start();
+        new Thread(() -> {
+            try {
+                removeS(value);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
-    public String query(Long id) {
+    public String query(long id) {
         if (id == 0) {
             return toString();
         }

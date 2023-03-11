@@ -14,7 +14,6 @@ import net.mamoe.mirai.event.events.BotEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -49,13 +48,10 @@ public class MessageAnnotationProcessor implements Processor {
      * @param channel    过滤的channel
      * @param annotation 消息处理注解, 使用泛型代替实际的注解, 这样做的目的是减少代码量, 用反射的方式还原注解
      */
-    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E annotation) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E annotation) {
         ExecutorFactory.INSTANCE.create(annotation)
                 .getExecute()
-                .execute(method,
-                        bean,
-                        channel);
-
+                .execute(method, bean, channel);
     }
 
     /**
@@ -83,11 +79,7 @@ public class MessageAnnotationProcessor implements Processor {
                                 .replaceAll("\\[", "(")
                                 .replaceAll("]", ")");
                         method.setAccessible(true);
-                        try {
-                            execute(v, method, toFilter(channel, annotation), annotation);
-                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                            throw new RuntimeException(e);
-                        }
+                        execute(v, method, toFilter(channel, annotation), annotation);
                         MiraiLogUtil.info(method.getName() + s + " 处理方法注册完毕");
                     });
         }

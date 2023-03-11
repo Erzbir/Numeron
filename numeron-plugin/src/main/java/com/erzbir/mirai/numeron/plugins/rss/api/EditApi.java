@@ -18,6 +18,14 @@ public class EditApi {
         RssConfig.getInstance().getRssMap().get(id).setName(newName);
     }
 
+    public static void editDelay(int delay) {
+        RssConfig.getInstance().setDelay(delay);
+    }
+
+    public static void editRetryTimes(int times) {
+        RssConfig.getInstance().setRetryTimes(times);
+    }
+
     public static class EditReceiveListApi {
 
         public static void addContact(String id, long qqId, Class<? extends Contact> type) {

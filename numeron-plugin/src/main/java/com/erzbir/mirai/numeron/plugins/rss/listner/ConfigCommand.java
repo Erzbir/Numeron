@@ -11,8 +11,6 @@ import com.erzbir.mirai.numeron.plugins.rss.api.ViewApi;
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import net.mamoe.mirai.event.events.MessageEvent;
 
-import java.util.Arrays;
-
 /**
  * @author Erzbir
  * @Date: 2023/3/10 10:48
@@ -104,14 +102,46 @@ public class ConfigCommand {
             name = "保存当前配置",
             dec = "#config save",
             help = "#config save",
-            permission = PermissionType.ADMIN
+            permission = PermissionType.MASTER
     )
     @Message(
             text = "#config save",
-            filterRule = FilterRule.BLACK,
+            filterRule = FilterRule.NONE,
             permission = PermissionType.MASTER
     )
     private void saveConfig(MessageEvent event) {
         event.getSubject().sendMessage(String.valueOf(RssConfig.getInstance().save()));
+    }
+
+    @Command(
+            name = "修改扫瞄延迟",
+            dec = "#delay [min]",
+            help = "#delay 2 (单位为分钟)",
+            permission = PermissionType.ADMIN
+    )
+    @Message(
+            text = "^#delay\\s+?\\d+",
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.ADMIN
+    )
+    private void setDelay(MessageEvent event) {
+        String s = event.getMessage().contentToString().replaceFirst("^#dely\\s+?", "");
+        EditApi.editDelay(Integer.parseInt(s));
+    }
+
+    @Command(
+            name = "修改重试次数",
+            dec = "#retry [times]",
+            help = "#retry 2",
+            permission = PermissionType.MASTER
+    )
+    @Message(
+            text = "^#retry\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
+    private void setRetryTimes(MessageEvent event) {
+        String s = event.getMessage().contentToString().replaceFirst("^#retry\\s+?", "");
+        EditApi.editDelay(Integer.parseInt(s));
     }
 }

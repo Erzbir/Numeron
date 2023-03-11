@@ -28,7 +28,11 @@ public class FastMute {
 
     {
         String confFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/qqmanage" + "/config.conf";
-        ConfigCreateUtil.createFile(confFile);
+        try {
+            ConfigCreateUtil.createFile(confFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try (BufferedReader in = new BufferedReader(new FileReader(confFile))) {
             String s;
             while ((s = in.readLine()) != null) {

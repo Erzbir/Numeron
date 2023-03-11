@@ -53,11 +53,24 @@ public final class AutoReplyData {
 
     public void add(String key, String answer, Long id) {
         addD(key, answer);
-        addS(key, answer, id);
+        new Thread(() -> {
+            try {
+                addS(key, answer, id);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    public void remove(String key, String answer) {
+    public void remove(String key, String answer) throws SQLException {
         removeD(key);
+        new Thread(() -> {
+            try {
+                removeS(key, answer);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
         removeS(key, answer);
     }
 
@@ -69,7 +82,7 @@ public final class AutoReplyData {
         data.remove(key);
     }
 
-    private void addS(String key, String answer, Long id) {
+    private void addS(String key, String answer, Long id) throws SQLException {
         String sql = "INSERT INTO CHAT(KEY, ANSWER, OP_ID, OP_TIME) " +
                 "VALUES('" + key + "', '" + answer + "', " + id + ", '" + LocalTime.now() + "' " + ")";
         if (exist(key)) {
@@ -78,7 +91,7 @@ public final class AutoReplyData {
         SqlUtil.executeUpdateSQL(sql);
     }
 
-    private void removeS(String key, String answer) {
+    private void removeS(String key, String answer) throws SQLException {
         if (!exist(key)) {
             return;
         }
@@ -90,7 +103,7 @@ public final class AutoReplyData {
         return data.get(key);
     }
 
-    public boolean exist(String key) {
+    public boolean exist(String key) throws SQLException {
         String sql = "SELECT * FROM CHAT WHERE KEY = '" + key + "'";
         ResultSet resultSet = SqlUtil.getResultSet(sql);
         return resultSet == null;
