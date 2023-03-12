@@ -30,6 +30,7 @@ public class ErrorReporter {
     public static void save() {
         try (FileWriter fileWriter = new FileWriter(NumeronBot.INSTANCE.getFolder() + "error.log")) {
             fileWriter.append(getReport());
+            fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

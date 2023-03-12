@@ -32,7 +32,7 @@ import java.util.List;
  */
 @Listener
 public class OpenAiListener {
-    private final Conversation conversation = new Conversation(2048);
+    private Conversation conversation = new Conversation(2048);
     private final OpenAiConfig openAiConfig = OpenAiConfig.getInstance();
     private final ImageConfig imageConfig = ImageConfig.getInstance();
     private final ChatConfig chatConfig = ChatConfig.getInstance();
@@ -43,6 +43,21 @@ public class OpenAiListener {
     private final CompletionRequest completionRequest = completionConfig.load();
     private final ChatCompletionRequest chatCompletionRequest = chatConfig.load();
     private final CompletionRequest question = questionConfig.load();
+
+    @Command(
+            name = "OpenAI",
+            dec = "清除对话",
+            help = "/c clear",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            filterRule = FilterRule.BLACK,
+            text = "/c clear",
+            permission = PermissionType.ALL
+    )
+    private void clear() {
+        conversation = new Conversation(2048);
+    }
 
     @Command(
             name = "OpenAI",

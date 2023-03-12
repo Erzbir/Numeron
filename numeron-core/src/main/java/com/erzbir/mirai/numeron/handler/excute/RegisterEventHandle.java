@@ -17,6 +17,7 @@ public interface RegisterEventHandle {
             try {
                 method.invoke(bean, event);
             } catch (Exception e) {
+                e.printStackTrace();
                 ErrorReporter.add(e);
             }
         });
