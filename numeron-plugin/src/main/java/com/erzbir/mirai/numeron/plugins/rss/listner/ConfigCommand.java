@@ -81,12 +81,12 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     private void listAll(MessageEvent event) {
-        event.getSubject().sendMessage(
-                new ForwardMessageBuilder(
-                        event.getSubject()).add(event.getBot().getId(),
-                        "Numeron",
-                        new PlainText(ViewApi.viewAllRss())
-                ).build());
+        String[] split = ViewApi.viewAllRss().split("\\n\\n");
+        ForwardMessageBuilder forwardMessageBuilder = new ForwardMessageBuilder(event.getSubject());
+        for (String s : split) {
+            forwardMessageBuilder.add(event.getBot(), new PlainText(s));
+        }
+        event.getSubject().sendMessage(forwardMessageBuilder.build());
     }
 
     @Command(
