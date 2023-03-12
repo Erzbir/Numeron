@@ -4,9 +4,11 @@ import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssInfo;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
 import com.erzbir.mirai.numeron.utils.MiraiContactUtils;
+import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,43 +23,34 @@ public class TimerController {
     private static Runnable getTimerTask(String id) {
         return () -> {
             RssItem rssItem = RssConfig.getInstance().getRssMap().get(id);
-            if (rssItem == null) {
+            if (rssItem == null || !rssItem.isEnable()) {
                 return;
             }
             RssInfo rssInfo = rssItem.updateInfo();
             if (rssInfo != null) {
-                rssItem.getGroupList().forEach(t -> {
-                    int flag = RssConfig.getInstance().getRetryTimes();
-                    while (flag > 0) {
-                        Group group = MiraiContactUtils.getGroup(t);
-                        try {
-                            if (rssItem.isEnable()) {
-                                group.sendMessage((rssInfo.getMessageChain(group)));
-                                flag = 0;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            flag--;
-                        }
-                    }
-                });
-                rssItem.getUserList().forEach(t -> {
-                    int flag = RssConfig.getInstance().getRetryTimes();
-                    while (flag > 0) {
-                        Friend friend = MiraiContactUtils.getFriend(t);
-                        try {
-                            if (rssItem.isEnable()) {
-                                friend.sendMessage((rssInfo.getMessageChain(friend)));
-                                flag = 0;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            flag--;
-                        }
-                    }
-                });
+                send(rssInfo, rssItem.getUserList(), Friend.class);
+                send(rssInfo, rssItem.getGroupList(), Group.class);
             }
         };
+    }
+
+    private static void send(RssInfo rssInfo, Set<Long> list, Class<? extends Contact> type) {
+        list.forEach(t -> {
+            int flag = RssConfig.getInstance().getRetryTimes();
+            while (flag > 0) {
+                Contact contact = MiraiContactUtils.getContact(t, type);
+                if (contact == null) {
+                    return;
+                }
+                try {
+                    contact.sendMessage((rssInfo.getMessageChain(contact)));
+                    flag = 0;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    flag--;
+                }
+            }
+        });
     }
 
     public static void loadAllScan() {
@@ -67,7 +60,7 @@ public class TimerController {
         });
     }
 
-    private static void disableScan() {
+    public static void disableScan() {
         executorService.shutdown();
     }
 

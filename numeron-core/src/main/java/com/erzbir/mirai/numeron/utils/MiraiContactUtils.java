@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.utils;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
+import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.ContactList;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
@@ -20,5 +21,14 @@ public class MiraiContactUtils {
 
     public static Friend getFriend(long id) {
         return friendList.get(id);
+    }
+
+    public static Contact getContact(long id, Class<? extends Contact> type) {
+        if (type.equals(Group.class)) {
+            return getGroup(id);
+        } else if (type.equals(Friend.class)) {
+            return getFriend(id);
+        }
+        return null;
     }
 }

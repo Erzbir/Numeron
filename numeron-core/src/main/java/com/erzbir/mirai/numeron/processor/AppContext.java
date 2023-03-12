@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.processor;
 
 import com.erzbir.mirai.numeron.classloader.ClassScanner;
+import com.erzbir.mirai.numeron.exception.AppContextException;
 import com.erzbir.mirai.numeron.handler.Component;
 
 import java.io.IOException;
@@ -27,8 +28,7 @@ public class AppContext implements BeanFactory {
             Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class); // 扫瞄带有@Component注解的class
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
+            throw new AppContextException(e);
         }
     }
 
@@ -40,7 +40,7 @@ public class AppContext implements BeanFactory {
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException ex) {
-                ex.printStackTrace();
+                throw new AppContextException(ex);
             }
         });
     }

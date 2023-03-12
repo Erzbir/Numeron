@@ -1,6 +1,7 @@
 package com.erzbir.mirai.numeron.filter;
 
 import com.erzbir.mirai.numeron.entity.NumeronBot;
+import com.erzbir.mirai.numeron.exception.AnnotationGetException;
 import com.erzbir.mirai.numeron.filter.message.MessageFilterFactory;
 import com.erzbir.mirai.numeron.filter.message.MessageRule;
 import com.erzbir.mirai.numeron.filter.permission.PermissionFilterFactory;
@@ -39,7 +40,7 @@ public class MessageFilterExecutor {
             text = (String) aClass.getDeclaredMethod("text").invoke(annotation);
             permission = (PermissionType) aClass.getDeclaredMethod("permission").invoke(annotation);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new AnnotationGetException(e);
         }
         return NumeronBot.INSTANCE.isEnable() && RuleFilterFactory.INSTANCE.create(filterRule).filter(event1, text)
                 && MessageFilterFactory.INSTANCE.create(messageRule).filter(event1, text)

@@ -33,7 +33,7 @@ public class RssCommand {
             permission = PermissionType.ALL
     )
     private void sub(MessageEvent event) {
-        String url = event.getMessage().contentToString().replaceFirst("#sub\\s+?", "");
+        String url = event.getMessage().contentToString().replaceFirst("^#sub\\s+?", "");
         PublishApi.addPublish(url);
     }
 
@@ -50,7 +50,7 @@ public class RssCommand {
             permission = PermissionType.ADMIN
     )
     private void cancel(MessageEvent event) {
-        String id = event.getMessage().contentToString().replaceFirst("#nosub\\s+?", "");
+        String id = event.getMessage().contentToString().replaceFirst("^#nosub\\s+?", "");
         PublishApi.disablePublish(id);
     }
 
@@ -67,24 +67,54 @@ public class RssCommand {
             permission = PermissionType.ADMIN
     )
     private void enable(MessageEvent event) {
-        String id = event.getMessage().contentToString().replaceFirst("#ensub\\s+?", "");
+        String id = event.getMessage().contentToString().replaceFirst("^#ensub\\s+?", "");
         PublishApi.enablePublish(id);
     }
 
     @Command(
             name = "删除订阅",
             dec = "#delsub <id>",
-            help = "#delsub 1)",
-            permission = PermissionType.ADMIN
+            help = "#delsub 1",
+            permission = PermissionType.MASTER
     )
     @Message(
-            text = "^delsub\\s+?\\d+",
+            text = "^#delsub\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
+            permission = PermissionType.MASTER
     )
     private void delete(MessageEvent event) {
-        String id = event.getMessage().contentToString().replaceFirst("#delsub\\s+?", "");
+        String id = event.getMessage().contentToString().replaceFirst("^#delsub\\s+?", "");
         PublishApi.deletePublish(id);
+    }
+
+    @Command(
+            name = "停止扫瞄",
+            dec = "#disable scan",
+            help = "#disable scan",
+            permission = PermissionType.MASTER
+    )
+    @Message(
+            text = "#disable scan",
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.MASTER
+    )
+    private void disableAllScan(MessageEvent event) {
+        PublishApi.disableScan();
+    }
+
+    @Command(
+            name = "开启扫瞄",
+            dec = "#enable scan",
+            help = "#enable scan",
+            permission = PermissionType.MASTER
+    )
+    @Message(
+            text = "#enable scan",
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.MASTER
+    )
+    private void enableAllScan(MessageEvent event) {
+        PublishApi.disableScan();
     }
 }

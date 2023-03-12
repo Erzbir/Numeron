@@ -32,13 +32,11 @@ public class CodeUtil {
     }
 
 
-    private static String readResult(Process process) throws Exception {
+    private static String readResult(Process process) throws CodeReadOverException {
         Charset use = getCharset();
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder errBuilder = new StringBuilder();
-        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), use));
-        BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream(), use));
-        try (in; err) {
+        try( BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), use));BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream(), use))) {
             stringBuilder = readResultS(in);
             errBuilder = readResultS(err);
         } catch (Exception e) {
@@ -50,7 +48,7 @@ public class CodeUtil {
         }
         // 这里不能超过5000
         if (!errBuilder.isEmpty()) {
-            throw new Exception(errBuilder.toString().trim());
+            throw new CodeReadOverException(errBuilder.toString().trim());
         } else if (!stringBuilder.isEmpty()) {
             return stringBuilder.toString().trim();
         }
@@ -61,14 +59,14 @@ public class CodeUtil {
         String result;
         try {
             result = CodeUtil.readResult(Runtime.getRuntime().exec(type + " " + filename, null, file.getParentFile()));
-        } catch (Exception e) {
+        } catch (CodeReadOverException | IOException e) {
             result = e.getMessage();
         } finally {
             new Thread(() -> {
                 try {
                     Files.delete(file.getAbsoluteFile().toPath());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 }
             }).start();
         }

@@ -27,4 +27,8 @@ public class PublishApi {
     public static void enablePublish(String id) {
         RssConfig.getInstance().enablePublish(id);
     }
+
+    public static void disableScan() {
+        TimerController.disableScan();
+    }
 }

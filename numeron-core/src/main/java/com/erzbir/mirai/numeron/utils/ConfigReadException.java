@@ -9,7 +9,7 @@ public class ConfigReadException extends Exception {
         super(message);
     }
 
-    public ConfigReadException(String message, Throwable cause,
+    protected ConfigReadException(String message, Throwable cause,
                                boolean enableSuppression,
                                boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);

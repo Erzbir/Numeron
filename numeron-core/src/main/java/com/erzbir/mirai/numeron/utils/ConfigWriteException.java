@@ -9,7 +9,7 @@ public class ConfigWriteException extends Exception {
         super(message);
     }
 
-    public ConfigWriteException(String message, Throwable cause,
+    protected ConfigWriteException(String message, Throwable cause,
                                 boolean enableSuppression,
                                 boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
