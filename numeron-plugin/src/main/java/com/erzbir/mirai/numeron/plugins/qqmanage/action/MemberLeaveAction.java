@@ -38,7 +38,7 @@ public class MemberLeaveAction implements PluginRegister {
     @Command(
             name = "退群提示",
             dec = "开关退群",
-            help = "/welcome [true|false]",
+            help = "/leave [true|false]",
             permission = PermissionType.ADMIN
     )
     @GroupMessage(

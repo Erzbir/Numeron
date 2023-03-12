@@ -2,6 +2,7 @@ package com.erzbir.mirai.numeron.plugins.rss.api;
 
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
+import net.mamoe.mirai.message.data.ForwardMessageBuilder;
 
 /**
  * @author Erzbir

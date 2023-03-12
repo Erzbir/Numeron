@@ -21,9 +21,9 @@ public class RssCommand {
     }
 
     @Command(
-            name = "添加订阅",
-            dec = "#sub [url]",
-            help = "#sub https://xxx.xxx",
+            name = "RSS订阅命令",
+            dec = "添加订阅",
+            help = "#sub [https://xxx.xxx]",
             permission = PermissionType.ALL
     )
     @Message(
@@ -38,9 +38,9 @@ public class RssCommand {
     }
 
     @Command(
-            name = "取消订阅",
-            dec = "#nosub <id>",
-            help = "#nosub 1)",
+            name = "RSS订阅命令",
+            dec = "取消订阅",
+            help = "#nosub [id]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -55,9 +55,9 @@ public class RssCommand {
     }
 
     @Command(
-            name = "开启订阅",
-            dec = "#ensub <id>",
-            help = "#ensub 1)",
+            name = "RSS订阅命令",
+            dec = "开启订阅",
+            help = "#ensub [id]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -72,9 +72,9 @@ public class RssCommand {
     }
 
     @Command(
-            name = "删除订阅",
-            dec = "#delsub <id>",
-            help = "#delsub 1",
+            name = "RSS订阅命令",
+            dec = "删除订阅",
+            help = "#delsub [id]",
             permission = PermissionType.MASTER
     )
     @Message(
@@ -89,8 +89,8 @@ public class RssCommand {
     }
 
     @Command(
-            name = "停止扫瞄",
-            dec = "#disable scan",
+            name = "RSS订阅命令",
+            dec = "停止扫瞄",
             help = "#disable scan",
             permission = PermissionType.MASTER
     )
@@ -104,8 +104,8 @@ public class RssCommand {
     }
 
     @Command(
-            name = "开启扫瞄",
-            dec = "#enable scan",
+            name = "RSS订阅命令",
+            dec = "开启扫瞄",
             help = "#enable scan",
             permission = PermissionType.MASTER
     )

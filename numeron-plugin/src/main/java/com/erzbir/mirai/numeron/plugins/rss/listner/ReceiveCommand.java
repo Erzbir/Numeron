@@ -17,9 +17,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @Listener
 public class ReceiveCommand {
     @Command(
-            name = "查看指定订阅启用的群和用户",
-            dec = "#contacts [id]",
-            help = "#contacts 1",
+            name = "RSS订阅命令",
+            dec = "查看指定订阅启用的群和用户",
+            help = "#contacts [id]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -34,9 +34,9 @@ public class ReceiveCommand {
     }
 
     @Command(
-            name = "查看所有订阅启用的群和用户",
-            dec = "#contacts [id]",
-            help = "#contacts 1",
+            name = "RSS订阅命令",
+            dec = "查看所有订阅启用的群和用户",
+            help = "#contacts all",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -49,9 +49,9 @@ public class ReceiveCommand {
     }
 
     @Command(
-            name = "添加群订阅",
-            dec = "#add group [id] [groupId]",
-            help = "#add group 1 12344556",
+            name = "RSS订阅命令",
+            dec = "添加群订阅",
+            help = "#add group [id] [groupId]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -66,9 +66,9 @@ public class ReceiveCommand {
     }
 
     @Command(
-            name = "取消群订阅",
-            dec = "#delete group [id] [groupId]",
-            help = "#delete group 1 12344556",
+            name = "RSS订阅命令",
+            dec = "取消群订阅",
+            help = "#delete group [id] [groupId]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -83,9 +83,9 @@ public class ReceiveCommand {
     }
 
     @Command(
-            name = "添加用户订阅",
-            dec = "#add user [id] [qqId]",
-            help = "#add user 1 12344556",
+            name = "RSS订阅命令",
+            dec = "添加用户订阅",
+            help = "#add user [id] [groupId]",
             permission = PermissionType.WHITE
     )
     @Message(
@@ -100,9 +100,9 @@ public class ReceiveCommand {
     }
 
     @Command(
-            name = "取消用户订阅",
-            dec = "#delete user [id] [qqId]",
-            help = "#delete user 1 12344556",
+            name = "RSS订阅命令",
+            dec = "取消用户订阅",
+            help = "#delete user [id] [groupId]",
             permission = PermissionType.WHITE
     )
     @Message(

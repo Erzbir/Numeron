@@ -9,6 +9,8 @@ import com.erzbir.mirai.numeron.listener.massage.Message;
 import com.erzbir.mirai.numeron.plugins.rss.api.EditApi;
 import com.erzbir.mirai.numeron.plugins.rss.api.ViewApi;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.data.ForwardMessageBuilder;
+import net.mamoe.mirai.message.data.PlainText;
 
 /**
  * @author Erzbir
@@ -17,9 +19,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @Listener
 public class ConfigCommand {
     @Command(
-            name = "修改订阅名",
-            dec = "#rename [id] [name]",
-            help = "#sub https://xxx.xxx",
+            name = "RSS订阅命令",
+            dec = "修改订阅名",
+            help = "#rename [id] [name]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -34,9 +36,9 @@ public class ConfigCommand {
     }
 
     @Command(
-            name = "修改订阅链接",
-            dec = "#url [id] [url]",
-            help = "#url https://xxx.xxx",
+            name = "RSS订阅命令",
+            dec = "修改订阅链接",
+            help = "#url [id] [https://xxx.xxx]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -51,9 +53,9 @@ public class ConfigCommand {
     }
 
     @Command(
-            name = "查看指定订阅配置",
-            dec = "#list [id]",
-            help = "#list 1",
+            name = "RSS订阅命令",
+            dec = "查看指定订阅配置",
+            help = "#list [id]",
             permission = PermissionType.ADMIN
     )
     @Message(
@@ -68,8 +70,8 @@ public class ConfigCommand {
     }
 
     @Command(
-            name = "查看所有订阅配置列表",
-            dec = "#list all",
+            name = "RSS订阅命令",
+            dec = "查看所有订阅配置列表",
             help = "#list all",
             permission = PermissionType.ADMIN
     )
@@ -79,12 +81,17 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     private void listAll(MessageEvent event) {
-        event.getSubject().sendMessage(ViewApi.viewAllRss());
+        event.getSubject().sendMessage(
+                new ForwardMessageBuilder(
+                        event.getSubject()).add(event.getBot().getId(),
+                        "Numeron",
+                        new PlainText(ViewApi.viewAllRss())
+                ).build());
     }
 
     @Command(
-            name = "查看当前配置",
-            dec = "#config rss",
+            name = "RSS订阅命令",
+            dec = "查看当前配置",
             help = "#config rss",
             permission = PermissionType.ADMIN
     )
@@ -98,8 +105,8 @@ public class ConfigCommand {
     }
 
     @Command(
-            name = "保存当前配置",
-            dec = "#config save",
+            name = "RSS订阅命令",
+            dec = "保存当前配置",
             help = "#config save",
             permission = PermissionType.MASTER
     )
@@ -113,9 +120,9 @@ public class ConfigCommand {
     }
 
     @Command(
-            name = "修改扫瞄延迟",
-            dec = "#delay [min]",
-            help = "#delay 2 (单位为分钟)",
+            name = "RSS订阅命令",
+            dec = "修改扫瞄延迟",
+            help = "#delay [min]",
             permission = PermissionType.MASTER
     )
     @Message(
@@ -130,9 +137,9 @@ public class ConfigCommand {
     }
 
     @Command(
-            name = "修改重试次数",
-            dec = "#retry [times]",
-            help = "#retry 2",
+            name = "RSS订阅命令",
+            dec = "修改重试次数",
+            help = "#retry [times]",
             permission = PermissionType.MASTER
     )
     @Message(

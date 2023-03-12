@@ -45,9 +45,9 @@ public class OpenAiListener {
     private final CompletionRequest question = questionConfig.load();
 
     @Command(
-            name = "OpenAI-画图",
-            dec = "/i [prompt]",
-            help = "i美女",
+            name = "OpenAI",
+            dec = "画图",
+            help = "/i 美女",
             permission = PermissionType.ALL
     )
     @Message(
@@ -64,9 +64,9 @@ public class OpenAiListener {
     }
 
     @Command(
-            name = "OpenAI-聊天",
-            dec = "/c [message]",
-            help = "/c你叫什么",
+            name = "OpenAI",
+            dec = "聊天",
+            help = "/c [message]",
             permission = PermissionType.ALL
     )
     @Message(
@@ -84,6 +84,7 @@ public class OpenAiListener {
             conversation.add(message);
         } catch (HttpException e) {
             conversation.reduce();
+            e.printStackTrace();
         }
         if (message != null) {
             sendMessage(event, message.getContent().replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", ""));
@@ -92,8 +93,8 @@ public class OpenAiListener {
     }
 
     @Command(
-            name = "OpenAI-补全",
-            dec = "/f [prompt]",
+            name = "OpenAI",
+            dec = "补全",
             help = "/f 水面",
             permission = PermissionType.ALL
     )
@@ -111,9 +112,9 @@ public class OpenAiListener {
         sendMessage(event, text);
     }
 
-    @Command(name = "OpenAI-问答",
-            dec = "/q [prompt]",
-            help = "/q今天天气如何",
+    @Command(name = "OpenAI",
+            dec = "问答",
+            help = "/q 今天天气如何",
             permission = PermissionType.ALL
     )
     @Message(

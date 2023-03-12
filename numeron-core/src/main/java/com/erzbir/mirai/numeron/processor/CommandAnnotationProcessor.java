@@ -20,16 +20,8 @@ public class CommandAnnotationProcessor implements Processor {
     private final static HashMap<String, Set<String>> helpMap = new HashMap<>();
     private final static StringBuilder stringBuilder = new StringBuilder();
 
-    public static String getHelp() {
-        return stringBuilder.toString();
-    }
-
-    private static void getDoc() {
-        helpMap.forEach((k, v) -> {
-            stringBuilder.append(k).append(": \n");
-            v.forEach(stringBuilder::append);
-            stringBuilder.append("\n");
-        });
+    public static HashMap<String, Set<String>> getHelpMap() {
+        return helpMap;
     }
 
     private static void addToDocMap(Command command) {
@@ -46,7 +38,6 @@ public class CommandAnnotationProcessor implements Processor {
         MiraiLogUtil.verbose("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
         context.getBeansWithAnnotation(Plugin.class).forEach((k, v) -> scanBeans(v));
-        getDoc();
         MiraiLogUtil.verbose("命令帮助文档生成完成");
     }
 
