@@ -27,13 +27,14 @@ public class GroupEnableCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/enable\\s+?group\\s+?\\d+",
+            text = "^/enable\\s+?group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
-            permission = PermissionType.WHITE
+            permission = PermissionType.MASTER
     )
     private void enable(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2]);
+        System.out.println("1212");
+        long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/enable\\s+?group\\s+?", ""));
         GroupList.INSTANCE.add(id, event.getSender().getId());
         event.getSubject().sendMessage("群: " + id + " 已授权");
     }
@@ -45,13 +46,13 @@ public class GroupEnableCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/disable\\s+?group\\s+?\\d+",
+            text = "^/disable\\s+?group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.WHITE
     )
     private void disable(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2]);
+        long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("/disable\\s+?group\\s+?", ""));
         GroupList.INSTANCE.remove(id);
         event.getSubject().sendMessage("群: " + id + " 已取消授权");
     }
@@ -63,7 +64,7 @@ public class GroupEnableCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/query\\s+?group\\s+?\\d+",
+            text = "^/query\\s+?group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
@@ -71,6 +72,6 @@ public class GroupEnableCommandHandle {
     private void query(MessageEvent event) {
         event.getSubject().
                 sendMessage(GroupList.INSTANCE
-                        .query(Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2])));
+                        .query(Long.parseLong(event.getMessage().contentToString().replaceFirst("^/query\\s+?group\\s+?\\d+", ""))));
     }
 }

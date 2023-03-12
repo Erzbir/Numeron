@@ -28,14 +28,13 @@ public class IllegalCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/add\\s+?illegal\\s+?.*",
+            text = "^/add\\s+?illegal\\s+?.+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void add(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+?");
-        String s = split[2];
+        String s = event.getMessage().contentToString().replaceFirst("^/add\\s+?illegal\\s+?", "");
         IllegalList.INSTANCE.add(s, event.getSender().getId());
         event.getSubject().sendMessage("违禁词添加成功");
     }
@@ -47,14 +46,13 @@ public class IllegalCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/remove\\s+?illegal\\s+?.*",
+            text = "^/remove\\s+?illegal\\s+?.+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void remove(MessageEvent event) {
-        String[] split = event.getMessage().contentToString().split("\\s+?");
-        String s = split[2];
+        String s = event.getMessage().contentToString().replaceFirst("^/remove\\s+?illegal\\s+?", "");
         IllegalList.INSTANCE.remove(s);
         event.getSubject().sendMessage("违禁词删除成功");
     }
@@ -66,7 +64,7 @@ public class IllegalCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/query\\s+?illegal\\s+?\\.*",
+            text = "^/query\\s+?illegal\\s+?.+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
@@ -74,6 +72,6 @@ public class IllegalCommandHandle {
     private void query(MessageEvent event) {
         event.getSubject().
                 sendMessage(IllegalList.INSTANCE
-                        .query(event.getMessage().contentToString().split("\\s+?")[2]));
+                        .query(event.getMessage().contentToString().replaceFirst("^/query\\s+?illegal\\s+?", "")));
     }
 }

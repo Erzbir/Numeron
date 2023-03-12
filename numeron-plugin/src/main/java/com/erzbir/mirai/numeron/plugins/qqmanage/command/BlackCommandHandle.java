@@ -29,13 +29,13 @@ public class BlackCommandHandle {
             permission = PermissionType.MASTER
     )
     @Message(
-            text = "/ban user\\s+?\\.*",
+            text = "^/ban\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void ban(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2].replaceAll("@", ""));
+        long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/ban\\s+?user\\s+?@*", ""));
         WhiteList.INSTANCE.remove(id);
         WhiteList.INSTANCE.add(id, event.getSender().getId());
         event.getSubject().sendMessage(id + " 添加到黑名单");
@@ -48,13 +48,13 @@ public class BlackCommandHandle {
             permission = PermissionType.MASTER
     )
     @Message(
-            text = "/noban user\\s+?\\.*",
+            text = "^/noban\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void remove(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2].replaceAll("@", ""));
+        long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/noban\\s+?user\\s+?@*", ""));
         WhiteList.INSTANCE.remove(id);
         event.getSubject().sendMessage(id + " 已移出黑名单");
     }
@@ -66,12 +66,16 @@ public class BlackCommandHandle {
             permission = PermissionType.MASTER
     )
     @Message(
-            text = "/query black\\s+?\\d+",
+            text = "^/query\\s+?black\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void query(MessageEvent event) {
-        event.getSubject().sendMessage(BlackList.INSTANCE.query(Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2])));
+        event.getSubject().sendMessage(
+                BlackList.INSTANCE.query(
+                        Long.parseLong(event.getMessage()
+                                        .contentToString()
+                                        .replaceFirst("^/query\\s+?black\\s+?", ""))));
     }
 }

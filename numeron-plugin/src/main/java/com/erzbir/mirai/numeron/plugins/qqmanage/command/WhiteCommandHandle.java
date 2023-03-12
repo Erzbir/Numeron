@@ -27,14 +27,13 @@ public class WhiteCommandHandle {
             permission = PermissionType.MASTER
     )
     @Message(
-            text = "/permit\\s+?user\\s+?@*\\d+",
+            text = "^/permit\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void permit2(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2].replaceAll("@", ""));
-        WhiteList.INSTANCE.remove(id);
+        long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/permit\\s+?user\\s+?@*", ""));
         WhiteList.INSTANCE.add(id, event.getSender().getId());
         event.getSubject().sendMessage(id + " 已添加到白名单");
     }
@@ -46,13 +45,13 @@ public class WhiteCommandHandle {
             permission = PermissionType.MASTER
     )
     @Message(
-            text = "/unpermit\\s+?user\\s+?\\.*",
+            text = "^/unpermit\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
     )
     private void noPermit(MessageEvent event) {
-        long id = Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2].replaceAll("@", ""));
+        long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/unpermit\\s+?user\\s+?@*", ""));
         WhiteList.INSTANCE.remove(id);
         event.getSubject().sendMessage(id + " 已移出白名单");
     }
@@ -64,7 +63,7 @@ public class WhiteCommandHandle {
             permission = PermissionType.MASTER
     )
     @Message(
-            text = "/query\\s+?white\\s+?\\d+",
+            text = "^/query\\s+?white\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.MASTER
@@ -72,6 +71,6 @@ public class WhiteCommandHandle {
     private void query(MessageEvent event) {
         event.getSubject().
                 sendMessage(WhiteList.INSTANCE
-                        .query(Long.parseLong(event.getMessage().contentToString().split("\\s+?")[2])));
+                        .query(Long.parseLong(event.getMessage().contentToString().replaceFirst("/query\\s+?white\\s+?", ""))));
     }
 }
