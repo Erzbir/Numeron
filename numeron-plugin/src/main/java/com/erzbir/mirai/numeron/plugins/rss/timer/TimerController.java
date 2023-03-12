@@ -1,5 +1,6 @@
 package com.erzbir.mirai.numeron.plugins.rss.timer;
 
+import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.plugins.rss.config.RssConfig;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssInfo;
 import com.erzbir.mirai.numeron.plugins.rss.entity.RssItem;
@@ -22,6 +23,9 @@ public class TimerController {
 
     private static Runnable getTimerTask(String id) {
         return () -> {
+            if (!NumeronBot.INSTANCE.isEnable()) {
+                return;
+            }
             RssItem rssItem = RssConfig.getInstance().getRssMap().get(id);
             if (rssItem == null || !rssItem.isEnable()) {
                 return;
