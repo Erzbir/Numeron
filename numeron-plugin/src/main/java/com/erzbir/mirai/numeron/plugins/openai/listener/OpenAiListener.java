@@ -53,11 +53,11 @@ public class OpenAiListener {
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^/i\\s*?\\S+?",
+            text = "^/i\\s+.+",
             permission = PermissionType.ALL
     )
     private void image(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("^/i\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/i\\s+", "");
         createRequest(s, ImageConfig.class);
         MessageChain singleMessages = buildImageMessage(openAiService.createImage(imageRequest).getData(), event);
         event.getSubject().sendMessage(singleMessages);
@@ -72,11 +72,11 @@ public class OpenAiListener {
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^/c\\s*?\\S+?",
+            text = "^/c\\s+.+",
             permission = PermissionType.ALL
     )
     private void chat(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("^/c\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/c\\s+", "");
         createRequest(s, ChatConfig.class);
         ChatMessage message = null;
         try {
@@ -100,11 +100,11 @@ public class OpenAiListener {
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^f\\s*?\\S+?",
+            text = "^/f\\s+.+",
             permission = PermissionType.ALL
     )
     private void completion(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("^/f\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/f\\s+", "");
         createRequest(s, CompletionConfig.class);
         String text = openAiService.createCompletion(completionRequest).getChoices().get(0).getText();
         text = text.replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", "");
@@ -119,11 +119,11 @@ public class OpenAiListener {
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "/^q\\s*?\\S+?",
+            text = "^/q\\s+.+",
             permission = PermissionType.ALL
     )
     private void question(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("^q\\s*?", "");
+        String s = event.getMessage().contentToString().replaceFirst("^/q\\s+", "");
         createRequest(s, QuestionConfig.class);
         String text = openAiService.createCompletion(question).getChoices().get(0).getText();
         text = text.replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", "");

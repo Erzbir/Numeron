@@ -26,6 +26,10 @@ public class EditApi {
         RssConfig.getInstance().setRetryTimes(times);
     }
 
+    public static boolean saveConfig() {
+        return RssConfig.getInstance().save();
+    }
+
     public static class EditReceiveListApi {
 
         public static void addContact(String id, long qqId, Class<? extends Contact> type) {

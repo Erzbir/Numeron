@@ -28,7 +28,7 @@ public class ErrorReporter {
     }
 
     public static void save() {
-        try (FileWriter fileWriter = new FileWriter(NumeronBot.INSTANCE.getFolder())) {
+        try (FileWriter fileWriter = new FileWriter(NumeronBot.INSTANCE.getFolder() + "error.log")) {
             fileWriter.append(getReport());
         } catch (IOException e) {
             e.printStackTrace();
