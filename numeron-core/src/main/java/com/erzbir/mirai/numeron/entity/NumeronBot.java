@@ -165,7 +165,7 @@ public class NumeronBot implements Serializable {
     private Bot createBot() {
         String s = folder + "bots/" + account + "/";
         ConfigCreateUtil.createDir(s);
-        FixProtocolVersion.INSTANCE.fix();
+        FixProtocol.INSTANCE.fix();
         return BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
             {
                 setWorkingDir(new File(s)); // 工作目录
