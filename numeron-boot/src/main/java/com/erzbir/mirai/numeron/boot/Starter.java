@@ -19,9 +19,15 @@ public class Starter {
     }
 
     private final String basePackage;
+    private final ClassLoader classLoader;
+
+    public Starter(@NotNull String packageName, ClassLoader classLoader) {
+        basePackage = packageName;
+        this.classLoader = classLoader;
+    }
 
     public Starter(@NotNull String packageName) {
-        basePackage = packageName;
+        this(packageName, Thread.currentThread().getContextClassLoader());
     }
 
     public void boot() {
@@ -35,9 +41,9 @@ public class Starter {
     }
 
     private void scanProcessor() {
-        ClassScanner scanner = new ClassScanner(basePackage, true, t -> true, null);
+        ClassScanner scanner = new ClassScanner(basePackage, classLoader, true, null, null);
         try {
-            // 扫瞄实现了{@code Processor}接口的类
+            // 扫瞄实现了Processor接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {
                 Processor processor;
                 try {

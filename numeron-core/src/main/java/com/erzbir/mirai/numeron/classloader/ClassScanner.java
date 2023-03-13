@@ -24,8 +24,9 @@ public class ClassScanner {
     private static Set<Class<?>> classes = new HashSet<>();  // 扫瞄后将字节码放到这个Set
     private final String basePackage; // 主包
     private final boolean recursive;  // 是否递归扫瞄
-    private final Predicate<String> packagePredicate;
-    private final Predicate<Class<?>> classPredicate;
+    private final Predicate<String> packagePredicate; // 用于过滤
+    private final Predicate<Class<?>> classPredicate; // 用于过滤
+    private final ClassLoader classLoader;
 
 
     /**
@@ -33,13 +34,23 @@ public class ClassScanner {
      * @param recursive        是否递归
      * @param packagePredicate 用于过滤
      * @param classPredicate   用于过滤
+     * @param classLoader      类加载器, 在类加载器和线程类加载器的上下文不一致时会用到
      */
-    public ClassScanner(String basePackage, boolean recursive, Predicate<String> packagePredicate,
+    public ClassScanner(String basePackage, ClassLoader classLoader, boolean recursive, Predicate<String> packagePredicate,
                         Predicate<Class<?>> classPredicate) {
         this.basePackage = basePackage;
         this.recursive = recursive;
         this.packagePredicate = packagePredicate;
         this.classPredicate = classPredicate;
+        this.classLoader = classLoader;
+    }
+
+    public ClassScanner(String basePackage, ClassLoader classLoader, boolean recursive) {
+        this(basePackage, classLoader, recursive, null, null);
+    }
+
+    public ClassScanner(String basePackage, boolean recursive) {
+        this(basePackage, Thread.currentThread().getContextClassLoader(), recursive, null, null);
     }
 
     /**
@@ -47,13 +58,15 @@ public class ClassScanner {
      * <p>扫瞄所有class</p>
      */
     public Set<Class<?>> scanAllClasses() throws IOException, ClassNotFoundException {
-        Set<Class<?>> classes = new HashSet<>();
+        if (classes.size() > 0) {
+            return classes;
+        }
         String packageName = basePackage;
         if (packageName.endsWith(".")) {
             packageName = packageName.substring(0, packageName.lastIndexOf('.'));
         }
         String basePackageFilePath = packageName.replace('.', '/');
-        Enumeration<URL> resources = Thread.currentThread().getContextClassLoader().getResources(basePackageFilePath);
+        Enumeration<URL> resources = classLoader.getResources(basePackageFilePath);
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
             String protocol = resource.getProtocol();
@@ -64,8 +77,7 @@ public class ClassScanner {
                 scanPackageClassesByJar(packageName, resource, classes);
             }
         }
-        ClassScanner.classes = classes;
-        return ClassScanner.classes;
+        return classes;
     }
 
     private void scanPackageClassesByJar(String basePackage, URL url, Set<Class<?>> classes)
@@ -91,7 +103,7 @@ public class ClassScanner {
             }
             String className = name.replace('/', '.');
             className = className.substring(0, className.length() - 6);
-            Class<?> loadClass = Thread.currentThread().getContextClassLoader().loadClass(className);
+            Class<?> loadClass = classLoader.loadClass(className);
             if (classPredicate == null || classPredicate.test(loadClass)) {
                 classes.add(loadClass);
             }
@@ -104,28 +116,23 @@ public class ClassScanner {
      */
     private void scanPackageClassesByFile(Set<Class<?>> classes, String packageName, String packagePath)
             throws ClassNotFoundException {
-        // 转为文件
         File dir = new File(packagePath);
         if (!dir.exists() || !dir.isDirectory()) {
             return;
         }
         File[] dirFiles = dir.listFiles(file -> {
             String filename = file.getName();
-
             if (file.isDirectory()) {
                 if (!recursive) {
                     return false;
                 }
-
                 if (packagePredicate != null) {
                     return packagePredicate.test(packageName + "." + filename);
                 }
                 return true;
             }
-
             return filename.endsWith(".class");
         });
-
         if (null == dirFiles) {
             return;
         }
@@ -134,7 +141,7 @@ public class ClassScanner {
                 scanPackageClassesByFile(classes, packageName + "." + file.getName(), file.getAbsolutePath());
             } else {
                 String className = file.getName().substring(0, file.getName().length() - 6);
-                Class<?> loadClass = Thread.currentThread().getContextClassLoader().loadClass(packageName + '.' + className);
+                Class<?> loadClass = classLoader.loadClass(packageName + '.' + className);
                 if (classPredicate == null || classPredicate.test(loadClass)) {
                     classes.add(loadClass);
                 }
@@ -149,7 +156,7 @@ public class ClassScanner {
      */
     public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type) throws ClassNotFoundException, IOException {
         // 如果为空就先执行扫瞄再用Stream流过滤, 不为空就注解过滤
-        if (classes == null) {
+        if (classes.size() == 0) {
             classes = scanAllClasses();
         }
         return classes.stream().filter(t -> {
@@ -178,7 +185,7 @@ public class ClassScanner {
      * <p>此方法扫瞄实现了{@param interfaceType}的类</p>
      */
     public Set<Class<?>> scanWithInterface(Class<?> interfaceType) throws IOException, ClassNotFoundException {
-        if (classes == null) {
+        if (classes.size() == 0) {
             classes = scanAllClasses();
         }
         return classes.stream().filter(t -> {

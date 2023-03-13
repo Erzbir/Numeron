@@ -6,7 +6,7 @@ public class NumeronBotApplication {
     private static final String packageName = "com.erzbir.mirai.numeron";
 
     public static void main(String[] args) {
-        Starter starter = new Starter(packageName);
+        Starter starter = new Starter(packageName, NumeronBotApplication.class.getClassLoader());
         starter.boot();  // 调用boot方法启动
         System.out.println("""
                 | \\ | |_   _ _ __ ___   ___ _ __ ___  _ __ \s

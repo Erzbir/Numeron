@@ -19,12 +19,19 @@ import java.util.Set;
 @SuppressWarnings("unchecked")
 public class AppContext implements BeanFactory {
     public static final AppContext INSTANT = new AppContext();
-    private static final String packageName = "com.erzbir.mirai.numeron";
     private final HashMap<String, Object> context = new HashMap<>();
 
     private AppContext() {
+        this("com.erzbir.mirai.numeron");
+    }
+
+    private AppContext(String packageName) {
+        addAllToContext(packageName);
+    }
+
+    public void addAllToContext(String packageName) {
         try {
-            ClassScanner scanner = new ClassScanner(packageName, true, s -> true, s -> true);
+            ClassScanner scanner = new ClassScanner(packageName, AppContext.class.getClassLoader(), true, null, null);
             Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class); // 扫瞄带有@Component注解的class
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
