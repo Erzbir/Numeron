@@ -101,4 +101,8 @@ public class AppContext implements BeanFactory {
         });
         return beans;
     }
+
+    public HashMap<String, Object> getContext() {
+        return context;
+    }
 }

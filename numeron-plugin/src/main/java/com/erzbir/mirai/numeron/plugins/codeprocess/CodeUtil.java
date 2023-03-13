@@ -36,7 +36,7 @@ public class CodeUtil {
         Charset use = getCharset();
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder errBuilder = new StringBuilder();
-        try( BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), use));BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream(), use))) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream(), use)); BufferedReader err = new BufferedReader(new InputStreamReader(process.getErrorStream(), use))) {
             stringBuilder = readResultS(in);
             errBuilder = readResultS(err);
         } catch (Exception e) {

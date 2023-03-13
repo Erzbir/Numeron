@@ -75,7 +75,7 @@ public class BlackCommandHandle {
         event.getSubject().sendMessage(
                 BlackList.INSTANCE.query(
                         Long.parseLong(event.getMessage()
-                                        .contentToString()
-                                        .replaceFirst("^/query\\s+?black\\s+?", ""))));
+                                .contentToString()
+                                .replaceFirst("^/query\\s+?black\\s+?", ""))));
     }
 }

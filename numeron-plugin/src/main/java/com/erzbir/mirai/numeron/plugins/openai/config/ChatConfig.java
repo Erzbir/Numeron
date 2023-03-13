@@ -15,7 +15,7 @@ public class ChatConfig implements Serializable {
 
     private static final Object key = new Object();
     private static volatile ChatConfig INSTANCE;
-    private String model = "gpt-3.5-turbo";
+    private transient String model = "gpt-3.5-turbo";
     private int max_tokens = 512;
     private double temperature = 0.9;
     private double top_p = 1.0;

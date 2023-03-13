@@ -2,7 +2,7 @@ package com.erzbir.mirai.numeron.plugins.openai.config;
 
 import com.erzbir.mirai.numeron.utils.ConfigReadException;
 import com.erzbir.mirai.numeron.utils.JsonUtil;
-import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class QuestionConfig implements Serializable {
     private static final Object key = new Object();
     private static volatile QuestionConfig INSTANCE;
-    private String model = "text-davinci-003";
+    private transient String model = "gpt-3.5-turbo-0301";
     private int max_tokens = 2048;
     private double temperature = 0.0;
     private double top_p = 1.0;
@@ -41,8 +41,8 @@ public class QuestionConfig implements Serializable {
         //return new QuestionConfig();
     }
 
-    public CompletionRequest load() {
-        return CompletionRequest.builder()
+    public ChatCompletionRequest load() {
+        return ChatCompletionRequest.builder()
                 .maxTokens(max_tokens)
                 .model(model)
                 .n(n)

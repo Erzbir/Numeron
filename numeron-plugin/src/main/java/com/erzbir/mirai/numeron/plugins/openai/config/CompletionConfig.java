@@ -15,7 +15,7 @@ import java.util.Map;
 public class CompletionConfig implements Serializable {
     private static final Object key = new Object();
     private static volatile CompletionConfig INSTANCE;
-    private String model = "text-davinci-003";
+    private transient String model = "text-davinci-003";
     private int max_tokens = 1024;
     private double temperature = 1.0;
     private double top_p = 1.0;

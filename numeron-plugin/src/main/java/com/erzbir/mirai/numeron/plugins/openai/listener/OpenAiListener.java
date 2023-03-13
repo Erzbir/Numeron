@@ -24,6 +24,7 @@ import net.mamoe.mirai.message.data.QuoteReply;
 import retrofit2.HttpException;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  */
 @Listener
 public class OpenAiListener {
-    private Conversation conversation = new Conversation(2048);
     private final OpenAiConfig openAiConfig = OpenAiConfig.getInstance();
     private final ImageConfig imageConfig = ImageConfig.getInstance();
     private final ChatConfig chatConfig = ChatConfig.getInstance();
@@ -42,17 +42,18 @@ public class OpenAiListener {
     private final CreateImageRequest imageRequest = imageConfig.load();
     private final CompletionRequest completionRequest = completionConfig.load();
     private final ChatCompletionRequest chatCompletionRequest = chatConfig.load();
-    private final CompletionRequest question = questionConfig.load();
+    private final ChatCompletionRequest question = questionConfig.load();
+    private Conversation conversation = new Conversation(2048);
 
     @Command(
             name = "OpenAI",
             dec = "清除对话",
-            help = "/c clear",
+            help = "/reset",
             permission = PermissionType.ALL
     )
     @Message(
             filterRule = FilterRule.BLACK,
-            text = "/c clear",
+            text = "/reset",
             permission = PermissionType.ALL
     )
     private void clear() {
@@ -141,7 +142,7 @@ public class OpenAiListener {
     private void question(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/q\\s+", "");
         createRequest(s, QuestionConfig.class);
-        String text = openAiService.createCompletion(question).getChoices().get(0).getText();
+        String text = openAiService.createChatCompletion(question).getChoices().get(0).getMessage().getContent();
         text = text.replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", "");
         sendMessage(event, text);
     }
@@ -177,15 +178,18 @@ public class OpenAiListener {
         chatMessage.setRole("system");
         if (type.equals(ChatConfig.class)) {
             conversation.add(chatMessage);
+            chatCompletionRequest.setModel("gpt-3.5-turbo");
             chatCompletionRequest.setMessages(conversation);
         } else if (type.equals(CompletionConfig.class)) {
-            completionRequest.setPrompt("text-davinci-003");
+            chatCompletionRequest.setModel("text-davinci-003");
             completionRequest.setPrompt(content);
         } else if (type.equals(ImageConfig.class)) {
             imageRequest.setPrompt(content);
         } else if (type.equals(QuestionConfig.class)) {
-            question.setModel("text-davinci-003");
-            question.setPrompt(content);
+            List<ChatMessage> list = new ArrayList<>(1);
+            question.setModel("gpt-3.5-turbo-0301");
+            list.add(chatMessage);
+            question.setMessages(list);
         }
     }
 }

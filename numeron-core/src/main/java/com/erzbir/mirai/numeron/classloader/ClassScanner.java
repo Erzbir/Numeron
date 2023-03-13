@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.jar.JarEntry;
@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
  */
 public class ClassScanner {
 
+    private static Set<Class<?>> classes = new HashSet<>();  // 扫瞄后将字节码放到这个Set
     private final String basePackage; // 主包
     private final boolean recursive;  // 是否递归扫瞄
     private final Predicate<String> packagePredicate;
     private final Predicate<Class<?>> classPredicate;
-    private Set<Class<?>> classes;  // 扫瞄后将字节码放到这个Set
 
 
     /**
@@ -47,7 +47,7 @@ public class ClassScanner {
      * <p>扫瞄所有class</p>
      */
     public Set<Class<?>> scanAllClasses() throws IOException, ClassNotFoundException {
-        Set<Class<?>> classes = new LinkedHashSet<>();
+        Set<Class<?>> classes = new HashSet<>();
         String packageName = basePackage;
         if (packageName.endsWith(".")) {
             packageName = packageName.substring(0, packageName.lastIndexOf('.'));
@@ -64,7 +64,8 @@ public class ClassScanner {
                 scanPackageClassesByJar(packageName, resource, classes);
             }
         }
-        return classes;
+        ClassScanner.classes = classes;
+        return ClassScanner.classes;
     }
 
     private void scanPackageClassesByJar(String basePackage, URL url, Set<Class<?>> classes)

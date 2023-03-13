@@ -10,8 +10,8 @@ public class AppContextException extends RuntimeException {
     }
 
     protected AppContextException(String message, Throwable cause,
-                                 boolean enableSuppression,
-                                 boolean writableStackTrace) {
+                                  boolean enableSuppression,
+                                  boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 
