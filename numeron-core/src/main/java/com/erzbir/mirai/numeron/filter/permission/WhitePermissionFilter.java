@@ -17,8 +17,8 @@ public class WhitePermissionFilter extends AbstractPermissionFilter {
 
     @Override
     public Boolean filter(MessageEvent event, String text) {
-        long id = event.getSubject().getId();
-        return id == NumeronBot.INSTANCE.getMaster() || WhiteList.INSTANCE.contains(event.getSender().getId());
+        long id = event.getSender().getId();
+        return id == NumeronBot.INSTANCE.getMaster() || WhiteList.INSTANCE.contains(id);
     }
 
 }

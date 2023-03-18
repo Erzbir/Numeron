@@ -53,6 +53,10 @@ public class ClassScanner {
         this(basePackage, Thread.currentThread().getContextClassLoader(), recursive, null, null);
     }
 
+    public static Set<Class<?>> getAllClasses() {
+        return classes;
+    }
+
     /**
      * @return 包含所有class的Set
      * <p>扫瞄所有class</p>

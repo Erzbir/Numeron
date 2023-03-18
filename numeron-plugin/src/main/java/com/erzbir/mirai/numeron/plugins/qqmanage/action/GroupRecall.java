@@ -7,10 +7,12 @@ import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.menu.Menu;
 import com.erzbir.mirai.numeron.plugins.common.store.DefaultStore;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.MessageRecallEvent;
 import net.mamoe.mirai.message.data.FileMessage;
@@ -22,6 +24,7 @@ import net.mamoe.mirai.message.data.PlainText;
  * @Date: 2022/11/29 13:26
  */
 @Plugin
+@Menu(name = "群防撤回")
 @Listener
 @SuppressWarnings("unused")
 public class GroupRecall implements PluginRegister {
@@ -31,11 +34,20 @@ public class GroupRecall implements PluginRegister {
     public void register(Bot bot, EventChannel<BotEvent> channel) {
         channel.subscribeAlways(MessageRecallEvent.GroupRecall.class, event -> {
             if (preventRecall) {
-                MessageChain messageChain = DefaultStore.getInstance().find(event.getMessageIds()[0]);
-                assert messageChain != null;
+                Object o = event.getAuthorId();
+                MessageChain messageChain = DefaultStore.getInstance().find(o.hashCode());
+                if (messageChain == null) {
+                    return;
+                }
                 if (!messageChain.contains(FileMessage.Key)) {
                     event.getGroup().sendMessage(new PlainText(event.getAuthor().getId() + "撤回了一条消息: ").plus("\n\n").plus(messageChain));
                 }
+            }
+        });
+        channel.subscribeAlways(GroupMessageEvent.class, event -> {
+            if (preventRecall) {
+                Object o = event.getSender().getId();
+                DefaultStore.getInstance().save(o.hashCode(), event.getMessage(), 2);
             }
         });
     }
@@ -48,7 +60,7 @@ public class GroupRecall implements PluginRegister {
     )
     @Message(
             text = "/prevent_recall\\s+?(true|false)",
-            permission = PermissionType.MASTER,
+            permission = PermissionType.ADMIN,
             messageRule = MessageRule.REGEX
     )
     private void cantRecall(MessageEvent e) {

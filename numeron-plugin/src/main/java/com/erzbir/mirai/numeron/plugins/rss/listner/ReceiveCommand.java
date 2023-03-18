@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.menu.Menu;
 import com.erzbir.mirai.numeron.plugins.rss.api.EditApi;
 import com.erzbir.mirai.numeron.plugins.rss.api.ViewApi;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -15,6 +16,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @Date: 2023/3/8 13:46
  */
 @Listener
+@Menu(name = "RSS订阅")
 public class ReceiveCommand {
     @Command(
             name = "RSS订阅命令",

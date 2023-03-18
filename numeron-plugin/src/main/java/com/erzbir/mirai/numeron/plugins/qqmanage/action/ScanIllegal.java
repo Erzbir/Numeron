@@ -3,6 +3,7 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
 import com.erzbir.mirai.numeron.listener.Listener;
+import com.erzbir.mirai.numeron.menu.Menu;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.EventChannel;
@@ -17,6 +18,7 @@ import net.mamoe.mirai.message.data.PlainText;
  */
 @Listener
 @Plugin
+@Menu(name = "违禁词检测")
 @SuppressWarnings("unused")
 public class ScanIllegal implements PluginRegister {
 

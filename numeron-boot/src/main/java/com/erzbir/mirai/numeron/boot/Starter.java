@@ -4,7 +4,6 @@ import com.erzbir.mirai.numeron.boot.exception.ProcessorException;
 import com.erzbir.mirai.numeron.classloader.ClassScanner;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
 import com.erzbir.mirai.numeron.processor.Processor;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -21,12 +20,12 @@ public class Starter {
     private final String basePackage;
     private final ClassLoader classLoader;
 
-    public Starter(@NotNull String packageName, ClassLoader classLoader) {
+    public Starter(String packageName, ClassLoader classLoader) {
         basePackage = packageName;
         this.classLoader = classLoader;
     }
 
-    public Starter(@NotNull String packageName) {
+    public Starter(String packageName) {
         this(packageName, Thread.currentThread().getContextClassLoader());
     }
 

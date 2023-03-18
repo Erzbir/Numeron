@@ -35,8 +35,8 @@ public final class DefaultStore {
         return INSTANCE;
     }
 
-    public void save(int id, MessageChain message) {
-        data.put(id, message);
+    public void save(int id, MessageChain message, int minutes) {
+        data.put(id, message, minutes, TimeUnit.MINUTES);
     }
 
     @Nullable

@@ -8,6 +8,7 @@ import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
+import com.erzbir.mirai.numeron.menu.Menu;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -22,6 +23,7 @@ import java.util.HashMap;
  */
 @Plugin
 @Listener
+@Menu(name = "退群提示")
 @SuppressWarnings("unused")
 public class MemberLeaveAction implements PluginRegister {
     private final HashMap<Long, Boolean> isOn = new HashMap<>();

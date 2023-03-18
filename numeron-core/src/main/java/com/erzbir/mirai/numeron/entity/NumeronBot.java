@@ -1,5 +1,8 @@
 package com.erzbir.mirai.numeron.entity;
 
+import com.erzbir.mirai.numeron.listener.ListenerContext;
+import com.erzbir.mirai.numeron.processor.MessageAnnotationProcessor;
+import com.erzbir.mirai.numeron.processor.PluginAnnotationProcessor;
 import com.erzbir.mirai.numeron.utils.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -218,9 +221,13 @@ public class NumeronBot implements Serializable {
 
     public void turnOn() {
         setEnable(true);
+        // 重新注册监听
+        new PluginAnnotationProcessor().onApplicationEvent();
+        new MessageAnnotationProcessor().onApplicationEvent();
     }
 
     public void turnOff() {
         setEnable(false);
+        ListenerContext.INSTANCE.cancelAll();
     }
 }

@@ -25,11 +25,6 @@
             <version>2.14.0</version>
         </dependency>
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-cron</artifactId>
-            <version>5.8.10</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.5</version>
@@ -43,13 +38,13 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.40.0.0</version>
+            <version>3.40.1.0</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.1</version>
+            <version>2.10.1</version>
             <optional>true</optional>
         </dependency>
     </dependencies>

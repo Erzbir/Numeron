@@ -3,6 +3,7 @@ package com.erzbir.mirai.numeron.filter.permission;
 import com.erzbir.mirai.numeron.entity.AdminList;
 import com.erzbir.mirai.numeron.entity.BlackList;
 import com.erzbir.mirai.numeron.entity.NumeronBot;
+import com.erzbir.mirai.numeron.entity.WhiteList;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -22,7 +23,8 @@ public class AdminPermissionFilter extends AbstractPermissionFilter {
         long id = event.getSender().getId();
         if (event instanceof GroupMessageEvent event1) {
             return NumeronBot.INSTANCE.getMaster() == id ||
-                    (AdminList.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackList.INSTANCE.contains(id));
+                    (AdminList.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackList.INSTANCE.contains(id))
+                    || WhiteList.INSTANCE.contains(id);
         }
         return NumeronBot.INSTANCE.getMaster() == id;
     }

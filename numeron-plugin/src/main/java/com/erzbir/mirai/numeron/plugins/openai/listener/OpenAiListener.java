@@ -6,6 +6,7 @@ import com.erzbir.mirai.numeron.filter.rule.FilterRule;
 import com.erzbir.mirai.numeron.handler.Command;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.Message;
+import com.erzbir.mirai.numeron.menu.Menu;
 import com.erzbir.mirai.numeron.plugins.openai.Conversation;
 import com.erzbir.mirai.numeron.plugins.openai.ParseImage;
 import com.erzbir.mirai.numeron.plugins.openai.config.*;
@@ -32,6 +33,7 @@ import java.util.List;
  * @Date: 2023/3/4 11:36
  */
 @Listener
+@Menu(name = "openai")
 public class OpenAiListener {
     private final OpenAiConfig openAiConfig = OpenAiConfig.getInstance();
     private final ImageConfig imageConfig = ImageConfig.getInstance();
@@ -56,7 +58,7 @@ public class OpenAiListener {
             text = "/reset",
             permission = PermissionType.ALL
     )
-    private void clear() {
+    private void clear(MessageEvent event) {
         conversation = new Conversation(2048);
     }
 
@@ -128,7 +130,8 @@ public class OpenAiListener {
         sendMessage(event, text);
     }
 
-    @Command(name = "OpenAI",
+    @Command(
+            name = "OpenAI",
             dec = "问答",
             help = "/q 今天天气如何",
             permission = PermissionType.ALL

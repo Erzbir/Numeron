@@ -1,6 +1,5 @@
 package com.erzbir.mirai.numeron.plugins.rss.entity;
 
-import cn.hutool.core.date.DateTime;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -9,6 +8,7 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -38,9 +38,10 @@ public class RssInfo implements Serializable {
         if (image != null) {
             chainBuilder.append(image);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return chainBuilder.append(link).append("\n")
                 .append(author).append("\n")
-                .append(DateTime.of(publishedDate.getTime()).toString())
+                .append(sdf.format(new Date(publishedDate.getTime())))
                 .build();
     }
 

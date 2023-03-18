@@ -7,6 +7,7 @@ import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
 import com.erzbir.mirai.numeron.listener.Listener;
 import com.erzbir.mirai.numeron.listener.massage.GroupMessage;
+import com.erzbir.mirai.numeron.menu.Menu;
 import com.erzbir.mirai.numeron.plugins.common.utils.NetUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
@@ -28,6 +29,7 @@ import java.util.HashMap;
  */
 @Plugin
 @Listener
+@Menu(name = "入群欢迎")
 @SuppressWarnings("unused")
 public class MemberInAction implements PluginRegister {
     private final HashMap<Long, Boolean> isOn = new HashMap<>();

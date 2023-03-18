@@ -1,7 +1,9 @@
 package com.erzbir.mirai.numeron.handler.excute;
 
 import com.erzbir.mirai.numeron.exception.ErrorReporter;
+import com.erzbir.mirai.numeron.listener.ListenerContext;
 import net.mamoe.mirai.event.EventChannel;
+import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -12,14 +14,15 @@ import java.lang.reflect.Method;
  * @Date: 2023/3/9 22:57
  */
 public interface RegisterEventHandle {
-    static void register(EventChannel<BotEvent> channel, Method method, Object bean) {
-        channel.subscribeAlways(MessageEvent.class, event -> {
+    default void register(EventChannel<BotEvent> channel, Class<? extends MessageEvent> eventType, Method method, Object bean) {
+        Listener<? extends MessageEvent> listener = channel.subscribeAlways(eventType, event1 -> {
             try {
-                method.invoke(bean, event);
+                method.invoke(bean, event1);
             } catch (Exception e) {
                 e.printStackTrace();
-                ErrorReporter.add(e);
+                ErrorReporter.save(e);
             }
         });
+        ListenerContext.INSTANCE.add(method, listener);
     }
 }

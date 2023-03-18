@@ -19,6 +19,7 @@
         <module>numeron-boot</module>
         <module>numeron-plugin</module>
         <module>buildSrc</module>
+        <module>numeron-menu</module>
     </modules>
 
     <packaging>pom</packaging>

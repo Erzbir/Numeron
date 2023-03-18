@@ -38,7 +38,7 @@ public class CommandAnnotationProcessor implements Processor {
         MiraiLogUtil.verbose("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
         context.getBeansWithAnnotation(Plugin.class).forEach((k, v) -> scanBeans(v));
-        MiraiLogUtil.verbose("命令帮助文档生成完成");
+        MiraiLogUtil.verbose("命令帮助文档生成完成\n");
     }
 
     private void scanBeans(Object bean) {

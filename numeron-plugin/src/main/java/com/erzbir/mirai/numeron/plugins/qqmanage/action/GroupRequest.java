@@ -3,6 +3,7 @@ package com.erzbir.mirai.numeron.plugins.qqmanage.action;
 import com.erzbir.mirai.numeron.entity.BlackList;
 import com.erzbir.mirai.numeron.handler.Plugin;
 import com.erzbir.mirai.numeron.handler.PluginRegister;
+import com.erzbir.mirai.numeron.menu.Menu;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.event.EventChannel;
@@ -17,6 +18,7 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
  * @author Erzbir
  * @Date: 2022/12/2 17:44
  */
+@Menu(name = "入群报告")
 @Plugin
 public class GroupRequest implements PluginRegister {
 
