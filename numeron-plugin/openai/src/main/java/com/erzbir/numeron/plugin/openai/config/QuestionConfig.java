@@ -1,6 +1,7 @@
 package com.erzbir.numeron.plugin.openai.config;
 
 import com.erzbir.numeron.core.utils.ConfigReadException;
+import com.erzbir.numeron.core.utils.ConfigWriteException;
 import com.erzbir.numeron.core.utils.JsonUtil;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 public class QuestionConfig implements Serializable {
     private static final Object key = new Object();
     private static volatile QuestionConfig INSTANCE;
+    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/question.json";
     private transient String model = "gpt-3.5-turbo-0301";
     private int max_tokens = 2048;
     private double temperature = 0.0;
@@ -37,7 +39,15 @@ public class QuestionConfig implements Serializable {
                 }
             }
         }
-        return INSTANCE == null ? new QuestionConfig() : INSTANCE;
+        if (INSTANCE == null) {
+            INSTANCE = new QuestionConfig();
+            try {
+                JsonUtil.dump(configFile, INSTANCE, QuestionConfig.class);
+            } catch (ConfigWriteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return INSTANCE;
         //return new QuestionConfig();
     }
 

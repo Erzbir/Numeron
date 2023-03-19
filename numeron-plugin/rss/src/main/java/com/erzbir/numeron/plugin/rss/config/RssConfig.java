@@ -58,7 +58,15 @@ public class RssConfig implements Serializable {
                 }
             }
         }
-        return INSTANCE == null ? new RssConfig() : INSTANCE;
+        if (INSTANCE == null) {
+            INSTANCE = new RssConfig();
+            try {
+                JsonUtil.dump(configFile, INSTANCE, RssConfig.class);
+            } catch (ConfigWriteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return INSTANCE;
     }
 
     public void addPublish(RssItem rssItem) {

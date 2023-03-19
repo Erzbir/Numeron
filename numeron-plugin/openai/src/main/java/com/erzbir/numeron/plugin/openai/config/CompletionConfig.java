@@ -1,6 +1,7 @@
 package com.erzbir.numeron.plugin.openai.config;
 
 import com.erzbir.numeron.core.utils.ConfigReadException;
+import com.erzbir.numeron.core.utils.ConfigWriteException;
 import com.erzbir.numeron.core.utils.JsonUtil;
 import com.theokanning.openai.completion.CompletionRequest;
 
@@ -16,6 +17,7 @@ public class CompletionConfig implements Serializable {
     private static final Object key = new Object();
     private static volatile CompletionConfig INSTANCE;
     private transient String model = "text-davinci-003";
+    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/completion.json";
     private int max_tokens = 1024;
     private double temperature = 1.0;
     private double top_p = 1.0;
@@ -37,15 +39,22 @@ public class CompletionConfig implements Serializable {
             synchronized (key) {
                 if (INSTANCE == null) {
                     try {
-                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/completion.json", CompletionConfig.class);
+                        INSTANCE = JsonUtil.load(configFile, CompletionConfig.class);
                     } catch (ConfigReadException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         }
-        return INSTANCE == null ? new CompletionConfig() : INSTANCE;
-        //return new CompletionConfig();
+        if (INSTANCE == null) {
+            INSTANCE = new CompletionConfig();
+            try {
+                JsonUtil.dump(configFile, INSTANCE, CompletionConfig.class);
+            } catch (ConfigWriteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return INSTANCE;
     }
 
     public CompletionRequest load() {

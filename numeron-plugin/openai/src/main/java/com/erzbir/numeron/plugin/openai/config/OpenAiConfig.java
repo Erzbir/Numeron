@@ -1,7 +1,7 @@
 package com.erzbir.numeron.plugin.openai.config;
 
-import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.utils.ConfigReadException;
+import com.erzbir.numeron.core.utils.ConfigWriteException;
 import com.erzbir.numeron.core.utils.JsonUtil;
 
 /**
@@ -9,10 +9,9 @@ import com.erzbir.numeron.core.utils.JsonUtil;
  * @Date: 2023/3/3 23:53
  */
 public class OpenAiConfig {
-    public static final String dir = NumeronBot.INSTANCE.getFolder() + "plugin/chatgpt/";
+    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/openai.json";
     private static final Object key = new Object();
     private static volatile OpenAiConfig INSTANCE;
-
     private long timeout = 30L;
     private String token = "";
     private boolean reply = false;
@@ -28,14 +27,22 @@ public class OpenAiConfig {
             synchronized (key) {
                 if (INSTANCE == null) {
                     try {
-                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/openai.json", OpenAiConfig.class);
+                        INSTANCE = JsonUtil.load(configFile, OpenAiConfig.class);
                     } catch (ConfigReadException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         }
-        return INSTANCE == null ? new OpenAiConfig() : INSTANCE;
+        if (INSTANCE == null) {
+            INSTANCE = new OpenAiConfig();
+            try {
+                JsonUtil.dump(configFile, INSTANCE, OpenAiConfig.class);
+            } catch (ConfigWriteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return INSTANCE;
         //return new OpenAiConfig();
     }
 

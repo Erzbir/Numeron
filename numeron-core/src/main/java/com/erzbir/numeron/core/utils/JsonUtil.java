@@ -3,6 +3,8 @@ package com.erzbir.numeron.core.utils;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * @author Erzbir
@@ -19,7 +21,7 @@ public class JsonUtil {
         }
         File file1 = new File(file);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file1))) {
-            return gson.fromJson(bufferedReader, tClass);
+            return Files.size(Path.of(file1.toURI())) == 0 ? null : gson.fromJson(bufferedReader, tClass);
         } catch (FileNotFoundException e) {
             MiraiLogUtil.err("无配置文件" + e);
             throw new ConfigReadException(e);

@@ -27,7 +27,11 @@ import java.sql.SQLException;
 @SuppressWarnings("unused")
 public class AutoReply {
 
-    @Message(messageRule = MessageRule.REGEX, text = ".*", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
+    @Message(
+            messageRule = MessageRule.REGEX,
+            text = ".*", permission = PermissionType.ALL,
+            filterRule = FilterRule.BLACK
+    )
     private void reply(MessageEvent e) {
         String s = AutoReplyData.INSTANCE.getAnswer(e.getMessage().contentToString());
         if (s != null) {
@@ -35,8 +39,18 @@ public class AutoReply {
         }
     }
 
-    @Command(name = "自动回复", dec = "添加关键词回复", help = "/learn ques answer", permission = PermissionType.ALL)
-    @Message(messageRule = MessageRule.REGEX, text = "^/learn\\s+?.*?\\s+?.*", filterRule = FilterRule.BLACK, permission = PermissionType.ALL)
+    @Command(
+            name = "自动回复",
+            dec = "添加关键词回复",
+            help = "/learn ques answer",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            messageRule = MessageRule.REGEX,
+            text = "^/learn\\s+?.*?\\s+?.*",
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.ALL
+    )
     private void learn(MessageEvent e) {
         String[] split = e.getMessage().contentToString().split("\\s+");
         AutoReplyData.INSTANCE.add(split[1], split[2], e.getSender().getId());
