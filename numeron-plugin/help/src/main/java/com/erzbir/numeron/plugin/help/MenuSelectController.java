@@ -38,7 +38,7 @@ public class MenuSelectController {
             filterRule = FilterRule.BLACK
     )
     private void subMenu(GroupMessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("#menu\\s+", "");
+        String s = event.getMessage().contentToString().replaceFirst("#help\\s+", "");
         if (menuList.contains(s)) {
             if (menuMap.get(s) != null && menuMap.get(s).size() > 0)
                 event.getSubject().sendMessage(Contact.uploadImage(event.getSubject(), bufferedImageToInputStream(drawMenuHelp(s), "PNG")));
