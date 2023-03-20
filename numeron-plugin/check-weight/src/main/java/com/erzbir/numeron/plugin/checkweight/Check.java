@@ -42,7 +42,7 @@ public class Check {
         if (!s.isEmpty()) {
             event.getSubject().sendMessage(getResult(s));
         } else {
-            event.getSubject().sendMessage(getResult(parseResult(String.valueOf(event.getSender().getId()))));
+            event.getSubject().sendMessage(getResult(String.valueOf(event.getSender().getId())));
         }
     }
 

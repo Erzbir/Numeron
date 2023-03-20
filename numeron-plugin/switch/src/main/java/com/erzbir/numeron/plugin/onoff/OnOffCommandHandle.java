@@ -52,7 +52,8 @@ public class OnOffCommandHandle {
         }
     }
 
-    @Command(name = "开关机",
+    @Command(
+            name = "开关机",
             dec = "开机",
             help = "/launch",
             permission = PermissionType.MASTER

@@ -23,15 +23,12 @@ public class TimerController {
 
     private static Runnable getTimerTask(String id) {
         return () -> {
-            if (!NumeronBot.INSTANCE.isEnable()) {
-                return;
-            }
             RssItem rssItem = RssConfig.getInstance().getRssMap().get(id);
-            if (rssItem == null || !rssItem.isEnable()) {
+            if (rssItem == null) {
                 return;
             }
             RssInfo rssInfo = rssItem.updateInfo();
-            if (rssInfo != null) {
+            if (rssInfo != null && NumeronBot.INSTANCE.isEnable()) {
                 send(rssInfo, rssItem.getUserList(), Friend.class);
                 send(rssInfo, rssItem.getGroupList(), Group.class);
             }
