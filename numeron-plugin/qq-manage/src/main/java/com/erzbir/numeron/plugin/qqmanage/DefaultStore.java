@@ -39,6 +39,10 @@ public final class DefaultStore {
         data.put(id, message, minutes, TimeUnit.MINUTES);
     }
 
+    public void remove(int id) {
+        data.remove(id);
+    }
+
     @Nullable
     public MessageChain find(int id) {
         return data.get(id);

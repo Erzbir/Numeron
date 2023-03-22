@@ -14,8 +14,8 @@ import java.io.Serializable;
  */
 public class ImageConfig implements Serializable {
     private static final Object key = new Object();
-    private static volatile ImageConfig INSTANCE;
     private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/image.json";
+    private static volatile ImageConfig INSTANCE;
     private int n = 1;
     private String size = ImageSize.LARGE;
     private String format = "b64_json";

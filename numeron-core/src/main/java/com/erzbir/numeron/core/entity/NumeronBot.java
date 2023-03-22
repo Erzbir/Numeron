@@ -1,8 +1,6 @@
 package com.erzbir.numeron.core.entity;
 
-import com.erzbir.numeron.core.listener.ListenerContext;
-import com.erzbir.numeron.core.processor.MessageAnnotationProcessor;
-import com.erzbir.numeron.core.processor.PluginAnnotationProcessor;
+import com.erzbir.numeron.core.processor.HandlerAnnotationProcessor;
 import com.erzbir.numeron.core.utils.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -222,12 +220,10 @@ public class NumeronBot implements Serializable {
     public void turnOn() {
         setEnable(true);
         // 重新注册监听
-        new PluginAnnotationProcessor().onApplicationEvent();
-        new MessageAnnotationProcessor().onApplicationEvent();
+        new HandlerAnnotationProcessor().onApplicationEvent();
     }
 
     public void turnOff() {
         setEnable(false);
-        ListenerContext.INSTANCE.cancelAll();
     }
 }

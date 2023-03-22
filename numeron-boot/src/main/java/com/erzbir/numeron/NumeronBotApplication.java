@@ -14,9 +14,6 @@ public class NumeronBotApplication {
                 | |\\  | |_| | | | | | |  __/ | | (_) | | | |
                 |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|""".indent(1));
         System.out.println("欢迎使用Numeron!!!");
-        Thread thread = new Thread(System::gc);
-        thread.setDaemon(true);
-        thread.start();
     }
 }
 

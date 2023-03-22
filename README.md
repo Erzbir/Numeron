@@ -47,7 +47,6 @@ email:
 <code>[@Menu](numeron-menu/src/main/java/com/erzbir/numeron/menu/Menu.java)</code>
 用于生成图片菜单(有@Command会为这个menu生成帮助)
 
-
 <code>[@Command](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Command.java)</code>
 用于生成指令表
 
@@ -55,13 +54,12 @@ email:
 
 第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧,
 
-
 <b>将所有QQ机器人功能写在[numeron-plugin](numeron-plugin)模块下</b>
 
 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 
-
 例子:
+
 ```java
 import com.erzbir.mirai.numeron.core.listener.massage.GroupMessage;
 import com.erzbir.mirai.numeron.core.listener.massage.UserMessage;
@@ -120,6 +118,7 @@ public class Test {
 ```
 
 ### 用@Command生成指令表
+
 ```java
 @Listener
 class Test {
@@ -164,10 +163,12 @@ class Test {
     }
 }
 ```
+
 效果:
 ![2023031916.30.57](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/2023031916.30.57.png)
 
 ### 生成图片菜单(有@Command会为这个menu生成帮助)
+
 ```java
 @Listener
 @Menu(name = "学习对话")
@@ -213,6 +214,7 @@ class Test {
     }
 }
 ```
+
 效果:
 ![f44d0e472c5d15199ab8917cba107ace](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/f44d0e472c5d15199ab8917cba107ace.png)
 
