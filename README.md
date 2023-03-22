@@ -29,21 +29,6 @@ email:
 - 游戏王查卡
 - rss订阅
 
-- <code>[@Message](numeron-core/src/main/java/com/erzbir/numeron/core/listener/massage/Message.java)</code>
-  可以标记在所有消息事件类型的处理方法上, 用于
-
-可以用消息处理注解做到什么?
-
-- 三种过滤规则: 不过滤 / 过滤黑名单 / 正常过滤
-- 四种权限规则: 主人 / 白名单 / 所有人 / 群管理员
-- 六种消息匹配规则: 以?开头 / 以?结尾 / 包含? / 相等 / 正则 / 在数组中?
-
-<code>[@Menu](numeron-menu/src/main/java/com/erzbir/numeron/menu/Menu.java)</code>
-用于生成图片菜单(有@Command会为这个menu生成帮助)
-
-<code>[@Command](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Command.java)</code>
-用于生成指令表
-
 ## 说明:
 
 第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧,
@@ -52,46 +37,44 @@ email:
 
 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 
-例子:
+
+<code>[@Message](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Message.java)</code>
+> 可以标记在所有消息事件类型的处理方法上, 监听到满足此注解定义的规则的事件就会反射调用被标记的方法, 类上必须有<code>[@Listener](src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
+>
+> 这个注解适合用于命令类型的监听(给机器人发送一个消息, 进行相关代码运行), 如果不是消息事件则使用下文介绍的<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
 
 ```java
-import com.erzbir.mirai.numeron.core.listener.massage.GroupMessage;
-import com.erzbir.mirai.numeron.core.listener.massage.UserMessage;
-import com.erzbir.mirai.numeron.core.filter.message.MessageRule;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
-import net.mamoe.mirai.event.events.UserMessageEvent;
-
 @Listener
 public class Test {
     // 消息匹配规则设置了默认值, 默认是equals()完全匹配
 
-    @GroupMessage(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @Message(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
     // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
-    public void regex(GroupMessageEvent event) {
+    private void regex(GroupMessageEvent event) {
         event.getSubject().sendMessage("这是一个数字");
     }
 
-    @UserMessage(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
+    @Message(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
     // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
-    public void sayHello(UserMessageEvent event) {
+    private void sayHello(UserMessageEvent event) {
         event.getSubject().sendMessage("hi");
     }
 
     @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
     // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
-    public void sayGoodNight(MessageEvent event) {
-        event.getSubject().sendMessage("晚安");
+    private void sayGoodNight(MessageEvent event) {
+      event.getSubject().sendMessage("晚安");
     }
 
     // 权限是所有人, 不过滤
     @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
-    public void sayH(MessageEvent e) {
+    private void sayH(MessageEvent e) {
         e.getSubject().sendMessage("你好");
     }
 
     // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
     @Message(text = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
-    public void muteSingle(MessageEvent event) {
+    private void muteSingle(MessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+");
         long id;
         int time;
@@ -110,6 +93,32 @@ public class Test {
     }
 }
 ```
+
+可以用消息处理注解做到什么?
+
+- 三种过滤规则: 不过滤 / 过滤黑名单 / 正常过滤
+- 四种权限规则: 主人 / 白名单 / 所有人 / 群管理员
+- 六种消息匹配规则: 以?开头 / 以?结尾 / 包含? / 相等 / 正则 / 在数组中?
+
+<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
+和mirai提供的<code>@EventHandler</code>用法基本一样, 只是使用这个注解不用让类继承, 不过类上必须有<code>[@Listener](src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
+
+```java
+@Listener
+public class Test {
+    
+    @Event
+    private void test(MessageRecallEvent.GroupRecall event) {
+        System.out.println("有人撤回了消息");
+    }
+}
+```
+
+<code>[@Menu](numeron-menu/src/main/java/com/erzbir/numeron/menu/Menu.java)</code>
+> 用于生成图片菜单(有@Command会为这个menu生成帮助)
+
+<code>[@Command](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Command.java)</code>
+>用于生成指令表
 
 ### 用@Command生成指令表
 
