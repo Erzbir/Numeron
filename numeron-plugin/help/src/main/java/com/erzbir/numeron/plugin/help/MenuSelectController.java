@@ -16,7 +16,6 @@ import static com.erzbir.numeron.menu.MenuHelpDrawUtil.drawMenuHelp;
 import static com.erzbir.numeron.menu.MenuStatic.menuList;
 import static com.erzbir.numeron.menu.MenuStatic.menuMap;
 
-
 @Listener
 @Menu(name = "菜单")
 @SuppressWarnings("unused")
