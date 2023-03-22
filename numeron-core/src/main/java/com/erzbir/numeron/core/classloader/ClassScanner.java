@@ -165,11 +165,12 @@ public class ClassScanner {
         }
         return classes.stream().filter(t -> {
             boolean flag = !t.isAnnotation(); // 排除注解, 因为注解也会有注解
+            boolean flag2 = false;
             Annotation[] annotations = t.getAnnotations();  // 取出t上的所有类注解
             for (Annotation annotation : annotations) {
-                return getAnnotationFromAnnotation(annotation, type) != null && flag;
+                flag2 = getAnnotationFromAnnotation(annotation, type) != null;
             }
-            return false;
+            return flag && flag2;
         }).collect(Collectors.toSet());
     }
 

@@ -1,13 +1,17 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.core.handler.Plugin;
-import com.erzbir.numeron.core.handler.PluginRegister;
+import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.filter.message.MessageRule;
+import com.erzbir.numeron.core.filter.permission.PermissionType;
+import com.erzbir.numeron.core.handler.Command;
+import com.erzbir.numeron.core.handler.Message;
+import com.erzbir.numeron.core.listener.Listener;
 import com.erzbir.numeron.menu.Menu;
-import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.NormalMember;
-import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.events.BotEvent;
+import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.PlainText;
 
 /**
@@ -15,22 +19,45 @@ import net.mamoe.mirai.message.data.PlainText;
  * @Date: 2022/11/27 13:07
  * 违禁词检测
  */
-@Plugin
 @Menu(name = "违禁词检测")
+@Listener
 @SuppressWarnings("unused")
-public class ScanIllegal implements PluginRegister {
+public class ScanIllegal {
+    private boolean flag = false;
 
-    @Override
-    public void register(Bot bot, EventChannel<BotEvent> channel) {
-        channel.filter(f -> f instanceof GroupMessageEvent event
+    private void register() {
+        NumeronBot.INSTANCE.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && IllegalList.INSTANCE.contains(event.getMessage().contentToString())
                         && event.getGroup().getBotPermission().getLevel() != 0)
-                .subscribeAlways(GroupMessageEvent.class, event -> {
+                .subscribe(GroupMessageEvent.class, event -> {
                     ((NormalMember) event.getSubject()).mute(30000);
-                    event.getSubject()
-                            .sendMessage(new PlainText("群: " + event.getGroup().getId() + "\n")
-                                    .plus("发送人: " + event.getSender().getId() + "\n")
-                                    .plus("消息: " + event.getMessage().contentToString()));
+                    Friend friend = event.getBot().getFriend(NumeronBot.INSTANCE.getMaster());
+                    if (friend != null) {
+                        friend.sendMessage(new PlainText("群: " + event.getGroup().getId() + "\n")
+                                .plus("发送人: " + event.getSender().getId() + "\n")
+                                .plus("消息: " + event.getMessage().contentToString()));
+                    }
+                    return flag ? ListeningStatus.LISTENING : ListeningStatus.STOPPED;
                 });
+    }
+
+    @Command(
+            name = "违禁词扫瞄",
+            dec = "开关违禁词扫瞄",
+            help = "/scan illegal [true|false]",
+            permission = PermissionType.ADMIN
+    )
+    @Message(
+            text = "^/scan\\s+?illegal\\s+?(true|false)",
+            permission = PermissionType.ADMIN,
+            messageRule = MessageRule.REGEX
+    )
+    public void onEvent(MessageEvent event) {
+        flag = Boolean.parseBoolean(event.getMessage().contentToString()
+                .replaceFirst("^/scan\\s+?illegal\\s+?", ""));
+        event.getSubject().sendMessage("违禁词扫瞄 " + flag);
+        if (flag) {
+            register();
+        }
     }
 }

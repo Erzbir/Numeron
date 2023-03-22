@@ -1,17 +1,14 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
+import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Plugin;
-import com.erzbir.numeron.core.handler.PluginRegister;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.Message;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.qqmanage.DefaultStore;
-import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.events.BotEvent;
+import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.MessageRecallEvent;
@@ -23,32 +20,32 @@ import net.mamoe.mirai.message.data.PlainText;
  * @author Erzbir
  * @Date: 2022/11/29 13:26
  */
-@Plugin
-@Menu(name = "群防撤回")
 @Listener
+@Menu(name = "群防撤回")
 @SuppressWarnings("unused")
-public class GroupRecall implements PluginRegister {
+public class GroupRecall {
     private Boolean preventRecall = false;
 
-    @Override
-    public void register(Bot bot, EventChannel<BotEvent> channel) {
-        channel.subscribeAlways(MessageRecallEvent.GroupRecall.class, event -> {
-            if (preventRecall) {
-                Object o = event.getAuthorId();
-                MessageChain messageChain = DefaultStore.getInstance().find(o.hashCode());
-                if (messageChain == null) {
-                    return;
-                }
+    private void register() {
+        NumeronBot.INSTANCE.getBot().getEventChannel().subscribe(MessageRecallEvent.GroupRecall.class, event -> {
+            Object o = event.getAuthorId();
+            MessageChain messageChain = DefaultStore.getInstance().find(o.hashCode());
+            if (messageChain != null) {
                 if (!messageChain.contains(FileMessage.Key)) {
                     event.getGroup().sendMessage(new PlainText(event.getAuthor().getId() + "撤回了一条消息: ").plus("\n\n").plus(messageChain));
+                    DefaultStore.getInstance().remove(o.hashCode());
                 }
             }
-        });
-        channel.subscribeAlways(GroupMessageEvent.class, event -> {
-            if (preventRecall) {
-                Object o = event.getSender().getId();
-                DefaultStore.getInstance().save(o.hashCode(), event.getMessage(), 2);
-            }
+            NumeronBot.INSTANCE.getBot().getEventChannel().subscribe(GroupMessageEvent.class, event1 -> {
+                if (preventRecall) {
+                    Object o1 = event1.getSender().getId();
+                    DefaultStore.getInstance().save(o1.hashCode(), event1.getMessage(), 2);
+                    return ListeningStatus.LISTENING;
+                } else {
+                    return ListeningStatus.STOPPED;
+                }
+            });
+            return preventRecall ? ListeningStatus.LISTENING : ListeningStatus.STOPPED;
         });
     }
 
@@ -64,7 +61,11 @@ public class GroupRecall implements PluginRegister {
             messageRule = MessageRule.REGEX
     )
     private void cantRecall(MessageEvent e) {
-        preventRecall = Boolean.valueOf(e.getMessage().contentToString().split("\\s+")[1]);
+        preventRecall = Boolean.valueOf(e.getMessage().contentToString().replaceFirst("\\s+", ""));
+        System.out.println(preventRecall);
         e.getSubject().sendMessage("防撤回功能 " + preventRecall);
+        if (preventRecall) {
+            register();
+        }
     }
 }

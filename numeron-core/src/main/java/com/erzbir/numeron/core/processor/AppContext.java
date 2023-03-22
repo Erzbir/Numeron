@@ -34,6 +34,7 @@ public class AppContext implements BeanFactory {
             ClassScanner scanner = new ClassScanner(packageName, AppContext.class.getClassLoader(), true, null, null);
             Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class); // 扫瞄带有@Component注解的class
             addAllToContext(classes);
+            System.out.println(classes);
         } catch (ClassNotFoundException | IOException e) {
             throw new AppContextException(e);
         }

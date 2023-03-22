@@ -2,8 +2,8 @@ package com.erzbir.numeron.plugin.help;
 
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.Message;
 import com.erzbir.numeron.core.processor.CommandAnnotationProcessor;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.MessageEvent;

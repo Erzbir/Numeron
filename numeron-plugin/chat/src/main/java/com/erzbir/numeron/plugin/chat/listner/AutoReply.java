@@ -4,10 +4,8 @@ import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.filter.rule.FilterRule;
 import com.erzbir.numeron.core.handler.Command;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.GroupMessage;
-import com.erzbir.numeron.core.listener.massage.Message;
-import com.erzbir.numeron.core.listener.massage.UserMessage;
 import com.erzbir.numeron.plugin.chat.entity.AutoReplyData;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -100,7 +98,7 @@ public class AutoReply {
         e.getSubject().sendMessage("你好");
     }
 
-    @UserMessage(
+    @Message(
             text = "hi, 你好, 我不好, 哈哈",
             permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK,
@@ -110,7 +108,7 @@ public class AutoReply {
         e.getSubject().sendMessage("笑了");
     }
 
-    @UserMessage(
+    @Message(
             messageRule = MessageRule.REGEX,
             text = "s\\d+",
             permission = PermissionType.ALL,
@@ -120,7 +118,7 @@ public class AutoReply {
         e.getSubject().sendMessage("awa");
     }
 
-    @UserMessage(
+    @Message(
             text = "hi",
             permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK
@@ -129,7 +127,7 @@ public class AutoReply {
         e.getSubject().sendMessage("hi");
     }
 
-    @GroupMessage(
+    @Message(
             messageRule = MessageRule.EQUAL,
             text = "小黑子",
             permission = PermissionType.ADMIN,

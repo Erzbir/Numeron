@@ -23,7 +23,6 @@
             <groupId>net.jodah</groupId>
             <artifactId>expiringmap</artifactId>
             <version>0.5.10</version>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

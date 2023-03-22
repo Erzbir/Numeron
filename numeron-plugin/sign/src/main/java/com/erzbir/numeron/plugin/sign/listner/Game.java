@@ -3,8 +3,8 @@ package com.erzbir.numeron.plugin.sign.listner;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.filter.rule.FilterRule;
 import com.erzbir.numeron.core.handler.Command;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.GroupMessage;
 import com.erzbir.numeron.plugin.sign.RedisStore;
 import com.erzbir.numeron.plugin.sign.entity.User;
 import net.mamoe.mirai.contact.Contact;
@@ -111,7 +111,7 @@ public class Game {
             help = "发送 \"签到\" 即可",
             permission = PermissionType.ALL
     )
-    @GroupMessage(
+    @Message(
             text = "签到",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ALL

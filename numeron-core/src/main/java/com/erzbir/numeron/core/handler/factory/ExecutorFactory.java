@@ -1,13 +1,10 @@
 package com.erzbir.numeron.core.handler.factory;
 
-import com.erzbir.numeron.core.handler.excute.GroupMessageMethodExecute;
-import com.erzbir.numeron.core.handler.excute.MessageMethodExecute;
-import com.erzbir.numeron.core.handler.excute.UserMessageMethodExecute;
+import com.erzbir.numeron.core.handler.Event;
+import com.erzbir.numeron.core.handler.Message;
+import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
 import com.erzbir.numeron.core.handler.executor.AbstractMethodExecutor;
 import com.erzbir.numeron.core.handler.executor.MethodExecutor;
-import com.erzbir.numeron.core.listener.massage.GroupMessage;
-import com.erzbir.numeron.core.listener.massage.Message;
-import com.erzbir.numeron.core.listener.massage.UserMessage;
 
 import java.lang.annotation.Annotation;
 
@@ -32,14 +29,8 @@ public class ExecutorFactory implements AbstractFactory {
     @Override
     public AbstractMethodExecutor create(Annotation annotation) {
         MethodExecutor executor = MethodExecutor.INSTANCE;
-        if (annotation instanceof GroupMessage) {
-            executor.setExecute(GroupMessageMethodExecute.INSTANCE);
-            return executor;
-        } else if (annotation instanceof UserMessage) {
-            executor.setExecute(UserMessageMethodExecute.INSTANCE);
-            return executor;
-        } else if (annotation instanceof Message) {
-            executor.setExecute(MessageMethodExecute.INSTANCE);
+        if (annotation instanceof Message || annotation instanceof Event) {
+            executor.setExecute(EventMethodExecute.INSTANCE);
             return executor;
         }
         return null;

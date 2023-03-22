@@ -29,14 +29,8 @@ email:
 - 游戏王查卡
 - rss订阅
 
-三个消息处理注解:
-
 - <code>[@Message](numeron-core/src/main/java/com/erzbir/numeron/core/listener/massage/Message.java)</code>
-  可以标记在所有消息事件类型的处理方法上
-- <code>[@GroupMessage](numeron-core/src/main/java/com/erzbir/numeron/core/listener/massage/GroupMessage.java)</code>
-  标记在群消息事件处理的方法上
-- <code>[@UserMessage](numeron-core/src/main/java/com/erzbir/numeron/core/listener/massage/UserMessage.java)</code>
-  标记在联系人消息事件处理的方法上
+  可以标记在所有消息事件类型的处理方法上, 用于
 
 可以用消息处理注解做到什么?
 
@@ -120,6 +114,7 @@ public class Test {
 ### 用@Command生成指令表
 
 ```java
+
 @Listener
 class Test {
     @Command(
@@ -170,6 +165,7 @@ class Test {
 ### 生成图片菜单(有@Command会为这个menu生成帮助)
 
 ```java
+
 @Listener
 @Menu(name = "学习对话")
 class Test {

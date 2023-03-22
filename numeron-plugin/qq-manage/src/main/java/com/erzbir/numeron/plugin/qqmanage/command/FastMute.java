@@ -5,15 +5,17 @@ import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.filter.rule.FilterRule;
 import com.erzbir.numeron.core.handler.Command;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.UserMessage;
 import com.erzbir.numeron.core.utils.ConfigCreateUtil;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import net.mamoe.mirai.event.events.UserMessageEvent;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,20 +26,19 @@ import java.util.Objects;
 @Listener
 @SuppressWarnings("unused")
 public class FastMute {
-    private final List<Long> group = new ArrayList<>();
+    private final static List<JsonElement> group;
 
-    {
-        String confFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/qqmanage" + "/config.conf";
+    static {
+        Gson gson = new Gson();
+        String confFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/qqmanage" + "/config.json";
         try {
             ConfigCreateUtil.createFile(confFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         try (BufferedReader in = new BufferedReader(new FileReader(confFile))) {
-            String s;
-            while ((s = in.readLine()) != null) {
-                group.add(Long.valueOf(s));
-            }
+            List<JsonElement> group1 = JsonParser.parseReader(in).getAsJsonObject().get("group").getAsJsonArray().asList();
+            group = group1;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,15 +50,14 @@ public class FastMute {
             help = "#打卡禁言",
             permission = PermissionType.ALL
     )
-    @UserMessage(
+    @Message(
             text = "#打卡禁言",
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.EQUAL,
             permission = PermissionType.ALL
     )
     private void fastMute(UserMessageEvent event) {
-        System.out.println(group);
-        group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t)).getSettings().setMuteAll(true));
+        group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(true));
     }
 
     @Command(
@@ -66,13 +66,13 @@ public class FastMute {
             help = "#打卡禁言",
             permission = PermissionType.ALL
     )
-    @UserMessage(
+    @Message(
             text = "#打卡解禁",
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.EQUAL,
             permission = PermissionType.ALL
     )
     private void fastUnMute(UserMessageEvent event) {
-        group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t)).getSettings().setMuteAll(false));
+        group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(false));
     }
 }

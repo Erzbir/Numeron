@@ -2,11 +2,10 @@ package com.erzbir.numeron.core.processor;
 
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.MessageFilterExecutor;
+import com.erzbir.numeron.core.handler.Event;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.handler.factory.ExecutorFactory;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.GroupMessage;
-import com.erzbir.numeron.core.listener.massage.Message;
-import com.erzbir.numeron.core.listener.massage.UserMessage;
 import com.erzbir.numeron.core.utils.MiraiLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
@@ -14,6 +13,7 @@ import net.mamoe.mirai.event.events.BotEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -25,7 +25,7 @@ import java.util.Arrays;
  * </p>
  */
 @SuppressWarnings("unused")
-public class MessageAnnotationProcessor implements Processor {
+public class HandlerAnnotationProcessor implements Processor {
     public static EventChannel<BotEvent> channel;
     public static Bot bot;
 
@@ -38,6 +38,9 @@ public class MessageAnnotationProcessor implements Processor {
      */
     @NotNull
     private <E extends Annotation> EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> channel, E annotation) {
+        if (!(annotation instanceof Message)) {
+            return channel;
+        }
         return channel
                 .filter(event -> MessageFilterExecutor.INSTANCE.filter(event, annotation));
     }
@@ -48,10 +51,10 @@ public class MessageAnnotationProcessor implements Processor {
      * @param channel    过滤的channel
      * @param annotation 消息处理注解, 使用泛型代替实际的注解, 这样做的目的是减少代码量, 用反射的方式还原注解
      */
-    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E annotation) {
+    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         ExecutorFactory.INSTANCE.create(annotation)
                 .getExecute()
-                .execute(method, bean, channel);
+                .execute(method, bean, channel, annotation);
     }
 
     /**
@@ -59,9 +62,7 @@ public class MessageAnnotationProcessor implements Processor {
      * @return 是否是需要的注解
      */
     private boolean isNeededAnnotation(Annotation annotation) {
-        return annotation instanceof GroupMessage
-                || annotation instanceof UserMessage
-                || annotation instanceof Message;
+        return annotation instanceof Message || annotation instanceof Event;
     }
 
     /**
@@ -79,7 +80,11 @@ public class MessageAnnotationProcessor implements Processor {
                                 .replaceAll("\\[", "(")
                                 .replaceAll("]", ")");
                         method.setAccessible(true);
-                        execute(v, method, toFilter(channel, annotation), annotation);
+                        try {
+                            execute(v, method, toFilter(channel, annotation), annotation);
+                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
                         MiraiLogUtil.info(method.getName() + s + " 处理方法注册完毕");
                     });
         }

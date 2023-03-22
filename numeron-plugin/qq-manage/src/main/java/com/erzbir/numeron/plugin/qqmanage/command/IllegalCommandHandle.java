@@ -4,8 +4,8 @@ import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.filter.rule.FilterRule;
 import com.erzbir.numeron.core.handler.Command;
+import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.listener.massage.Message;
 import com.erzbir.numeron.plugin.qqmanage.action.IllegalList;
 import net.mamoe.mirai.event.events.MessageEvent;
 

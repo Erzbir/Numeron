@@ -13,8 +13,8 @@ import java.io.Serializable;
  */
 public class QuestionConfig implements Serializable {
     private static final Object key = new Object();
-    private static volatile QuestionConfig INSTANCE;
     private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/question.json";
+    private static volatile QuestionConfig INSTANCE;
     private transient String model = "gpt-3.5-turbo-0301";
     private int max_tokens = 2048;
     private double temperature = 0.0;

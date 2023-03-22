@@ -1,22 +1,16 @@
-package com.erzbir.numeron.core.listener.massage;
+package com.erzbir.numeron.core.filter;
 
 import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.filter.rule.FilterRule;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.mamoe.mirai.event.ConcurrencyKind;
+import net.mamoe.mirai.event.EventPriority;
 
 /**
  * @author Erzbir
- * @Date: 2022/11/18 14:34
- * <p>标记用户消息事件</p>
+ * @Date: 2023/3/22 11:21
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface UserMessage {
+public @interface MessageFilter {
     FilterRule filterRule() default FilterRule.NONE;
 
     MessageRule messageRule() default MessageRule.EQUAL;
@@ -24,4 +18,10 @@ public @interface UserMessage {
     PermissionType permission();
 
     String text();
+
+    EventPriority priority() default EventPriority.NORMAL;
+
+    boolean ignoreCancelled() default true;
+
+    ConcurrencyKind concurrency() default ConcurrencyKind.CONCURRENT;
 }

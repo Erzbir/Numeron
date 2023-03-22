@@ -1,7 +1,6 @@
 package com.erzbir.numeron.core.processor;
 
 import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Plugin;
 import com.erzbir.numeron.core.listener.Listener;
 import com.erzbir.numeron.core.utils.MiraiLogUtil;
 
@@ -37,7 +36,6 @@ public class CommandAnnotationProcessor implements Processor {
         AppContext context = AppContext.INSTANT;
         MiraiLogUtil.verbose("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
-        context.getBeansWithAnnotation(Plugin.class).forEach((k, v) -> scanBeans(v));
         MiraiLogUtil.verbose("命令帮助文档生成完成\n");
     }
 
