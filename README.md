@@ -1,18 +1,16 @@
 # Numeron
 
-<!-- TOC -->
-* [Numeron](#numeron)
-  * [介绍:](#介绍-)
-    * [模块:](#模块-)
-  * [实现的功能:](#实现的功能-)
-  * [说明:](#说明-)
-    * [@Message使用:](#message使用-)
-    * [@Event使用:](#event使用-)
-    * [用@Command生成指令表:](#用command生成指令表-)
-    * [生成图片菜单(有@Command会为这个menu生成帮助):](#生成图片菜单--有command会为这个menu生成帮助--)
-  * [待开发:](#待开发-)
-  * [联系方式:](#联系方式-)
-<!-- TOC -->
+- [Numeron](#numeron)
+  - [介绍:](#介绍)
+     - [模块:](#模块)
+     - [实现的功能:](#实现的功能)
+  - [说明:](#说明)
+    - [@Message使用:](#message使用)
+    - [@Event使用:](#event使用)
+    - [用@Command生成指令表:](#用command生成指令表)
+    - [用@Menu生成图片菜单:](#用menu生成图片菜单)
+  - [开发计划:](#开发计划)
+  - [联系方式:](#联系方式)
 
 ## 介绍:
 
@@ -191,7 +189,9 @@ class Test {
 效果:
 ![2023031916.30.57](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/2023031916.30.57.png)
 
-### 生成图片菜单(有@Command会为这个menu生成帮助):
+### 用@Menu生成图片菜单:
+
+> 有@Command会为这个menu生成帮助
 
 ```java
 
@@ -245,12 +245,12 @@ class Test {
 
 ![9f7c0b37e82f492e8c282e54ddd7e755](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/9f7c0b37e82f492e8c282e54ddd7e755.png)
 
-## 待开发:
-- console控制台
-- 功能热加载和插件模式
-- 只监听某个id(好友/群)的事件监听注册(用注解实现)
-- 兼容mirai-console的插件
-- 虚拟线程支持
+## 开发计划:
+- [ ] console控制台
+- [ ] 功能热加载和插件模式
+- [ ] 只监听某个id(好友/群)的事件监听注册(用注解实现)
+- [ ] 兼容mirai-console的插件
+- [ ] 虚拟线程支持
 
 ## 联系方式:
 
