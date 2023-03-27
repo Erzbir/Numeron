@@ -2,7 +2,6 @@ package com.erzbir.numeron.boot;
 
 import com.erzbir.numeron.boot.exception.ProcessorException;
 import com.erzbir.numeron.core.classloader.ClassScanner;
-import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.processor.Processor;
 
 import java.io.IOException;
@@ -13,10 +12,6 @@ import java.lang.reflect.InvocationTargetException;
  * @Date: 2022/12/12 22:45
  */
 public class Starter {
-    static {
-        NumeronBot numeronBot = NumeronBot.INSTANCE;  // 这里是为了提前初始化, 不然会出现空指针异常
-    }
-
     private final String basePackage;
     private final ClassLoader classLoader;
 
@@ -36,7 +31,6 @@ public class Starter {
     private void bootFromBasePackage() {
         // 包扫瞄器扫瞄所有class
         scanProcessor();
-        NumeronBot.INSTANCE.login();
     }
 
     private void scanProcessor() {
