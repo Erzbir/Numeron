@@ -1,14 +1,32 @@
-# Mirai-Numeron
+# Numeron
 
-## 联系方式:
-
-email:
-
-- 2978086497@qq.com
+<!-- TOC -->
+* [Numeron](#numeron)
+  * [介绍:](#介绍-)
+    * [模块:](#模块-)
+  * [实现的功能:](#实现的功能-)
+  * [说明:](#说明-)
+    * [@Message使用:](#message使用-)
+    * [@Event使用:](#event使用-)
+    * [用@Command生成指令表:](#用command生成指令表-)
+    * [生成图片菜单(有@Command会为这个menu生成帮助):](#生成图片菜单--有command会为这个menu生成帮助--)
+  * [待开发:](#待开发-)
+  * [联系方式:](#联系方式-)
+<!-- TOC -->
 
 ## 介绍:
 
-### 实现的功能:
+这是一个使用mirai-core开发的qqBot
+
+### 模块:
+- core模块是脚手架(消息过滤实现)
+- boot模块用于启动机器人
+- menu模块用于图片菜单生成
+- plugin模块是主要的功能
+- buildSrc模块对项目没有用处, 只是用于打包可执行jar
+- console模块(待开发)
+
+## 实现的功能:
 
 - 消息回复
 - @禁言, qq号禁言
@@ -22,12 +40,13 @@ email:
 - 群签到功能
 - 发送/help获取自动生成的命令表(在方法上加上`@Command`注解生成)
 - 对接openai
-    - 聊天
-    - 补全
-    - 问答
-    - 绘画
+  - 聊天
+  - 补全
+  - 问答
+  - 绘画
 - 游戏王查卡
 - rss订阅
+- 生成图片菜单目录
 
 ## 说明:
 
@@ -37,9 +56,9 @@ email:
 
 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 
-
+### @Message使用:
 <code>[@Message](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Message.java)</code>
-> 可以标记在所有消息事件类型的处理方法上, 监听到满足此注解定义的规则的事件就会反射调用被标记的方法, 类上必须有<code>[@Listener](src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
+> 可以标记在所有消息事件类型的处理方法上, 监听到满足此注解定义的规则的事件就会反射调用被标记的方法, 类上必须有<code>[@Listener](numeron-core/src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
 >
 > 这个注解适合用于命令类型的监听(给机器人发送一个消息, 进行相关代码运行), 如果不是消息事件则使用下文介绍的<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
 
@@ -100,8 +119,9 @@ public class Test {
 - 四种权限规则: 主人 / 白名单 / 所有人 / 群管理员
 - 六种消息匹配规则: 以?开头 / 以?结尾 / 包含? / 相等 / 正则 / 在数组中?
 
+### @Event使用:
 <code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
-和mirai提供的<code>@EventHandler</code>用法基本一样, 只是使用这个注解不用让类继承, 不过类上必须有<code>[@Listener](src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
+和mirai提供的<code>@EventHandler</code>用法基本一样, 只是使用这个注解不用让类继承, 不过类上必须有<code>[@Listener](numeron-core/src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
 
 ```java
 @Listener
@@ -120,7 +140,7 @@ public class Test {
 <code>[@Command](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Command.java)</code>
 >用于生成指令表
 
-### 用@Command生成指令表
+### 用@Command生成指令表:
 
 ```java
 
@@ -171,7 +191,7 @@ class Test {
 效果:
 ![2023031916.30.57](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/2023031916.30.57.png)
 
-### 生成图片菜单(有@Command会为这个menu生成帮助)
+### 生成图片菜单(有@Command会为这个menu生成帮助):
 
 ```java
 
@@ -225,8 +245,15 @@ class Test {
 
 ![9f7c0b37e82f492e8c282e54ddd7e755](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/9f7c0b37e82f492e8c282e54ddd7e755.png)
 
+## 待开发:
+- console控制台
+- 功能热加载和插件模式
+- 只监听某个id(好友/群)的事件监听注册(用注解实现)
+- 兼容mirai-console的插件
+- 虚拟线程支持
 
+## 联系方式:
 
-## 博客:
+email:
 
-<a href=https://erzbir.com>erzbir.com</a>
+- 2978086497@qq.com
