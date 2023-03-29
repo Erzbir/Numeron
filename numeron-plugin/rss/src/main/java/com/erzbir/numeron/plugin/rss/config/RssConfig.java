@@ -29,16 +29,6 @@ public class RssConfig implements Serializable {
         }
     }
 
-    @SerializedName("proxy_type")
-    private String proxyType;
-    @SerializedName("proxy_address")
-    private String proxyAddress;
-    @SerializedName("proxy_port")
-    private int proxyPort;
-    @SerializedName("proxy_username")
-    private String proxyUsername;
-    @SerializedName("proxy_password")
-    private String proxyPassword;
     @SerializedName("retry_times")
     private int retryTimes = 5;
     @SerializedName("rss")
@@ -101,46 +91,6 @@ public class RssConfig implements Serializable {
         this.delay = delay;
     }
 
-    public String getProxyType() {
-        return proxyType;
-    }
-
-    public void setProxyType(String proxyType) {
-        this.proxyType = proxyType;
-    }
-
-    public String getProxyAddress() {
-        return proxyAddress;
-    }
-
-    public void setProxyAddress(String proxyAddress) {
-        this.proxyAddress = proxyAddress;
-    }
-
-    public int getProxyPort() {
-        return proxyPort;
-    }
-
-    public void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
-    }
-
-    public String getProxyUsername() {
-        return proxyUsername;
-    }
-
-    public void setProxyUsername(String proxyUsername) {
-        this.proxyUsername = proxyUsername;
-    }
-
-    public String getProxyPassword() {
-        return proxyPassword;
-    }
-
-    public void setProxyPassword(String proxyPassword) {
-        this.proxyPassword = proxyPassword;
-    }
-
     public int getRetryTimes() {
         return retryTimes;
     }
@@ -169,13 +119,6 @@ public class RssConfig implements Serializable {
 
     @Override
     public String toString() {
-        return
-                "proxy_type: " + proxyType + '\n' +
-                        "proxy_address: " + proxyAddress + '\n' +
-                        "proxy_port: " + proxyPort + '\n' +
-                        "proxy_username: " + proxyUsername + '\n' +
-                        "proxy_password: " + proxyPassword + '\n' +
-                        "retry_times: " + retryTimes + '\n' +
-                        "delay: " + delay;
+        return "retry_times: " + retryTimes + '\n' + "delay: " + delay;
     }
 }
