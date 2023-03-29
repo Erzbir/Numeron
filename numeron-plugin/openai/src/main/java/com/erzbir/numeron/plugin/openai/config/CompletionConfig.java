@@ -47,11 +47,15 @@ public class CompletionConfig implements Serializable {
             }
         }
         if (INSTANCE == null) {
-            INSTANCE = new CompletionConfig();
-            try {
-                JsonUtil.dump(configFile, INSTANCE, CompletionConfig.class);
-            } catch (ConfigWriteException e) {
-                throw new RuntimeException(e);
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CompletionConfig();
+                    try {
+                        JsonUtil.dump(configFile, INSTANCE, CompletionConfig.class);
+                    } catch (ConfigWriteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
         return INSTANCE;

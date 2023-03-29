@@ -1,9 +1,12 @@
 package com.erzbir.numeron.plugin.openai.config;
 
+import com.erzbir.numeron.core.utils.ConfigCreateUtil;
 import com.erzbir.numeron.core.utils.ConfigReadException;
+import com.erzbir.numeron.core.utils.ConfigWriteException;
 import com.erzbir.numeron.core.utils.JsonUtil;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -14,6 +17,7 @@ import java.util.LinkedList;
 public class ChatConfig implements Serializable {
 
     private static final Object key = new Object();
+    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/chat.json";
     private static volatile ChatConfig INSTANCE;
     private transient String model = "gpt-3.5-turbo";
     private int max_tokens = 512;
@@ -23,7 +27,11 @@ public class ChatConfig implements Serializable {
     private double frequency_penalty = 0.0;
 
     private ChatConfig() {
-
+        try {
+            ConfigCreateUtil.createFile(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ChatConfig getInstance() {
@@ -31,14 +39,26 @@ public class ChatConfig implements Serializable {
             synchronized (key) {
                 if (INSTANCE == null) {
                     try {
-                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/chat.json", ChatConfig.class);
+                        INSTANCE = JsonUtil.load(configFile, ChatConfig.class);
                     } catch (ConfigReadException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         }
-        return INSTANCE == null ? new ChatConfig() : INSTANCE;
+        if (INSTANCE == null) {
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ChatConfig();
+                    try {
+                        JsonUtil.dump(configFile, INSTANCE, ChatConfig.class);
+                    } catch (ConfigWriteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+        return INSTANCE;
         //  return new ChatConfig();
     }
 

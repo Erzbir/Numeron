@@ -1,11 +1,13 @@
 package com.erzbir.numeron.plugin.openai.config;
 
+import com.erzbir.numeron.core.utils.ConfigCreateUtil;
 import com.erzbir.numeron.core.utils.ConfigReadException;
 import com.erzbir.numeron.core.utils.ConfigWriteException;
 import com.erzbir.numeron.core.utils.JsonUtil;
 import com.theokanning.openai.image.CreateImageRequest;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -23,7 +25,11 @@ public class ImageConfig implements Serializable {
     private boolean save = false;
 
     private ImageConfig() {
-
+        try {
+            ConfigCreateUtil.createFile(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ImageConfig getInstance() {
@@ -39,11 +45,15 @@ public class ImageConfig implements Serializable {
             }
         }
         if (INSTANCE == null) {
-            INSTANCE = new ImageConfig();
-            try {
-                JsonUtil.dump(configFile, INSTANCE, ImageConfig.class);
-            } catch (ConfigWriteException e) {
-                throw new RuntimeException(e);
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ImageConfig();
+                    try {
+                        JsonUtil.dump(configFile, INSTANCE, ImageConfig.class);
+                    } catch (ConfigWriteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
         return INSTANCE;

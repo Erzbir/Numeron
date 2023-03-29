@@ -11,14 +11,13 @@ import java.io.IOException;
 public class ConfigCreateUtil {
     public static void createFile(String confFile) throws IOException {
         File file = new File(confFile);
-        if (!file.isFile()) {
-            if (file.createNewFile()) {
-                return;
-            }
-        }
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+        try {
             file.createNewFile();
+        } catch (IOException e) {
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
         }
     }
 

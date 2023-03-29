@@ -16,6 +16,7 @@ import java.util.concurrent.Executors;
  */
 public class ParseImage {
     private static final ExecutorService ex = Executors.newSingleThreadExecutor();
+
     public static byte[] store(Image image, String folder, boolean isSave) {
         if (image.getB64Json().isEmpty()) {
             throw new IllegalArgumentException("data is empty");

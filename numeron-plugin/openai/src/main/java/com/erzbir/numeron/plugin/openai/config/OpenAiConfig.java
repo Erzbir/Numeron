@@ -35,11 +35,15 @@ public class OpenAiConfig {
             }
         }
         if (INSTANCE == null) {
-            INSTANCE = new OpenAiConfig();
-            try {
-                JsonUtil.dump(configFile, INSTANCE, OpenAiConfig.class);
-            } catch (ConfigWriteException e) {
-                throw new RuntimeException(e);
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = new OpenAiConfig();
+                    try {
+                        JsonUtil.dump(configFile, INSTANCE, OpenAiConfig.class);
+                    } catch (ConfigWriteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
         return INSTANCE;

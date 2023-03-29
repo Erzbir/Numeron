@@ -19,8 +19,8 @@ public class QuestionConfig implements Serializable {
     private int max_tokens = 2048;
     private double temperature = 0.0;
     private double top_p = 1.0;
-    private double presence_penalty;
-    private double frequency_penalty;
+    private double presence_penalty = 0.0;
+    private double frequency_penalty = 0.0;
     private int n = 1;
 
     private QuestionConfig() {
@@ -40,11 +40,15 @@ public class QuestionConfig implements Serializable {
             }
         }
         if (INSTANCE == null) {
-            INSTANCE = new QuestionConfig();
-            try {
-                JsonUtil.dump(configFile, INSTANCE, QuestionConfig.class);
-            } catch (ConfigWriteException e) {
-                throw new RuntimeException(e);
+            synchronized (key) {
+                if (INSTANCE == null) {
+                    INSTANCE = new QuestionConfig();
+                    try {
+                        JsonUtil.dump(configFile, INSTANCE, QuestionConfig.class);
+                    } catch (ConfigWriteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         }
         return INSTANCE;
