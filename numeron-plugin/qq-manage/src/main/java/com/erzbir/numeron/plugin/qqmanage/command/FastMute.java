@@ -26,7 +26,7 @@ import java.util.Objects;
 @Listener
 @SuppressWarnings("unused")
 public class FastMute {
-    private final static List<JsonElement> group;
+    private static List<JsonElement> group = null;
 
     static {
         Gson gson = new Gson();
@@ -37,10 +37,12 @@ public class FastMute {
             throw new RuntimeException(e);
         }
         try (BufferedReader in = new BufferedReader(new FileReader(confFile))) {
-            List<JsonElement> group1 = JsonParser.parseReader(in).getAsJsonObject().get("group").getAsJsonArray().asList();
-            group = group1;
+            JsonElement jsonElement = JsonParser.parseReader(in);
+            if (!jsonElement.isJsonNull()) {
+                group = jsonElement.getAsJsonObject().get("group").getAsJsonArray().asList();
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
