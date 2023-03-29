@@ -5,12 +5,16 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/30 09:13
  */
 public class CodeUtil {
+    private static final ExecutorService ex = Executors.newSingleThreadExecutor();
+
     private static Charset getCharset() {
         if (System.getProperty("os.name").startsWith("Windows")) {
             return Charset.forName("GBK");
@@ -62,13 +66,13 @@ public class CodeUtil {
         } catch (CodeReadOverException | IOException e) {
             result = e.getMessage();
         } finally {
-            new Thread(() -> {
+            ex.submit(() -> {
                 try {
                     Files.delete(file.getAbsoluteFile().toPath());
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }).start();
+            });
         }
         return result;
     }

@@ -24,6 +24,8 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.QuoteReply;
 import retrofit2.HttpException;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -151,10 +153,50 @@ public class OpenAiListener {
         sendMessage(event, text);
     }
 
+    @Command(
+            name = "OpenAI",
+            dec = "清理保存图片",
+            help = "/pic clean",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            filterRule = FilterRule.BLACK,
+            text = "/pic clean",
+            permission = PermissionType.ALL
+    )
+    private void clean(MessageEvent event) {
+        String folder = ImageConfig.getInstance().getFolder();
+        File file = new File(folder);
+        File[] files = file.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File f : files) {
+            f.delete();
+        }
+    }
+
+    @Command(
+            name = "OpenAI",
+            dec = "关闭图片保存",
+            help = "/pic save [true|false]",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^/pic\\s+save\\s+[true|false]",
+            permission = PermissionType.ALL
+    )
+    private void picSave(MessageEvent event) {
+        String s = event.getMessage().contentToString().replaceFirst("^/pic\\s+save\\s+", "");
+        ImageConfig.getInstance().setSave(Boolean.parseBoolean(s));
+    }
+
     private MessageChain buildImageMessage(List<Image> images, MessageEvent event) {
         MessageChainBuilder chainBuilder = new MessageChainBuilder();
         for (Image image : images) {
-            net.mamoe.mirai.message.data.Image image1 = Contact.uploadImage(event.getSubject(), ParseImage.store(image, imageConfig.getFolder(), imageConfig.isSave()));
+            net.mamoe.mirai.message.data.Image image1 = Contact.uploadImage(event.getSubject(), new ByteArrayInputStream(ParseImage.store(image, imageConfig.getFolder(), imageConfig.isSave())));
             if (openAiConfig.isChat_by_at()) {
                 chainBuilder.append(new At(event.getSender().getId()).plus(image1));
             } else if (openAiConfig.isReply()) {
