@@ -6,7 +6,7 @@ import com.erzbir.numeron.core.handler.Event;
 import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.handler.factory.ExecutorFactory;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.utils.MiraiLogUtil;
+import com.erzbir.numeron.core.utils.NumeronLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -72,7 +72,7 @@ public class HandlerAnnotationProcessor implements Processor {
      */
     private void registerMethods(Object v) {
         String name = v.getClass().getName();
-        MiraiLogUtil.debug("扫瞄到 " + name);
+        NumeronLogUtil.debug("扫瞄到 " + name);
         for (Method method : v.getClass().getDeclaredMethods()) {
             Arrays.stream(method.getAnnotations())
                     .filter(this::isNeededAnnotation).forEach(annotation -> {
@@ -85,7 +85,7 @@ public class HandlerAnnotationProcessor implements Processor {
                         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
                             throw new RuntimeException(e);
                         }
-                        MiraiLogUtil.info(method.getName() + s + " 处理方法注册完毕");
+                        NumeronLogUtil.info(method.getName() + s + " 处理方法注册完毕");
                     });
         }
     }
@@ -95,8 +95,8 @@ public class HandlerAnnotationProcessor implements Processor {
         AppContext context = AppContext.INSTANT;
         bot = NumeronBot.INSTANCE.getBot();
         channel = bot.getEventChannel();
-        MiraiLogUtil.verbose("开始注册注解消息处理监听......");
+        NumeronLogUtil.trace("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> registerMethods(v));
-        MiraiLogUtil.verbose("注解消息处理监听注册完毕\n");
+        NumeronLogUtil.trace("注解消息处理监听注册完毕\n");
     }
 }

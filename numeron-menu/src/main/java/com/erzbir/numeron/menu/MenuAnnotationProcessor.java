@@ -5,7 +5,7 @@ import com.erzbir.numeron.core.entity.GroupList;
 import com.erzbir.numeron.core.handler.Command;
 import com.erzbir.numeron.core.processor.AppContext;
 import com.erzbir.numeron.core.processor.Processor;
-import com.erzbir.numeron.core.utils.MiraiLogUtil;
+import com.erzbir.numeron.core.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class MenuAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         Map<String, Object> menu = AppContext.INSTANT.getBeansWithAnnotation(Menu.class);
-        MiraiLogUtil.verbose("开始生成图片帮助菜单");
+        NumeronLogUtil.trace("开始生成图片帮助菜单");
         menu.forEach((k, v) -> {
             Menu annotation = v.getClass().getAnnotation(Menu.class);
             String name = annotation.name();
@@ -32,7 +32,7 @@ public class MenuAnnotationProcessor implements Processor {
                 MenuStatic.closeMenuGroups.put(name, GroupList.INSTANCE.getGroup());
             }
             List<Command> commands = new ArrayList<>();
-            MiraiLogUtil.info(name);
+            NumeronLogUtil.info(name);
             for (Method method : v.getClass().getDeclaredMethods()) {
                 Command command = method.getAnnotation(Command.class);
                 if (command == null) {
@@ -46,7 +46,7 @@ public class MenuAnnotationProcessor implements Processor {
                 MenuStatic.menuMap.put(name, commands);
             }
         });
-        MiraiLogUtil.verbose("图片帮助菜单生成完成\n");
+        NumeronLogUtil.trace("图片帮助菜单生成完成\n");
     }
 }
 

@@ -89,32 +89,32 @@ public class NumeronBot implements Serializable {
             return;
         }
         if (account == 0) {
-            MiraiLogUtil.err("帐号为空");
+            NumeronLogUtil.err("帐号为空");
             while (account == 0) {
                 System.out.print("输入帐号: ");
                 try {
                     account = scanner.nextLong();
                     scanner.nextLine();
                 } catch (IllegalArgumentException e) {
-                    MiraiLogUtil.err("请输入数字帐号!");
+                    NumeronLogUtil.err("请输入数字帐号!");
                 }
             }
         }
         if (password == null || password.isEmpty()) {
-            MiraiLogUtil.err("密码为空");
+            NumeronLogUtil.err("密码为空");
             while (password.isEmpty()) {
                 System.out.print("输入密码: ");
                 password = scanner.next();
             }
         }
         if (master == 0) {
-            MiraiLogUtil.err("主人未设置");
+            NumeronLogUtil.err("主人未设置");
             while (master == 0) {
                 System.out.print("输入主人帐号: ");
                 try {
                     master = scanner.nextLong();
                 } catch (IllegalArgumentException e) {
-                    MiraiLogUtil.err("请输入数字帐号!");
+                    NumeronLogUtil.err("请输入数字帐号!");
                 }
             }
         }
@@ -132,9 +132,9 @@ public class NumeronBot implements Serializable {
     }
 
     private void save() {
-        MiraiLogUtil.info("配置成功, 将保存配置....");
+        NumeronLogUtil.info("配置成功, 将保存配置....");
         new Thread(() -> {
-            MiraiLogUtil.info("开始保存配置......");
+            NumeronLogUtil.info("开始保存配置......");
             String configFile = folder + "config/botconfig.json";
             HashMap<String, NumeronBot> hashMap = new HashMap<>();
             hashMap.put("bot", this);
@@ -143,7 +143,7 @@ public class NumeronBot implements Serializable {
             } catch (ConfigWriteException e) {
                 throw new RuntimeException(e);
             }
-            MiraiLogUtil.info("保存成功\n");
+            NumeronLogUtil.info("保存成功\n");
         }).start();
     }
 

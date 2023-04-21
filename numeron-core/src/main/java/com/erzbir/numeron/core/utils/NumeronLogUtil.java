@@ -1,17 +1,17 @@
 package com.erzbir.numeron.core.utils;
 
-import net.mamoe.mirai.utils.MiraiLogger;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/30 12:46
  * <p>日志输出工具类</p>
  */
-public class MiraiLogUtil {
-    private static final MiraiLogger logger = MiraiLogger.Factory.INSTANCE.create(Logger.class);
+public class NumeronLogUtil {
+    private static final Logger logger = LogManager.getLogger("Numeron");;
 
-    private MiraiLogUtil() {
+    private NumeronLogUtil() {
 
     }
 
@@ -28,10 +28,10 @@ public class MiraiLogUtil {
     }
 
     public static void warning(String s) {
-        logger.warning(s);
+        logger.warn(s);
     }
 
-    public static void verbose(String s) {
-        logger.verbose(s);
+    public static void trace(String s) {
+        logger.trace(s);
     }
 }

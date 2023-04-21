@@ -2,7 +2,7 @@ package com.erzbir.numeron.core.processor;
 
 import com.erzbir.numeron.core.handler.Command;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.utils.MiraiLogUtil;
+import com.erzbir.numeron.core.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -34,14 +34,14 @@ public class CommandAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANT;
-        MiraiLogUtil.verbose("开始生成命令帮助文档......");
+        NumeronLogUtil.trace("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
-        MiraiLogUtil.verbose("命令帮助文档生成完成\n");
+        NumeronLogUtil.trace("命令帮助文档生成完成\n");
     }
 
     private void scanBeans(Object bean) {
         String name = bean.getClass().getName();
-        MiraiLogUtil.debug("扫瞄到 " + name);
+        NumeronLogUtil.debug("扫瞄到 " + name);
         for (Method method : bean.getClass().getDeclaredMethods()) {
             Command command = method.getDeclaredAnnotation(Command.class);
             addToDocMap(command);

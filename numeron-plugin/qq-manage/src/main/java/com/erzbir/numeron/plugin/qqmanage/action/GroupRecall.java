@@ -61,7 +61,7 @@ public class GroupRecall {
             messageRule = MessageRule.REGEX
     )
     private void cantRecall(MessageEvent e) {
-        preventRecall = Boolean.valueOf(e.getMessage().contentToString().replaceFirst("\\s+", ""));
+        preventRecall = Boolean.valueOf(e.getMessage().contentToString().replaceFirst("/prevent_recall\\s+", ""));
         System.out.println(preventRecall);
         e.getSubject().sendMessage("防撤回功能 " + preventRecall);
         if (preventRecall) {
