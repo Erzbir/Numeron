@@ -22,6 +22,7 @@
         <dependency>
             <groupId>com.erzbir</groupId>
             <artifactId>numeron-core</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 

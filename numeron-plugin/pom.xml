@@ -34,10 +34,12 @@
         <dependency>
             <groupId>com.erzbir</groupId>
             <artifactId>numeron-core</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.erzbir</groupId>
             <artifactId>numeron-menu</artifactId>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
