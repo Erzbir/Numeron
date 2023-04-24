@@ -2,20 +2,17 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-data.sqlite
-erzbirnumeron
-*.log
-plugin-libraries
-plugin-shared-libraries
-plugin_config
-plugin_data
-temp
-nm-plugin
-config
-data
 
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
 
-### STS ###
+### Eclipse ###
 .apt_generated
 .classpath
 .factorypath
@@ -23,13 +20,6 @@ data
 .settings
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out
 
 ### NetBeans ###
 /nbproject/private/
@@ -44,9 +34,5 @@ build/
 ### VS Code ###
 .vscode/
 
-### Fleet ###
-.fleet/
-
-### MacOS ###
-*._Store
-!/numeron-core/src/main/java/com/erzbir/mirai/numeron/test/
+### Mac OS ###
+.DS_Store

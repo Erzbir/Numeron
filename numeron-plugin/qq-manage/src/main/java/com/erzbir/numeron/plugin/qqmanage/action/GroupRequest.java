@@ -1,10 +1,14 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
+import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.handler.Event;
 import com.erzbir.numeron.core.listener.Listener;
 import com.erzbir.numeron.menu.Menu;
+import kotlin.coroutines.EmptyCoroutineContext;
 import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.event.ConcurrencyKind;
+import net.mamoe.mirai.event.EventPriority;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MemberJoinRequestEvent;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -30,8 +34,13 @@ public class GroupRequest {
                     .plus("邀请人: ").plus(event.getInvitorId() + "\n")
                     .plus("是否同意?");
             group.sendMessage(messages);
-            NumeronBot.INSTANCE.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent e && e.getGroup().getId() == group.getId())
-                    .subscribeOnce(GroupMessageEvent.class, event1 -> {
+            ListenerContext.INSTANCE.getListenerRegister().subscribeOnce(
+                    NumeronBot.INSTANCE.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent e && e.getGroup().getId() == group.getId()),
+                    GroupMessageEvent.class,
+                    EmptyCoroutineContext.INSTANCE,
+                    ConcurrencyKind.LOCKED,
+                    EventPriority.HIGH,
+                    event1 -> {
                         String s = event1.getMessage().contentToString();
                         if (event1.getSender().getPermission().getLevel() != 0) {
                             if (s.equals("同意")) {

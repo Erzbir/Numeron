@@ -21,6 +21,8 @@
         <module>buildSrc</module>
         <module>numeron-menu</module>
         <module>numeron-console</module>
+        <module>numeron-api</module>
+        <module>numeron-utils</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -49,6 +51,16 @@
                 <groupId>com.erzbir</groupId>
                 <artifactId>numeron-plugin</artifactId>
                 <optional>true</optional>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.erzbir.numeron.api</groupId>
+                <artifactId>numeron-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.erzbir.numeron.utils</groupId>
+                <artifactId>numeron-utils</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

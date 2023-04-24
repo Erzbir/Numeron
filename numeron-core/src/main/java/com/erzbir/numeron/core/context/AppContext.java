@@ -1,8 +1,9 @@
-package com.erzbir.numeron.core.processor;
+package com.erzbir.numeron.core.context;
 
 import com.erzbir.numeron.core.classloader.ClassScanner;
 import com.erzbir.numeron.core.exception.AppContextException;
 import com.erzbir.numeron.core.handler.Component;
+import com.erzbir.numeron.core.utils.NumeronLogUtil;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -35,6 +36,7 @@ public class AppContext implements BeanFactory {
             Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class); // 扫瞄带有@Component注解的class
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
+            NumeronLogUtil.err(e.getMessage());
             throw new AppContextException(e);
         }
     }
@@ -47,13 +49,14 @@ public class AppContext implements BeanFactory {
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException ex) {
+                NumeronLogUtil.err(ex.getMessage());
                 throw new AppContextException(ex);
             }
         });
     }
 
     private void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        context.put(bean.getSimpleName(), create(bean));
+        context.put(bean.getName(), create(bean));
     }
 
     private boolean isConstructClass(Class<?> bean) {
@@ -62,7 +65,7 @@ public class AppContext implements BeanFactory {
 
     @Override
     public <T> T getBean(Class<T> requiredType) {
-        return getBean(requiredType.getSimpleName());
+        return getBean(requiredType.getName());
     }
 
     @Override

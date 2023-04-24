@@ -62,7 +62,8 @@
 > 类上必须有<code>[@Listener](numeron-core/src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
 >
 > 这个注解适合用于命令类型的监听(给机器人发送一个消息, 进行相关代码运行),
-> 如果不是消息事件则使用下文介绍的<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
+>
+如果不是消息事件则使用下文介绍的<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
 
 ```java
 @Listener

@@ -1,5 +1,6 @@
 package com.erzbir.numeron.core.processor;
 
+import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.handler.Command;
 import com.erzbir.numeron.core.listener.Listener;
 import com.erzbir.numeron.core.utils.NumeronLogUtil;

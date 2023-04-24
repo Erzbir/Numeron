@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
+import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
@@ -27,7 +28,7 @@ public class GroupRecall {
     private Boolean preventRecall = false;
 
     private void register() {
-        NumeronBot.INSTANCE.getBot().getEventChannel().subscribe(MessageRecallEvent.GroupRecall.class, event -> {
+        ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel(), MessageRecallEvent.GroupRecall.class, event -> {
             Object o = event.getAuthorId();
             MessageChain messageChain = DefaultStore.getInstance().find(o.hashCode());
             if (messageChain != null) {
@@ -36,7 +37,7 @@ public class GroupRecall {
                     DefaultStore.getInstance().remove(o.hashCode());
                 }
             }
-            NumeronBot.INSTANCE.getBot().getEventChannel().subscribe(GroupMessageEvent.class, event1 -> {
+            ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel(), GroupMessageEvent.class, event1 -> {
                 if (preventRecall) {
                     Object o1 = event1.getSender().getId();
                     DefaultStore.getInstance().save(o1.hashCode(), event1.getMessage(), 2);

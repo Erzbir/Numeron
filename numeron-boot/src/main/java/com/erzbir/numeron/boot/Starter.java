@@ -3,6 +3,7 @@ package com.erzbir.numeron.boot;
 import com.erzbir.numeron.boot.exception.ProcessorException;
 import com.erzbir.numeron.core.classloader.ClassScanner;
 import com.erzbir.numeron.core.processor.Processor;
+import com.erzbir.numeron.core.utils.NumeronLogUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -43,6 +44,7 @@ public class Starter {
                     processor = (Processor) e.getConstructor().newInstance();
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException ex) {
+                    NumeronLogUtil.logger.error(ex);
                     throw new ProcessorException(ex);
                 }
                 processor.onApplicationEvent();

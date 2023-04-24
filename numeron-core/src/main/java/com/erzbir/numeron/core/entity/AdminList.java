@@ -41,7 +41,7 @@ public final class AdminList {
     }
 
     private void refresh() {
-        NumeronBot.INSTANCE.getBot().getEventChannel().subscribeAlways(MemberPermissionChangeEvent.class, event -> {
+        NumeronBot.INSTANCE.getEventChannel().subscribeAlways(MemberPermissionChangeEvent.class, event -> {
             long id = event.getGroup().getId();
             NormalMember member = event.getMember();
             if (member.getPermission().equals(MemberPermission.ADMINISTRATOR)) {

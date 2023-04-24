@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
+import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.message.MessageRule;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
@@ -26,10 +27,11 @@ public class ScanIllegal {
     private boolean flag = false;
 
     private void register() {
-        NumeronBot.INSTANCE.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent event
+        ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && IllegalList.INSTANCE.contains(event.getMessage().contentToString())
-                        && event.getGroup().getBotPermission().getLevel() != 0)
-                .subscribe(GroupMessageEvent.class, event -> {
+                        && event.getGroup().getBotPermission().getLevel() != 0),
+                GroupMessageEvent.class,
+                event -> {
                     ((NormalMember) event.getSubject()).mute(30000);
                     Friend friend = event.getBot().getFriend(NumeronBot.INSTANCE.getMaster());
                     if (friend != null) {

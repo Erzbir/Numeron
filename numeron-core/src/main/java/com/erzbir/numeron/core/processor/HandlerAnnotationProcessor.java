@@ -1,5 +1,6 @@
 package com.erzbir.numeron.core.processor;
 
+import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.MessageFilterExecutor;
 import com.erzbir.numeron.core.handler.Event;
@@ -41,8 +42,7 @@ public class HandlerAnnotationProcessor implements Processor {
         if (!(annotation instanceof Message)) {
             return channel;
         }
-        return channel
-                .filter(event -> MessageFilterExecutor.INSTANCE.filter(event, annotation));
+        return channel.filter(event -> MessageFilterExecutor.INSTANCE.filter(event, annotation));
     }
 
     /**
@@ -83,6 +83,7 @@ public class HandlerAnnotationProcessor implements Processor {
                         try {
                             execute(v, method, toFilter(channel, annotation), annotation);
                         } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                            NumeronLogUtil.err(e.getMessage());
                             throw new RuntimeException(e);
                         }
                         NumeronLogUtil.info(method.getName() + s + " 处理方法注册完毕");

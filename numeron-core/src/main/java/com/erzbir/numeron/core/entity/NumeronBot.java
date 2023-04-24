@@ -1,11 +1,14 @@
 package com.erzbir.numeron.core.entity;
 
+import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.processor.HandlerAnnotationProcessor;
 import com.erzbir.numeron.core.utils.*;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.event.EventChannel;
+import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.utils.BotConfiguration;
 
 import java.io.*;
@@ -217,6 +220,10 @@ public class NumeronBot implements Serializable {
         this.folder = dir;
     }
 
+    public EventChannel<BotEvent> getEventChannel() {
+        return bot.getEventChannel();
+    }
+
     public void turnOn() {
         setEnable(true);
         // 重新注册监听
@@ -224,6 +231,7 @@ public class NumeronBot implements Serializable {
     }
 
     public void turnOff() {
+        ListenerContext.INSTANCE.cancelAll();
         setEnable(false);
     }
 }

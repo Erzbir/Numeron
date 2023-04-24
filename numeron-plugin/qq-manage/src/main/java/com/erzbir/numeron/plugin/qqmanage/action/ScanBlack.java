@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
+import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.entity.BlackList;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.message.MessageRule;
@@ -25,10 +26,11 @@ public class ScanBlack {
     private boolean flag = false;
 
     private void register() {
-        NumeronBot.INSTANCE.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent event
+        ListenerContext.INSTANCE.getListenerRegister().subscribe(
+                NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && BlackList.INSTANCE.contains(event.getSender().getId())
-                        && event.getGroup().getBotPermission().getLevel() != 0)
-                .subscribe(GroupMessageEvent.class, event -> {
+                        && event.getGroup().getBotPermission().getLevel() != 0),
+                GroupMessageEvent.class, event -> {
                     ((NormalMember) event.getSender()).kick("黑名单用户");
                     return flag ? ListeningStatus.LISTENING : ListeningStatus.STOPPED;
                 });

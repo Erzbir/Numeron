@@ -1,9 +1,9 @@
 package com.erzbir.numeron.menu;
 
 
+import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.entity.GroupList;
 import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.processor.AppContext;
 import com.erzbir.numeron.core.processor.Processor;
 import com.erzbir.numeron.core.utils.NumeronLogUtil;
 

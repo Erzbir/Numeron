@@ -22,12 +22,10 @@
         <dependency>
             <groupId>com.erzbir</groupId>
             <artifactId>numeron-boot</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.erzbir</groupId>
             <artifactId>numeron-core</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.erzbir.numeron.utils</groupId>

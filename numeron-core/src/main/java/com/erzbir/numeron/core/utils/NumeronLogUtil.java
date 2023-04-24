@@ -9,7 +9,8 @@ import org.apache.logging.log4j.Logger;
  * <p>日志输出工具类</p>
  */
 public class NumeronLogUtil {
-    private static final Logger logger = LogManager.getLogger("Numeron");;
+    public static final Logger logger = LogManager.getLogger("Numeron");
+    ;
 
     private NumeronLogUtil() {
 

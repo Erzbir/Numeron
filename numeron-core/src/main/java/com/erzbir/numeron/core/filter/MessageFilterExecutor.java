@@ -8,6 +8,7 @@ import com.erzbir.numeron.core.filter.permission.PermissionFilterFactory;
 import com.erzbir.numeron.core.filter.permission.PermissionType;
 import com.erzbir.numeron.core.filter.rule.FilterRule;
 import com.erzbir.numeron.core.filter.rule.RuleFilterFactory;
+import com.erzbir.numeron.core.utils.NumeronLogUtil;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -40,6 +41,7 @@ public class MessageFilterExecutor {
             text = (String) aClass.getDeclaredMethod("text").invoke(annotation);
             permission = (PermissionType) aClass.getDeclaredMethod("permission").invoke(annotation);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            NumeronLogUtil.logger.error(e);
             throw new AnnotationGetException(e);
         }
         return NumeronBot.INSTANCE.isEnable() && RuleFilterFactory.INSTANCE.create(filterRule).filter(event1, text)
