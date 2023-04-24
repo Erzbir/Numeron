@@ -8,10 +8,7 @@
                     pattern="%highlight{[%d{HH:mm:ss.SSS}] [%level] %msg%xEx%n}{FATAL=Bright Black, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"/>
         </Console>
         <RollingRandomAccessFile name="File"
-                                 fileName="logs.log"
-                                 filePattern="logs/logs-%d{yyyy-MM-dd HH-mm}-%i.log"
-                                 charset="UTF-8"
-                                 target="SYSTEM_OUT">
+                                 filePattern="logs/logs-%d{yyyy-MM-dd HH-mm}-%i.log">
             <PatternLayout
                     pattern="[%d{HH:mm:ss.SSS}] [%level] %msg%xEx%n"/>
             <Policies>
