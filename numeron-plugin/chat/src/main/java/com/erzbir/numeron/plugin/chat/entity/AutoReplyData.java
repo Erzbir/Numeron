@@ -1,11 +1,16 @@
 package com.erzbir.numeron.plugin.chat.entity;
 
-import com.erzbir.numeron.core.utils.SqlUtil;
 
+import com.erzbir.numeron.core.entity.connection.SqlConnection;
+import com.erzbir.numeron.utils.NumeronLogUtil;
+import com.erzbir.numeron.utils.SqlUtil;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Erzbir
@@ -13,8 +18,9 @@ import java.util.HashMap;
  */
 public final class AutoReplyData {
     public static final AutoReplyData INSTANCE = new AutoReplyData();
+    private final Map<String, String> answer = new HashMap<>();
 
-    static {
+    private AutoReplyData() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS CHAT(
                 KEY TEXT PRIMARY KEY NOT NULL,
@@ -23,93 +29,71 @@ public final class AutoReplyData {
                 OP_TIME TEXT NOT NULL
                 )
                 """;
-        String findAll = "SELECT * from CHAT";
-        ResultSet resultSet = null;
         try {
-            SqlUtil.executeUpdateSQL(sql);
-            resultSet = SqlUtil.getResultSet(findAll);
-            while (resultSet.next()) {
-                String key = resultSet.getString("KEY");
-                String answer = resultSet.getString("ANSWER");
-                INSTANCE.getData().put(key, answer);
-            }
+            PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
+            SqlUtil.executeUpdateSQL(prepared);
+            SqlUtil.closeResource(prepared);
+            answer.putAll(init());
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    private final HashMap<String, String> data = new HashMap<>();
-
-    private AutoReplyData() {
+    public Map<String, String> getAnswer() {
+        return answer;
     }
 
-    public void add(String key, String answer, Long id) {
-        addD(key, answer);
+    public void add(String key, String answer, long opId) {
+        this.answer.put(key, answer);
+        new Thread(() -> add(key, answer, opId)).start();
+    }
+
+    public void remove(String key) {
+        answer.remove(key);
         new Thread(() -> {
             try {
-                addS(key, answer, id);
+                removeQA(key);
             } catch (SQLException e) {
+                NumeronLogUtil.logger.error(e);
                 e.printStackTrace();
             }
-        });
+        }).start();
     }
 
-    public void remove(String key, String answer) throws SQLException {
-        removeD(key);
-        new Thread(() -> {
-            try {
-                removeS(key, answer);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        });
-        removeS(key, answer);
+    public boolean exist(String key) {
+        return answer.containsKey(key);
     }
 
-    private void addD(String key, String answer) {
-        data.put(key, answer);
-    }
 
-    private void removeD(String key) {
-        data.remove(key);
-    }
-
-    private void addS(String key, String answer, Long id) throws SQLException {
-        String sql = "INSERT INTO CHAT(KEY, ANSWER, OP_ID, OP_TIME) " +
-                "VALUES('" + key + "', '" + answer + "', " + id + ", '" + LocalTime.now() + "' " + ")";
-        if (exist(key)) {
-            sql = "UPDATE CHAT SET ANSWER = '" + answer + "' WHERE KEY = '" + answer + "'";
+    private Map<String, String> init() throws SQLException {
+        String sql = "SELECT * FROM ILLEGALS";
+        PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
+        ResultSet resultSet = SqlUtil.getResultSet(prepared);
+        Map<String, String> ret = new HashMap<>();
+        while (resultSet.next()) {
+            ret.put(resultSet.getString("KEY"), resultSet.getString("ANSWER"));
         }
-        SqlUtil.executeUpdateSQL(sql);
+        SqlUtil.closeResource(null, prepared, resultSet);
+        return ret;
     }
 
-    private void removeS(String key, String answer) throws SQLException {
-        if (!exist(key)) {
-            return;
-        }
-        String sql = "DELETE FROM CHAT WHERE KEY = '" + key + "' and ANSWER = '" + answer + "'";
-        SqlUtil.executeUpdateSQL(sql);
+    private boolean addQA(String key, String answer, long opId) throws SQLException {
+        String sql = "INSERT INTO CHAT(KEY,ANSWER,OP_ID,OP_TIME) VALUES(?,?,?,?)";
+        Object[] params = {
+                key, answer, opId, LocalDateTime.now()
+        };
+        PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
+        int flag = SqlUtil.executeUpdateSQL(prepared, params);
+        SqlUtil.closeResource(prepared);
+        return flag >= 1;
     }
 
-    public String getAnswer(String key) {
-        return data.get(key);
-    }
-
-    public boolean exist(String key) throws SQLException {
-        String sql = "SELECT * FROM CHAT WHERE KEY = '" + key + "'";
-        ResultSet resultSet = SqlUtil.getResultSet(sql);
-        return resultSet == null;
-    }
-
-    public HashMap<String, String> getData() {
-        return data;
+    private boolean removeQA(String key) throws SQLException {
+        String sql = "DELETE FROM CHAT WHERE KEY=?";
+        PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
+        prepared.setString(1, key);
+        int flag = SqlUtil.executeUpdateSQL(prepared);
+        SqlUtil.closeResource(prepared);
+        return flag >= 1;
     }
 }

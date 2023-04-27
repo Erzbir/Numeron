@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.filter.rule;
 
-import com.erzbir.numeron.core.entity.GroupList;
+import com.erzbir.numeron.api.model.GroupService;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -12,9 +12,9 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class NormalRuleFilter extends AbstractRuleFilter {
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         if (event instanceof GroupMessageEvent event1) {
-            return GroupList.INSTANCE.contains(event1.getGroup().getId());
+            return GroupService.INSTANCE.exist(event1.getGroup().getId());
         }
         return true;
     }

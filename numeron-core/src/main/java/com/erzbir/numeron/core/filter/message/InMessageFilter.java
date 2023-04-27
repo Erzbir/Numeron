@@ -16,7 +16,7 @@ public class InMessageFilter extends AbstractMessageFilter {
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         return List.of(text.split(",\\s+")).contains(event.getMessage().contentToString());
     }
 }

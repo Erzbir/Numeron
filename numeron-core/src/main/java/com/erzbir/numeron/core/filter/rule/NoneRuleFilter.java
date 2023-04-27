@@ -10,7 +10,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class NoneRuleFilter extends AbstractRuleFilter {
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         return true;
     }
 }

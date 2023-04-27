@@ -1,11 +1,11 @@
 package com.erzbir.numeron.menu;
 
 
+import com.erzbir.numeron.api.model.GroupService;
 import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.entity.GroupList;
 import com.erzbir.numeron.core.handler.Command;
 import com.erzbir.numeron.core.processor.Processor;
-import com.erzbir.numeron.core.utils.NumeronLogUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class MenuAnnotationProcessor implements Processor {
 
     @Override
     public void onApplicationEvent() {
-        Map<String, Object> menu = AppContext.INSTANT.getBeansWithAnnotation(Menu.class);
+        Map<String, Object> menu = AppContext.INSTANCE.getBeansWithAnnotation(Menu.class);
         NumeronLogUtil.trace("开始生成图片帮助菜单");
         menu.forEach((k, v) -> {
             Menu annotation = v.getClass().getAnnotation(Menu.class);
@@ -29,7 +29,7 @@ public class MenuAnnotationProcessor implements Processor {
             boolean open = annotation.open();
             MenuStatic.menuList.add(name);
             if (!open) {
-                MenuStatic.closeMenuGroups.put(name, GroupList.INSTANCE.getGroup());
+                MenuStatic.closeMenuGroups.put(name, GroupService.INSTANCE.getEnableGroupList());
             }
             List<Command> commands = new ArrayList<>();
             NumeronLogUtil.info(name);

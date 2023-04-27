@@ -1,8 +1,8 @@
 package com.erzbir.numeron.plugin.openai.config;
 
-import com.erzbir.numeron.core.utils.ConfigReadException;
-import com.erzbir.numeron.core.utils.ConfigWriteException;
-import com.erzbir.numeron.core.utils.JsonUtil;
+import com.erzbir.numeron.utils.ConfigReadException;
+import com.erzbir.numeron.utils.ConfigWriteException;
+import com.erzbir.numeron.utils.JsonUtil;
 
 /**
  * @author Erzbir

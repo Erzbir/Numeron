@@ -13,8 +13,6 @@ import net.mamoe.mirai.event.events.UserMessageEvent;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.PlainText;
 
-import java.sql.SQLException;
-
 /**
  * @author Erzbir
  * @Date: 2022/11/18 20:17
@@ -31,7 +29,7 @@ public class AutoReply {
             filterRule = FilterRule.BLACK
     )
     private void reply(MessageEvent e) {
-        String s = AutoReplyData.INSTANCE.getAnswer(e.getMessage().contentToString());
+        String s = AutoReplyData.INSTANCE.getAnswer().get(e.getMessage().contentToString());
         if (s != null) {
             e.getSubject().sendMessage(s);
         }
@@ -51,6 +49,9 @@ public class AutoReply {
     )
     private void learn(MessageEvent e) {
         String[] split = e.getMessage().contentToString().split("\\s+");
+        if (split.length < 3) {
+            return;
+        }
         AutoReplyData.INSTANCE.add(split[1], split[2], e.getSender().getId());
         e.getSubject().sendMessage("学会了");
     }
@@ -68,12 +69,11 @@ public class AutoReply {
             permission = PermissionType.ALL
     )
     private void forget(MessageEvent e) {
-        String[] split = e.getMessage().contentToString().split("\\s+");
-        try {
-            AutoReplyData.INSTANCE.remove(split[1], split[2]);
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+        String s = e.getMessage().contentToString().replaceAll("\\s+", "");
+        if (s.isEmpty()) {
+            return;
         }
+        AutoReplyData.INSTANCE.remove(s);
         e.getSubject().sendMessage("忘掉了");
     }
 

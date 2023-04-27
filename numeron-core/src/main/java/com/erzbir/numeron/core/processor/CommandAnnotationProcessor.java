@@ -3,7 +3,7 @@ package com.erzbir.numeron.core.processor;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.handler.Command;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.utils.NumeronLogUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class CommandAnnotationProcessor implements Processor {
 
     @Override
     public void onApplicationEvent() {
-        AppContext context = AppContext.INSTANT;
+        AppContext context = AppContext.INSTANCE;
         NumeronLogUtil.trace("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
         NumeronLogUtil.trace("命令帮助文档生成完成\n");

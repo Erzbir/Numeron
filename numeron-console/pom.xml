@@ -24,6 +24,26 @@
             <artifactId>numeron-core</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.erzbir</groupId>
+            <artifactId>numeron-boot</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.erzbir</groupId>
+            <artifactId>numeron-menu</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.erzbir.numeron.utils</groupId>
+            <artifactId>numeron-utils</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.erzbir.numeron.api</groupId>
+            <artifactId>numeron-api</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>

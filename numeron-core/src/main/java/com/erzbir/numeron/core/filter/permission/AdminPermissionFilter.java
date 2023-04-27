@@ -1,9 +1,9 @@
 package com.erzbir.numeron.core.filter.permission;
 
-import com.erzbir.numeron.core.entity.AdminList;
-import com.erzbir.numeron.core.entity.BlackList;
+import com.erzbir.numeron.api.model.AdminService;
+import com.erzbir.numeron.api.model.BlackService;
+import com.erzbir.numeron.api.model.WhiteService;
 import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.entity.WhiteList;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -19,12 +19,12 @@ public class AdminPermissionFilter extends AbstractPermissionFilter {
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         long id = event.getSender().getId();
         if (event instanceof GroupMessageEvent event1) {
             return NumeronBot.INSTANCE.getMaster() == id ||
-                    (AdminList.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackList.INSTANCE.contains(id))
-                    || WhiteList.INSTANCE.contains(id);
+                    (AdminService.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackService.INSTANCE.exist(id))
+                    || WhiteService.INSTANCE.exist(id);
         }
         return NumeronBot.INSTANCE.getMaster() == id;
     }

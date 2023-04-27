@@ -28,7 +28,7 @@ public class ScanIllegal {
 
     private void register() {
         ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
-                        && IllegalList.INSTANCE.contains(event.getMessage().contentToString())
+                        && IllegalService.INSTANCE.exist(event.getMessage().contentToString())
                         && event.getGroup().getBotPermission().getLevel() != 0),
                 GroupMessageEvent.class,
                 event -> {

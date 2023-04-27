@@ -5,5 +5,5 @@ package com.erzbir.numeron.core.filter;
  * @Date: 2022/11/26 17:54
  */
 public interface FilterFactory {
-    ChannelFilterInter create(Enum<?> e);
+    ChannelFilterInter create(Enum<?> e, String text);
 }

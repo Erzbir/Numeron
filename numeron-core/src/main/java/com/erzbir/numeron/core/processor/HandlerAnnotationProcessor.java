@@ -2,12 +2,12 @@ package com.erzbir.numeron.core.processor;
 
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.filter.MessageFilterExecutor;
+import com.erzbir.numeron.core.filter.executor.MessageFilterExecutor;
 import com.erzbir.numeron.core.handler.Event;
 import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.handler.factory.ExecutorFactory;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.utils.NumeronLogUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
@@ -93,7 +93,7 @@ public class HandlerAnnotationProcessor implements Processor {
 
     @Override
     public void onApplicationEvent() {
-        AppContext context = AppContext.INSTANT;
+        AppContext context = AppContext.INSTANCE;
         bot = NumeronBot.INSTANCE.getBot();
         channel = bot.getEventChannel();
         NumeronLogUtil.trace("开始注册注解消息处理监听......");

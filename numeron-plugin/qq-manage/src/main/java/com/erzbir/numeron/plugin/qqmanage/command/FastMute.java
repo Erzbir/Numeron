@@ -7,7 +7,7 @@ import com.erzbir.numeron.core.filter.rule.FilterRule;
 import com.erzbir.numeron.core.handler.Command;
 import com.erzbir.numeron.core.handler.Message;
 import com.erzbir.numeron.core.listener.Listener;
-import com.erzbir.numeron.core.utils.ConfigCreateUtil;
+import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;

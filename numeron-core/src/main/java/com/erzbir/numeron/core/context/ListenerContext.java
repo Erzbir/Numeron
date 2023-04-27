@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.context;
 
-import com.erzbir.numeron.core.proxy.MiraiEventChannel$Proxy;
-import com.erzbir.numeron.core.utils.NumeronLogUtil;
+import com.erzbir.numeron.core.proxy.MiraiEventChannelProxy;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventPriority;
 import net.mamoe.mirai.event.Listener;
@@ -22,16 +22,16 @@ import java.util.Map;
 public class ListenerContext {
     public static final ListenerContext INSTANCE = new ListenerContext();
 
-    private final HashMap<String, Listener<? extends Event>> context = new HashMap<>();
+    private final Map<String, Listener<? extends Event>> context = new HashMap<>();
     private final Map<EventPriority, ?> listenerCollectionMap;
-    private final MiraiEventChannel$Proxy miraiEventChannel$Proxy;
+    private final MiraiEventChannelProxy miraiEventChannelProxy;
 
 
     public ListenerContext() {
         try {
             listenerCollectionMap = getListenerMap();
-            miraiEventChannel$Proxy = new MiraiEventChannel$Proxy(new HashMap<>());
-            miraiEventChannel$Proxy.setInvokeAfter(() -> add((Listener<? extends Event>) miraiEventChannel$Proxy.getRet()));
+            miraiEventChannelProxy = new MiraiEventChannelProxy(new HashMap<>());
+            miraiEventChannelProxy.setInvokeAfter(() -> add((Listener<? extends Event>) miraiEventChannelProxy.getRet()));
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | NoSuchFieldException |
                  InvocationTargetException e) {
             NumeronLogUtil.logger.error(e);
@@ -68,8 +68,8 @@ public class ListenerContext {
         context.put(method, listener);
     }
 
-    public MiraiEventChannel$Proxy.EventChannelMethodInvokeInter getListenerRegister() {
-        return miraiEventChannel$Proxy.getProxy();
+    public MiraiEventChannelProxy.EventChannelMethodInvokeInter getListenerRegister() {
+        return miraiEventChannelProxy.getProxy();
     }
 
     public Listener<? extends Event> get(String method) {

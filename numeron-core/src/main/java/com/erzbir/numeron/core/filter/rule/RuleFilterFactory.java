@@ -20,7 +20,7 @@ public class RuleFilterFactory implements FilterFactory {
      * @return ChannelFilterInter
      */
     @Override
-    public ChannelFilterInter create(Enum<?> e) {
+    public ChannelFilterInter create(Enum<?> e, String text) {
         if (e.equals(FilterRule.BLACK)) {
             return new BlackRuleFilter();
         } else if (e.equals(FilterRule.NORMAL)) {

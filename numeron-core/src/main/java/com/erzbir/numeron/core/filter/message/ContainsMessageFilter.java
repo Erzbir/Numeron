@@ -13,11 +13,10 @@ public class ContainsMessageFilter extends AbstractMessageFilter {
     public static final ContainsMessageFilter INSTANCE = new ContainsMessageFilter();
 
     private ContainsMessageFilter() {
-
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         return event.getMessage().contentToString().contains(text);
     }
 }

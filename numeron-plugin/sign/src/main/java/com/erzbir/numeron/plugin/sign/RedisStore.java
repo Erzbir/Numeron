@@ -1,7 +1,7 @@
 package com.erzbir.numeron.plugin.sign;
 
 import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.utils.ConfigCreateUtil;
+import com.erzbir.numeron.utils.ConfigCreateUtil;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;

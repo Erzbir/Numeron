@@ -16,7 +16,7 @@ public class EqualsMessageFilter extends AbstractMessageFilter {
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         return event.getMessage().contentToString().equals(text);
     }
 }

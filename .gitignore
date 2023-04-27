@@ -5,14 +5,15 @@ target/
 data.sqlite
 erzbirnumeron
 *.log
-plugin-libraries
-plugin-shared-libraries
-plugin_config
-plugin_data
-temp
-nm-plugin
-config
-data
+/plugin-libraries
+/plugin-shared-libraries
+/plugin_config
+/plugin_data
+/temp
+/nm-plugin
+/data
+/plugins
+/numeron_plugins
 
 
 ### STS ###
@@ -49,4 +50,3 @@ build/
 
 ### MacOS ###
 *._Store
-!/numeron-core/src/main/java/com/erzbir/mirai/numeron/test/

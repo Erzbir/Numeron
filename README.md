@@ -18,14 +18,16 @@
 
 ### 模块:
 
-- core模块是脚手架(消息过滤实现)
-- boot模块用于启动机器人
-- menu模块用于图片菜单生成
-- plugin模块是主要的功能
-- buildSrc模块对项目没有用处, 只是用于打包可执行jar
-- console模块(待开发)
+- core模块, 脚手架(消息过滤和监听注册实现)
+- boot模块, 启动机器人
+- menu模块, 图片菜单生成
+- plugin模块, 主要的功能
+- console模块, 控制台(待开发)和插件加载
+- api模块, core的api(正在分离)
+- utils模块, 一些通用工具
+- buildSrc模块, 对项目没有用处, 只是用于打包可执行jar
 
-## 实现的功能:
+## plugin模块实现的功能:
 
 - 消息回复
 - @禁言, qq号禁言
@@ -66,6 +68,7 @@
 如果不是消息事件则使用下文介绍的<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
 
 ```java
+
 @Listener
 public class Test {
     // 消息匹配规则设置了默认值, 默认是equals()完全匹配
@@ -85,7 +88,7 @@ public class Test {
     @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
     // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
     private void sayGoodNight(MessageEvent event) {
-      event.getSubject().sendMessage("晚安");
+        event.getSubject().sendMessage("晚安");
     }
 
     // 权限是所有人, 不过滤
@@ -129,9 +132,10 @@ public class Test {
 不过类上必须有<code>[@Listener](numeron-core/src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
 
 ```java
+
 @Listener
 public class Test {
-    
+
     @Event
     private void test(MessageRecallEvent.GroupRecall event) {
         System.out.println("有人撤回了消息");
@@ -254,11 +258,13 @@ class Test {
 
 ## 开发计划:
 
+- [ ] 群管理功能
+- [ ] api和实现分离
 - [ ] console控制台
-- [ ] 功能热加载和插件模式
+- [ ] 功能热加载
+- [x] 插件模式
 - [ ] 只监听某个id(好友/群)的事件监听注册(用注解实现)
 - [ ] 兼容mirai-console的插件
-- [ ] 虚拟线程支持
 
 ## 联系方式:
 

@@ -14,7 +14,7 @@ public class AllPermissionFilter extends AbstractPermissionFilter {
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         return true;
     }
 }

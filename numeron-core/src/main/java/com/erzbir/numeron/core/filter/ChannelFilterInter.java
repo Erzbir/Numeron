@@ -1,19 +1,22 @@
 package com.erzbir.numeron.core.filter;
 
-import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.event.Event;
+import net.mamoe.mirai.event.EventChannel;
 
 /**
  * @author Erzbir
  * @Date: 2022/11/16 22:18
  * <p>
- * 注解处理过滤器接口
+ * 过滤器接口
  * </p>
  */
 public interface ChannelFilterInter {
 
     /**
-     * @param event 消息事件
+     * @param event 事件
      * @return Boolean
      */
-    Boolean filter(MessageEvent event, String text);
+    <E extends Event> Boolean filter(E event);
+
+    <E extends Event> EventChannel<E> filter(EventChannel<E> channel);
 }

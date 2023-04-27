@@ -3,16 +3,19 @@ package com.erzbir.numeron.boot;
 import com.erzbir.numeron.boot.exception.ProcessorException;
 import com.erzbir.numeron.core.classloader.ClassScanner;
 import com.erzbir.numeron.core.processor.Processor;
-import com.erzbir.numeron.core.utils.NumeronLogUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Erzbir
  * @Date: 2022/12/12 22:45
  */
 public class Starter {
+    public final ExecutorService executor = Executors.newCachedThreadPool();
     private final String basePackage;
     private final ClassLoader classLoader;
 
@@ -39,15 +42,18 @@ public class Starter {
         try {
             // 扫瞄实现了Processor接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {
-                Processor processor;
-                try {
-                    processor = (Processor) e.getConstructor().newInstance();
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                         NoSuchMethodException ex) {
-                    NumeronLogUtil.logger.error(ex);
-                    throw new ProcessorException(ex);
-                }
-                processor.onApplicationEvent();
+                executor.submit(() -> {
+                    Processor processor;
+                    try {
+                        processor = (Processor) e.getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                             NoSuchMethodException ex) {
+                        NumeronLogUtil.logger.error(ex);
+                        throw new ProcessorException(ex);
+                    }
+
+                    processor.onApplicationEvent();
+                });
             });
         } catch (IOException | ClassNotFoundException e) {
             throw new ProcessorException(e);

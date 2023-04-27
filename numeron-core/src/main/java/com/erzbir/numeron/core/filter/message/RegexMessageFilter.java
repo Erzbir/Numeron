@@ -18,7 +18,7 @@ public class RegexMessageFilter extends AbstractMessageFilter {
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
+    public Boolean filter(MessageEvent event) {
         return Pattern.compile(text).matcher(event.getMessage().contentToString()).find();
     }
 }

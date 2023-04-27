@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.filter.permission;
 
-import com.erzbir.numeron.core.entity.BlackList;
+import com.erzbir.numeron.core.entity.serviceimpl.BlackServiceImpl;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -16,7 +16,7 @@ public class FriendPermissionFilter extends AbstractPermissionFilter {
     }
 
     @Override
-    public Boolean filter(MessageEvent event, String text) {
-        return event instanceof FriendMessageEvent && !BlackList.INSTANCE.contains(event.getSender().getId());
+    public Boolean filter(MessageEvent event) {
+        return event instanceof FriendMessageEvent && !BlackServiceImpl.INSTANCE.exist(event.getSender().getId());
     }
 }

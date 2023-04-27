@@ -22,19 +22,19 @@ public class MessageFilterFactory implements FilterFactory {
      * @return ChannelFilterInter
      */
     @Override
-    public ChannelFilterInter create(Enum<?> e) {
+    public ChannelFilterInter create(Enum<?> e, String text) {
         if (e.equals(MessageRule.EQUAL)) {
-            return EqualsMessageFilter.INSTANCE;
+            return EqualsMessageFilter.INSTANCE.setText(text);
         } else if (e.equals(MessageRule.END_WITH)) {
-            return EndMessageFilter.INSTANCE;
+            return EndMessageFilter.INSTANCE.setText(text);
         } else if (e.equals(MessageRule.BEGIN_WITH)) {
-            return BeginMessageFilter.INSTANCE;
+            return BeginMessageFilter.INSTANCE.setText(text);
         } else if (e.equals(MessageRule.CONTAINS)) {
-            return ContainsMessageFilter.INSTANCE;
+            return ContainsMessageFilter.INSTANCE.setText(text);
         } else if (e.equals(MessageRule.REGEX)) {
-            return RegexMessageFilter.INSTANCE;
+            return RegexMessageFilter.INSTANCE.setText(text);
         } else if (e.equals(MessageRule.IN)) {
-            return InMessageFilter.INSTANCE;
+            return InMessageFilter.INSTANCE.setText(text);
         }
         return null;
     }
