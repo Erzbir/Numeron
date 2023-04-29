@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.entity.serviceimpl;
 
 
-import com.erzbir.numeron.api.model.WhiteService;
+import com.erzbir.numeron.api.entity.WhiteService;
 import com.erzbir.numeron.core.entity.dao.WhiteDao;
 import com.erzbir.numeron.core.entity.daoimpl.WhiteDaoImpl;
 import com.erzbir.numeron.utils.NumeronLogUtil;

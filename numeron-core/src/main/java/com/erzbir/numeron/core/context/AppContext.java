@@ -1,8 +1,8 @@
 package com.erzbir.numeron.core.context;
 
+import com.erzbir.numeron.annotation.Component;
 import com.erzbir.numeron.core.classloader.ClassScanner;
 import com.erzbir.numeron.core.exception.AppContextException;
-import com.erzbir.numeron.core.handler.Component;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.IOException;

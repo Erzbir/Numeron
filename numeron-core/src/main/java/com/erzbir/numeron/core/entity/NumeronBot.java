@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.entity;
 
 import com.erzbir.numeron.core.context.ListenerContext;
-import com.erzbir.numeron.core.processor.HandlerAnnotationProcessor;
+import com.erzbir.numeron.core.processor.MessageAnnotationProcessor;
 import com.erzbir.numeron.core.utils.FixProtocol;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.ConfigWriteException;
@@ -231,7 +231,7 @@ public class NumeronBot implements Serializable {
     public void turnOn() {
         setEnable(true);
         // 重新注册监听
-        new HandlerAnnotationProcessor().onApplicationEvent();
+        new MessageAnnotationProcessor().onApplicationEvent();
     }
 
     public void turnOff() {

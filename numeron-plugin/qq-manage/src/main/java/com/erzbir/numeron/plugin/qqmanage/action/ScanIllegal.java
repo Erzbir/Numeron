@@ -1,12 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.core.context.ListenerContext;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.listener.EventListenerRegister;
 import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.NormalMember;
@@ -27,7 +27,7 @@ public class ScanIllegal {
     private boolean flag = false;
 
     private void register() {
-        ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
+        EventListenerRegister.Bot.register(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && IllegalService.INSTANCE.exist(event.getMessage().contentToString())
                         && event.getGroup().getBotPermission().getLevel() != 0),
                 GroupMessageEvent.class,

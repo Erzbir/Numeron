@@ -1,9 +1,9 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.core.context.ListenerContext;
+import com.erzbir.numeron.annotation.Event;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.api.listener.EventListenerRegister;
 import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.handler.Event;
-import com.erzbir.numeron.core.listener.Listener;
 import com.erzbir.numeron.menu.Menu;
 import kotlin.coroutines.EmptyCoroutineContext;
 import net.mamoe.mirai.contact.Group;
@@ -34,7 +34,7 @@ public class GroupRequest {
                     .plus("邀请人: ").plus(event.getInvitorId() + "\n")
                     .plus("是否同意?");
             group.sendMessage(messages);
-            ListenerContext.INSTANCE.getListenerRegister().subscribeOnce(
+            EventListenerRegister.Bot.registerOnce(
                     NumeronBot.INSTANCE.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent e && e.getGroup().getId() == group.getId()),
                     GroupMessageEvent.class,
                     EmptyCoroutineContext.INSTANCE,

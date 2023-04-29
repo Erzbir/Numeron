@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.filter.rule;
 
-import com.erzbir.numeron.api.model.BlackService;
-import com.erzbir.numeron.api.model.GroupService;
+import com.erzbir.numeron.api.entity.BlackService;
+import com.erzbir.numeron.api.entity.GroupService;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 

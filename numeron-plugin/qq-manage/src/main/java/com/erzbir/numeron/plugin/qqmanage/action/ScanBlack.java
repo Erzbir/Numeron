@@ -1,13 +1,13 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.api.model.BlackService;
-import com.erzbir.numeron.core.context.ListenerContext;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.listener.EventListenerRegister;
+import com.erzbir.numeron.api.entity.BlackService;
 import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -26,7 +26,7 @@ public class ScanBlack {
     private boolean flag = false;
 
     private void register() {
-        ListenerContext.INSTANCE.getListenerRegister().subscribe(
+        EventListenerRegister.Bot.register(
                 NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && BlackService.INSTANCE.exist(event.getSender().getId())
                         && event.getGroup().getBotPermission().getLevel() != 0),

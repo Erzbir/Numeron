@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.entity.serviceimpl;
 
-import com.erzbir.numeron.api.model.AdminService;
+import com.erzbir.numeron.api.entity.AdminService;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import net.mamoe.mirai.contact.MemberPermission;
 import net.mamoe.mirai.contact.NormalMember;

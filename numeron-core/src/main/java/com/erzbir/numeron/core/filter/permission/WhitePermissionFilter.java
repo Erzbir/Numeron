@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.filter.permission;
 
-import com.erzbir.numeron.api.model.WhiteService;
+import com.erzbir.numeron.api.entity.WhiteService;
 import com.erzbir.numeron.core.entity.NumeronBot;
 import net.mamoe.mirai.event.events.MessageEvent;
 

@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.entity.serviceimpl;
 
-import com.erzbir.numeron.api.model.GroupService;
+import com.erzbir.numeron.api.entity.GroupService;
 import com.erzbir.numeron.core.entity.dao.GroupDao;
 import com.erzbir.numeron.core.entity.daoimpl.GroupDaoImpl;
 import com.erzbir.numeron.utils.NumeronLogUtil;

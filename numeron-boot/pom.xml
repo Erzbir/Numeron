@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.erzbir</groupId>
+        <groupId>com.erzbir.numeron</groupId>
         <artifactId>numeron</artifactId>
         <version>1.3.0</version>
     </parent>
@@ -20,77 +20,87 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-core</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.erzbir.numeron.utils</groupId>
+            <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-utils</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.erzbir.numeron.api</groupId>
+            <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-api</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-menu</artifactId>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron</groupId>
+            <artifactId>numeron-annotation</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>card-search</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>chat</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>sign</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>check-weight</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>code-process</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>openai</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>help</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>rss</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>switch</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>qq-manage</artifactId>
             <version>1.3.0</version>
         </dependency>
         <dependency>
-            <groupId>com.erzbir.numeron.plugins</groupId>
+            <groupId>com.erzbir.numeron.plugin</groupId>
             <artifactId>plugin-control</artifactId>
             <version>1.3.0</version>
         </dependency>
