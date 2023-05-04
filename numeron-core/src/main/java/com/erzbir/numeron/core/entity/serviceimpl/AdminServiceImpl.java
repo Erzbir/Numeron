@@ -1,9 +1,10 @@
 package com.erzbir.numeron.core.entity.serviceimpl;
 
 import com.erzbir.numeron.api.entity.AdminService;
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.BotMap;
 import net.mamoe.mirai.contact.MemberPermission;
 import net.mamoe.mirai.contact.NormalMember;
+import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.MemberPermissionChangeEvent;
 
 import java.util.HashMap;
@@ -20,18 +21,18 @@ public class AdminServiceImpl implements AdminService {
     private final Map<Long, Set<Long>> adminMap = new HashMap<>();
 
     public AdminServiceImpl() {
-        NumeronBot.INSTANCE.getBot().getGroups()
+        BotMap.INSTANCE.forEach((k, v) -> v.getGroups()
                 .stream()
                 .filter(f -> GroupServiceImpl.INSTANCE.exist(f.getId()))
                 .forEach(g -> {
-                    Set<Long> list = new HashSet<>();
+                    Set<Long> set = new HashSet<>();
                     g.getMembers()
                             .stream()
                             .filter(t -> t.getPermission().getLevel() > 0)
                             .toList()
-                            .forEach(v -> list.add(v.getId()));
-                    adminMap.put(g.getId(), list);
-                });
+                            .forEach(c -> set.add(c.getId()));
+                    adminMap.put(k, set);
+                }));
         refresh();
     }
 
@@ -51,7 +52,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     private void refresh() {
-        NumeronBot.INSTANCE.getEventChannel().subscribeAlways(MemberPermissionChangeEvent.class, event -> {
+        GlobalEventChannel.INSTANCE.subscribeAlways(MemberPermissionChangeEvent.class, event -> {
             long id = event.getGroup().getId();
             NormalMember member = event.getMember();
             if (member.getPermission().equals(MemberPermission.ADMINISTRATOR)) {

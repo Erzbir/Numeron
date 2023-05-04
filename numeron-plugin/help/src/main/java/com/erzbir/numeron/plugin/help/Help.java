@@ -2,7 +2,7 @@ package com.erzbir.numeron.plugin.help;
 
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.core.processor.CommandAnnotationProcessor;
 import com.erzbir.numeron.filter.PermissionType;
 import net.mamoe.mirai.Bot;

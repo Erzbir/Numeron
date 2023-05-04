@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.proxy;
 
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import net.mamoe.mirai.event.events.MessageEvent;
 import org.junit.jupiter.api.Test;
 

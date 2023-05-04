@@ -1,8 +1,4 @@
-package com.erzbir.numeron.console;
-
-import com.erzbir.numeron.api.plugin.PluginService;
-import com.erzbir.numeron.console.plugin.Plugin;
-import com.erzbir.numeron.console.plugin.PluginManager;
+package com.erzbir.numeron.console.plugin;
 
 import java.util.ArrayList;
 import java.util.List;

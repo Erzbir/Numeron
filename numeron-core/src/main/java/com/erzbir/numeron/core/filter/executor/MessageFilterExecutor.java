@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.filter.executor;
 
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.core.exception.AnnotationGetException;
 import com.erzbir.numeron.core.filter.message.MessageFilterFactory;
 import com.erzbir.numeron.core.filter.permission.PermissionFilterFactory;

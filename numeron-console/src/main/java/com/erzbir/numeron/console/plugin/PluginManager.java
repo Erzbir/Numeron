@@ -4,6 +4,7 @@ import com.erzbir.numeron.console.exception.PluginConflictException;
 import com.erzbir.numeron.console.exception.PluginLoadException;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,14 +22,12 @@ import java.util.concurrent.Executors;
  * @author Erzbir
  * @Date: 2023/4/26 17:36
  */
-public class PluginManager implements PluginManagerInter {
+public class PluginManager implements PluginManagerInter, PluginService {
     private static final String pluginPath = "numeron_plugins/";
-    private static final String libPath = "plugin-lib/";
     public static PluginManager INSTANCE = new PluginManager();
 
     static {
         ConfigCreateUtil.createDir(pluginPath);
-        ConfigCreateUtil.createDir(libPath);
     }
 
     public final Map<String, ServiceLoader<Plugin>> serviceLoaderMap = new ConcurrentHashMap<>();
@@ -70,6 +69,10 @@ public class PluginManager implements PluginManagerInter {
 
     @Override
     public void enable(Plugin plugin) {
+        if (plugin.isEnable()) {
+            NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already enabled and cannot be re-enabled.");
+            return;
+        }
         executor.submit(plugin::enable);
         Class<? extends Plugin> aClass = plugin.getClass();
         AppContext.INSTANCE.addAllToContext(aClass.getPackageName(), aClass.getClassLoader());
@@ -77,6 +80,10 @@ public class PluginManager implements PluginManagerInter {
 
     @Override
     public void disable(Plugin plugin) {
+        if (!plugin.isEnable()) {
+            NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already disabled and cannot be re-disabled.");
+            return;
+        }
         executor.submit(plugin::disable);
         AppContext.INSTANCE.removeBean(plugin.getClass());
     }
@@ -91,11 +98,6 @@ public class PluginManager implements PluginManagerInter {
         ArrayList<Plugin> list = new ArrayList<>();
         pluginMap.forEach((k, v) -> list.add(v));
         return list;
-    }
-
-    @Override
-    public String getPluginLibrariesFolder() {
-        return libPath;
     }
 
     @Override
@@ -129,5 +131,32 @@ public class PluginManager implements PluginManagerInter {
     @Override
     public String getPluginVersion(Plugin plugin) {
         return plugin.getDescription().getVersion();
+    }
+
+    @Override
+    public List<Plugin> getLoadedPlugins() {
+        return (List<Plugin>) pluginMap.values();
+    }
+
+    @Override
+    public List<Plugin> getEnablePlugins() {
+        List<Plugin> ret = new ArrayList<>();
+        pluginMap.values().forEach(t -> {
+            if (t.isEnable()) {
+                ret.add(t);
+            }
+        });
+        return ret;
+    }
+
+    @Override
+    public List<Plugin> getDisablePlugins() {
+        List<Plugin> ret = new ArrayList<>();
+        pluginMap.values().forEach(t -> {
+            if (!t.isEnable()) {
+                ret.add(t);
+            }
+        });
+        return ret;
     }
 }

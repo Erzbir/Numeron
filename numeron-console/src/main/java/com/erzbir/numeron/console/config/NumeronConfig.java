@@ -14,7 +14,5 @@ import java.io.Serializable;
  */
 public class NumeronConfig extends BotConfiguration implements Serializable {
     private long master;
-    private long account;
-    private long password;
     private String folder;
 }

@@ -1,7 +1,7 @@
 package com.erzbir.numeron.plugin.codeprocess.runway;
 
 
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.plugin.codeprocess.CodeUtil;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 public class RunPy implements RunCode {
     private static final Object key = new Object();
-    private static final String codeDir = NumeronBot.INSTANCE.getFolder() + "/botCode/py";
+    private static final String codeDir = NumeronBot.INSTANCE.getWorkDir() + "/botCode/py";
     private static volatile RunPy INSTANCE;
 
     public static RunPy getInstance() {

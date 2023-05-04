@@ -2,6 +2,7 @@ package com.erzbir.numeron.core.processor;
 
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 

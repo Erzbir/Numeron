@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.qqmanage.action;
 import com.erzbir.numeron.annotation.Event;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.api.listener.EventListenerRegister;
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.menu.Menu;
 import kotlin.coroutines.EmptyCoroutineContext;
 import net.mamoe.mirai.contact.Group;

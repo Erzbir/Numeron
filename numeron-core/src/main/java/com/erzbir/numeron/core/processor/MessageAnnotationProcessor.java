@@ -3,13 +3,13 @@ package com.erzbir.numeron.core.processor;
 import com.erzbir.numeron.annotation.Event;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.core.filter.executor.MessageFilterExecutor;
 import com.erzbir.numeron.core.handler.factory.ExecutorFactory;
 import com.erzbir.numeron.utils.NumeronLogUtil;
-import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.EventChannel;
+import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,8 +27,7 @@ import java.util.Arrays;
  */
 @SuppressWarnings("unused")
 public class MessageAnnotationProcessor implements Processor {
-    public static EventChannel<BotEvent> channel;
-    public static Bot bot;
+    public static EventChannel<net.mamoe.mirai.event.Event> channel;
 
     /**
      * 通过过滤监听, 最终过滤到一个确定的事件, 过滤规则由注解标记
@@ -38,7 +37,7 @@ public class MessageAnnotationProcessor implements Processor {
      * @return EventChannel
      */
     @NotNull
-    private <E extends Annotation> EventChannel<BotEvent> toFilter(@NotNull EventChannel<BotEvent> channel, E annotation) {
+    private <E extends Annotation> EventChannel<net.mamoe.mirai.event.Event> toFilter(@NotNull EventChannel<net.mamoe.mirai.event.Event> channel, E annotation) {
         if (!(annotation instanceof Message)) {
             return channel;
         }
@@ -51,7 +50,7 @@ public class MessageAnnotationProcessor implements Processor {
      * @param channel    过滤的channel
      * @param annotation 消息处理注解, 使用泛型代替实际的注解, 这样做的目的是减少代码量, 用反射的方式还原注解
      */
-    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<BotEvent> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<net.mamoe.mirai.event.Event> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         ExecutorFactory.INSTANCE.create(annotation)
                 .getExecute()
                 .execute(method, bean, channel, annotation);
@@ -94,8 +93,7 @@ public class MessageAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANCE;
-        bot = NumeronBot.INSTANCE.getBot();
-        channel = bot.getEventChannel();
+        MessageAnnotationProcessor.channel = GlobalEventChannel.INSTANCE.filter(t -> t instanceof BotEvent);
         NumeronLogUtil.trace("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> registerMethods(v));
         NumeronLogUtil.trace("注解消息处理监听注册完毕\n");

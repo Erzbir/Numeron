@@ -1,8 +1,8 @@
 package com.erzbir.numeron.core.boot;
 
+import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.boot.exception.ProcessorException;
 import com.erzbir.numeron.core.classloader.ClassScanner;
-import com.erzbir.numeron.core.processor.Processor;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.IOException;

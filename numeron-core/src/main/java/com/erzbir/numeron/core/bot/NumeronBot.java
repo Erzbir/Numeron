@@ -1,5 +1,7 @@
-package com.erzbir.numeron.core.entity;
+package com.erzbir.numeron.core.bot;
 
+import com.erzbir.numeron.api.bot.AbstractNumeronBot;
+import com.erzbir.numeron.core.utils.CoroutineScopeBridge;
 import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.processor.MessageAnnotationProcessor;
 import com.erzbir.numeron.core.utils.FixProtocol;
@@ -23,13 +25,13 @@ import java.util.Scanner;
  * @author Erzbir
  * @Date: 2022/12/28 00:20
  */
-public class NumeronBot implements Serializable {
-    public static NumeronBot INSTANCE = new NumeronBot();
+public class NumeronBot extends AbstractNumeronBot implements Serializable {
+    public static final NumeronBot INSTANCE = new NumeronBot();
     private final transient String deviceInfo = "device.json";
     private long master = 0L;    // 主人
     private long account = 0L;   // 帐号
     private String password = "";    // 密码
-    private transient String folder = "erzbirnumeron/";  // 文件存储目录
+    private transient String workDir = "erzbirnumeron/";  // 文件存储目录
     private boolean enable = true;
     private transient Bot bot;
     private BotConfiguration.HeartbeatStrategy heartbeatStrategy = BotConfiguration.HeartbeatStrategy.STAT_HB;
@@ -40,18 +42,18 @@ public class NumeronBot implements Serializable {
     }
 
     public NumeronBot(long account, String password,
-                      long master, String folder,
+                      long master, String workDir,
                       BotConfiguration.HeartbeatStrategy heartbeatStrategy,
                       BotConfiguration.MiraiProtocol miraiProtocol) {
         this.account = account;
         this.password = password;
-        this.folder = folder;
+        this.workDir = workDir;
         this.heartbeatStrategy = heartbeatStrategy;
         this.master = master;
         this.miraiProtocol = miraiProtocol;
         this.bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
             {
-                setWorkingDir(new File(folder + "bots/" + account + "/")); // 工作目录
+                setWorkingDir(new File(workDir + "bots/" + account + "/")); // 工作目录
                 setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
                 setProtocol(miraiProtocol); // 登陆协议
                 fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
@@ -59,22 +61,22 @@ public class NumeronBot implements Serializable {
         });
     }
 
-    public NumeronBot(long account, String password, long master, String folder, BotConfiguration botConfiguration) {
+    public NumeronBot(long account, String password, long master, String workDir, BotConfiguration botConfiguration) {
         this.account = account;
         this.master = master;
         this.password = password;
-        this.folder = folder;
+        this.workDir = workDir;
         this.bot = BotFactory.INSTANCE.newBot(account, password, botConfiguration);
     }
 
-    public NumeronBot(long account, String password, long master, String folder) {
+    public NumeronBot(long account, String password, long master, String workDir) {
         this.master = master;
         this.account = account;
         this.password = password;
-        this.folder = folder;
+        this.workDir = workDir;
         this.bot = BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
             {
-                setWorkingDir(new File(folder + "bots/" + account + "/")); // 工作目录
+                setWorkingDir(new File(workDir + "bots/" + account + "/")); // 工作目录
                 setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
                 setProtocol(miraiProtocol); // 登陆协议
                 fileBasedDeviceInfo(deviceInfo); // 文件保存的名字
@@ -85,7 +87,7 @@ public class NumeronBot implements Serializable {
 
     private void init() {
         Scanner scanner = new Scanner(System.in);
-        String configFile = this.folder + "config/botconfig.json";
+        String configFile = this.workDir + "config/botconfig.json";
         try {
             ConfigCreateUtil.createFile(configFile);
         } catch (IOException e) {
@@ -129,7 +131,7 @@ public class NumeronBot implements Serializable {
         if (notVerify()) {
             throw new RuntimeException();
         }
-        ConfigCreateUtil.createDir(folder + "bots/" + account + "/");
+        ConfigCreateUtil.createDir(workDir + "bots/" + account + "/");
         bot = createBot();
         save();
     }
@@ -142,7 +144,7 @@ public class NumeronBot implements Serializable {
         NumeronLogUtil.info("配置成功, 将保存配置....");
         new Thread(() -> {
             NumeronLogUtil.info("开始保存配置......");
-            String configFile = folder + "config/botconfig.json";
+            String configFile = workDir + "config/botconfig.json";
             HashMap<String, NumeronBot> hashMap = new HashMap<>();
             hashMap.put("bot", this);
             try {
@@ -171,7 +173,7 @@ public class NumeronBot implements Serializable {
     }
 
     private Bot createBot() {
-        String s = folder + "bots/" + account + "/";
+        String s = workDir + "bots/" + account + "/";
         ConfigCreateUtil.createDir(s);
         FixProtocol.INSTANCE.fix();
         return BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
@@ -204,6 +206,7 @@ public class NumeronBot implements Serializable {
         return enable;
     }
 
+
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
@@ -216,26 +219,30 @@ public class NumeronBot implements Serializable {
         this.bot = bot;
     }
 
-    public String getFolder() {
-        return this.folder;
+    @Override
+    public String getWorkDir() {
+        return this.workDir;
     }
 
-    public void setFolder(String dir) {
-        this.folder = dir;
+    public void setWorkDir(String dir) {
+        this.workDir = dir;
     }
 
     public EventChannel<BotEvent> getEventChannel() {
         return bot.getEventChannel();
     }
 
-    public void turnOn() {
+    @Override
+    public void launch() {
         setEnable(true);
         // 重新注册监听
         new MessageAnnotationProcessor().onApplicationEvent();
     }
 
-    public void turnOff() {
+    @Override
+    public void shutdown() {
         ListenerContext.INSTANCE.cancelAll();
+        CoroutineScopeBridge.Companion.cancel(this);
         setEnable(false);
     }
 }

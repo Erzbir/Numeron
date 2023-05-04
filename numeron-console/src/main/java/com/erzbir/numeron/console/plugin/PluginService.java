@@ -1,4 +1,4 @@
-package com.erzbir.numeron.api.plugin;
+package com.erzbir.numeron.console.plugin;
 
 import java.util.List;
 import java.util.ServiceLoader;
@@ -7,9 +7,7 @@ import java.util.ServiceLoader;
  * @author Erzbir
  * @Date: 2023/4/27 19:36
  */
-public interface PluginService {
-    PluginService INSTANCE = ServiceLoader.load(PluginService.class).findFirst().get();
-
+interface PluginService {
     List<?> getLoadedPlugins();
 
     List<?> getEnablePlugins();

@@ -4,7 +4,7 @@ import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.entity.WhiteService;
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -37,13 +37,13 @@ public class OnOffCommandHandle {
     private void shutdown(MessageEvent e) {
         if (NumeronBot.INSTANCE.isEnable()) {
             e.getSubject().sendMessage("关机");
-            NumeronBot.INSTANCE.turnOff();
+            NumeronBot.INSTANCE.shutdown();
         }
         if (!NumeronBot.INSTANCE.isEnable()) {
             NumeronBot.INSTANCE.getBot().getEventChannel().subscribe(MessageEvent.class, event -> {
                 if ((WhiteService.INSTANCE.exist(event.getSender().getId()) || event.getSender().getId() == NumeronBot.INSTANCE.getMaster()) && event.getMessage().contentToString().equals("/launch")) {
                     e.getSubject().sendMessage("开机");
-                    NumeronBot.INSTANCE.turnOn();
+                    NumeronBot.INSTANCE.launch();
                     return ListeningStatus.STOPPED;
                 } else {
                     return ListeningStatus.LISTENING;

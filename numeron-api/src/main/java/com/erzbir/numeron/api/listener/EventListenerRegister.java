@@ -12,50 +12,48 @@ import java.util.function.Function;
  * @Date: 2023/4/26 14:01
  */
 public interface EventListenerRegister {
-    EventListenerRegister Global = SpiListenerRegister.GlobalListenerRegister;
-    EventListenerRegister Bot = SpiListenerRegister.BotListenerRegister;
-    EventListenerRegister Plugin = SpiListenerRegister.PluginListenerRegister;
 
-    <E extends Event> Listener<E> register(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler);
+    <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler);
 
-    default <E extends Event> Listener<E> register(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Function<E, ListeningStatus> handler) {
-        return register(channel, eventClass, coroutineContext, concurrency, EventPriority.NORMAL, handler);
+    default <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Function<E, ListeningStatus> handler) {
+        return subscribe(channel, eventClass, coroutineContext, concurrency, EventPriority.NORMAL, handler);
     }
 
-    default <E extends Event> Listener<E> register(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Function<E, ListeningStatus> handler) {
-        return register(channel, eventClass, coroutineContext, ConcurrencyKind.LOCKED, handler);
+    default <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Function<E, ListeningStatus> handler) {
+        return subscribe(channel, eventClass, coroutineContext, ConcurrencyKind.LOCKED, handler);
     }
 
-    default <E extends Event> Listener<E> register(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Function<E, ListeningStatus> handler) {
-        return register(channel, eventClass, EmptyCoroutineContext.INSTANCE, handler);
+    default <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Function<E, ListeningStatus> handler) {
+        return subscribe(channel, eventClass, EmptyCoroutineContext.INSTANCE, handler);
 
     }
 
-    <E extends Event> Listener<E> registerOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler);
+    <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler);
 
-    default <E extends Event> Listener<E> registerOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Consumer<E> handler) {
-        return registerOnce(channel, eventClass, coroutineContext, ConcurrencyKind.LOCKED, handler);
+    default <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Consumer<E> handler) {
+        return subscribeOnce(channel, eventClass, coroutineContext, ConcurrencyKind.LOCKED, handler);
     }
 
-    default <E extends Event> Listener<E> registerOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Consumer<E> handler) {
-        return registerOnce(channel, eventClass, coroutineContext, concurrency, EventPriority.NORMAL, handler);
+    default <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Consumer<E> handler) {
+        return subscribeOnce(channel, eventClass, coroutineContext, concurrency, EventPriority.NORMAL, handler);
     }
 
-    default <E extends Event> Listener<E> registerOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler) {
-        return registerOnce(channel, eventClass, EmptyCoroutineContext.INSTANCE, handler);
+    default <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler) {
+        return subscribeOnce(channel, eventClass, EmptyCoroutineContext.INSTANCE, handler);
     }
 
-    <E extends Event> Listener<E> registerAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler);
+    <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler);
 
-    default <E extends Event> Listener<E> registerAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Consumer<E> handler) {
-        return registerAlways(channel, eventClass, coroutineContext, ConcurrencyKind.CONCURRENT, handler);
+    default <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Consumer<E> handler) {
+        return subscribeAlways(channel, eventClass, coroutineContext, ConcurrencyKind.CONCURRENT, handler);
     }
 
-    default <E extends Event> Listener<E> registerAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Consumer<E> handler) {
-        return registerAlways(channel, eventClass, coroutineContext, concurrency, EventPriority.NORMAL, handler);
+    default <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Consumer<E> handler) {
+        return subscribeAlways(channel, eventClass, coroutineContext, concurrency, EventPriority.NORMAL, handler);
     }
 
-    default <E extends Event> Listener<E> registerAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler) {
-        return registerAlways(channel, eventClass, EmptyCoroutineContext.INSTANCE, handler);
+    default <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler) {
+        return subscribeAlways(channel, eventClass, EmptyCoroutineContext.INSTANCE, handler);
     }
+
 }

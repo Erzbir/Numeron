@@ -1,6 +1,6 @@
 package com.erzbir.numeron.plugin.rss.timer;
 
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.core.utils.MiraiContactUtils;
 import com.erzbir.numeron.plugin.rss.config.RssConfig;
 import com.erzbir.numeron.plugin.rss.entity.RssInfo;

@@ -1,6 +1,5 @@
 package com.erzbir.numeron.core.entity.connection;
 
-import com.erzbir.numeron.core.entity.NumeronBot;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.sql.Connection;
@@ -19,7 +18,7 @@ public final class SqlConnection {
     static {
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + NumeronBot.INSTANCE.getFolder() + "config/data.sqlite");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + "numeron/config/data.sqlite");
         } catch (Exception e) {
             NumeronLogUtil.logger.error(e);
             e.printStackTrace();

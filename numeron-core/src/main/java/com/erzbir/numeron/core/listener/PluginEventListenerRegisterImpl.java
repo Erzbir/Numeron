@@ -12,22 +12,19 @@ import java.util.function.Function;
  * @Date: 2023/4/29 10:37
  */
 public class PluginEventListenerRegisterImpl implements EventListenerRegister {
-    private EventListenerRegister Global;
-    private EventListenerRegister Plugin;
-    private EventListenerRegister Bot;
 
     @Override
-    public <E extends Event> net.mamoe.mirai.event.Listener<E> register(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler) {
+    public <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler) {
         return null;
     }
 
     @Override
-    public <E extends Event> net.mamoe.mirai.event.Listener<E> registerOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler) {
+    public <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler) {
         return null;
     }
 
     @Override
-    public <E extends Event> Listener<E> registerAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler) {
+    public <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler) {
         return null;
     }
 }

@@ -4,7 +4,7 @@ package com.erzbir.numeron.menu;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.api.entity.GroupService;
 import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.processor.Processor;
+import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;

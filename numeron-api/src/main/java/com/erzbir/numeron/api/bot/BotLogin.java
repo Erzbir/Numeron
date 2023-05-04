@@ -1,4 +1,4 @@
-package com.erzbir.numeron.api;
+package com.erzbir.numeron.api.bot;
 
 import net.mamoe.mirai.Bot;
 
