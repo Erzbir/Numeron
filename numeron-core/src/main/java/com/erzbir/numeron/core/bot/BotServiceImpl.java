@@ -3,8 +3,11 @@ package com.erzbir.numeron.core.bot;
 import com.erzbir.numeron.api.bot.BotService;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.auth.BotAuthorization;
 import net.mamoe.mirai.utils.BotConfiguration;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * @author Erzbir
@@ -40,7 +43,23 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
+    public List<Bot> getBotList() {
+        return Bot.Companion.getInstances();
+    }
+
+    @Override
     public void login(Bot bot) {
         bot.login();
+    }
+
+    @NotNull
+    @Override
+    public Bot newBot(long qq, @NotNull BotAuthorization botAuthorization, @NotNull BotConfiguration botConfiguration) {
+        Bot bot = findBot(qq);
+        if (bot != null) {
+            return bot;
+        }
+        bot = BotFactory.INSTANCE.newBot(qq, botAuthorization, botConfiguration);
+        return bot;
     }
 }

@@ -73,7 +73,8 @@ public class ClassScanner {
             return subAnnotation;
         }
         for (Annotation annotation1 : subAnnotation.annotationType().getAnnotations()) {
-            if (annotation1.annotationType().getPackage().getName().startsWith("java")) {
+            String name = annotation1.annotationType().getPackage().getName();
+            if (name.startsWith("java") || name.startsWith("kot")) {
                 continue;
             }
             return getAnnotationFromAnnotation(annotation1, supAnnotationType);
@@ -314,7 +315,8 @@ public class ClassScanner {
             boolean flag = !t.isAnnotation(); // 排除注解, 因为注解也会有注解
             Annotation[] annotations = t.getAnnotations();  // 取出t上的所有类注解
             for (Annotation annotation : annotations) {
-                if (getAnnotationFromAnnotation(annotation, type) != null) {
+                // if (getAnnotationFromAnnotation(annotation, type) != null)
+                if (annotation.annotationType().getAnnotation(type) != null) {
                     return flag;
                 }
             }

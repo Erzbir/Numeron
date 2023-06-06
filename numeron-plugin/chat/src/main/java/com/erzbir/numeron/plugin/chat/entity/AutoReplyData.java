@@ -66,7 +66,7 @@ public final class AutoReplyData {
 
 
     private Map<String, String> init() throws SQLException {
-        String sql = "SELECT * FROM ILLEGALS";
+        String sql = "SELECT * FROM CHAT";
         PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
         ResultSet resultSet = SqlUtil.getResultSet(prepared);
         Map<String, String> ret = new HashMap<>();

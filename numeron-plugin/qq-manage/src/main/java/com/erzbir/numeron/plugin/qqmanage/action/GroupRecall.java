@@ -4,6 +4,7 @@ import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.listener.EventListenerRegister;
+import com.erzbir.numeron.api.listener.ListenerRegister;
 import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -28,7 +29,8 @@ public class GroupRecall {
     private Boolean preventRecall = false;
 
     private void register() {
-        EventListenerRegister.Bot.register(NumeronBot.INSTANCE.getEventChannel(), MessageRecallEvent.GroupRecall.class, event -> {
+
+        ListenerRegister.INStANCE.Bot.subscribe(NumeronBot.INSTANCE.getEventChannel(), MessageRecallEvent.GroupRecall.class, event -> {
             Object o = event.getAuthorId();
             MessageChain messageChain = DefaultStore.getInstance().find(o.hashCode());
             if (messageChain != null) {
@@ -37,7 +39,7 @@ public class GroupRecall {
                     DefaultStore.getInstance().remove(o.hashCode());
                 }
             }
-            EventListenerRegister.Bot.register(NumeronBot.INSTANCE.getEventChannel(), GroupMessageEvent.class, event1 -> {
+            ListenerRegister.INStANCE.Bot.subscribe(NumeronBot.INSTANCE.getEventChannel(), GroupMessageEvent.class, event1 -> {
                 if (preventRecall) {
                     Object o1 = event1.getSender().getId();
                     DefaultStore.getInstance().save(o1.hashCode(), event1.getMessage(), 2);

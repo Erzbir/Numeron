@@ -4,6 +4,7 @@ import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.listener.EventListenerRegister;
+import com.erzbir.numeron.api.listener.ListenerRegister;
 import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -27,7 +28,7 @@ public class ScanIllegal {
     private boolean flag = false;
 
     private void register() {
-        EventListenerRegister.Bot.register(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
+        ListenerRegister.INStANCE.Bot.subscribe(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && IllegalService.INSTANCE.exist(event.getMessage().contentToString())
                         && event.getGroup().getBotPermission().getLevel() != 0),
                 GroupMessageEvent.class,

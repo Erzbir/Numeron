@@ -42,18 +42,15 @@ public class Starter {
         try {
             // 扫瞄实现了Processor接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {
-                executor.submit(() -> {
-                    Processor processor;
-                    try {
-                        processor = (Processor) e.getDeclaredConstructor().newInstance();
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                             NoSuchMethodException ex) {
-                        NumeronLogUtil.logger.error(ex);
-                        throw new ProcessorException(ex);
-                    }
-
-                    processor.onApplicationEvent();
-                });
+                Processor processor;
+                try {
+                    processor = (Processor) e.getDeclaredConstructor().newInstance();
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                         NoSuchMethodException ex) {
+                    NumeronLogUtil.logger.error(ex);
+                    throw new ProcessorException(ex);
+                }
+                processor.onApplicationEvent();
             });
         } catch (IOException | ClassNotFoundException e) {
             throw new ProcessorException(e);

@@ -46,14 +46,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-coroutines-core-jvm</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-api-jvm</artifactId>
-            <version>2.14.0</version>
+            <version>2.15.0-M1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>

@@ -49,15 +49,13 @@ public class AppContext implements BeanFactory {
     private void addAllToContext(Set<Class<?>> classes) {
         classes.forEach(e -> {
             if (isConstructClass(e)) {
-                executor.submit(() -> {
-                    try {
-                        addToContext(e);  // 判断是否为可实例化的类
-                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                             NoSuchMethodException ex) {
-                        NumeronLogUtil.err(ex.getMessage());
-                        throw new AppContextException(ex);
-                    }
-                });
+                try {
+                    addToContext(e);  // 判断是否为可实例化的类
+                } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                         NoSuchMethodException ex) {
+                    NumeronLogUtil.err(ex.getMessage());
+                    throw new AppContextException(ex);
+                }
             }
         });
     }

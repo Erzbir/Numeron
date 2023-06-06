@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.entity.serviceimpl;
 
 import com.erzbir.numeron.api.entity.AdminService;
-import com.erzbir.numeron.core.bot.BotMap;
+import com.erzbir.numeron.core.bot.BotServiceImpl;
 import net.mamoe.mirai.contact.MemberPermission;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.GlobalEventChannel;
@@ -16,12 +16,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * @author Erzbir
  * @Date: 2023/4/27 11:24
+ * TODO 支持多 bot, 目前并没有分开
  */
 public class AdminServiceImpl implements AdminService {
     private final Map<Long, Set<Long>> adminMap = new HashMap<>();
 
     public AdminServiceImpl() {
-        BotMap.INSTANCE.forEach((k, v) -> v.getGroups()
+        BotServiceImpl botService = new BotServiceImpl();
+        botService.getBotList().forEach((v -> v.getGroups()
                 .stream()
                 .filter(f -> GroupServiceImpl.INSTANCE.exist(f.getId()))
                 .forEach(g -> {
@@ -31,8 +33,8 @@ public class AdminServiceImpl implements AdminService {
                             .filter(t -> t.getPermission().getLevel() > 0)
                             .toList()
                             .forEach(c -> set.add(c.getId()));
-                    adminMap.put(k, set);
-                }));
+                    adminMap.put(g.getId(), set);
+                })));
         refresh();
     }
 

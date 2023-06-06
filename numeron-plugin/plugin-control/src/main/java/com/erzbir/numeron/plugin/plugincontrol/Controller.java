@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.plugincontrol;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.plugin.PluginService;
+import com.erzbir.numeron.console.plugin.PluginManager;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -31,7 +31,7 @@ public class Controller {
             permission = PermissionType.ALL
     )
     private void listLoaded(MessageEvent event) {
-        event.getSubject().sendMessage(PluginService.INSTANCE.getLoadedPlugins().toString());
+        event.getSubject().sendMessage(PluginManager.INSTANCE.getLoadedPlugins().toString());
     }
 
     @Command(
@@ -47,7 +47,7 @@ public class Controller {
             permission = PermissionType.ALL
     )
     private void listEnable(MessageEvent event) {
-        event.getSubject().sendMessage(PluginService.INSTANCE.getEnablePlugins().toString());
+        event.getSubject().sendMessage(PluginManager.INSTANCE.getEnablePlugins().toString());
     }
 
     @Command(
@@ -63,7 +63,7 @@ public class Controller {
             permission = PermissionType.ALL
     )
     private void listDisable(MessageEvent event) {
-        event.getSubject().sendMessage(PluginService.INSTANCE.getDisablePlugins().toString());
+        event.getSubject().sendMessage(PluginManager.INSTANCE.getDisablePlugins().toString());
     }
 
 }

@@ -5,6 +5,7 @@ import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.listener.EventListenerRegister;
 import com.erzbir.numeron.api.entity.BlackService;
+import com.erzbir.numeron.api.listener.ListenerRegister;
 import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -26,7 +27,7 @@ public class ScanBlack {
     private boolean flag = false;
 
     private void register() {
-        EventListenerRegister.Bot.register(
+        ListenerRegister.INStANCE.Bot.subscribe(
                 NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
                         && BlackService.INSTANCE.exist(event.getSender().getId())
                         && event.getGroup().getBotPermission().getLevel() != 0),

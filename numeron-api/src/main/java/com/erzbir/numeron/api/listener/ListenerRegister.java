@@ -10,9 +10,10 @@ import java.util.ServiceLoader;
  * @Date: 2023/5/2 02:44
  */
 public class ListenerRegister {
-    EventListenerRegister Global = SpiListenerRegisterLoader.GlobalListenerRegister;
-    EventListenerRegister Bot = SpiListenerRegisterLoader.BotListenerRegister;
-    EventListenerRegister Plugin = SpiListenerRegisterLoader.PluginListenerRegister;
+    public static final ListenerRegister INStANCE = new ListenerRegister();
+    public EventListenerRegister Global = SpiListenerRegisterLoader.GlobalListenerRegister;
+    public EventListenerRegister Bot = SpiListenerRegisterLoader.BotListenerRegister;
+    public EventListenerRegister Plugin = SpiListenerRegisterLoader.PluginListenerRegister;
 
     private static final class SpiListenerRegisterLoader {
         static EventListenerRegister GlobalListenerRegister;

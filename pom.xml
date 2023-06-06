@@ -9,6 +9,7 @@
     <description>Numeron-基于Mirai的QQ机器人</description>
 
     <properties>
+        <kotlin.version>1.8.21</kotlin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +45,7 @@
             <dependency>
                 <groupId>net.mamoe</groupId>
                 <artifactId>mirai-core-jvm</artifactId>
-                <version>2.14.0</version>
+                <version>2.15.0-M1</version>
                 <optional>true</optional>
             </dependency>
             <dependency>

@@ -22,36 +22,37 @@
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-jvm</artifactId>
             <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-core</artifactId>
             <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.erzbir.numeron</groupId>
-            <artifactId>numeron-boot</artifactId>
-            <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-menu</artifactId>
             <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-utils</artifactId>
             <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-api</artifactId>
             <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.erzbir.numeron</groupId>
             <artifactId>numeron-annotation</artifactId>
             <optional>true</optional>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

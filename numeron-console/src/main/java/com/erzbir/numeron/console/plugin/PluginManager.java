@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -135,7 +132,7 @@ public class PluginManager implements PluginManagerInter, PluginService {
 
     @Override
     public List<Plugin> getLoadedPlugins() {
-        return (List<Plugin>) pluginMap.values();
+        return pluginMap.values().stream().toList();
     }
 
     @Override

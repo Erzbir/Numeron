@@ -1,10 +1,9 @@
 package com.erzbir.numeron.core.bot;
 
 import com.erzbir.numeron.api.bot.AbstractNumeronBot;
-import com.erzbir.numeron.core.utils.CoroutineScopeBridge;
 import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.processor.MessageAnnotationProcessor;
-import com.erzbir.numeron.core.utils.FixProtocol;
+import com.erzbir.numeron.core.utils.CoroutineScopeBridge;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.ConfigWriteException;
 import com.erzbir.numeron.utils.JsonUtil;
@@ -13,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
+import net.mamoe.mirai.auth.BotAuthorization;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.utils.BotConfiguration;
@@ -175,8 +175,7 @@ public class NumeronBot extends AbstractNumeronBot implements Serializable {
     private Bot createBot() {
         String s = workDir + "bots/" + account + "/";
         ConfigCreateUtil.createDir(s);
-        FixProtocol.INSTANCE.fix();
-        return BotFactory.INSTANCE.newBot(account, password, new BotConfiguration() {
+        return BotFactory.INSTANCE.newBot(account, BotAuthorization.byQRCode(), new BotConfiguration() {
             {
                 setWorkingDir(new File(s)); // 工作目录
                 setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
@@ -242,7 +241,6 @@ public class NumeronBot extends AbstractNumeronBot implements Serializable {
     @Override
     public void shutdown() {
         ListenerContext.INSTANCE.cancelAll();
-        CoroutineScopeBridge.Companion.cancel(this);
         setEnable(false);
     }
 }

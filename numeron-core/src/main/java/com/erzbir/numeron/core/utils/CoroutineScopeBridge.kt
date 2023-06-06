@@ -1,4 +1,4 @@
-package com.erzbir.numeron.core.utils;
+package com.erzbir.numeron.core.utils
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
