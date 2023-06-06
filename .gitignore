@@ -17,7 +17,7 @@ erzbirnumeron
 /plugin-lib
 /logs
 
-
+.gradle
 ### STS ###
 .apt_generated
 .classpath

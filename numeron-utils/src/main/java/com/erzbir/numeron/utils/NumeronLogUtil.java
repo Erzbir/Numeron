@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
  */
 public class NumeronLogUtil {
     public static final Logger logger = LogManager.getLogger("Numeron");
-    ;
 
     private NumeronLogUtil() {
 
