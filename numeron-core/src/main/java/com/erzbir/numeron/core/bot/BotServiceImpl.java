@@ -17,7 +17,7 @@ public class BotServiceImpl implements BotService {
 
     @NotNull
     @Override
-    public Bot newBot(long qq, byte @NotNull [] passwordMD5, @NotNull BotConfiguration botConfiguration) {
+    public Bot newBot(long qq, @NotNull byte [] passwordMD5, @NotNull BotConfiguration botConfiguration) {
         Bot bot = findBot(qq);
         if (bot != null) {
             return bot;
