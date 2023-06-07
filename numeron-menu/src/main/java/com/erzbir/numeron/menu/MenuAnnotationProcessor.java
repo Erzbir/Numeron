@@ -22,7 +22,7 @@ public class MenuAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         Map<String, Object> menu = AppContext.INSTANCE.getBeansWithAnnotation(Menu.class);
-        NumeronLogUtil.trace("开始生成图片帮助菜单");
+        NumeronLogUtil.info("开始生成图片帮助菜单");
         menu.forEach((k, v) -> {
             Menu annotation = v.getClass().getAnnotation(Menu.class);
             String name = annotation.name();
@@ -32,7 +32,7 @@ public class MenuAnnotationProcessor implements Processor {
                 MenuStatic.closeMenuGroups.put(name, GroupService.INSTANCE.getEnableGroupList());
             }
             List<Command> commands = new ArrayList<>();
-            NumeronLogUtil.info(name);
+            NumeronLogUtil.debug(name);
             for (Method method : v.getClass().getDeclaredMethods()) {
                 Command command = method.getAnnotation(Command.class);
                 if (command == null) {
@@ -46,7 +46,7 @@ public class MenuAnnotationProcessor implements Processor {
                 MenuStatic.menuMap.put(name, commands);
             }
         });
-        NumeronLogUtil.trace("图片帮助菜单生成完成\n");
+        NumeronLogUtil.info("图片帮助菜单生成完成\n");
     }
 }
 
