@@ -30,4 +30,5 @@ tasks.withType<ShadowJar>() {
     manifest {
         attributes["Main-Class"] = "com.erzbir.numeron.NumeronBotApplication"
     }
+    archiveBaseName.set("numeron")
 }

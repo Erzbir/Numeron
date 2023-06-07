@@ -14,6 +14,8 @@ plugins {
 allprojects {
     group = "com.erzbir.numeron"
 
+    version = "1.0.0"
+
     repositories {
         mavenLocal()
 
