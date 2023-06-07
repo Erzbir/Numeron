@@ -1,8 +1,8 @@
 plugins {
-  kotlin("jvm")
+    kotlin("jvm")
 }
 
 dependencies {
 //  implem
-  implementation(project(":numeron-deps"))
+    implementation(project(":numeron-deps"))
 }

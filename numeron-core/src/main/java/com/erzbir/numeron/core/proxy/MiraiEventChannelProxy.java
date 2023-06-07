@@ -94,21 +94,13 @@ public class MiraiEventChannelProxy {
 
     }
 
-    @SuppressWarnings("unchecked")
     private record EventChannelMethodInvokeImpl() implements EventChannelMethodInvokeInter {
         private static final ExecutorService executor = Executors.newCachedThreadPool();
 
 
         @Override
         public <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler) {
-            try {
-                return (Listener<E>) executor.submit(() -> {
-                    channel.subscribe(eventClass, coroutineContext, concurrency, priority, handler);
-                }).get();
-            } catch (InterruptedException | ExecutionException e) {
-                NumeronLogUtil.logger.error(e);
-                throw new RuntimeException(e);
-            }
+            return channel.subscribe(eventClass, coroutineContext, concurrency, priority, handler);
         }
 
         @Override

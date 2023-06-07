@@ -35,9 +35,9 @@ public class CommandAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANCE;
-        NumeronLogUtil.trace("开始生成命令帮助文档......");
+        NumeronLogUtil.info("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
-        NumeronLogUtil.trace("命令帮助文档生成完成\n");
+        NumeronLogUtil.info("命令帮助文档生成完成\n");
     }
 
     private void scanBeans(Object bean) {

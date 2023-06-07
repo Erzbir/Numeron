@@ -1,8 +1,8 @@
 plugins {
-  kotlin("jvm")
+    kotlin("jvm")
 }
 
 dependencies {
-  implementation("dom4j:dom4j:1.6.1")
-  implementation("com.rometools:rome:2.1.0")
+    implementation("dom4j:dom4j:1.6.1")
+    implementation("com.rometools:rome:2.1.0")
 }

@@ -1,7 +1,7 @@
 plugins {
-  kotlin("jvm")
+    kotlin("jvm")
 }
 
 dependencies {
-  implementation(project(":numeron-deps"))
+    implementation(project(":numeron-deps"))
 }

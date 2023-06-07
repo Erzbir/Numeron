@@ -8,7 +8,7 @@ import net.mamoe.mirai.event.Listener;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,8 +22,9 @@ import java.util.Map;
 public class ListenerContext {
     public static final ListenerContext INSTANCE = new ListenerContext();
 
-    private final Map<String, Listener<? extends Event>> context = new HashMap<>();
-    private final Map<EventPriority, ?> listenerCollectionMap;
+    private final Map<EventPriority, Collection<?>> listenerCollectionMap;
+
+
     private final MiraiEventChannelProxy miraiEventChannelProxy;
 
 
@@ -31,7 +32,6 @@ public class ListenerContext {
         try {
             listenerCollectionMap = getListenerMap();
             miraiEventChannelProxy = new MiraiEventChannelProxy(new HashMap<>());
-            miraiEventChannelProxy.setInvokeAfter(() -> add((Listener<? extends Event>) miraiEventChannelProxy.getRet()));
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | NoSuchFieldException |
                  InvocationTargetException e) {
             NumeronLogUtil.logger.error(e);
@@ -39,45 +39,27 @@ public class ListenerContext {
         }
     }
 
-    private void add(Listener<? extends Event> listener) {
-        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        StackTraceElement stackTraceElement = stackTrace[stackTrace.length - 1];
-        String method = stackTraceElement.getClassName() + "." + stackTraceElement.getMethodName();
-        add(method, listener);
+    private Listener<? extends Event> getListener(Object listenerRegistry) throws NoSuchFieldException, IllegalAccessException {
+        Field listener = listenerRegistry.getClass().getDeclaredField("listener");
+        listener.setAccessible(true);
+        return (Listener<? extends Event>) listener.get(listenerRegistry);
     }
 
     @SuppressWarnings({"unchecked"})
-    private Map<EventPriority, ?> getListenerMap() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
-        Class<?> eventListenersClass = Class.forName("net.mamoe.mirai.internal.event.EventListeners");
-        Field mapField = eventListenersClass.getDeclaredField("map");
+    private Map<EventPriority, Collection<?>> getListenerMap() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+        Field mapField = Class.forName("net.mamoe.mirai.internal.event.EventListeners").getDeclaredField("map");
         mapField.setAccessible(true);
-        Class<?> aClass2 = Class.forName("net.mamoe.mirai.internal.event.EventChannelToEventDispatcherAdapter");
-        Field companionField = aClass2.getDeclaredField("Companion");
-        Object companion = companionField.get(null);
-        Method getInstance = companion.getClass().getDeclaredMethod("getInstance");
-        Object adapterInstance = getInstance.invoke(companion);
-        Class<?> eventChannelImplClass = Class.forName("net.mamoe.mirai.internal.event.EventChannelImpl");
-        Field eventListeners = eventChannelImplClass.getDeclaredField("eventListeners");
+        Object companion = Class.forName("net.mamoe.mirai.internal.event.EventChannelToEventDispatcherAdapter").getDeclaredField("Companion").get(null);
+        Object adapterInstance = companion.getClass().getDeclaredMethod("getInstance").invoke(companion);
+        Field eventListeners = Class.forName("net.mamoe.mirai.internal.event.EventChannelImpl").getDeclaredField("eventListeners");
         eventListeners.setAccessible(true);
         Object eventListenerInstance = eventListeners.get(adapterInstance);
         Object mapInstance = mapField.get(eventListenerInstance);
-        return (Map<EventPriority, ?>) mapInstance;
-    }
-
-    public void add(String method, Listener<? extends Event> listener) {
-        context.put(method, listener);
+        return (Map<EventPriority, Collection<?>>) mapInstance;
     }
 
     public MiraiEventChannelProxy.EventChannelMethodInvokeInter getListenerRegister() {
         return miraiEventChannelProxy.getProxy();
-    }
-
-    public Listener<? extends Event> get(String method) {
-        return context.get(method);
-    }
-
-    public void cancelOne(String method) {
-        cancel(context.get(method));
     }
 
     private void cancel(Listener<? extends Event> listener) {
@@ -85,10 +67,17 @@ public class ListenerContext {
     }
 
     public void cancelAll() {
-        context.forEach((k, v) -> {
-            if (v.isActive()) {
-                cancel(v);
+        listenerCollectionMap.forEach((k, v) -> v.forEach(t -> {
+            try {
+                cancel(getListener(t));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
             }
-        });
+        }));
+//        context.forEach((k, v) -> {
+//            if (v.isActive()) {
+//                cancel(v);
+//            }
+//        });
     }
 }

@@ -96,8 +96,8 @@ public class HandlerAnnotationProcessor implements Processor {
         AppContext context = AppContext.INSTANCE;
         bot = NumeronBot.INSTANCE.getBot();
         channel = bot.getEventChannel();
-        NumeronLogUtil.trace("开始注册注解消息处理监听......");
+        NumeronLogUtil.info("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> registerMethods(v));
-        NumeronLogUtil.trace("注解消息处理监听注册完毕\n");
+        NumeronLogUtil.info("注解消息处理监听注册完毕\n");
     }
 }

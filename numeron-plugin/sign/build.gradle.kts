@@ -1,7 +1,7 @@
 plugins {
-  kotlin("jvm")
+    kotlin("jvm")
 }
 
 dependencies {
-  implementation("redis.clients:jedis:4.3.1")
+    implementation("redis.clients:jedis:4.3.1")
 }

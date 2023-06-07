@@ -1,3 +1,6 @@
 plugins {
     kotlin("jvm")
 }
+
+dependencies {
+}
