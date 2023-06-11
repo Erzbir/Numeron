@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.openai.config;
 
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.utils.ConfigReadException;
 import com.erzbir.numeron.utils.ConfigWriteException;
 import com.erzbir.numeron.utils.JsonUtil;
@@ -13,7 +14,7 @@ import java.io.Serializable;
  */
 public class QuestionConfig implements Serializable {
     private static final Object key = new Object();
-    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/question.json";
+    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/question.json";
     private static volatile QuestionConfig INSTANCE;
     private transient String model = "gpt-3.5-turbo-0301";
     private int max_tokens = 2048;

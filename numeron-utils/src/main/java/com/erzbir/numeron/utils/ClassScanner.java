@@ -1,4 +1,4 @@
-package com.erzbir.numeron.core.classloader;
+package com.erzbir.numeron.utils;
 
 import java.io.File;
 import java.io.IOException;

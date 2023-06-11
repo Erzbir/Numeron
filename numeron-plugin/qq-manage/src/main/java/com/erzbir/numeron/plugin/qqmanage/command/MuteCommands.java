@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.qqmanage.command;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.entity.GroupService;
+import com.erzbir.numeron.api.entity.GroupServiceImpl;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -65,7 +65,7 @@ public class MuteCommands {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
             AtomicReference<NormalMember> member = new AtomicReference<>();
-            GroupService.INSTANCE.getEnableGroupList().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            GroupServiceImpl.INSTANCE.getEnableGroupList().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
             if (member.get().getPermission().getLevel() < 1) {
                 if (!bool && member.get().isMuted()) {
                     member.get().unmute();

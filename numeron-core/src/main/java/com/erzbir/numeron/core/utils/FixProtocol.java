@@ -14,6 +14,7 @@ import java.util.EnumMap;
  */
 //@SuppressWarnings("all")
 @SuppressWarnings({"unchecked", "rawtypes"})
+@Deprecated
 public class FixProtocol {
     public static final FixProtocol INSTANCE = new FixProtocol();
     private final static Class aClass;

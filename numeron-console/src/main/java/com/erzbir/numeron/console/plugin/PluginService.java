@@ -1,7 +1,6 @@
 package com.erzbir.numeron.console.plugin;
 
 import java.util.List;
-import java.util.ServiceLoader;
 
 /**
  * @author Erzbir

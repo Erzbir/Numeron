@@ -1,10 +1,10 @@
 package com.erzbir.numeron.plugin.rss.timer;
 
-import com.erzbir.numeron.core.bot.NumeronBot;
-import com.erzbir.numeron.core.utils.MiraiContactUtils;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.plugin.rss.config.RssConfig;
 import com.erzbir.numeron.plugin.rss.entity.RssInfo;
 import com.erzbir.numeron.plugin.rss.entity.RssItem;
+import com.erzbir.numeron.utils.MiraiContactUtils;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
@@ -28,10 +28,8 @@ public class TimerController {
                 return;
             }
             RssInfo rssInfo = rssItem.updateInfo();
-            if (rssInfo != null && NumeronBot.INSTANCE.isEnable()) {
-                send(rssInfo, rssItem.getUserList(), Friend.class);
-                send(rssInfo, rssItem.getGroupList(), Group.class);
-            }
+            send(rssInfo, rssItem.getUserList(), Friend.class);
+            send(rssInfo, rssItem.getGroupList(), Group.class);
         };
     }
 
@@ -40,15 +38,17 @@ public class TimerController {
             int flag = RssConfig.getInstance().getRetryTimes();
             while (flag > 0) {
                 Contact contact = MiraiContactUtils.getContact(t, type);
-                if (contact == null) {
-                    return;
-                }
-                try {
-                    contact.sendMessage((rssInfo.getMessageChain(contact)));
-                    flag = 0;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    flag--;
+                if (BotServiceImpl.INSTANCE.getConfiguration(contact.getBot().getId()).isEnable()) {
+                    if (contact == null) {
+                        return;
+                    }
+                    try {
+                        contact.sendMessage((rssInfo.getMessageChain(contact)));
+                        flag = 0;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        flag--;
+                    }
                 }
             }
         });

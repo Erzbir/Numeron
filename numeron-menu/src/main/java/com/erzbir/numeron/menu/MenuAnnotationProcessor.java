@@ -2,9 +2,9 @@ package com.erzbir.numeron.menu;
 
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.api.entity.GroupService;
-import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.api.processor.Processor;
+import com.erzbir.numeron.core.context.AppContext;
+import com.erzbir.numeron.core.entity.serviceimpl.GroupServiceImpl;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
@@ -29,7 +29,8 @@ public class MenuAnnotationProcessor implements Processor {
             boolean open = annotation.open();
             MenuStatic.menuList.add(name);
             if (!open) {
-                MenuStatic.closeMenuGroups.put(name, GroupService.INSTANCE.getEnableGroupList());
+                GroupServiceImpl groupService = new GroupServiceImpl();
+                MenuStatic.closeMenuGroups.put(name, groupService.getEnableGroupList());
             }
             List<Command> commands = new ArrayList<>();
             NumeronLogUtil.debug(name);
@@ -47,6 +48,11 @@ public class MenuAnnotationProcessor implements Processor {
             }
         });
         NumeronLogUtil.info("图片帮助菜单生成完成\n");
+    }
+
+    @Override
+    public void destroy() {
+
     }
 }
 

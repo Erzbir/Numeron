@@ -1,9 +1,8 @@
 package com.erzbir.numeron.core.bot;
 
-import com.erzbir.numeron.api.bot.AbstractNumeronBot;
+import com.erzbir.numeron.api.bot.NumeronBotConfiguration;
 import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.processor.MessageAnnotationProcessor;
-import com.erzbir.numeron.core.utils.CoroutineScopeBridge;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.ConfigWriteException;
 import com.erzbir.numeron.utils.JsonUtil;
@@ -13,11 +12,12 @@ import com.google.gson.JsonParser;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.auth.BotAuthorization;
-import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.utils.BotConfiguration;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -25,7 +25,7 @@ import java.util.Scanner;
  * @author Erzbir
  * @Date: 2022/12/28 00:20
  */
-public class NumeronBot extends AbstractNumeronBot implements Serializable {
+public class NumeronBot {
     public static final NumeronBot INSTANCE = new NumeronBot();
     private final transient String deviceInfo = "device.json";
     private long master = 0L;    // 主人
@@ -175,7 +175,7 @@ public class NumeronBot extends AbstractNumeronBot implements Serializable {
     private Bot createBot() {
         String s = workDir + "bots/" + account + "/";
         ConfigCreateUtil.createDir(s);
-        return BotFactory.INSTANCE.newBot(account, BotAuthorization.byQRCode(), new BotConfiguration() {
+        return BotFactory.INSTANCE.newBot(account, BotAuthorization.byQRCode(), new NumeronBotConfiguration() {
             {
                 setWorkingDir(new File(s)); // 工作目录
                 setHeartbeatStrategy(heartbeatStrategy); // 心跳策略
@@ -218,27 +218,12 @@ public class NumeronBot extends AbstractNumeronBot implements Serializable {
         this.bot = bot;
     }
 
-    @Override
-    public String getWorkDir() {
-        return this.workDir;
-    }
-
-    public void setWorkDir(String dir) {
-        this.workDir = dir;
-    }
-
-    public EventChannel<BotEvent> getEventChannel() {
-        return bot.getEventChannel();
-    }
-
-    @Override
     public void launch() {
         setEnable(true);
         // 重新注册监听
         new MessageAnnotationProcessor().onApplicationEvent();
     }
 
-    @Override
     public void shutdown() {
         ListenerContext.INSTANCE.cancelAll();
         setEnable(false);

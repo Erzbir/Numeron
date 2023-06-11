@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.openai.config;
 
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.ConfigReadException;
 import com.erzbir.numeron.utils.ConfigWriteException;
@@ -16,7 +17,7 @@ import java.io.Serializable;
  */
 public class ImageConfig implements Serializable {
     private static final Object key = new Object();
-    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/image.json";
+    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/image.json";
     private static volatile ImageConfig INSTANCE;
     private int n = 1;
     private String size = ImageSize.LARGE;

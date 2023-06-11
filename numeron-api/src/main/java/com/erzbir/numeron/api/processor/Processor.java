@@ -1,8 +1,5 @@
 package com.erzbir.numeron.api.processor;
 
-import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.events.BotEvent;
-
 /**
  * @author Erzbir
  * @Date: 2022/12/12 01:12
@@ -10,4 +7,6 @@ import net.mamoe.mirai.event.events.BotEvent;
  */
 public interface Processor {
     void onApplicationEvent();
+
+    void destroy();
 }

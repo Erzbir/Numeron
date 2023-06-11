@@ -98,4 +98,9 @@ public class MessageAnnotationProcessor implements Processor {
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> registerMethods(v));
         NumeronLogUtil.trace("注解消息处理监听注册完毕\n");
     }
+
+    @Override
+    public void destroy() {
+
+    }
 }

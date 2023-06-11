@@ -1,7 +1,6 @@
 package com.erzbir.numeron.core.filter.rule;
 
-import com.erzbir.numeron.api.entity.BlackService;
-import com.erzbir.numeron.api.entity.GroupService;
+import com.erzbir.numeron.core.entity.serviceimpl.BlackServiceImpl;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -13,7 +12,8 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class BlackRuleFilter extends AbstractRuleFilter {
     @Override
     public Boolean filter(MessageEvent event) {
-        return event instanceof GroupMessageEvent event1 ? !BlackService.INSTANCE.exist(event.getSender().getId()) && GroupService.INSTANCE.exist(event1.getGroup().getId())
-                : !BlackService.INSTANCE.exist(event.getSender().getId());
+        BlackServiceImpl blackService = new BlackServiceImpl();
+        return event instanceof GroupMessageEvent event1 ? !blackService.exist(event.getSender().getId()) && blackService.exist(event1.getGroup().getId())
+                : !blackService.exist(event.getSender().getId());
     }
 }

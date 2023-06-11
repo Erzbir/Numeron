@@ -2,8 +2,6 @@ package com.erzbir.numeron.console.plugin;
 
 import kotlin.coroutines.CoroutineContext;
 import kotlin.coroutines.EmptyCoroutineContext;
-import kotlinx.coroutines.CoroutineScope;
-import net.mamoe.mirai.event.ListenerHost;
 import org.jetbrains.annotations.NotNull;
 
 /**

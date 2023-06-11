@@ -1,6 +1,5 @@
 package com.erzbir.numeron.api.entity;
 
-import java.util.ServiceLoader;
 import java.util.Set;
 
 /**
@@ -8,8 +7,6 @@ import java.util.Set;
  * @Date: 2023/4/27 11:29
  */
 public interface WhiteService {
-    WhiteService INSTANCE = ServiceLoader.load(WhiteService.class).findFirst().get();
-
     Set<Long> getAdminList();
 
     boolean exist(long qq);

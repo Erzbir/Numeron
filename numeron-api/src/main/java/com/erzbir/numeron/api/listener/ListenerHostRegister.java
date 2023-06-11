@@ -11,5 +11,6 @@ import net.mamoe.mirai.event.ListenerHost;
  */
 public interface ListenerHostRegister {
     void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost);
+
     void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost, CoroutineContext coroutineContext);
 }

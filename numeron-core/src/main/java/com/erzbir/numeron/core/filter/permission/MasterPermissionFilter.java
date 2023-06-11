@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.filter.permission;
 
-import com.erzbir.numeron.core.bot.NumeronBot;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -16,6 +16,6 @@ public class MasterPermissionFilter extends AbstractPermissionFilter {
 
     @Override
     public Boolean filter(MessageEvent event) {
-        return NumeronBot.INSTANCE.getMaster() == event.getSender().getId();
+        return BotServiceImpl.INSTANCE.getConfiguration(event.getBot().getId()).getMaster() == event.getSender().getId();
     }
 }

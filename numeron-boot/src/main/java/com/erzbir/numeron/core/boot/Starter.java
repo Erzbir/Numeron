@@ -2,11 +2,13 @@ package com.erzbir.numeron.core.boot;
 
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.boot.exception.ProcessorException;
-import com.erzbir.numeron.core.classloader.ClassScanner;
+import com.erzbir.numeron.core.context.AppContext;
+import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ServiceLoader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,23 +30,23 @@ public class Starter {
         this(packageName, Thread.currentThread().getContextClassLoader());
     }
 
-    public void boot() {
-        bootFromBasePackage();
+    public void boot(BotType botType) {
+        if (botType.equals(BotType.SPI)) {
+            bootFromSpi();
+        } else if (botType.equals(BotType.PACKAGE)) {
+            bootFromBasePackage();
+        }
     }
 
     private void bootFromBasePackage() {
-        // 包扫瞄器扫瞄所有class
-        scanProcessor();
-    }
-
-    private void scanProcessor() {
         ClassScanner scanner = new ClassScanner(basePackage, classLoader, true, null, null);
         try {
-            // 扫瞄实现了Processor接口的类
+            // 扫瞄实现了 Processor 接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {
                 Processor processor;
                 try {
                     processor = (Processor) e.getDeclaredConstructor().newInstance();
+                    AppContext.INSTANCE.addProcessor(processor);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException ex) {
                     NumeronLogUtil.logger.error(ex);
@@ -56,4 +58,19 @@ public class Starter {
             throw new ProcessorException(e);
         }
     }
+
+    private void bootFromSpi() {
+        ServiceLoader.load(Processor.class).forEach(t -> {
+            if (t != null) {
+                t.onApplicationEvent();
+                AppContext.INSTANCE.addProcessor(t);
+            }
+        });
+    }
+
+    public enum BotType {
+        SPI,
+        PACKAGE
+    }
+
 }

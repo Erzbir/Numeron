@@ -25,7 +25,8 @@ public class AutoReply {
 
     @Message(
             messageRule = MessageRule.REGEX,
-            text = ".*", permission = PermissionType.ALL,
+            text = "^a",
+            permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK
     )
     private void reply(MessageEvent e) {

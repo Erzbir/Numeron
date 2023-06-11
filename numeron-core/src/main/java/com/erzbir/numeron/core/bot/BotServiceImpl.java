@@ -1,10 +1,13 @@
 package com.erzbir.numeron.core.bot;
 
 import com.erzbir.numeron.api.bot.BotService;
+import com.erzbir.numeron.api.bot.NumeronBotConfiguration;
+import com.erzbir.numeron.api.processor.Processor;
+import com.erzbir.numeron.core.context.AppContext;
+import com.erzbir.numeron.core.context.ListenerContext;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.auth.BotAuthorization;
-import net.mamoe.mirai.utils.BotConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -16,25 +19,15 @@ import java.util.List;
 public class BotServiceImpl implements BotService {
 
     @NotNull
-    @Override
-    public Bot newBot(long qq, @NotNull byte [] passwordMD5, @NotNull BotConfiguration botConfiguration) {
+    public Bot newBot(long qq, @NotNull byte[] passwordMD5, @NotNull NumeronBotConfiguration botConfiguration) {
         Bot bot = findBot(qq);
-        if (bot != null) {
-            return bot;
-        }
-        bot = BotFactory.INSTANCE.newBot(qq, passwordMD5, botConfiguration);
-        return bot;
+        return bot == null ? BotFactory.INSTANCE.newBot(qq, passwordMD5, botConfiguration) : bot;
     }
 
     @NotNull
-    @Override
-    public Bot newBot(long qq, @NotNull String password, @NotNull BotConfiguration botConfiguration) {
+    public Bot newBot(long qq, @NotNull String password, @NotNull NumeronBotConfiguration botConfiguration) {
         Bot bot = findBot(qq);
-        if (bot != null) {
-            return bot;
-        }
-        bot = BotFactory.INSTANCE.newBot(qq, password, botConfiguration);
-        return bot;
+        return bot == null ? BotFactory.INSTANCE.newBot(qq, password, botConfiguration) : bot;
     }
 
     @Override
@@ -48,18 +41,31 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
+    public void shutdown(long qq) {
+        AppContext.INSTANCE.getProcessors().forEach(Processor::destroy);
+        ListenerContext.INSTANCE.cancelAll();
+        getConfiguration(qq).disable();
+    }
+
+    @Override
+    public void launch(long qq) {
+        AppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
+    }
+
+    @Override
+    public NumeronBotConfiguration getConfiguration(long qq) {
+        Bot bot = findBot(qq);
+        return bot == null ? null : (NumeronBotConfiguration) (bot.getConfiguration());
+    }
+
+    @Override
     public void login(Bot bot) {
         bot.login();
     }
 
     @NotNull
-    @Override
-    public Bot newBot(long qq, @NotNull BotAuthorization botAuthorization, @NotNull BotConfiguration botConfiguration) {
+    public Bot newBot(long qq, @NotNull BotAuthorization botAuthorization, @NotNull NumeronBotConfiguration botConfiguration) {
         Bot bot = findBot(qq);
-        if (bot != null) {
-            return bot;
-        }
-        bot = BotFactory.INSTANCE.newBot(qq, botAuthorization, botConfiguration);
-        return bot;
+        return bot == null ? BotFactory.INSTANCE.newBot(qq, botAuthorization, botConfiguration) : bot;
     }
 }

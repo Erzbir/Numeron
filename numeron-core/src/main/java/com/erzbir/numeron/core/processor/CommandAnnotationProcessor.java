@@ -3,9 +3,13 @@ package com.erzbir.numeron.core.processor;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.api.processor.Processor;
+import com.erzbir.numeron.core.NumeronImpl;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +22,7 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class CommandAnnotationProcessor implements Processor {
-    private final static HashMap<String, Set<String>> helpMap = new HashMap<>();
-    private final static StringBuilder stringBuilder = new StringBuilder();
+    private static HashMap<String, Set<String>> helpMap = new HashMap<>();
 
     public static HashMap<String, Set<String>> getHelpMap() {
         return helpMap;
@@ -38,7 +41,25 @@ public class CommandAnnotationProcessor implements Processor {
         AppContext context = AppContext.INSTANCE;
         NumeronLogUtil.info("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
+        NumeronImpl numeron = new NumeronImpl();
+        StringBuilder stringBuilder = new StringBuilder();
+        helpMap.forEach((k, v) -> {
+            stringBuilder.append(k).append("\n");
+            v.forEach(t -> stringBuilder.append(t).append("\n"));
+            stringBuilder.append("---\n");
+        });
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(numeron.getWorkDir() + "help.txt"))) {
+            bufferedWriter.write(stringBuilder.toString());
+        } catch (IOException e) {
+            NumeronLogUtil.logger.error(e);
+            throw new RuntimeException(e);
+        }
         NumeronLogUtil.info("命令帮助文档生成完成\n");
+    }
+
+    @Override
+    public void destroy() {
+        helpMap = new HashMap<>();
     }
 
     private void scanBeans(Object bean) {

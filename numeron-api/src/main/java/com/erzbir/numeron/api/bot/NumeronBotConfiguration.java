@@ -1,8 +1,6 @@
 package com.erzbir.numeron.api.bot;
 
-import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.utils.BotConfiguration;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Erzbir
@@ -22,12 +20,12 @@ public class NumeronBotConfiguration extends BotConfiguration {
         super();
     }
 
-    public void setMaster(long master) {
-        this.master = master;
-    }
-
     public long getMaster() {
         return master;
+    }
+
+    public void setMaster(long master) {
+        this.master = master;
     }
 
     public boolean isEnable() {

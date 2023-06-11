@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.qqmanage.command;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.core.bot.NumeronBot;
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -30,7 +30,7 @@ public class FastMute {
 
     static {
         Gson gson = new Gson();
-        String confFile = NumeronBot.INSTANCE.getWorkDir() + "plugin-configs/qqmanage" + "/config.json";
+        String confFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "qqmanage/config" + "/config.json";
         try {
             ConfigCreateUtil.createFile(confFile);
         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class FastMute {
             permission = PermissionType.ALL
     )
     private void fastMute(UserMessageEvent event) {
-        group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(true));
+        group.forEach(t -> Objects.requireNonNull(event.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(true));
     }
 
     @Command(
@@ -75,6 +75,6 @@ public class FastMute {
             permission = PermissionType.ALL
     )
     private void fastUnMute(UserMessageEvent event) {
-        group.forEach(t -> Objects.requireNonNull(NumeronBot.INSTANCE.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(false));
+        group.forEach(t -> Objects.requireNonNull(event.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(false));
     }
 }

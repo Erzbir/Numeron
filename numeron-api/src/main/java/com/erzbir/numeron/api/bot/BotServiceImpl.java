@@ -7,5 +7,5 @@ import java.util.ServiceLoader;
  * @Date: 2023/5/3 12:38
  */
 public class BotServiceImpl {
-    public static BotService INSTANCE = ServiceLoader.load(BotService.class).findFirst().get();
+    public static BotService INSTANCE = ServiceLoader.load(BotService.class).findFirst().orElseThrow();
 }

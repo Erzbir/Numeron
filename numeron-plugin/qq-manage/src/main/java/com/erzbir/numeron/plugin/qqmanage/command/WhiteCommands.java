@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.qqmanage.command;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.entity.WhiteService;
+import com.erzbir.numeron.api.entity.WhiteServiceImpl;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
@@ -34,7 +34,7 @@ public class WhiteCommands {
     )
     private void permit2(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/permit\\s+?user\\s+?@*", ""));
-        if (WhiteService.INSTANCE.addWhite(id, event.getSender().getId())) {
+        if (WhiteServiceImpl.INSTANCE.addWhite(id, event.getSender().getId())) {
             event.getSubject().sendMessage(id + " 已添加到白名单");
         }
     }
@@ -53,7 +53,7 @@ public class WhiteCommands {
     )
     private void noPermit(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/unpermit\\s+?user\\s+?@*", ""));
-        if (WhiteService.INSTANCE.removeWhite(id)) {
+        if (WhiteServiceImpl.INSTANCE.removeWhite(id)) {
             event.getSubject().sendMessage(id + " 已移出白名单");
         }
     }
@@ -73,9 +73,9 @@ public class WhiteCommands {
     private void query(MessageEvent event) {
         long l = Long.parseLong(event.getMessage().contentToString().replaceFirst("/query\\s+?white\\s+?", ""));
         if (l == 0) {
-            event.getSubject().sendMessage(WhiteService.INSTANCE.getAdminList().toString());
+            event.getSubject().sendMessage(WhiteServiceImpl.INSTANCE.getAdminList().toString());
         } else {
-            event.getSubject().sendMessage(String.valueOf(WhiteService.INSTANCE.exist(l)));
+            event.getSubject().sendMessage(String.valueOf(WhiteServiceImpl.INSTANCE.exist(l)));
         }
     }
 }

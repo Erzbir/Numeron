@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.openai.config;
 
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.utils.ConfigReadException;
 import com.erzbir.numeron.utils.ConfigWriteException;
 import com.erzbir.numeron.utils.JsonUtil;
@@ -9,7 +10,7 @@ import com.erzbir.numeron.utils.JsonUtil;
  * @Date: 2023/3/3 23:53
  */
 public class OpenAiConfig {
-    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/openai.json";
+    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/openai.json";
     private static final Object key = new Object();
     private static volatile OpenAiConfig INSTANCE;
     private long timeout = 30L;

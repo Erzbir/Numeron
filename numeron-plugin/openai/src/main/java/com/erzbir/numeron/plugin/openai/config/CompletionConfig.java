@@ -1,5 +1,6 @@
 package com.erzbir.numeron.plugin.openai.config;
 
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.utils.ConfigReadException;
 import com.erzbir.numeron.utils.ConfigWriteException;
 import com.erzbir.numeron.utils.JsonUtil;
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public class CompletionConfig implements Serializable {
     private static final Object key = new Object();
-    private static final String configFile = "erzbirnumeron/plugin-configs/chatgpt/completion.json";
+    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/completion.json";
     private static volatile CompletionConfig INSTANCE;
     private transient String model = "text-davinci-003";
     private int max_tokens = 1024;

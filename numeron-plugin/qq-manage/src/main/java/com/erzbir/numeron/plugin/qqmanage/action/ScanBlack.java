@@ -3,10 +3,8 @@ package com.erzbir.numeron.plugin.qqmanage.action;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.listener.EventListenerRegister;
-import com.erzbir.numeron.api.entity.BlackService;
-import com.erzbir.numeron.api.listener.ListenerRegister;
-import com.erzbir.numeron.core.bot.NumeronBot;
+import com.erzbir.numeron.api.entity.BlackServiceImpl;
+import com.erzbir.numeron.api.listener.DefaultListenerRegister;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
@@ -26,12 +24,12 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class ScanBlack {
     private boolean flag = false;
 
-    private void register() {
-        ListenerRegister.INStANCE.Bot.subscribe(
-                NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
-                        && BlackService.INSTANCE.exist(event.getSender().getId())
-                        && event.getGroup().getBotPermission().getLevel() != 0),
-                GroupMessageEvent.class, event -> {
+    private void register(MessageEvent event) {
+        DefaultListenerRegister.INSTANCE.subscribe(
+                event.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent event1
+                        && BlackServiceImpl.INSTANCE.exist(event1.getSender().getId())
+                        && event1.getGroup().getBotPermission().getLevel() != 0),
+                GroupMessageEvent.class, event1 -> {
                     ((NormalMember) event.getSender()).kick("黑名单用户");
                     return flag ? ListeningStatus.LISTENING : ListeningStatus.STOPPED;
                 });
@@ -54,7 +52,7 @@ public class ScanBlack {
                 .replaceFirst("^/scan\\s+?black\\s+?", ""));
         event.getSubject().sendMessage("黑名单扫瞄 " + flag);
         if (flag) {
-            register();
+            register(event);
         }
     }
 }

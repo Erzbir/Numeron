@@ -1,6 +1,6 @@
 package com.erzbir.numeron.plugin.sign;
 
-import com.erzbir.numeron.core.bot.NumeronBot;
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public final class RedisStore {
 
     private RedisStore() {
         Properties properties = new Properties();
-        String confFile = NumeronBot.INSTANCE.getWorkDir() + "plugin-configs/sql/redisconfig.properties";
+        String confFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "plugin-configs/sql/redisconfig.properties";
         try {
             ConfigCreateUtil.createFile(confFile);
         } catch (IOException e) {

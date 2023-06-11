@@ -3,7 +3,10 @@ package com.erzbir.numeron.core.handler.excute;
 import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import kotlin.coroutines.EmptyCoroutineContext;
-import net.mamoe.mirai.event.*;
+import net.mamoe.mirai.event.ConcurrencyKind;
+import net.mamoe.mirai.event.Event;
+import net.mamoe.mirai.event.EventChannel;
+import net.mamoe.mirai.event.EventPriority;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -17,8 +20,22 @@ import java.lang.reflect.Parameter;
  */
 public class EventMethodExecute implements MethodExecute {
     public static final EventMethodExecute INSTANCE = new EventMethodExecute();
+    private Runnable before = () -> {
+    };
+    private Runnable after = () -> {
+    };
 
     private EventMethodExecute() {
+    }
+
+    @Override
+    public void executeBefore(Runnable runnable) {
+        before = runnable == null ? before : runnable;
+    }
+
+    @Override
+    public void executeAfter(Runnable runnable) {
+        after = runnable == null ? before : runnable;
     }
 
     @Override
@@ -30,7 +47,9 @@ public class EventMethodExecute implements MethodExecute {
         Class<? extends Event> eventType = parameters[0].getType().asSubclass(Event.class);
         ListenerContext.INSTANCE.getListenerRegister().subscribeAlways(channel, eventType, EmptyCoroutineContext.INSTANCE, concurrency, priority, event -> {
             try {
+                before.run();
                 method.invoke(bean, event);
+                after.run();
             } catch (IllegalAccessException | InvocationTargetException e) {
                 NumeronLogUtil.logger.error(e);
                 e.printStackTrace();

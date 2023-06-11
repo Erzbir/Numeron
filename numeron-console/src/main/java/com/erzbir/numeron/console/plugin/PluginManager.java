@@ -2,7 +2,6 @@ package com.erzbir.numeron.console.plugin;
 
 import com.erzbir.numeron.console.exception.PluginConflictException;
 import com.erzbir.numeron.console.exception.PluginLoadException;
-import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
@@ -10,7 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -71,8 +73,6 @@ public class PluginManager implements PluginManagerInter, PluginService {
             return;
         }
         executor.submit(plugin::enable);
-        Class<? extends Plugin> aClass = plugin.getClass();
-        AppContext.INSTANCE.addAllToContext(aClass.getPackageName(), aClass.getClassLoader());
     }
 
     @Override
@@ -82,7 +82,6 @@ public class PluginManager implements PluginManagerInter, PluginService {
             return;
         }
         executor.submit(plugin::disable);
-        AppContext.INSTANCE.removeBean(plugin.getClass());
     }
 
     @Override
