@@ -5,6 +5,8 @@ import com.erzbir.numeron.plugin.rss.config.RssConfig;
 import com.erzbir.numeron.plugin.rss.entity.RssInfo;
 import com.erzbir.numeron.plugin.rss.entity.RssItem;
 import com.erzbir.numeron.utils.MiraiContactUtils;
+import com.erzbir.numeron.utils.NumeronLogUtil;
+import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
@@ -34,16 +36,19 @@ public class TimerController {
     }
 
     private static void send(RssInfo rssInfo, Set<Long> list, Class<? extends Contact> type) {
+        if (rssInfo == null) {
+            return;
+        }
         list.forEach(t -> {
-            int flag = RssConfig.getInstance().getRetryTimes();
-            while (flag > 0) {
-                Contact contact = MiraiContactUtils.getContact(t, type);
-                if (BotServiceImpl.INSTANCE.getConfiguration(contact.getBot().getId()).isEnable()) {
-                    if (contact == null) {
-                        return;
-                    }
+            for (Bot bot : BotServiceImpl.INSTANCE.getBotList()) {
+                int flag = RssConfig.getInstance().getRetryTimes();
+                while (flag > 0) {
+                    long id = bot.getId();
+                    Contact contact = MiraiContactUtils.getContact(id, t, type);
                     try {
-                        contact.sendMessage((rssInfo.getMessageChain(contact)));
+                        if (BotServiceImpl.INSTANCE.getConfiguration(id).isEnable() && contact != null) {
+                            contact.sendMessage((rssInfo.getMessageChain(contact)));
+                        }
                         flag = 0;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -57,7 +62,12 @@ public class TimerController {
     public static void loadAllScan() {
         RssConfig.getInstance().getRssMap().forEach((k, v) -> {
             Runnable timerTask = getTimerTask(k);
-            executorService.scheduleAtFixedRate(timerTask, 1, RssConfig.getInstance().getDelay(), TimeUnit.MINUTES);
+            try {
+                executorService.scheduleAtFixedRate(timerTask, 1, RssConfig.getInstance().getDelay(), TimeUnit.MINUTES);
+            } catch (Exception e) {
+                e.printStackTrace();
+                NumeronLogUtil.logger.error(e);
+            }
         });
     }
 

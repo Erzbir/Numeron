@@ -33,7 +33,7 @@ public class QuestionConfig implements Serializable {
             synchronized (key) {
                 if (INSTANCE == null) {
                     try {
-                        INSTANCE = JsonUtil.load("erzbirnumeron/plugin-configs/chatgpt/question.json", QuestionConfig.class);
+                        INSTANCE = JsonUtil.load(configFile, QuestionConfig.class);
                     } catch (ConfigReadException e) {
                         throw new RuntimeException(e);
                     }
