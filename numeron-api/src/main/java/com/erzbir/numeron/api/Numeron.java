@@ -1,7 +1,9 @@
 package com.erzbir.numeron.api;
 
 import com.erzbir.numeron.api.processor.Processor;
+import net.mamoe.mirai.Bot;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +17,11 @@ public interface Numeron {
 
     String getPluginWorkDir();
 
+    String getConfigDir();
+
     Boolean getCache();
+
+    List<Bot> getBots();
 
     void addProcessor(Processor processor);
 

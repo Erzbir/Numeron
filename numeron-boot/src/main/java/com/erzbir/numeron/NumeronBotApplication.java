@@ -1,12 +1,12 @@
 package com.erzbir.numeron;
 
 import com.erzbir.numeron.api.bot.BotServiceImpl;
-import com.erzbir.numeron.api.config.NumeronConfiguration;
+import com.erzbir.numeron.console.bot.BotLoader;
 import com.erzbir.numeron.console.plugin.Plugin;
 import com.erzbir.numeron.console.plugin.PluginManager;
 import com.erzbir.numeron.core.boot.Starter;
-import com.erzbir.numeron.core.bot.NumeronBot;
 import com.erzbir.numeron.utils.NumeronLogUtil;
+import net.mamoe.mirai.Bot;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -20,10 +20,10 @@ public class NumeronBotApplication {
             |  \\| | | | | '_ ` _ \\ / _ \\ '__/ _ \\| '_ \\\s
             | |\\  | |_| | | | | | |  __/ | | (_) | | | |
             |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|""";
-    private static NumeronConfiguration configuration;
 
     public static void main(String[] args) {
         long l = System.currentTimeMillis();
+        initConfig();
         initPlugin();
         Starter starter = new Starter(packageName, NumeronBotApplication.class.getClassLoader());
         starter.boot(Starter.BotType.SPI);  // 调用 boot 方法初始化
@@ -32,6 +32,7 @@ public class NumeronBotApplication {
         printLog(LOGO);
         NumeronLogUtil.info("欢迎使用 Numeron!!!");
         NumeronLogUtil.info("启动耗时: " + l + "ms");
+        BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
     }
 
     private static void initPlugin() {
@@ -44,10 +45,11 @@ public class NumeronBotApplication {
     }
 
     private static void initLogin() {
-        NumeronBot.INSTANCE.login();
-        BotServiceImpl.INSTANCE.getBotList().forEach(t -> {
-            executorService.submit(() -> BotServiceImpl.INSTANCE.login(t));
-        });
+        BotServiceImpl.INSTANCE.getBotList().forEach(t -> executorService.submit(() -> BotServiceImpl.INSTANCE.login(t)));
+    }
+
+    private static void initConfig() {
+        BotLoader.load();
     }
 
     private static void printLog(String logo) {
