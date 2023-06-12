@@ -1,12 +1,14 @@
 package com.erzbir.numeron.core;
 
 import com.erzbir.numeron.api.Numeron;
-import com.erzbir.numeron.api.config.NumeronConfiguration;
 import com.erzbir.numeron.api.processor.Processor;
+import com.erzbir.numeron.core.config.NumeronConfiguration;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
+import net.mamoe.mirai.Bot;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,8 +32,18 @@ public class NumeronImpl implements Numeron {
     }
 
     @Override
+    public String getConfigDir() {
+        return NumeronConfiguration.INSTANCE.getConfigDir();
+    }
+
+    @Override
     public Boolean getCache() {
         return NumeronConfiguration.INSTANCE.getCache();
+    }
+
+    @Override
+    public List<Bot> getBots() {
+        return NumeronConfiguration.INSTANCE.getBots();
     }
 
     @Override

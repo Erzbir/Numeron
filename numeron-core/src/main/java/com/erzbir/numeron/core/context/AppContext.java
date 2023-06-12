@@ -56,7 +56,8 @@ public class AppContext implements BeanFactory {
                     addToContext(e);  // 判断是否为可实例化的类
                 } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                          NoSuchMethodException ex) {
-                    NumeronLogUtil.err(ex.getMessage());
+                    NumeronLogUtil.logger.error(ex);
+                    ex.printStackTrace();
                     throw new AppContextException(ex);
                 }
             }

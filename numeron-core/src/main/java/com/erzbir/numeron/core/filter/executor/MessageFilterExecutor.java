@@ -1,6 +1,6 @@
 package com.erzbir.numeron.core.filter.executor;
 
-import com.erzbir.numeron.core.bot.NumeronBot;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.core.exception.AnnotationGetException;
 import com.erzbir.numeron.core.filter.message.MessageFilterFactory;
 import com.erzbir.numeron.core.filter.permission.PermissionFilterFactory;
@@ -44,7 +44,7 @@ public class MessageFilterExecutor implements MessageFilterExecutorInter {
             NumeronLogUtil.logger.error(e);
             throw new AnnotationGetException(e);
         }
-        return NumeronBot.INSTANCE.isEnable() && RuleFilterFactory.INSTANCE.create(filterRule, text).filter(event1)
+        return BotServiceImpl.INSTANCE.getConfiguration((event1.getBot().getId())).isEnable() && RuleFilterFactory.INSTANCE.create(filterRule, text).filter(event1)
                 && MessageFilterFactory.INSTANCE.create(messageRule, text).filter(event1)
                 && PermissionFilterFactory.INSTANCE.create(permission, text).filter(event1);
     }
