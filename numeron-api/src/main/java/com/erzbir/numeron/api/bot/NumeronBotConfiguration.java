@@ -32,6 +32,10 @@ public class NumeronBotConfiguration extends BotConfiguration {
         return enable;
     }
 
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
     public void enable() {
         this.enable = true;
     }
