@@ -1,0 +1,2 @@
+com.erzbir.numeron.core.processor.CommandAnnotationProcessor
+com.erzbir.numeron.core.processor.MessageAnnotationProcessor

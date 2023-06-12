@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.filter.permission;
 
-import com.erzbir.numeron.api.model.WhiteService;
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
+import com.erzbir.numeron.core.entity.serviceimpl.WhiteServiceImpl;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -18,7 +18,8 @@ public class WhitePermissionFilter extends AbstractPermissionFilter {
     @Override
     public Boolean filter(MessageEvent event) {
         long id = event.getSender().getId();
-        return id == NumeronBot.INSTANCE.getMaster() || WhiteService.INSTANCE.exist(id);
+        WhiteServiceImpl whiteService = new WhiteServiceImpl();
+        return id == BotServiceImpl.INSTANCE.getConfiguration(event.getBot().getId()).getMaster() || whiteService.exist(id);
     }
 
 }

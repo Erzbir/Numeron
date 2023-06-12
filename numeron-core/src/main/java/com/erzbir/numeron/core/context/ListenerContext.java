@@ -24,7 +24,6 @@ public class ListenerContext {
 
     private final Map<EventPriority, Collection<?>> listenerCollectionMap;
 
-
     private final MiraiEventChannelProxy miraiEventChannelProxy;
 
 
@@ -63,6 +62,9 @@ public class ListenerContext {
     }
 
     private void cancel(Listener<? extends Event> listener) {
+        if (listener.isCancelled()) {
+            return;
+        }
         listener.cancel(null);
     }
 
@@ -74,10 +76,5 @@ public class ListenerContext {
                 e.printStackTrace();
             }
         }));
-//        context.forEach((k, v) -> {
-//            if (v.isActive()) {
-//                cancel(v);
-//            }
-//        });
     }
 }

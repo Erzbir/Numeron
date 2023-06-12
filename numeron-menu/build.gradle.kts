@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":numeron-api"))
-    implementation(project(":numeron-core"))
-    implementation(project(":numeron-utils"))
+    compileOnly(project(":numeron-api"))
+    compileOnly(project(":numeron-core"))
+    compileOnly(project(":numeron-utils"))
 }

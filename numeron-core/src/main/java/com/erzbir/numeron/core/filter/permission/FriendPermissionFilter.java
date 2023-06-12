@@ -17,6 +17,7 @@ public class FriendPermissionFilter extends AbstractPermissionFilter {
 
     @Override
     public Boolean filter(MessageEvent event) {
-        return event instanceof FriendMessageEvent && !BlackServiceImpl.INSTANCE.exist(event.getSender().getId());
+        BlackServiceImpl blackService = new BlackServiceImpl();
+        return event instanceof FriendMessageEvent && !blackService.exist(event.getSender().getId());
     }
 }

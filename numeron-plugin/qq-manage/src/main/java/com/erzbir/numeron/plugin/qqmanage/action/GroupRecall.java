@@ -1,12 +1,11 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.core.context.ListenerContext;
-import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.listener.DefaultListenerRegister;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.qqmanage.DefaultStore;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -27,20 +26,21 @@ import net.mamoe.mirai.message.data.PlainText;
 public class GroupRecall {
     private Boolean preventRecall = false;
 
-    private void register() {
-        ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel(), MessageRecallEvent.GroupRecall.class, event -> {
-            Object o = event.getAuthorId();
+    private void register(MessageEvent event) {
+
+        DefaultListenerRegister.INSTANCE.subscribe(event.getBot().getEventChannel(), MessageRecallEvent.GroupRecall.class, event1 -> {
+            Object o = event1.getAuthorId();
             MessageChain messageChain = DefaultStore.getInstance().find(o.hashCode());
             if (messageChain != null) {
                 if (!messageChain.contains(FileMessage.Key)) {
-                    event.getGroup().sendMessage(new PlainText(event.getAuthor().getId() + "撤回了一条消息: ").plus("\n\n").plus(messageChain));
+                    event1.getGroup().sendMessage(new PlainText(event1.getAuthor().getId() + "撤回了一条消息: ").plus("\n\n").plus(messageChain));
                     DefaultStore.getInstance().remove(o.hashCode());
                 }
             }
-            ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel(), GroupMessageEvent.class, event1 -> {
+            DefaultListenerRegister.INSTANCE.subscribe(event.getBot().getEventChannel(), GroupMessageEvent.class, event2 -> {
                 if (preventRecall) {
-                    Object o1 = event1.getSender().getId();
-                    DefaultStore.getInstance().save(o1.hashCode(), event1.getMessage(), 2);
+                    Object o1 = event2.getSender().getId();
+                    DefaultStore.getInstance().save(o1.hashCode(), event2.getMessage(), 2);
                     return ListeningStatus.LISTENING;
                 } else {
                     return ListeningStatus.STOPPED;
@@ -66,7 +66,7 @@ public class GroupRecall {
         System.out.println(preventRecall);
         e.getSubject().sendMessage("防撤回功能 " + preventRecall);
         if (preventRecall) {
-            register();
+            register(e);
         }
     }
 }

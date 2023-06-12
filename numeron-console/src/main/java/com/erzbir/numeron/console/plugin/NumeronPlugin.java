@@ -1,5 +1,9 @@
 package com.erzbir.numeron.console.plugin;
 
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * @author Erzbir
  * @Date: 2023/4/26 14:07
@@ -32,6 +36,12 @@ public abstract class NumeronPlugin implements Plugin {
     @Override
     public boolean isEnable() {
         return enable;
+    }
+
+    @NotNull
+    @Override
+    public CoroutineContext getCoroutineContext() {
+        return EmptyCoroutineContext.INSTANCE;
     }
 
 }

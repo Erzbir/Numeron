@@ -1,7 +1,6 @@
 package com.erzbir.numeron.plugin.chat.entity;
 
 
-import com.erzbir.numeron.core.entity.connection.SqlConnection;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.erzbir.numeron.utils.SqlUtil;
 

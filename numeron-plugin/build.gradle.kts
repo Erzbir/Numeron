@@ -6,10 +6,10 @@ subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     dependencies {
-        implementation(project(":numeron-api"))
-        implementation(project(":numeron-core"))
-        implementation(project(":numeron-utils"))
-        implementation(project(":numeron-menu"))
-        implementation(project(":numeron-deps"))
+        compileOnly(project(":numeron-api"))
+        compileOnly(project(":numeron-utils"))
+        compileOnly(project(":numeron-menu"))
+        compileOnly(project(":numeron-deps"))
+        compileOnly(project(":numeron-console"))
     }
 }

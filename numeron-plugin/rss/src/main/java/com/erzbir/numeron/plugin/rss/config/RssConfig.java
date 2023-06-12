@@ -1,6 +1,6 @@
 package com.erzbir.numeron.plugin.rss.config;
 
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.plugin.rss.entity.RssItem;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.ConfigReadException;
@@ -17,7 +17,7 @@ import java.util.HashMap;
  * @Date: 2023/3/6 00:02
  */
 public class RssConfig implements Serializable {
-    private static final String configFile = NumeronBot.INSTANCE.getFolder() + "plugin-configs/rss/config.json";
+    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "/rss/config/config.json";
     private static final Object key = new Object();
     private static volatile RssConfig INSTANCE;
 

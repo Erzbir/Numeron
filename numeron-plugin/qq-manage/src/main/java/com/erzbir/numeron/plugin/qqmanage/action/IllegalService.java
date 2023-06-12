@@ -1,7 +1,7 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
 
-import com.erzbir.numeron.core.entity.connection.SqlConnection;
+import com.erzbir.numeron.plugin.qqmanage.SqlConnection;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.erzbir.numeron.utils.SqlUtil;
 

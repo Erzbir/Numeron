@@ -1,13 +1,13 @@
 package com.erzbir.numeron.plugin.onoff;
 
-import com.erzbir.numeron.api.model.WhiteService;
-import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.filter.rule.FilterRule;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
+import com.erzbir.numeron.api.entity.WhiteServiceImpl;
+import com.erzbir.numeron.filter.FilterRule;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -25,25 +25,31 @@ public class OnOffCommandHandle {
     @Command(
             name = "开关机",
             dec = "关机",
-            help = "/shutdown",
+            help = "/shutdown [qq]",
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/shutdown",
+            text = "/shutdown//s+//d+",
             filterRule = FilterRule.NONE,
-            messageRule = MessageRule.EQUAL,
+            messageRule = MessageRule.REGEX,
             permission = PermissionType.WHITE
     )
     private void shutdown(MessageEvent e) {
-        if (NumeronBot.INSTANCE.isEnable()) {
-            e.getSubject().sendMessage("关机");
-            NumeronBot.INSTANCE.turnOff();
+        String s = e.getMessage().contentToString().replaceFirst("/shutdown//s+", "");
+        long id = e.getBot().getId();
+        Long aLong = Long.getLong(s);
+        if (id != aLong) {
+            return;
         }
-        if (!NumeronBot.INSTANCE.isEnable()) {
-            NumeronBot.INSTANCE.getBot().getEventChannel().subscribe(MessageEvent.class, event -> {
-                if ((WhiteService.INSTANCE.exist(event.getSender().getId()) || event.getSender().getId() == NumeronBot.INSTANCE.getMaster()) && event.getMessage().contentToString().equals("/launch")) {
+        if (BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).isEnable()) {
+            e.getSubject().sendMessage("关机");
+            BotServiceImpl.INSTANCE.shutdown(aLong);
+        }
+        if (BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).isEnable()) {
+            e.getBot().getEventChannel().subscribe(MessageEvent.class, event -> {
+                if ((WhiteServiceImpl.INSTANCE.exist(event.getSender().getId()) || event.getSender().getId() == BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).getMaster()) && event.getMessage().contentToString().equals("/launch")) {
                     e.getSubject().sendMessage("开机");
-                    NumeronBot.INSTANCE.turnOn();
+                    BotServiceImpl.INSTANCE.launch(aLong);
                     return ListeningStatus.STOPPED;
                 } else {
                     return ListeningStatus.LISTENING;

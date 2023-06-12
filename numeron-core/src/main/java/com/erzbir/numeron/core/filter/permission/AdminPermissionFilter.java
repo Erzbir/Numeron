@@ -1,9 +1,9 @@
 package com.erzbir.numeron.core.filter.permission;
 
-import com.erzbir.numeron.api.model.AdminService;
-import com.erzbir.numeron.api.model.BlackService;
-import com.erzbir.numeron.api.model.WhiteService;
-import com.erzbir.numeron.core.entity.NumeronBot;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
+import com.erzbir.numeron.core.entity.serviceimpl.AdminServiceImpl;
+import com.erzbir.numeron.core.entity.serviceimpl.BlackServiceImpl;
+import com.erzbir.numeron.core.entity.serviceimpl.WhiteServiceImpl;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -21,11 +21,16 @@ public class AdminPermissionFilter extends AbstractPermissionFilter {
     @Override
     public Boolean filter(MessageEvent event) {
         long id = event.getSender().getId();
+        long botId = event.getBot().getId();
+        long master = BotServiceImpl.INSTANCE.getConfiguration(botId).getMaster();
+        AdminServiceImpl adminService = new AdminServiceImpl();
+        WhiteServiceImpl whiteService = new WhiteServiceImpl();
+        BlackServiceImpl blackService = new BlackServiceImpl();
         if (event instanceof GroupMessageEvent event1) {
-            return NumeronBot.INSTANCE.getMaster() == id ||
-                    (AdminService.INSTANCE.getAdmins(event1.getGroup().getId()).contains(id) && !BlackService.INSTANCE.exist(id))
-                    || WhiteService.INSTANCE.exist(id);
+            return master == id ||
+                    (adminService.exist(botId, event1.getGroup().getId()) && !blackService.exist(id))
+                    || whiteService.exist(id);
         }
-        return NumeronBot.INSTANCE.getMaster() == id;
+        return master == id;
     }
 }

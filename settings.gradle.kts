@@ -9,7 +9,8 @@ pluginManagement {
 rootProject.name = "Numeron"
 
 
-include(listOf(
+include(
+    listOf(
         ":numeron-api",
         ":numeron-deps",
         ":numeron-boot",
@@ -30,4 +31,5 @@ include(listOf(
         ":numeron-plugin:rss",
         ":numeron-plugin:sign",
         ":numeron-plugin:switch",
-))
+    )
+)

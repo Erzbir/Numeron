@@ -1,14 +1,16 @@
 package com.erzbir.numeron.core.context;
 
-import com.erzbir.numeron.core.classloader.ClassScanner;
+import com.erzbir.numeron.annotation.Component;
+import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.exception.AppContextException;
-import com.erzbir.numeron.core.handler.Component;
+import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,26 +20,27 @@ import java.util.concurrent.Executors;
 /**
  * @author Erzbir
  * @Date: 2022/12/12 15:14
- * <p>有@Componet注解或是基础@Component注解的类实例化后注册到这个包装类里</p>
+ * <p>有@Componet注解或是继承@Component注解的注解的类实例化后注册到这个包装类里</p>
  */
 @SuppressWarnings("unchecked")
 public class AppContext implements BeanFactory {
     public static final AppContext INSTANCE = new AppContext();
-    public final Map<String, Object> context = new ConcurrentHashMap<>();
     public final ExecutorService executor = Executors.newFixedThreadPool(12);
+    private final Map<String, Object> context = new ConcurrentHashMap<>();
+    private final Set<Processor> processors = new HashSet<>();
 
     private AppContext() {
         this("com.erzbir.numeron");
     }
 
     private AppContext(String packageName) {
-        addAllToContext(packageName, AppContext.class.getClassLoader());
+        addAllToContext(packageName, AppContext.class.getClassLoader(), Component.class);
     }
 
-    public void addAllToContext(String packageName, ClassLoader classLoader) {
+    public void addAllToContext(String packageName, ClassLoader classLoader, Class<? extends Annotation> annotation) {
         try {
             ClassScanner scanner = new ClassScanner(packageName, classLoader, true, null, null);
-            Set<Class<?>> classes = scanner.scanWithAnnotation(Component.class); // 扫瞄带有@Component注解的class
+            Set<Class<?>> classes = scanner.scanWithAnnotation(annotation); // 扫瞄带有@Component注解的class
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
             NumeronLogUtil.err(e.getMessage());
@@ -49,17 +52,28 @@ public class AppContext implements BeanFactory {
     private void addAllToContext(Set<Class<?>> classes) {
         classes.forEach(e -> {
             if (isConstructClass(e)) {
-                executor.submit(() -> {
-                    try {
-                        addToContext(e);  // 判断是否为可实例化的类
-                    } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                             NoSuchMethodException ex) {
-                        NumeronLogUtil.err(ex.getMessage());
-                        throw new AppContextException(ex);
-                    }
-                });
+                try {
+                    addToContext(e);  // 判断是否为可实例化的类
+                } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
+                         NoSuchMethodException ex) {
+                    NumeronLogUtil.logger.error(ex);
+                    ex.printStackTrace();
+                    throw new AppContextException(ex);
+                }
             }
         });
+    }
+
+    public synchronized void addProcessor(Processor processor) {
+        processors.add(processor);
+    }
+
+    public synchronized void removeProcessor(Processor processor) {
+        processors.remove(processor);
+    }
+
+    public Set<Processor> getProcessors() {
+        return processors;
     }
 
     private void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {

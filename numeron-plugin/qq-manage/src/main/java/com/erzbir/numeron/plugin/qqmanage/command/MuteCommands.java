@@ -1,12 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.api.model.GroupService;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.filter.rule.FilterRule;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.entity.GroupServiceImpl;
+import com.erzbir.numeron.filter.FilterRule;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -65,7 +65,7 @@ public class MuteCommands {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
             AtomicReference<NormalMember> member = new AtomicReference<>();
-            GroupService.INSTANCE.getEnableGroupList().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            GroupServiceImpl.INSTANCE.getEnableGroupList().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
             if (member.get().getPermission().getLevel() < 1) {
                 if (!bool && member.get().isMuted()) {
                     member.get().unmute();

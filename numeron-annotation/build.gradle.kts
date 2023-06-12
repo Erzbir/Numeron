@@ -3,4 +3,5 @@ plugins {
 }
 
 dependencies {
+    compileOnly(project(":numeron-deps"))
 }

@@ -2,6 +2,7 @@ package com.erzbir.numeron.core.filter.permission;
 
 import com.erzbir.numeron.core.filter.ChannelFilterInter;
 import com.erzbir.numeron.core.filter.FilterFactory;
+import com.erzbir.numeron.filter.PermissionType;
 
 /**
  * @author Erzbir

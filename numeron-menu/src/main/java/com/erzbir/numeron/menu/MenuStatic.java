@@ -1,7 +1,7 @@
 package com.erzbir.numeron.menu;
 
 
-import com.erzbir.numeron.core.handler.Command;
+import com.erzbir.numeron.annotation.Command;
 
 import java.awt.image.BufferedImage;
 import java.util.*;

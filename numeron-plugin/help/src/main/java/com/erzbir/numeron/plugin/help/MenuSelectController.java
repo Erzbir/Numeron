@@ -1,10 +1,11 @@
 package com.erzbir.numeron.plugin.help;
 
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.filter.rule.FilterRule;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.filter.FilterRule;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.GroupMessageEvent;

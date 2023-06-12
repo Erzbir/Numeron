@@ -1,11 +1,11 @@
 package com.erzbir.numeron.plugin.chat.listner;
 
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.filter.rule.FilterRule;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.filter.FilterRule;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.plugin.chat.entity.AutoReplyData;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -25,7 +25,8 @@ public class AutoReply {
 
     @Message(
             messageRule = MessageRule.REGEX,
-            text = ".*", permission = PermissionType.ALL,
+            text = "^a",
+            permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK
     )
     private void reply(MessageEvent e) {
@@ -64,7 +65,7 @@ public class AutoReply {
     )
     @Message(
             messageRule = MessageRule.REGEX,
-            text = "^/forget\\s+?.*",
+            text = "^/forget\\s+\\S+",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ALL
     )

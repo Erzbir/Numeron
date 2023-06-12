@@ -3,8 +3,11 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":numeron-api"))
-    implementation(project(":numeron-utils"))
+    compileOnly(project(":numeron-api"))
+    compileOnly(project(":numeron-utils"))
+    compileOnly(project(":numeron-deps"))
 
-    implementation(project(":numeron-deps"))
+    testImplementation(project(":numeron-api"))
+    testImplementation(project(":numeron-utils"))
+    testImplementation(project(":numeron-deps"))
 }

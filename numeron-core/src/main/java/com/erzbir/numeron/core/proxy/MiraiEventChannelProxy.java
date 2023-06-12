@@ -1,6 +1,7 @@
 package com.erzbir.numeron.core.proxy;
 
-import com.erzbir.numeron.utils.NumeronLogUtil;
+import com.erzbir.numeron.api.listener.ListenerRegisterInter;
+import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.*;
 import org.jetbrains.annotations.NotNull;
@@ -8,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -30,6 +31,12 @@ public class MiraiEventChannelProxy {
         this(() -> {
         }, () -> {
         }, argsMap);
+    }
+
+    public MiraiEventChannelProxy() {
+        this(() -> {
+        }, () -> {
+        }, new HashMap<>());
     }
 
     public MiraiEventChannelProxy(Runnable functionBefore, Runnable functionAfter, @NotNull Map<String, Object> argsMap) {
@@ -66,35 +73,11 @@ public class MiraiEventChannelProxy {
     }
 
 
-    @SuppressWarnings({"unused"})
-    public interface EventChannelMethodInvokeInter {
-        <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler);
-
-        <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Function<E, ListeningStatus> handler);
-
-        <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Function<E, ListeningStatus> handler);
-
-        <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Function<E, ListeningStatus> handler);
-
-        <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, Consumer<E> handler);
-
-        <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler);
+    public interface EventChannelMethodInvokeInter extends ListenerRegisterInter {
 
     }
 
-    private record EventChannelMethodInvokeImpl() implements EventChannelMethodInvokeInter {
+    private static class EventChannelMethodInvokeImpl implements EventChannelMethodInvokeInter {
         private static final ExecutorService executor = Executors.newCachedThreadPool();
 
 
@@ -158,6 +141,26 @@ public class MiraiEventChannelProxy {
         @Override
         public <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, Consumer<E> handler) {
             return channel.subscribeAlways(eventClass, handler);
+        }
+
+        @Override
+        public void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost) {
+            channel.registerListenerHost(listenerHost);
+        }
+
+        @Override
+        public void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost, CoroutineContext coroutineContext) {
+            channel.registerListenerHost(listenerHost, coroutineContext);
+        }
+
+        @Override
+        public void setRunBefore(Runnable before) {
+            EventMethodExecute.INSTANCE.executeBefore(before);
+        }
+
+        @Override
+        public void setRunAfter(Runnable after) {
+            EventMethodExecute.INSTANCE.executeAfter(after);
         }
     }
 

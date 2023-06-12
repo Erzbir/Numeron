@@ -8,11 +8,13 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10" apply false
+    kotlin("jvm") version "1.7.10"
 }
 
 allprojects {
     group = "com.erzbir.numeron"
+
+    version = "1.0.0"
 
     repositories {
         mavenLocal()

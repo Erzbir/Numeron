@@ -1,12 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.core.context.ListenerContext;
-import com.erzbir.numeron.core.entity.NumeronBot;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
+import com.erzbir.numeron.api.listener.DefaultListenerRegister;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.NormalMember;
@@ -26,18 +26,18 @@ import net.mamoe.mirai.message.data.PlainText;
 public class ScanIllegal {
     private boolean flag = false;
 
-    private void register() {
-        ListenerContext.INSTANCE.getListenerRegister().subscribe(NumeronBot.INSTANCE.getEventChannel().filter(f -> f instanceof GroupMessageEvent event
+    private void register(MessageEvent event) {
+        DefaultListenerRegister.INSTANCE.subscribe(event.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent event1
                         && IllegalService.INSTANCE.exist(event.getMessage().contentToString())
-                        && event.getGroup().getBotPermission().getLevel() != 0),
+                        && event1.getGroup().getBotPermission().getLevel() != 0),
                 GroupMessageEvent.class,
-                event -> {
-                    ((NormalMember) event.getSubject()).mute(30000);
-                    Friend friend = event.getBot().getFriend(NumeronBot.INSTANCE.getMaster());
+                event1 -> {
+                    ((NormalMember) event1.getSubject()).mute(30000);
+                    Friend friend = event1.getBot().getFriend(BotServiceImpl.INSTANCE.getConfiguration(event.getBot().getId()).getMaster());
                     if (friend != null) {
-                        friend.sendMessage(new PlainText("群: " + event.getGroup().getId() + "\n")
-                                .plus("发送人: " + event.getSender().getId() + "\n")
-                                .plus("消息: " + event.getMessage().contentToString()));
+                        friend.sendMessage(new PlainText("群: " + event1.getGroup().getId() + "\n")
+                                .plus("发送人: " + event1.getSender().getId() + "\n")
+                                .plus("消息: " + event1.getMessage().contentToString()));
                     }
                     return flag ? ListeningStatus.LISTENING : ListeningStatus.STOPPED;
                 });
@@ -59,7 +59,7 @@ public class ScanIllegal {
                 .replaceFirst("^/scan\\s+?illegal\\s+?", ""));
         event.getSubject().sendMessage("违禁词扫瞄 " + flag);
         if (flag) {
-            register();
+            register(event);
         }
     }
 }

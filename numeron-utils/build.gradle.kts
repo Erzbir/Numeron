@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":numeron-deps"))
+    compileOnly(project(":numeron-deps"))
 }

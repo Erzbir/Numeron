@@ -1,13 +1,13 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.api.model.BlackService;
-import com.erzbir.numeron.api.model.WhiteService;
-import com.erzbir.numeron.core.filter.message.MessageRule;
-import com.erzbir.numeron.core.filter.permission.PermissionType;
-import com.erzbir.numeron.core.filter.rule.FilterRule;
-import com.erzbir.numeron.core.handler.Command;
-import com.erzbir.numeron.core.handler.Message;
-import com.erzbir.numeron.core.listener.Listener;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.entity.BlackServiceImpl;
+import com.erzbir.numeron.api.entity.WhiteServiceImpl;
+import com.erzbir.numeron.filter.FilterRule;
+import com.erzbir.numeron.filter.MessageRule;
+import com.erzbir.numeron.filter.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -35,8 +35,8 @@ public class BlackCommands {
     )
     private void ban(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/ban\\s+?user\\s+?@*", ""));
-        WhiteService.INSTANCE.removeWhite(id);
-        if (BlackService.INSTANCE.addBlack(id, event.getSender().getId())) {
+        WhiteServiceImpl.INSTANCE.removeWhite(id);
+        if (BlackServiceImpl.INSTANCE.addBlack(id, event.getSender().getId())) {
             event.getSubject().sendMessage(id + " 添加到黑名单");
         }
     }
@@ -55,7 +55,7 @@ public class BlackCommands {
     )
     private void remove(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/noban\\s+?user\\s+?@*", ""));
-        if (BlackService.INSTANCE.removeBlack(id)) {
+        if (BlackServiceImpl.INSTANCE.removeBlack(id)) {
             event.getSubject().sendMessage(id + " 已移出黑名单");
         }
     }
@@ -77,9 +77,9 @@ public class BlackCommands {
                 .contentToString()
                 .replaceFirst("^/query\\s+?black\\s+?", ""));
         if (l == 0) {
-            event.getSubject().sendMessage(BlackService.INSTANCE.getBlacks().toString());
+            event.getSubject().sendMessage(BlackServiceImpl.INSTANCE.getBlacks().toString());
         } else {
-            event.getSubject().sendMessage(String.valueOf(BlackService.INSTANCE.exist(l)));
+            event.getSubject().sendMessage(String.valueOf(BlackServiceImpl.INSTANCE.exist(l)));
         }
     }
 }
