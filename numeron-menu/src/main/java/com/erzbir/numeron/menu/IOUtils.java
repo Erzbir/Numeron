@@ -1,5 +1,6 @@
 package com.erzbir.numeron.menu;
 
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,15 +8,14 @@ import java.io.*;
 import java.net.URL;
 
 public class IOUtils {
-    public static BufferedImage drawingImgByPath(String filePath) {
+    public static BufferedImage drawingImgByPath(String filePath) throws IOException {
         BufferedImage drawingImgBuffer = null;
         InputStream inputStream = IOUtils.class.getResourceAsStream(filePath);
         if (inputStream != null) {
-            try {
-                drawingImgBuffer = ImageIO.read(inputStream);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            drawingImgBuffer = ImageIO.read(inputStream);
+        }
+        if (inputStream != null) {
+            inputStream.close();
         }
         return drawingImgBuffer;
     }
@@ -28,48 +28,33 @@ public class IOUtils {
         return graphics;
     }
 
-    public static InputStream bufferedImageToInputStream(BufferedImage image, String suffix) {
+    public static InputStream bufferedImageToInputStream(BufferedImage image, String suffix) throws IOException {
         if (image != null) {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            try {
-                ImageIO.write(image, suffix, os);
-                return new ByteArrayInputStream(os.toByteArray());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ImageIO.write(image, suffix, os);
+            return new ByteArrayInputStream(os.toByteArray());
         }
         return null;
     }
 
-    public static Image getImagByUrl(String url) {
-        try {
-            URL file = new URL(url);
-            return ImageIO.read(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public static Image getImagByUrl(String url) throws IOException {
+        URL file = new URL(url);
+        return ImageIO.read(file);
     }
 
-    public static Font getFont(int style, int size) {
+    public static Font getFont(int style, int size) throws IOException, FontFormatException {
         InputStream is = IOUtils.class.getResourceAsStream("/Fonts/SwordAndShield.ttf");
         Font actionJson = null;
-        try {
-            assert is != null;
+        if (is != null) {
             actionJson = Font.createFont(Font.TRUETYPE_FONT, is);
-        } catch (Exception e) {
-            e.printStackTrace();
+            is.close();
         }
         if (actionJson != null) return actionJson.deriveFont(style, size);
         else return new Font("黑体", style, size);
     }
 
-    public static void saveImage(BufferedImage bufferedImage, File file, String suffix) {
-        try {
-            if (!file.mkdirs()) return;
-            ImageIO.write(bufferedImage, suffix, file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void saveImage(BufferedImage bufferedImage, File file, String suffix) throws IOException {
+        if (!file.mkdirs()) return;
+        ImageIO.write(bufferedImage, suffix, file);
     }
 }

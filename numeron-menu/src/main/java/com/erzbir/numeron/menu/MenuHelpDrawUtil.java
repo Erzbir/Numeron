@@ -4,12 +4,13 @@ import com.erzbir.numeron.annotation.Command;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class MenuHelpDrawUtil {
     public static final int canvasWidth = 1000;
     public static int canvasHeight = 1884;
 
-    public static BufferedImage drawMenuHelp(String menuName) {
+    public static BufferedImage drawMenuHelp(String menuName) throws IOException, FontFormatException {
         int height = 840 + MenuStatic.menuMap.get(menuName).size() * 60;
         if (height >= 1900) {
             canvasHeight = 2500;
@@ -34,7 +35,7 @@ public class MenuHelpDrawUtil {
         return drawImageBuffer;
     }
 
-    private static BufferedImage drawingContent(String menuName, int height) {
+    private static BufferedImage drawingContent(String menuName, int height) throws IOException, FontFormatException {
         BufferedImage drawingContentBuffer = new BufferedImage(960, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = IOUtils.getGraphics2D(drawingContentBuffer);
         graphics.setColor(new Color(76, 66, 76));
@@ -67,7 +68,7 @@ public class MenuHelpDrawUtil {
         return drawingContentBuffer;
     }
 
-    private static BufferedImage drawingTitle(String menuName, int width) {
+    private static BufferedImage drawingTitle(String menuName, int width) throws IOException, FontFormatException {
         BufferedImage drawingTitleBuffer = new BufferedImage(width + 40, 100, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = IOUtils.getGraphics2D(drawingTitleBuffer);
         graphics.setColor(new Color(76, 66, 76));

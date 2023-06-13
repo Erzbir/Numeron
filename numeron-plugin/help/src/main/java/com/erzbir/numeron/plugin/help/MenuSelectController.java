@@ -11,6 +11,9 @@ import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
+import java.awt.*;
+import java.io.IOException;
+
 import static com.erzbir.numeron.menu.IOUtils.bufferedImageToInputStream;
 import static com.erzbir.numeron.menu.MenuDrawUtil.drawMenu;
 import static com.erzbir.numeron.menu.MenuHelpDrawUtil.drawMenuHelp;
@@ -27,7 +30,7 @@ public class MenuSelectController {
             permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK
     )
-    private void picMenu(MessageEvent event) {
+    private void picMenu(MessageEvent event) throws IOException, FontFormatException {
         event.getSubject().sendMessage(Contact.uploadImage(event.getSubject(), bufferedImageToInputStream(drawMenu(event.getSubject().getId()), "PNG")));
     }
 
@@ -37,7 +40,7 @@ public class MenuSelectController {
             permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK
     )
-    private void subMenu(GroupMessageEvent event) {
+    private void subMenu(GroupMessageEvent event) throws IOException, FontFormatException {
         String s = event.getMessage().contentToString().replaceFirst("#help\\s+", "");
         if (menuList.contains(s)) {
             if (menuMap.get(s) != null && menuMap.get(s).size() > 0)
