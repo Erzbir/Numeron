@@ -43,7 +43,7 @@ public class FastMute {
                 group = jsonElement.getAsJsonObject().get("group").getAsJsonArray().asList();
             }
         } catch (IOException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
     }
 

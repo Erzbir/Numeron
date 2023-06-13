@@ -68,7 +68,7 @@ public class NumeronConsole {
         try (BufferedReader fileReader = new BufferedReader(new FileReader(configFile))) {
             botsJson = JsonParser.parseReader(fileReader).getAsJsonArray();
         } catch (Exception e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         if (botsJson == null) {
             botsJson = new JsonArray();
@@ -86,7 +86,7 @@ public class NumeronConsole {
             Gson gson = new Gson();
             gson.toJson(botsJson, bufferedWriter);
         } catch (Exception e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
     }
 }

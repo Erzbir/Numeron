@@ -60,7 +60,7 @@ public class PluginManager implements PluginManagerInter, PluginService {
                 serviceLoaderMap.put(id, load);
             });
         } catch (Exception e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new PluginLoadException("插件加载异常" + e);
         }
     }

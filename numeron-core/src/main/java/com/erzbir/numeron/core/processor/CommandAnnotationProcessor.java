@@ -51,7 +51,7 @@ public class CommandAnnotationProcessor implements Processor {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(numeron.getWorkDir() + "help.txt"))) {
             bufferedWriter.write(stringBuilder.toString());
         } catch (IOException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
         NumeronLogUtil.info("命令帮助文档生成完成\n");

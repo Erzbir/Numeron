@@ -5,12 +5,12 @@
         <!--这个输出控制台的配置 -->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                    pattern="%highlight{[%d{HH:mm:ss.SSS}] [%level] %msg%xEx%n}{FATAL=Bright Black, ERROR=Bright Magenta, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"/>
+                    pattern="%highlight{[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] %msg%xEx%n}{FATAL=Bright Black, ERROR=Bright Red, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}"/>
         </Console>
         <RollingRandomAccessFile name="File"
                                  filePattern="logs/logs-%d{yyyy-MM-dd HH-mm}-%i.log">
             <PatternLayout
-                    pattern="[%d{HH:mm:ss.SSS}] [%level] %msg%xEx%n"/>
+                    pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] %msg%xEx%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
                 <SizeBasedTriggeringPolicy size="100 MB"/>

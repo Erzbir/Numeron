@@ -20,7 +20,7 @@ public final class SqlConnection {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:" + "erzbirnumeron/config/data.sqlite");
         } catch (Exception e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             System.exit(-1);
         }
     }

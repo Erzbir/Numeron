@@ -33,7 +33,7 @@ public class ListenerContext {
             miraiEventChannelProxy = new MiraiEventChannelProxy(new HashMap<>());
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | NoSuchFieldException |
                  InvocationTargetException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
     }
@@ -73,7 +73,7 @@ public class ListenerContext {
             try {
                 cancel(getListener(t));
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
             }
         }));
     }

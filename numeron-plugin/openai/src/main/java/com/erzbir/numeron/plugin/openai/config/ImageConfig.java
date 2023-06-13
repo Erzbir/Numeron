@@ -26,7 +26,7 @@ public class ImageConfig implements Serializable {
         try {
             ConfigCreateUtil.createFile(configFile);
         } catch (IOException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
     }
 

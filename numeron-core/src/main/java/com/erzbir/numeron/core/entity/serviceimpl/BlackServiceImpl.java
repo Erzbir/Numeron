@@ -21,7 +21,7 @@ public class BlackServiceImpl implements BlackService {
         try {
             black.addAll(blackDao.getBlacks());
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
     }
@@ -42,7 +42,7 @@ public class BlackServiceImpl implements BlackService {
         try {
             return blackDao.addBlack(qq, opId);
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         return false;
     }
@@ -53,7 +53,7 @@ public class BlackServiceImpl implements BlackService {
         try {
             return blackDao.removeBlack(qq);
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         return false;
     }

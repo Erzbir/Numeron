@@ -40,7 +40,7 @@ public final class RedisStore {
             user = properties.getProperty("user");
             password = properties.getProperty("password");
         } catch (IOException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         client = new Jedis(host, port);
         if (!user.isEmpty() || !password.isEmpty()) {

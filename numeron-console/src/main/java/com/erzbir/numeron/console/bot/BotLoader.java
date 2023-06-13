@@ -32,7 +32,7 @@ public class BotLoader {
         try {
             ConfigCreateUtil.createFile(config);
         } catch (IOException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
 
@@ -55,14 +55,14 @@ public class BotLoader {
                 botsJson = JsonParser.parseReader(fileReader).getAsJsonArray();
             }
         } catch (Exception e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         } finally {
             if (fileReader != null) {
                 try {
                     fileReader.close();
                     fileReader = null;
                 } catch (IOException e) {
-                    NumeronLogUtil.logger.error(e);
+                    NumeronLogUtil.logger.error("ERROR", e);
                 }
             }
         }

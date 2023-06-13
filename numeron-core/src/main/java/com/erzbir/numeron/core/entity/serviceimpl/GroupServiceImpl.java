@@ -21,7 +21,7 @@ public class GroupServiceImpl implements GroupService {
         try {
             group.addAll(groupDao.getEnableGroups());
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
     }
@@ -42,7 +42,7 @@ public class GroupServiceImpl implements GroupService {
         try {
             return groupDao.enableGroup(groupId, opId);
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         return false;
     }
@@ -53,7 +53,7 @@ public class GroupServiceImpl implements GroupService {
         try {
             return groupDao.disableGroup(groupId);
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         return false;
     }
