@@ -14,10 +14,10 @@ import java.util.Set;
  * @Date: 2023/4/27 11:29
  */
 public class GroupServiceImpl implements GroupService {
-    private final Set<Long> group = new HashSet<>();
-    private final GroupDao groupDao = GroupDaoImpl.INSTANCE;
+    private static final Set<Long> group = new HashSet<>();
+    private static final GroupDao groupDao = GroupDaoImpl.INSTANCE;
 
-    public GroupServiceImpl() {
+    static {
         try {
             group.addAll(groupDao.getEnableGroups());
         } catch (SQLException e) {

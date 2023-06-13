@@ -5,6 +5,8 @@
         - [模块:](#模块)
         - [实现的功能:](#plugin模块实现的功能)
     - [说明:](#说明)
+        - [API:](#api)
+        - [插件模式:](#插件模式)
         - [@Message使用:](#message使用)
         - [@Event使用:](#event使用)
         - [用@Command生成指令表:](#用command生成指令表)
@@ -14,23 +16,26 @@
 
 ## 介绍:
 
-这是一个使用mirai-core开发的qqBot
+这是一个使用 mirai-core 开发的 qqBot, 也可用作简单脚手架
+
+没有写 api 文档, 有兴趣可以直接问我
 
 ### 模块:
 
-- core模块, 脚手架(消息过滤和监听注册实现)
-- boot模块, 启动机器人
-- menu模块, 图片菜单生成
-- plugin模块, 主要的功能
-- console模块, 控制台(待开发)和插件加载
-- api模块, core的api(正在分离)
-- utils模块, 一些通用工具
-- buildSrc模块, 对项目没有用处, 只是用于打包可执行jar
+- core: 脚手架(消息过滤和监听注册实现)
+- boot: 启动机器人功能, 目前程序的入口在此模块下
+- menu: 图片菜单生成
+- plugin: 目前用于实现功能, 此模块下的类会在程序运行最初被加载, 可用于扩展功能(引入 core 模块即可)
+- console: 控制台(待开发) 和插件模式
+- annotation: 注解
+- api: core 的 api 接口
+- utils: 一些通用工具
+- deps: 用于引入第三方依赖
 
 ## plugin模块实现的功能:
 
 - 消息回复
-- @禁言, qq号禁言
+- @禁言, qq 号禁言
 - 全体禁言
 - 黑名单检测
 - 违禁词检测
@@ -51,13 +56,35 @@
 
 ## 说明:
 
-第一次使用会使用控制台输入配置, 登陆后则会自动登陆, 生成的文件逻辑看源码吧,
-
-<b>将所有QQ机器人功能写在[numeron-plugin](numeron-plugin)模块下</b>
+第一次使用会使用控制台输入配置, 登陆后则会自动登陆
 
 在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
 
-### @Message使用:
+### API:
+api模块下
+- `BotService` 有关 Bot 的各种操作
+- `AdminService` 群管理的相关操作
+- `BlackService` 黑名单操作
+- `GroupService` 授权群操作
+- `WhiteService` 白名单操作
+- `ListenerRegister` 监听注册器接口
+- `Processor` 处理器接口
+    - 实现此接口的类会在程序启动时或者所有 bot 关机并有一个 bot 重启时执行一次 `onApplicationEvent()`
+    - 在所有 bot 关机时执行 `destroy()` 方法
+- `Numeron` 程序接口
+    - 获取此程序的各种配置信息
+    - 可以通过此类向注册监听方法的前后和监听回调函数执行前后插入方法
+    - 增加 Processor 处理器
+
+### 插件模式:
+console 模块下
+
+实现 Plugin 接口, 目前插件打包时需包含所有依赖打包
+
+将打包的插件 jar 放到运行目录的 numeron_plugins 目录下
+
+
+### @Message 使用:
 
 <code>[@Message](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Message.java)</code>
 > 可以标记在所有消息事件类型的处理方法上, 监听到满足此注解定义的规则的事件就会反射调用被标记的方法,
@@ -259,16 +286,16 @@ class Test {
 ## 开发计划:
 
 - [ ] 群管理功能
-- [ ] api和实现分离
-- [ ] console控制台
+- [x] api 和实现分离
+- [ ] console 控制台
 - [ ] 功能热加载
 - [ ] 注解处理器
 - [x] 插件模式
-- [ ] 只监听某个id(好友/群)的事件监听注册(用注解实现)
-- [ ] 兼容mirai-console的插件
+- [ ] 只监听某个 id(好友/群) 的事件监听注册(用注解实现)
+- [ ] 兼容 mirai-console 的插件
 
 ## 联系方式:
 
 email:
 
-- 2978086497@qq.com
+- erzbir@mail.com

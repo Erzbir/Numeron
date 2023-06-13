@@ -23,7 +23,6 @@ public final class SqlConnection {
         } catch (Exception e) {
             NumeronLogUtil.logger.error(e);
             e.printStackTrace();
-            System.exit(-1);
         }
     }
 

@@ -29,15 +29,15 @@ public class OnOffCommandHandle {
             permission = PermissionType.WHITE
     )
     @Message(
-            text = "/shutdown//s+//d+",
+            text = "/shutdown\\s+\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.WHITE
     )
     private void shutdown(MessageEvent e) {
-        String s = e.getMessage().contentToString().replaceFirst("/shutdown//s+", "");
+        String s = e.getMessage().contentToString().replaceFirst("/shutdown\\s+", "");
         long id = e.getBot().getId();
-        Long aLong = Long.getLong(s);
+        long aLong = Long.parseLong(s);
         if (id != aLong) {
             return;
         }
@@ -45,11 +45,13 @@ public class OnOffCommandHandle {
             e.getSubject().sendMessage("关机");
             BotServiceImpl.INSTANCE.shutdown(aLong);
         }
-        if (BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).isEnable()) {
+        if (!BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).isEnable()) {
             e.getBot().getEventChannel().subscribe(MessageEvent.class, event -> {
-                if ((WhiteServiceImpl.INSTANCE.exist(event.getSender().getId()) || event.getSender().getId() == BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).getMaster()) && event.getMessage().contentToString().equals("/launch")) {
+                String s1 = event.getMessage().contentToString();
+                if ((WhiteServiceImpl.INSTANCE.exist(event.getSender().getId()) || event.getSender().getId() == BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).getMaster()) && s1.startsWith("/launch")) {
+                    String s2 = s1.replaceFirst("/launch\\s+", "");
                     e.getSubject().sendMessage("开机");
-                    BotServiceImpl.INSTANCE.launch(aLong);
+                    BotServiceImpl.INSTANCE.launch(Long.parseLong(s2));
                     return ListeningStatus.STOPPED;
                 } else {
                     return ListeningStatus.LISTENING;

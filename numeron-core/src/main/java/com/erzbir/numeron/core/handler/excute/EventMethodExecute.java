@@ -1,12 +1,11 @@
 package com.erzbir.numeron.core.handler.excute;
 
+import com.erzbir.numeron.api.bot.NumeronBotConfiguration;
 import com.erzbir.numeron.core.context.ListenerContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import kotlin.coroutines.EmptyCoroutineContext;
-import net.mamoe.mirai.event.ConcurrencyKind;
-import net.mamoe.mirai.event.Event;
-import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.EventPriority;
+import net.mamoe.mirai.event.*;
+import net.mamoe.mirai.event.events.BotEvent;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -45,7 +44,7 @@ public class EventMethodExecute implements MethodExecute {
         ConcurrencyKind concurrency = (ConcurrencyKind) aClass.getDeclaredMethod("concurrency").invoke(annotation);
         Parameter[] parameters = method.getParameters();
         Class<? extends Event> eventType = parameters[0].getType().asSubclass(Event.class);
-        ListenerContext.INSTANCE.getListenerRegister().subscribeAlways(channel, eventType, EmptyCoroutineContext.INSTANCE, concurrency, priority, event -> {
+        ListenerContext.INSTANCE.getListenerRegister().subscribe(channel, eventType, EmptyCoroutineContext.INSTANCE, concurrency, priority, event -> {
             try {
                 before.run();
                 method.invoke(bean, event);
@@ -54,6 +53,7 @@ public class EventMethodExecute implements MethodExecute {
                 NumeronLogUtil.logger.error(e);
                 e.printStackTrace();
             }
+            return event instanceof BotEvent event1 ? (((NumeronBotConfiguration) event1.getBot().getConfiguration()).isEnable() ? ListeningStatus.LISTENING : ListeningStatus.STOPPED) : ListeningStatus.LISTENING;
         });
     }
 }

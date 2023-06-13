@@ -73,7 +73,7 @@ public class WhiteCommands {
     private void query(MessageEvent event) {
         long l = Long.parseLong(event.getMessage().contentToString().replaceFirst("/query\\s+?white\\s+?", ""));
         if (l == 0) {
-            event.getSubject().sendMessage(WhiteServiceImpl.INSTANCE.getAdminList().toString());
+            event.getSubject().sendMessage(WhiteServiceImpl.INSTANCE.getWhites().toString());
         } else {
             event.getSubject().sendMessage(String.valueOf(WhiteServiceImpl.INSTANCE.exist(l)));
         }

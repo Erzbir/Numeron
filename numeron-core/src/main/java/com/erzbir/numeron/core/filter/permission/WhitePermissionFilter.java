@@ -19,7 +19,7 @@ public class WhitePermissionFilter extends AbstractPermissionFilter {
     public Boolean filter(MessageEvent event) {
         long id = event.getSender().getId();
         WhiteServiceImpl whiteService = new WhiteServiceImpl();
-        return id == BotServiceImpl.INSTANCE.getConfiguration(event.getBot().getId()).getMaster() || whiteService.exist(id);
+        return id == BotServiceImpl.INSTANCE.getMaster(event.getBot()) || whiteService.exist(id);
     }
 
 }

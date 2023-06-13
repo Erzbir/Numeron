@@ -21,6 +21,22 @@ public interface BotService {
 
     void login(Bot bot);
 
+    void login(long qq);
+
+    List<Bot> getLoginBotList();
+
+    boolean isEnable(long qq);
+
+    boolean isEnable(Bot bot);
+
+    long getMaster(long qq);
+
+    long getMaster(Bot bot);
+
+    NumeronBotConfiguration getConfiguration(long qq);
+
+    NumeronBotConfiguration getConfiguration(Bot bot);
+
     @NotNull
     Bot newBot(long qq, @NotNull byte[] passwordMD5, @NotNull NumeronBotConfiguration botConfiguration);
 
@@ -30,5 +46,4 @@ public interface BotService {
     @NotNull
     Bot newBot(long qq, BotAuthorization botAuthorization, @NotNull NumeronBotConfiguration botConfiguration);
 
-    NumeronBotConfiguration getConfiguration(long qq);
 }

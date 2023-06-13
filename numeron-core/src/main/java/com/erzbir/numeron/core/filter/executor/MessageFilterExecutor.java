@@ -44,7 +44,7 @@ public class MessageFilterExecutor implements MessageFilterExecutorInter {
             NumeronLogUtil.logger.error(e);
             throw new AnnotationGetException(e);
         }
-        return BotServiceImpl.INSTANCE.getConfiguration((event1.getBot().getId())).isEnable() && RuleFilterFactory.INSTANCE.create(filterRule, text).filter(event1)
+        return BotServiceImpl.INSTANCE.isEnable(event1.getBot()) && RuleFilterFactory.INSTANCE.create(filterRule, text).filter(event1)
                 && MessageFilterFactory.INSTANCE.create(messageRule, text).filter(event1)
                 && PermissionFilterFactory.INSTANCE.create(permission, text).filter(event1);
     }

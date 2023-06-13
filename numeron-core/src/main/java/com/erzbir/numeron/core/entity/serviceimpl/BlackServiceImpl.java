@@ -14,10 +14,10 @@ import java.util.Set;
  * @Date: 2023/4/27 11:25
  */
 public class BlackServiceImpl implements BlackService {
-    private final Set<Long> black = new HashSet<>();
-    private final BlackDao blackDao = BlackDaoImpl.INSTANCE;
+    private static final Set<Long> black = new HashSet<>();
+    private static final BlackDao blackDao = BlackDaoImpl.INSTANCE;
 
-    public BlackServiceImpl() {
+    static {
         try {
             black.addAll(blackDao.getBlacks());
         } catch (SQLException e) {

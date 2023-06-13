@@ -22,13 +22,13 @@ public class AdminPermissionFilter extends AbstractPermissionFilter {
     public Boolean filter(MessageEvent event) {
         long id = event.getSender().getId();
         long botId = event.getBot().getId();
-        long master = BotServiceImpl.INSTANCE.getConfiguration(botId).getMaster();
+        long master = BotServiceImpl.INSTANCE.getMaster(event.getBot());
         AdminServiceImpl adminService = new AdminServiceImpl();
         WhiteServiceImpl whiteService = new WhiteServiceImpl();
         BlackServiceImpl blackService = new BlackServiceImpl();
         if (event instanceof GroupMessageEvent event1) {
             return master == id ||
-                    (adminService.exist(botId, event1.getGroup().getId()) && !blackService.exist(id))
+                    (adminService.exist(botId, event1.getGroup().getId(), id) && !blackService.exist(id))
                     || whiteService.exist(id);
         }
         return master == id;
