@@ -50,7 +50,7 @@ public class EventMethodExecute implements MethodExecute {
                 method.invoke(bean, event);
                 after.run();
             } catch (IllegalAccessException | InvocationTargetException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
             }
             return event instanceof BotEvent event1 ? (((NumeronBotConfiguration) event1.getBot().getConfiguration()).isEnable() ? ListeningStatus.LISTENING : ListeningStatus.STOPPED) : ListeningStatus.LISTENING;
         });

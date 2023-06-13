@@ -50,7 +50,7 @@ public final class AutoReplyData {
             try {
                 removeQA(key);
             } catch (SQLException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
             }
         }
         this.answer.put(key, answer);
@@ -58,7 +58,7 @@ public final class AutoReplyData {
             try {
                 addQA(key, answer, opId);
             } catch (SQLException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
             }
         }).start();
     }
@@ -69,7 +69,7 @@ public final class AutoReplyData {
             try {
                 removeQA(key);
             } catch (SQLException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
             }
         }).start();
     }

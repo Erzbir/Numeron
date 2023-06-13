@@ -22,7 +22,7 @@ public class WhiteServiceImpl implements WhiteService {
         try {
             white.addAll(whiteDao.getWhites());
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
     }
@@ -43,13 +43,19 @@ public class WhiteServiceImpl implements WhiteService {
         try {
             return whiteDao.addWhite(qq, opId);
         } catch (SQLException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         return false;
     }
 
     @Override
     public boolean removeWhite(long qq) {
+        white.remove(qq);
+        try {
+            return whiteDao.removeWhite(qq);
+        } catch (SQLException e) {
+            NumeronLogUtil.logger.error("ERROR", e);
+        }
         return false;
     }
 }

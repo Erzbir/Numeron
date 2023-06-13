@@ -106,7 +106,7 @@ public class OpenAiListener {
             conversation.add(message);
         } catch (HttpException e) {
             conversation.reduce();
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         if (message != null) {
             sendMessage(event, message.getContent().replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", ""));

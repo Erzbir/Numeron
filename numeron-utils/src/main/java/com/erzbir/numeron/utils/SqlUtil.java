@@ -52,7 +52,7 @@ public class SqlUtil {
                 connection.close();
                 connection = null;
             } catch (SQLException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
                 return false;
             }
         }
@@ -65,7 +65,7 @@ public class SqlUtil {
                 resultSet.close();
                 resultSet = null;
             } catch (SQLException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
                 return false;
             }
         }
@@ -78,7 +78,7 @@ public class SqlUtil {
                 prepared.close();
                 prepared = null;
             } catch (SQLException e) {
-                NumeronLogUtil.logger.error(e);
+                NumeronLogUtil.logger.error("ERROR", e);
                 return false;
             }
         }

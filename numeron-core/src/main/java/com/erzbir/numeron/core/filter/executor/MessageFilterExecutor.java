@@ -41,7 +41,7 @@ public class MessageFilterExecutor implements MessageFilterExecutorInter {
             text = (String) aClass.getDeclaredMethod("text").invoke(annotation);
             permission = (PermissionType) aClass.getDeclaredMethod("permission").invoke(annotation);
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
             throw new AnnotationGetException(e);
         }
         return BotServiceImpl.INSTANCE.isEnable(event1.getBot()) && RuleFilterFactory.INSTANCE.create(filterRule, text).filter(event1)

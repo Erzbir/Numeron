@@ -49,7 +49,7 @@ public class Starter {
                     AppContext.INSTANCE.addProcessor(processor);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException ex) {
-                    NumeronLogUtil.logger.error(ex);
+                    NumeronLogUtil.logger.error("ERROR", ex);
                     throw new ProcessorException(ex);
                 }
                 processor.onApplicationEvent();

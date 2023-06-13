@@ -109,7 +109,7 @@ public class RssConfig implements Serializable {
             JsonUtil.dump(configFile, this, this.getClass());
             return true;
         } catch (ConfigWriteException e) {
-            NumeronLogUtil.logger.error(e);
+            NumeronLogUtil.logger.error("ERROR", e);
         }
         return false;
     }
