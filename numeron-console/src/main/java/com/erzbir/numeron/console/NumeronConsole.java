@@ -4,10 +4,7 @@ import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.api.bot.NumeronBotConfiguration;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import net.mamoe.mirai.utils.BotConfiguration;
 
 import java.io.*;
@@ -39,8 +36,9 @@ public class NumeronConsole {
             try {
                 account = scanner.nextLong();
                 scanner.nextLine();
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 NumeronLogUtil.err("请输入数字帐号!");
+                scanner.nextLine();
             }
         }
         while (password.isEmpty()) {
@@ -51,8 +49,9 @@ public class NumeronConsole {
             System.out.print("输入主人帐号: ");
             try {
                 master = scanner.nextLong();
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 NumeronLogUtil.err("请输入数字帐号!");
+                scanner.nextLine();
             }
         }
         scanner.close();
@@ -66,7 +65,10 @@ public class NumeronConsole {
         botConfiguration.fileBasedDeviceInfo();
         JsonArray botsJson = null;
         try (BufferedReader fileReader = new BufferedReader(new FileReader(configFile))) {
-            botsJson = JsonParser.parseReader(fileReader).getAsJsonArray();
+            JsonElement jsonElement = JsonParser.parseReader(fileReader);
+            if (jsonElement != null && jsonElement.isJsonArray()) {
+                botsJson = jsonElement.getAsJsonArray();
+            }
         } catch (Exception e) {
             NumeronLogUtil.logger.error("ERROR", e);
         }
