@@ -2,10 +2,7 @@ package com.erzbir.numeron.plugin.rss.config;
 
 import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.plugin.rss.entity.RssItem;
-import com.erzbir.numeron.utils.ConfigCreateUtil;
-import com.erzbir.numeron.utils.ConfigReadException;
-import com.erzbir.numeron.utils.ConfigWriteException;
-import com.erzbir.numeron.utils.JsonUtil;
+import com.erzbir.numeron.utils.*;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
@@ -112,7 +109,7 @@ public class RssConfig implements Serializable {
             JsonUtil.dump(configFile, this, this.getClass());
             return true;
         } catch (ConfigWriteException e) {
-            e.printStackTrace();
+            NumeronLogUtil.logger.error(e);
         }
         return false;
     }

@@ -2,6 +2,7 @@ package com.erzbir.numeron.plugin.sign;
 
 import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 import kotlin.jvm.functions.Function1;
 import org.jetbrains.annotations.NotNull;
 import redis.clients.jedis.Jedis;
@@ -39,7 +40,7 @@ public final class RedisStore {
             user = properties.getProperty("user");
             password = properties.getProperty("password");
         } catch (IOException e) {
-            e.printStackTrace();
+            NumeronLogUtil.logger.error(e);
         }
         client = new Jedis(host, port);
         if (!user.isEmpty() || !password.isEmpty()) {

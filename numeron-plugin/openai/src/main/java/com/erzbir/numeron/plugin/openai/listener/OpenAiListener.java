@@ -10,6 +10,7 @@ import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.Conversation;
 import com.erzbir.numeron.plugin.openai.ParseImage;
 import com.erzbir.numeron.plugin.openai.config.*;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -105,7 +106,7 @@ public class OpenAiListener {
             conversation.add(message);
         } catch (HttpException e) {
             conversation.reduce();
-            e.printStackTrace();
+            NumeronLogUtil.logger.error(e);
         }
         if (message != null) {
             sendMessage(event, message.getContent().replaceFirst("\\n\\n", "").replaceFirst("\\?", "").replaceFirst("？", ""));

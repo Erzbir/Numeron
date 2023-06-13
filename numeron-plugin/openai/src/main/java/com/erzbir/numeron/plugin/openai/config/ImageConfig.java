@@ -1,10 +1,7 @@
 package com.erzbir.numeron.plugin.openai.config;
 
 import com.erzbir.numeron.api.NumeronImpl;
-import com.erzbir.numeron.utils.ConfigCreateUtil;
-import com.erzbir.numeron.utils.ConfigReadException;
-import com.erzbir.numeron.utils.ConfigWriteException;
-import com.erzbir.numeron.utils.JsonUtil;
+import com.erzbir.numeron.utils.*;
 import com.theokanning.openai.image.CreateImageRequest;
 
 import java.io.File;
@@ -29,7 +26,7 @@ public class ImageConfig implements Serializable {
         try {
             ConfigCreateUtil.createFile(configFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            NumeronLogUtil.logger.error(e);
         }
     }
 
