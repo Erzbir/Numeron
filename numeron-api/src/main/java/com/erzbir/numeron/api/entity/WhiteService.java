@@ -7,7 +7,7 @@ import java.util.Set;
  * @Date: 2023/4/27 11:29
  */
 public interface WhiteService {
-    Set<Long> getAdminList();
+    Set<Long> getWhites();
 
     boolean exist(long qq);
 
