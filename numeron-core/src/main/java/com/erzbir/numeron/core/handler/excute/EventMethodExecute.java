@@ -51,7 +51,6 @@ public class EventMethodExecute implements MethodExecute {
                 after.run();
             } catch (IllegalAccessException | InvocationTargetException e) {
                 NumeronLogUtil.logger.error(e);
-                e.printStackTrace();
             }
             return event instanceof BotEvent event1 ? (((NumeronBotConfiguration) event1.getBot().getConfiguration()).isEnable() ? ListeningStatus.LISTENING : ListeningStatus.STOPPED) : ListeningStatus.LISTENING;
         });
