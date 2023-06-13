@@ -50,6 +50,12 @@ public class WhiteServiceImpl implements WhiteService {
 
     @Override
     public boolean removeWhite(long qq) {
+        white.remove(qq);
+        try {
+            return whiteDao.removeWhite(qq);
+        } catch (SQLException e) {
+            NumeronLogUtil.logger.error(e);
+        }
         return false;
     }
 }
