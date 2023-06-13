@@ -1,24 +1,28 @@
 # Numeron
 
-- [Numeron](#numeron)
-    - [介绍:](#介绍)
-        - [模块:](#模块)
-        - [实现的功能:](#plugin模块实现的功能)
-    - [说明:](#说明)
-        - [API:](#api)
-        - [插件模式:](#插件模式)
-        - [@Message使用:](#message使用)
-        - [@Event使用:](#event使用)
-        - [用@Command生成指令表:](#用command生成指令表)
-        - [用@Menu生成图片菜单:](#用menu生成图片菜单)
-    - [开发计划:](#开发计划)
-    - [联系方式:](#联系方式)
+
+- [介绍:](#介绍)
+    - [模块:](#模块)
+    - [实现的功能:](#plugin模块实现的功能)
+- [说明:](#说明)
+    - [启动项目:](#启动项目) 
+    - [配置文件:](#配置文件) 
+    - [API:](#api)
+    - [插件模式:](#插件模式)
+    - [@Message使用:](#message使用)
+    - [@Event使用:](#event使用)
+    - [用@Command生成指令表:](#用command生成指令表)
+    - [用@Menu生成图片菜单:](#用menu生成图片菜单)
+- [开发计划:](#开发计划)
+- [联系方式:](#联系方式)
 
 ## 介绍:
 
 这是一个使用 mirai-core 开发的 qqBot, 也可用作简单脚手架
 
-没有写 api 文档, 有兴趣可以直接问我
+**JDK 为 Oracle OpenJDK 17**
+
+**构建系统为 Gradle (Kotlin DSL)**
 
 ### 模块:
 
@@ -54,11 +58,49 @@
 - rss订阅
 - 生成图片菜单目录
 
+## 启动项目:
+
+在 clone 代码并完成 gradle 构建后, 在 numeron-boot 模块下运行启动类的 `main()` 方法即可
+
+第一次启动时会在命令行输入 bot 相关配置信息, 第一次启动默认为 ANDROID_WATCH 协议扫码且默认启用并登陆, 后续在 erzbirnumeron/config/botconfig.json 文件中可进行配置配置
+
 ## 说明:
 
-第一次使用会使用控制台输入配置, 登陆后则会自动登陆
+### 配置文件:
 
-在消息事件处理的方法上打上对应注解就可以监听到符合规则的消息后自动执行
+#### botconfig.json:
+
+```json
+[
+  {
+    "account": 12412414,
+    "password": "niqd123131",
+    "enable": true,
+    "master": 138312819,
+    "heartbeatStrategy": "STAT_HB",
+    "miraiProtocol": "ANDROID_WATCH",
+    "loginType": "QR"
+  },
+  {
+    "account": 329130123,
+    "password": "oqdi1397121",
+    "enable": false,
+    "master": 138312819,
+    "heartbeatStrategy": "STAT_HB",
+    "miraiProtocol": "ANDROID_WATCH",
+    "loginType": "PASSWORD"
+  }
+]
+```
+- account: bot 帐号
+- password: bot 密码
+- master: 主人帐号
+- heartbeatStrategy: 心跳策略
+- miraiProtocol: 登陆协议
+- loginType: 登陆方式
+    - 目前 mirai 只提供了密码和扫码 (只有 ANDROID_WATCH 支持) 两种, 如果为 QR (扫码) 则登陆协议必须为 ANDROID_WATCH
+- enable: 是否启用
+    - 如果 enable 为 false, 则只会创建此 bot 实例而不会登陆
 
 ### API:
 api模块下
