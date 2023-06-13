@@ -72,7 +72,7 @@ public class GroupEnableCommands {
             permission = PermissionType.MASTER
     )
     private void query(MessageEvent event) {
-        long l = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/query\\s+?group\\s+?\\d+", ""));
+        long l = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/query\\s+?group\\s+?", ""));
         if (l == 0) {
             event.getSubject().sendMessage(GroupServiceImpl.INSTANCE.getEnableGroupList().toString());
         } else {
