@@ -50,7 +50,6 @@ public final class AutoReplyData {
             try {
                 removeQA(key);
             } catch (SQLException e) {
-                e.printStackTrace();
                 NumeronLogUtil.logger.error(e);
             }
         }
@@ -60,7 +59,6 @@ public final class AutoReplyData {
                 addQA(key, answer, opId);
             } catch (SQLException e) {
                 NumeronLogUtil.logger.error(e);
-                e.printStackTrace();
             }
         }).start();
     }
@@ -72,7 +70,6 @@ public final class AutoReplyData {
                 removeQA(key);
             } catch (SQLException e) {
                 NumeronLogUtil.logger.error(e);
-                e.printStackTrace();
             }
         }).start();
     }
