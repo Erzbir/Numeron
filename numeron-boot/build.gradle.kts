@@ -29,6 +29,7 @@ dependencies {
 tasks.withType<ShadowJar>() {
     manifest {
         attributes["Main-Class"] = "com.erzbir.numeron.NumeronBotApplication"
+        attributes["Multi-Release"] = "true"
     }
     archiveBaseName.set("numeron")
 }
