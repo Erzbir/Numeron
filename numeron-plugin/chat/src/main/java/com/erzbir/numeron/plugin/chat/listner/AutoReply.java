@@ -30,7 +30,7 @@ public class AutoReply {
             filterRule = FilterRule.BLACK
     )
     private void reply(MessageEvent e) {
-        String s = AutoReplyData.INSTANCE.getAnswer().get(e.getMessage().contentToString());
+        String s = AutoReplyData.INSTANCE.getAnswer().get(e.getMessage().contentToString().replaceFirst("^a", ""));
         if (s != null) {
             e.getSubject().sendMessage(s);
         }
@@ -121,7 +121,7 @@ public class AutoReply {
 
     @Message(
             text = "hi",
-            permission = PermissionType.ALL,
+            permission = PermissionType.WHITE,
             filterRule = FilterRule.BLACK
     )
     private void sayHello(UserMessageEvent e) {

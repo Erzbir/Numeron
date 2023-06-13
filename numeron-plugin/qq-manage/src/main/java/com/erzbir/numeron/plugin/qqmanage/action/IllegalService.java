@@ -1,7 +1,9 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
 
+import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.plugin.qqmanage.SqlConnection;
+import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.erzbir.numeron.utils.SqlUtil;
 
@@ -22,6 +24,11 @@ import java.util.Set;
 
 public final class IllegalService {
     public final static IllegalService INSTANCE = new IllegalService();
+
+    static {
+        ConfigCreateUtil.createDir(NumeronImpl.INSTANCE.getPluginWorkDir() + "qqmanage/config/");
+    }
+
     private final Set<String> illegal = new HashSet<>();
 
     private IllegalService() {

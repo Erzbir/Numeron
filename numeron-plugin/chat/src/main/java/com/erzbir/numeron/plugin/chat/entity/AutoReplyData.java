@@ -1,6 +1,8 @@
 package com.erzbir.numeron.plugin.chat.entity;
 
 
+import com.erzbir.numeron.api.NumeronImpl;
+import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.erzbir.numeron.utils.SqlUtil;
 
@@ -20,6 +22,7 @@ public final class AutoReplyData {
     private final Map<String, String> answer = new HashMap<>();
 
     private AutoReplyData() {
+        ConfigCreateUtil.createDir(NumeronImpl.INSTANCE.getPluginWorkDir() + "auto-reply/config/");
         String sql = """
                 CREATE TABLE IF NOT EXISTS CHAT(
                 KEY TEXT PRIMARY KEY NOT NULL,
@@ -43,8 +46,23 @@ public final class AutoReplyData {
     }
 
     public void add(String key, String answer, long opId) {
+        if (this.answer.containsKey(key)) {
+            try {
+                removeQA(key);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                NumeronLogUtil.logger.error(e);
+            }
+        }
         this.answer.put(key, answer);
-        new Thread(() -> add(key, answer, opId)).start();
+        new Thread(() -> {
+            try {
+                addQA(key, answer, opId);
+            } catch (SQLException e) {
+                NumeronLogUtil.logger.error(e);
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void remove(String key) {
