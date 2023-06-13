@@ -44,7 +44,6 @@ public class WhiteServiceImpl implements WhiteService {
             return whiteDao.addWhite(qq, opId);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }

@@ -73,7 +73,7 @@ public class ListenerContext {
             try {
                 cancel(getListener(t));
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+                NumeronLogUtil.logger.error(e);
             }
         }));
     }

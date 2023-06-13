@@ -43,7 +43,6 @@ public class GroupServiceImpl implements GroupService {
             return groupDao.enableGroup(groupId, opId);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }
@@ -55,7 +54,6 @@ public class GroupServiceImpl implements GroupService {
             return groupDao.disableGroup(groupId);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }

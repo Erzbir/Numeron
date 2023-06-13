@@ -80,6 +80,9 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public void login(Bot bot) {
+        if (!getConfiguration(bot).isEnable()) {
+            return;
+        }
         bot.login();
         runningBots.add(bot);
     }

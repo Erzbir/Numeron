@@ -28,7 +28,7 @@ public class NumeronConfiguration implements Serializable {
         ConfigCreateUtil.createDir(workDir);
         ConfigCreateUtil.createDir(cacheDir);
         ConfigCreateUtil.createDir(pluginWorkDir);
-        ConfigCreateUtil.createDir(cacheDir);
+        ConfigCreateUtil.createDir(configDir);
     }
 
     public String getWorkDir() {
