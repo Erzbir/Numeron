@@ -22,7 +22,6 @@ public final class SqlConnection {
             connection = DriverManager.getConnection("jdbc:sqlite:" + NumeronImpl.INSTANCE.getPluginWorkDir() + "qqmanage/config/data.sqlite");
         } catch (Exception e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
             System.exit(-1);
         }
     }

@@ -51,7 +51,7 @@ public class TimerController {
                         }
                         flag = 0;
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        NumeronLogUtil.logger.error(e);
                         flag--;
                     }
                 }
@@ -65,7 +65,6 @@ public class TimerController {
             try {
                 executorService.scheduleAtFixedRate(timerTask, 1, RssConfig.getInstance().getDelay(), TimeUnit.MINUTES);
             } catch (Exception e) {
-                e.printStackTrace();
                 NumeronLogUtil.logger.error(e);
             }
         });

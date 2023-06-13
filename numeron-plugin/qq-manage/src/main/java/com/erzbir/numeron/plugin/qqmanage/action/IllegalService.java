@@ -59,7 +59,6 @@ public final class IllegalService {
             return addIllegal(key, opId);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }
@@ -70,7 +69,6 @@ public final class IllegalService {
             return removeIllegal(key);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }

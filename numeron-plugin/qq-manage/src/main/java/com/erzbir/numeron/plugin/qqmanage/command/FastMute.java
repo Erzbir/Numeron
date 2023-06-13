@@ -8,6 +8,7 @@ import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
+import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -42,7 +43,7 @@ public class FastMute {
                 group = jsonElement.getAsJsonObject().get("group").getAsJsonArray().asList();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            NumeronLogUtil.logger.error(e);
         }
     }
 

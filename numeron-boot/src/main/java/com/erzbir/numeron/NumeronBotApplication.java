@@ -26,7 +26,7 @@ public class NumeronBotApplication {
         initConfig();
         initPlugin();
         Starter starter = new Starter(packageName, NumeronBotApplication.class.getClassLoader());
-        starter.boot(Starter.BotType.SPI);  // 调用 boot 方法初始化
+        starter.boot(Starter.BotType.PACKAGE);  // 调用 boot 方法初始化
         l = System.currentTimeMillis() - l;
         initLogin();
         printLog(LOGO);
@@ -45,7 +45,7 @@ public class NumeronBotApplication {
     }
 
     private static void initLogin() {
-        BotServiceImpl.INSTANCE.getBotList().forEach(t -> executorService.submit(() -> BotServiceImpl.INSTANCE.login(t)));
+        BotServiceImpl.INSTANCE.getBotList().forEach(t -> BotServiceImpl.INSTANCE.login(t));
     }
 
     private static void initConfig() {

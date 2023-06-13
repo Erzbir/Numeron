@@ -9,6 +9,8 @@ import com.erzbir.numeron.menu.MenuStatic;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.MessageEvent;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +26,7 @@ public class MenuController {
             messageRule = MessageRule.REGEX,
             permission = PermissionType.ADMIN
     )
-    private void openMenu(MessageEvent e) {
+    private void openMenu(MessageEvent e) throws IOException, FontFormatException {
         String[] ary = e.getMessage().contentToString().split("\\s+");
         if (MenuStatic.menuList.contains(ary[1]) && MenuStatic.closeMenuGroups.get(ary[1]) != null) {
             MenuStatic.closeMenuGroups.get(ary[1]).remove(e.getSubject().getId());
@@ -41,7 +43,7 @@ public class MenuController {
             messageRule = MessageRule.REGEX,
             permission = PermissionType.ADMIN
     )
-    private void closeMenu(MessageEvent e) {
+    private void closeMenu(MessageEvent e) throws IOException, FontFormatException {
         String[] ary = e.getMessage().contentToString().split("\\s+");
         if (MenuStatic.menuList.contains(ary[1])) {
             if (MenuStatic.closeMenuGroups.get(ary[1]) != null)

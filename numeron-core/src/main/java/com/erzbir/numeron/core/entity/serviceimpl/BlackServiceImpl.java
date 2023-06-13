@@ -43,7 +43,6 @@ public class BlackServiceImpl implements BlackService {
             return blackDao.addBlack(qq, opId);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }
@@ -55,7 +54,6 @@ public class BlackServiceImpl implements BlackService {
             return blackDao.removeBlack(qq);
         } catch (SQLException e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
         }
         return false;
     }

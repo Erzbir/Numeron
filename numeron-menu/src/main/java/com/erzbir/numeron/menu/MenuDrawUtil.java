@@ -2,13 +2,14 @@ package com.erzbir.numeron.menu;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 
 public class MenuDrawUtil {
     private static final int canvasWidth = 1000;
     private static final int canvasHeight = 1884;
 
-    public static BufferedImage drawMenu(Long groupNumber) {
+    public static BufferedImage drawMenu(Long groupNumber) throws IOException, FontFormatException {
         BufferedImage drawImageBuffer = new BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = drawImageBuffer.createGraphics();
         RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

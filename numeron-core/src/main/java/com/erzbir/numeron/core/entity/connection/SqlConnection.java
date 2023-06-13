@@ -21,7 +21,6 @@ public final class SqlConnection {
             connection = DriverManager.getConnection("jdbc:sqlite:" + "erzbirnumeron/config/data.sqlite");
         } catch (Exception e) {
             NumeronLogUtil.logger.error(e);
-            e.printStackTrace();
             System.exit(-1);
         }
     }
