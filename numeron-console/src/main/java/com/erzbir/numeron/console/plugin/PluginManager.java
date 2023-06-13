@@ -6,7 +6,6 @@ import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -60,8 +59,8 @@ public class PluginManager implements PluginManagerInter, PluginService {
                 load(t);
                 serviceLoaderMap.put(id, load);
             });
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            NumeronLogUtil.logger.error(e);
             throw new PluginLoadException("插件加载异常" + e);
         }
     }
