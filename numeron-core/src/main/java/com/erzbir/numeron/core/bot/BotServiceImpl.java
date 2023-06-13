@@ -10,6 +10,7 @@ import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.auth.BotAuthorization;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ import java.util.List;
  * @Date: 2023/5/3 12:21
  */
 public class BotServiceImpl implements BotService {
+    private static final List<Bot> runningBots = new LinkedList<>();
 
     @NotNull
     public Bot newBot(long qq, @NotNull byte[] passwordMD5, @NotNull NumeronBotConfiguration botConfiguration) {
@@ -30,6 +32,12 @@ public class BotServiceImpl implements BotService {
         return bot == null ? BotFactory.INSTANCE.newBot(qq, password, botConfiguration) : bot;
     }
 
+    @NotNull
+    public Bot newBot(long qq, @NotNull BotAuthorization botAuthorization, @NotNull NumeronBotConfiguration botConfiguration) {
+        Bot bot = findBot(qq);
+        return bot == null ? BotFactory.INSTANCE.newBot(qq, botAuthorization, botConfiguration) : bot;
+    }
+
     @Override
     public Bot findBot(long qq) {
         return Bot.findInstance(qq);
@@ -37,19 +45,26 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public List<Bot> getBotList() {
-        return Bot.Companion.getInstances();
+        return Bot.getInstances();
     }
 
     @Override
     public void shutdown(long qq) {
-        AppContext.INSTANCE.getProcessors().forEach(Processor::destroy);
-        ListenerContext.INSTANCE.cancelAll();
         getConfiguration(qq).disable();
+        runningBots.remove(findBot(qq));
+        if (runningBots.size() == 0) {
+            AppContext.INSTANCE.getProcessors().forEach(Processor::destroy);
+            ListenerContext.INSTANCE.cancelAll();
+        }
     }
 
     @Override
     public void launch(long qq) {
-        AppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
+        getConfiguration(qq).enable();
+        runningBots.add(findBot(qq));
+        if (runningBots.size() == 1) {
+            AppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
+        }
     }
 
     @Override
@@ -59,13 +74,47 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public void login(Bot bot) {
-        bot.login();
+    public NumeronBotConfiguration getConfiguration(Bot bot) {
+        return (NumeronBotConfiguration) bot.getConfiguration();
     }
 
-    @NotNull
-    public Bot newBot(long qq, @NotNull BotAuthorization botAuthorization, @NotNull NumeronBotConfiguration botConfiguration) {
-        Bot bot = findBot(qq);
-        return bot == null ? BotFactory.INSTANCE.newBot(qq, botAuthorization, botConfiguration) : bot;
+    @Override
+    public void login(Bot bot) {
+        bot.login();
+        runningBots.add(bot);
     }
+
+    @Override
+    public void login(long qq) {
+        Bot bot = findBot(qq);
+        bot.login();
+        runningBots.add(bot);
+    }
+
+    @Override
+    public List<Bot> getLoginBotList() {
+        List<Bot> botList = getBotList();
+        return botList.stream().filter(Bot::isOnline).toList();
+    }
+
+    @Override
+    public boolean isEnable(long qq) {
+        return getConfiguration(qq).isEnable();
+    }
+
+    @Override
+    public boolean isEnable(Bot bot) {
+        return getConfiguration(bot).isEnable();
+    }
+
+    @Override
+    public long getMaster(long qq) {
+        return getConfiguration(qq).getMaster();
+    }
+
+    @Override
+    public long getMaster(Bot bot) {
+        return getConfiguration(bot).getMaster();
+    }
+
 }

@@ -15,10 +15,10 @@ import java.util.Set;
  * @Date: 2023/4/27 11:29
  */
 public class WhiteServiceImpl implements WhiteService {
-    private final Set<Long> white = new HashSet<>();
-    private final WhiteDao whiteDao = WhiteDaoImpl.INSTANCE;
+    private static final Set<Long> white = new HashSet<>();
+    private static final WhiteDao whiteDao = WhiteDaoImpl.INSTANCE;
 
-    public WhiteServiceImpl() {
+    static {
         try {
             white.addAll(whiteDao.getWhites());
         } catch (SQLException e) {
@@ -28,7 +28,7 @@ public class WhiteServiceImpl implements WhiteService {
     }
 
     @Override
-    public Set<Long> getAdminList() {
+    public Set<Long> getWhites() {
         return white;
     }
 

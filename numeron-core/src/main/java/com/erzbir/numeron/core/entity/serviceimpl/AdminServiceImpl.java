@@ -15,12 +15,11 @@ import java.util.Map;
 /**
  * @author Erzbir
  * @Date: 2023/4/27 11:24
- * TODO 支持多 bot, 目前并没有分开
  */
 public class AdminServiceImpl implements AdminService {
-    private final Map<Long, Map<Long, List<Long>>> adminMap = new HashMap<>();
+    private static final Map<Long, Map<Long, List<Long>>> adminMap = new HashMap<>();
 
-    public AdminServiceImpl() {
+    static {
         BotServiceImpl botService = new BotServiceImpl();
         GroupServiceImpl groupService = new GroupServiceImpl();
         botService.getBotList().forEach(v -> {
@@ -43,6 +42,18 @@ public class AdminServiceImpl implements AdminService {
         refresh();
     }
 
+    private static void refresh() {
+        GlobalEventChannel.INSTANCE.subscribeAlways(MemberPermissionChangeEvent.class, event -> {
+            long id = event.getGroup().getId();
+            NormalMember member = event.getMember();
+            if (member.getPermission().equals(MemberPermission.ADMINISTRATOR)) {
+                adminMap.get(event.getBot().getId()).get(id).add(member.getId());
+            } else if (member.getPermission().equals(MemberPermission.MEMBER)) {
+                adminMap.get(event.getBot().getId()).get(id).add(member.getId());
+            }
+        });
+    }
+
     @Override
     public List<Long> getAdmins(long botId, long groupId) {
         return adminMap.get(botId).get(groupId);
@@ -61,17 +72,5 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         return false;
-    }
-
-    private void refresh() {
-        GlobalEventChannel.INSTANCE.subscribeAlways(MemberPermissionChangeEvent.class, event -> {
-            long id = event.getGroup().getId();
-            NormalMember member = event.getMember();
-            if (member.getPermission().equals(MemberPermission.ADMINISTRATOR)) {
-                adminMap.get(event.getBot().getId()).get(id).add(member.getId());
-            } else if (member.getPermission().equals(MemberPermission.MEMBER)) {
-                adminMap.get(event.getBot().getId()).get(id).add(member.getId());
-            }
-        });
     }
 }
