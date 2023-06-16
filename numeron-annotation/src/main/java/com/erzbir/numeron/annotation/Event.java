@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Event {
+    String value() default "";
+
     EventPriority priority() default EventPriority.NORMAL;
 
     ConcurrencyKind concurrency() default ConcurrencyKind.CONCURRENT;

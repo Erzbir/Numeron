@@ -20,6 +20,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface Message {
+    String value() default "";
+
     FilterRule filterRule() default FilterRule.NONE;
 
     MessageRule messageRule() default MessageRule.EQUAL;
