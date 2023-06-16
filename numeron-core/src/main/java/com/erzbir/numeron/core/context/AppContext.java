@@ -1,6 +1,7 @@
 package com.erzbir.numeron.core.context;
 
 import com.erzbir.numeron.annotation.Component;
+import com.erzbir.numeron.annotation.Lazy;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.exception.AppContextException;
 import com.erzbir.numeron.utils.ClassScanner;
@@ -27,6 +28,7 @@ public class AppContext implements BeanFactory {
     public static final AppContext INSTANCE = new AppContext();
     public final ExecutorService executor = Executors.newFixedThreadPool(12);
     private final Map<String, Object> context = new ConcurrentHashMap<>();
+    private final Map<String, Class<?>> lazyContext = new ConcurrentHashMap<>();
     private final Set<Processor> processors = new HashSet<>();
 
     private AppContext() {
@@ -76,7 +78,12 @@ public class AppContext implements BeanFactory {
     }
 
     private void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        context.put(bean.getName(), create(bean));
+        Lazy annotation = bean.getAnnotation(Lazy.class);
+        if (annotation == null || !annotation.value()) {
+            context.put(bean.getName(), create(bean));
+        } else {
+            lazyContext.put(bean.getName(), bean);
+        }
     }
 
     private boolean isConstructClass(Class<?> bean) {
@@ -84,32 +91,40 @@ public class AppContext implements BeanFactory {
     }
 
     @Override
-    public <T> T getBean(Class<T> requiredType) {
+    public Object getBean(Class<?> requiredType) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return getBean(requiredType.getName());
     }
 
     @Override
-    public <T> T getBean(String name) {
-        return (T) context.get(name);
+    public Object getBean(String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Object o = context.get(name);
+        if (o == null) {
+            o = create(lazyContext.remove(name));
+            context.put(name, o);
+        }
+        return o;
     }
 
     @Override
     public boolean containsBean(String name) {
-        return context.containsKey(name);
+        return context.containsKey(name) || lazyContext.containsKey(name);
     }
 
     /**
      * @param interfaceType 接口的字节码
-     * @param <T>           泛型
      * @return 返回类名为键, 类的字节码为值的Map
      * <p>取出所有实现了{@param interfaceType}接口的类实现</p>
      */
-    public <T> Map<String, T> getBeansWithInter(Class<T> interfaceType) {
-        HashMap<String, T> beans = new HashMap<>();
+    public Map<String, Class<?>> getBeansWithInter(Class<?> interfaceType) {
+        Map<String, Class<?>> beans = new HashMap<>();
         context.forEach((k, v) -> {
-            // 判断v是否实现这个接口
             if (interfaceType.isAssignableFrom(v.getClass())) {
-                beans.put(k, (T) v);
+                beans.put(k, v.getClass());
+            }
+        });
+        lazyContext.forEach((k, v) -> {
+            if (interfaceType.isAssignableFrom(v)) {
+                beans.put(k, v);
             }
         });
         return beans;
@@ -117,30 +132,34 @@ public class AppContext implements BeanFactory {
 
     /**
      * @param annotationType 注解的字节码
-     * @param <T>            泛型
      * @return 返回类名为键, 类的字节码为值的Map
      * <p>取出所有带有{@param annotationType}注解的类<p/>
      */
     @Override
-    public <T> Map<String, T> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
-        HashMap<String, T> beans = new HashMap<>();
+    public Map<String, Class<?>> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
+        HashMap<String, Class<?>> beans = new HashMap<>();
         context.forEach((k, v) -> {
             if (v.getClass().getAnnotation(annotationType) != null) {
-                beans.put(k, (T) v);
+                beans.put(k, v.getClass());
+            }
+        });
+        lazyContext.forEach((k, v) -> {
+            if (v.getAnnotation(annotationType) != null) {
+                beans.put(k, v);
             }
         });
         return beans;
     }
 
     public Object removeBean(String name) {
-        return context.remove(name);
+        Object remove = context.remove(name);
+        if (remove == null) {
+            lazyContext.remove(name);
+        }
+        return remove;
     }
 
     public Object removeBean(Class<?> beanType) {
         return removeBean(beanType.getName());
-    }
-
-    public Map<String, Object> getContext() {
-        return context;
     }
 }

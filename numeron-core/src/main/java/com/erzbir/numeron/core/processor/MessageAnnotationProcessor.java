@@ -69,10 +69,10 @@ public class MessageAnnotationProcessor implements Processor {
      *
      * @param v bean对象
      */
-    private void registerMethods(Object v) {
-        String name = v.getClass().getName();
+    private void registerMethods(Class<?> v) {
+        String name = v.getName();
         NumeronLogUtil.debug("扫瞄到 " + name);
-        for (Method method : v.getClass().getDeclaredMethods()) {
+        for (Method method : v.getDeclaredMethods()) {
             Arrays.stream(method.getAnnotations())
                     .filter(this::isNeededAnnotation).forEach(annotation -> {
                         String s = Arrays.toString(method.getParameterTypes())
@@ -80,8 +80,9 @@ public class MessageAnnotationProcessor implements Processor {
                                 .replaceAll("]", ")");
                         method.setAccessible(true);
                         try {
-                            execute(v, method, toFilter(channel, annotation), annotation);
-                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                            execute(AppContext.INSTANCE.getBean(v), method, toFilter(channel, annotation), annotation);
+                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+                                 InstantiationException e) {
                             NumeronLogUtil.err(e.getMessage());
                             throw new RuntimeException(e);
                         }
