@@ -1,6 +1,7 @@
 package com.erzbir.numeron.plugin.chat.listner;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Lazy;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.filter.FilterRule;
@@ -20,6 +21,7 @@ import net.mamoe.mirai.message.data.PlainText;
  * 消息处理注解使用示例
  */
 @Listener
+@Lazy
 @SuppressWarnings("unused")
 public class AutoReply {
 
