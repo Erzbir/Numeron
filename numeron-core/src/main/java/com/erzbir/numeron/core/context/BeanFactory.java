@@ -11,13 +11,15 @@ import java.util.Map;
  */
 public interface BeanFactory {
 
-    <T> T getBean(Class<T> requiredType);
+    Object getBean(Class<?> requiredType) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
-    <T> T getBean(String name);
+    Object getBean(String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     boolean containsBean(String name);
 
-    <T> Map<String, T> getBeansWithAnnotation(Class<? extends Annotation> annotationType);
+    Map<String, Class<?>> getBeansWithAnnotation(Class<? extends Annotation> annotationType);
+
+    Map<String, Class<?>> getBeansWithInter(Class<?> interfaceType);
 
     default <T> T create(Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor<T> constructor = clazz.getConstructor();
