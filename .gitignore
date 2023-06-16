@@ -16,6 +16,7 @@ erzbirnumeron
 /numeron_plugins
 /plugin-lib
 /logs
+qodana.yaml
 
 .gradle
 ### STS ###
