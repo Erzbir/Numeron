@@ -103,7 +103,7 @@
     - 如果 enable 为 false, 则只会创建此 bot 实例而不会登陆
 
 ### API:
-api模块下
+
 - `BotService` 有关 Bot 的各种操作
 - `AdminService` 群管理的相关操作
 - `BlackService` 黑名单操作
@@ -115,11 +115,10 @@ api模块下
     - 在所有 bot 关机时执行 `destroy()` 方法
 - `Numeron` 程序接口
     - 获取此程序的各种配置信息
-    - 可以通过此类向注册监听方法的前后和监听回调函数执行前后插入方法
-    - 增加 Processor 处理器
+    - 可以通过此接口向注册监听方法的前后和监听回调函数执行前后插入方法
+    - 增加 Processor 处理器(实现 `Processor` 接口的类), 增加处理器后行为和 `Processor` 的说明中除了不在启动时运行都一致. 添加之后可以靠关闭全部 bot 并重启执行启动 `Processor`
 
 ### 插件模式:
-console 模块下
 
 实现 Plugin 接口, 目前插件打包时需包含所有依赖打包
 
