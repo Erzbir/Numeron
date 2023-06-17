@@ -166,14 +166,19 @@ public class Test {
     }
 
     // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
-    @Message(text = "/mute\\s+?@?(\\d+?) (\\d+)", filterRule = FilterRule.NONE, messageRule = MessageRule.REGEX, permission = PermissionType.MASTER)
+    @Message(
+            text = "/mute\\s+?@?\\d+?\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ADMIN
+    )
     private void muteSingle(MessageEvent event) {
-        String[] s = event.getMessage().contentToString().split("\\s+");
+        String s = event.getMessage().contentToString().replaceFirst("/unmute\\s+?@?", "");
+        String[] ss = s.split("\\s+");
         long id;
         int time;
-        s[1] = s[1].replaceAll("@", "");
-        id = Long.parseLong(s[1]);
-        time = Integer.parseInt(s[2]);
+        id = Long.parseLong(ss[1]);
+        time = Integer.parseInt(ss[2]);
         if (event instanceof GroupMessageEvent event1) {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
