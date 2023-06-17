@@ -1,5 +1,8 @@
 package com.erzbir.numeron.console.plugin;
 
+import com.erzbir.numeron.annotation.Component;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.api.context.AppContextServiceImpl;
 import com.erzbir.numeron.console.exception.PluginConflictException;
 import com.erzbir.numeron.console.exception.PluginLoadException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
@@ -52,10 +55,13 @@ public class PluginManager implements PluginManagerInter, PluginService {
             URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{plugin.getAbsoluteFile().toURI().toURL()});
             ServiceLoader<Plugin> load = ServiceLoader.load(Plugin.class, urlClassLoader);
             load.forEach(t -> {
-                String id = t.getClass().getName();
+                Class<? extends Plugin> aClass = t.getClass();
+                String id = aClass.getName();
                 if (pluginMap.get(id) != null) {
                     throw new PluginConflictException("插件冲突");
                 }
+                System.out.println(aClass.getPackageName());
+                AppContextServiceImpl.INSTANCE.addAllToContext(aClass.getPackageName(), aClass.getClassLoader(), Listener.class);
                 load(t);
                 serviceLoaderMap.put(id, load);
             });
@@ -105,6 +111,16 @@ public class PluginManager implements PluginManagerInter, PluginService {
         plugin.onLoad();
         Class<? extends Plugin> aClass = plugin.getClass();
         pluginMap.put(aClass.getName(), plugin);
+    }
+
+    @Override
+    public void unLoad(Plugin plugin) {
+
+    }
+
+    @Override
+    public boolean isLoaded(Plugin plugin) {
+        return pluginMap.containsValue(plugin);
     }
 
     @Override
