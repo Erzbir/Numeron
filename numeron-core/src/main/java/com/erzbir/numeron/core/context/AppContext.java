@@ -46,7 +46,6 @@ public class AppContext implements BeanFactory {
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
             NumeronLogUtil.err(e.getMessage());
-            throw new AppContextException(e);
         }
     }
 
@@ -59,7 +58,6 @@ public class AppContext implements BeanFactory {
                 } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                          NoSuchMethodException ex) {
                     NumeronLogUtil.logger.error("ERROR", ex);
-                    throw new AppContextException(ex);
                 }
             }
         });
@@ -77,7 +75,7 @@ public class AppContext implements BeanFactory {
         return processors;
     }
 
-    private void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Lazy annotation = bean.getAnnotation(Lazy.class);
         if (annotation == null || !annotation.value()) {
             context.put(bean.getName(), create(bean));

@@ -313,6 +313,9 @@ public class ClassScanner {
         }
         return classes.stream().filter(t -> {
             boolean flag = !t.isAnnotation(); // 排除注解, 因为注解也会有注解
+            if (t.getAnnotation(type) != null) {
+                return flag;
+            }
             Annotation[] annotations = t.getAnnotations();  // 取出t上的所有类注解
             for (Annotation annotation : annotations) {
                 // if (getAnnotationFromAnnotation(annotation, type) != null)
