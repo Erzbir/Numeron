@@ -3,7 +3,6 @@ package com.erzbir.numeron.core.context;
 import com.erzbir.numeron.annotation.Component;
 import com.erzbir.numeron.annotation.Lazy;
 import com.erzbir.numeron.api.processor.Processor;
-import com.erzbir.numeron.core.exception.AppContextException;
 import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
@@ -23,7 +22,6 @@ import java.util.concurrent.Executors;
  * @Date: 2022/12/12 15:14
  * <p>有@Componet注解或是继承@Component注解的注解的类实例化后注册到这个包装类里</p>
  */
-@SuppressWarnings("unchecked")
 public class AppContext implements BeanFactory {
     public static final AppContext INSTANCE = new AppContext();
     public final ExecutorService executor = Executors.newFixedThreadPool(12);
@@ -46,7 +44,6 @@ public class AppContext implements BeanFactory {
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {
             NumeronLogUtil.err(e.getMessage());
-            throw new AppContextException(e);
         }
     }
 
@@ -59,7 +56,6 @@ public class AppContext implements BeanFactory {
                 } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                          NoSuchMethodException ex) {
                     NumeronLogUtil.logger.error("ERROR", ex);
-                    throw new AppContextException(ex);
                 }
             }
         });
@@ -77,7 +73,7 @@ public class AppContext implements BeanFactory {
         return processors;
     }
 
-    private void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Lazy annotation = bean.getAnnotation(Lazy.class);
         if (annotation == null || !annotation.value()) {
             context.put(bean.getName(), create(bean));

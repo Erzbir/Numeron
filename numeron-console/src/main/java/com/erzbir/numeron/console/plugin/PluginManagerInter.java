@@ -6,7 +6,7 @@ import java.util.List;
  * @author Erzbir
  * @Date: 2023/4/26 21:33
  */
-interface PluginManagerInter {
+interface PluginManagerInter extends PluginLoad {
     List<Plugin> getPlugins();
 
     String getPluginsFolder();
