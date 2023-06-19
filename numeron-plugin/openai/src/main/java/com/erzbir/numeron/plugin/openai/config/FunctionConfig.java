@@ -10,21 +10,21 @@ import java.util.LinkedList;
 
 /**
  * @author Erzbir
- * @Date: 2023/3/3 23:52
+ * @Date: 2023/6/19 20:10
  */
-public class ChatConfig implements Serializable {
-
+public class FunctionConfig implements Serializable {
     private static final Object key = new Object();
-    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/chat.json";
-    private static volatile ChatConfig INSTANCE;
+    private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/function.json";
+    private static volatile FunctionConfig INSTANCE;
     private String model = "gpt-3.5-turbo-16k-0613";
     private int max_tokens = 512;
     private double temperature = 0.9;
     private double top_p = 1.0;
     private double presence_penalty = 0.6;
     private double frequency_penalty = 0.0;
+    private String function_call = "auto";
 
-    private ChatConfig() {
+    private FunctionConfig() {
         try {
             ConfigCreateUtil.createFile(configFile);
         } catch (IOException e) {
@@ -32,12 +32,12 @@ public class ChatConfig implements Serializable {
         }
     }
 
-    public static ChatConfig getInstance() {
+    public static FunctionConfig getInstance() {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
                     try {
-                        INSTANCE = JsonUtil.load(configFile, ChatConfig.class);
+                        INSTANCE = JsonUtil.load(configFile, FunctionConfig.class);
                     } catch (ConfigReadException e) {
                         throw new RuntimeException(e);
                     }
@@ -47,7 +47,7 @@ public class ChatConfig implements Serializable {
         if (INSTANCE == null) {
             synchronized (key) {
                 if (INSTANCE == null) {
-                    INSTANCE = new ChatConfig();
+                    INSTANCE = new FunctionConfig();
                     try {
                         JsonUtil.dump(configFile, INSTANCE, ChatConfig.class);
                     } catch (ConfigWriteException e) {
@@ -117,5 +117,13 @@ public class ChatConfig implements Serializable {
 
     public void setFrequency_penalty(double frequency_penalty) {
         this.frequency_penalty = frequency_penalty;
+    }
+
+    public String getFunction_call() {
+        return function_call;
+    }
+
+    public void setFunction_call(String function_call) {
+        this.function_call = function_call;
     }
 }

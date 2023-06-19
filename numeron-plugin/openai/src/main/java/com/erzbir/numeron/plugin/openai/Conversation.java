@@ -12,7 +12,7 @@ import java.util.*;
 public class Conversation implements List<ChatMessage> {
     private final LinkedList<ChatMessage> list = new LinkedList<>();
     private int size;
-    private int limit = 2048;
+    private int limit = 13000;
 
     public Conversation() {
 
@@ -36,16 +36,15 @@ public class Conversation implements List<ChatMessage> {
 
     public void reduce() {
         while (overLimit()) {
-            remove(0);
+            if (list.size() <= 1) {
+                return;
+            }
+            remove(1);
         }
     }
 
-    private void calculateTokens() {
-        list.forEach(t -> size += t.getContent().length());
-    }
-
-    public int totalToken() {
-        return size;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     @Override

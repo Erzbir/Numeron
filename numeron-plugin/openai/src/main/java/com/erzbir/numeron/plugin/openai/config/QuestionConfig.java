@@ -16,7 +16,7 @@ public class QuestionConfig implements Serializable {
     private static final Object key = new Object();
     private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/question.json";
     private static volatile QuestionConfig INSTANCE;
-    private transient String model = "gpt-3.5-turbo-0301";
+    private String model = "gpt-3.5-turbo";
     private int max_tokens = 2048;
     private double temperature = 0.0;
     private double top_p = 1.0;
