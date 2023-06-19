@@ -18,7 +18,6 @@ import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.message.data.ForwardMessage;
 import net.mamoe.mirai.message.data.ForwardMessageBuilder;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.PlainText;
@@ -80,7 +79,6 @@ public class ChatListener {
             builder.add(bot.getId(), senderName, messageChainBuilder.build());
         });
     }
-
 
 
     @Command(
