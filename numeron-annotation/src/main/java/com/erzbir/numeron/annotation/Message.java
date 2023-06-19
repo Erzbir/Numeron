@@ -33,4 +33,6 @@ public @interface Message {
     EventPriority priority() default EventPriority.NORMAL;
 
     ConcurrencyKind concurrency() default ConcurrencyKind.CONCURRENT;
+
+    int id() default 0;
 }
