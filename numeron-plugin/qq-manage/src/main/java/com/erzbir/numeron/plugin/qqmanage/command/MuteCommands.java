@@ -45,7 +45,7 @@ public class MuteCommands {
             permission = PermissionType.ADMIN
     )
     @Message(
-            text = "/unmute\\s+?@?\\d+?",
+            text = "/unmute\\s+?@?\\d+?\\s+\\d+?",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
             permission = PermissionType.ADMIN
@@ -55,12 +55,12 @@ public class MuteCommands {
     }
 
     private void mute(MessageEvent event, boolean bool) {
-        String[] s = event.getMessage().contentToString().split("\\s+");
+        String s = event.getMessage().contentToString().replaceFirst("/unmute\\s+?@?", "");
+        String[] ss = s.split("\\s+");
         long id;
         int time;
-        s[1] = s[1].replaceAll("@", "");
-        id = Long.parseLong(s[1]);
-        time = Integer.parseInt(s[2]);
+        id = Long.parseLong(ss[1]);
+        time = Integer.parseInt(ss[2]);
         if (event instanceof GroupMessageEvent event1) {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
