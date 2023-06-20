@@ -18,7 +18,7 @@ public class CompletionConfig implements Serializable {
     private static final Object key = new Object();
     private static final String configFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "chatgpt/config/completion.json";
     private static volatile CompletionConfig INSTANCE;
-    private transient String model = "text-davinci-003";
+    private String model = "text-davinci-003";
     private int max_tokens = 1024;
     private double temperature = 1.0;
     private double top_p = 1.0;

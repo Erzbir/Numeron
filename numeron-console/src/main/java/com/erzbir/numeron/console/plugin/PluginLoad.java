@@ -1,13 +1,13 @@
 package com.erzbir.numeron.console.plugin;
 
+import java.io.File;
+
 /**
  * @author Erzbir
  * @Date: 2023/6/16 09:52
  */
 public interface PluginLoad {
-    void load(Plugin plugin);
+    void load(File plugin);
 
-    void unLoad(Plugin plugin);
-
-    boolean isLoaded(Plugin plugin);
+    void reload(Plugin plugin);
 }

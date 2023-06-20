@@ -25,6 +25,10 @@ public class ImageConfig implements Serializable {
     private ImageConfig() {
         try {
             ConfigCreateUtil.createFile(configFile);
+            File file = new File(folder);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
         } catch (IOException e) {
             NumeronLogUtil.logger.error("ERROR", e);
         }
@@ -59,10 +63,6 @@ public class ImageConfig implements Serializable {
     }
 
     public CreateImageRequest load() {
-        File file = new File(folder);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
         return CreateImageRequest.builder().n(n)
                 .size(String.valueOf(size))
                 .responseFormat(format)

@@ -8,7 +8,8 @@ plugins {
 dependencies {
     val unUseSubModule: List<String> = listOf(
         "numeron-plugin",
-        "numeron-boot"
+        "numeron-boot",
+        "numeron-mock"
     )
     val unUsePluginSubModule: List<String> = listOf()
 

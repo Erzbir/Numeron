@@ -39,7 +39,7 @@ public class Starter {
     }
 
     private void bootFromBasePackage() {
-        ClassScanner scanner = new ClassScanner(basePackage, classLoader, true, null, null);
+        ClassScanner scanner = new ClassScanner(basePackage, classLoader, true, null);
         try {
             // 扫瞄实现了 Processor 接口的类
             scanner.scanWithInterface(Processor.class).forEach(e -> {

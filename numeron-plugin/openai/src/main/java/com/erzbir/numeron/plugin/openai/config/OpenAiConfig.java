@@ -17,7 +17,7 @@ public class OpenAiConfig {
     private String token = "";
     private boolean reply = false;
     private boolean chat_by_at = false;
-    private int limit = 20;
+    private int limit = 2048;
 
     private OpenAiConfig() {
 

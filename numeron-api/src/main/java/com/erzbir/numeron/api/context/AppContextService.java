@@ -1,6 +1,7 @@
 package com.erzbir.numeron.api.context;
 
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 
 /**
  * @author Erzbir
@@ -9,5 +10,11 @@ import java.lang.annotation.Annotation;
 public interface AppContextService {
     void addAllToContext(String packageName, ClassLoader classLoader, Class<? extends Annotation> annotation);
 
+    void addAllToContext(Collection<Class<?>> classes);
+
     void addToContext(Class<?> bean);
+
+    void removeContext(String name);
+
+    void removeContext(Class<?> c);
 }

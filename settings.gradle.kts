@@ -20,6 +20,7 @@ include(
         ":numeron-plugin",
         ":numeron-utils",
         ":numeron-annotation",
+        ":numeron-mock",
         ":numeron-plugin:card-search",
         ":numeron-plugin:chat",
         ":numeron-plugin:check-weight",

@@ -39,7 +39,7 @@ public class AppContext implements BeanFactory {
 
     public void addAllToContext(String packageName, ClassLoader classLoader, Class<? extends Annotation> annotation) {
         try {
-            ClassScanner scanner = new ClassScanner(packageName, classLoader, true, null, null);
+            ClassScanner scanner = new ClassScanner(packageName, classLoader, true, null);
             Set<Class<?>> classes = scanner.scanWithAnnotation(annotation); // 扫瞄带有@Component注解的class
             addAllToContext(classes);
         } catch (ClassNotFoundException | IOException e) {

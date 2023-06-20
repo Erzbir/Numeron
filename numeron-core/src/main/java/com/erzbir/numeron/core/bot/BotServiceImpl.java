@@ -10,7 +10,6 @@ import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.auth.BotAuthorization;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,8 +17,6 @@ import java.util.List;
  * @Date: 2023/5/3 12:21
  */
 public class BotServiceImpl implements BotService {
-    private static final List<Bot> runningBots = new LinkedList<>();
-
     @NotNull
     public Bot newBot(long qq, @NotNull byte[] passwordMD5, @NotNull NumeronBotConfiguration botConfiguration) {
         Bot bot = findBot(qq);
@@ -49,22 +46,47 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
+    public List<Bot> getRunningBotList() {
+        return getBotList().stream().filter(t -> t.isOnline() && isEnable(t)).toList();
+    }
+
+    @Override
     public void shutdown(long qq) {
-        getConfiguration(qq).disable();
-        runningBots.remove(findBot(qq));
-        if (runningBots.size() == 0) {
+        shutdown(findBot(qq));
+    }
+
+    @Override
+    public void shutdown(Bot bot) {
+        getConfiguration(bot).disable();
+        List<Bot> runningBotList = getRunningBotList();
+        if (runningBotList.size() == 0) {
             AppContext.INSTANCE.getProcessors().forEach(Processor::destroy);
             ListenerContext.INSTANCE.cancelAll();
         }
     }
 
     @Override
+    public void shutdownAll() {
+        getRunningBotList().forEach(this::shutdown);
+    }
+
+    @Override
     public void launch(long qq) {
-        getConfiguration(qq).enable();
-        runningBots.add(findBot(qq));
-        if (runningBots.size() == 1) {
+        launch(findBot(qq));
+    }
+
+    @Override
+    public void launch(Bot bot) {
+        getConfiguration(bot).enable();
+        List<Bot> runningBotList = getRunningBotList();
+        if (runningBotList.size() == 1) {
             AppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
         }
+    }
+
+    @Override
+    public void launchAll() {
+        getLoginBotList().forEach(this::launch);
     }
 
     @Override
@@ -80,18 +102,35 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public void login(Bot bot) {
-        if (!getConfiguration(bot).isEnable()) {
+        if (!getConfiguration(bot).isEnable() || bot.isOnline()) {
             return;
         }
         bot.login();
-        runningBots.add(bot);
     }
 
     @Override
     public void login(long qq) {
-        Bot bot = findBot(qq);
-        bot.login();
-        runningBots.add(bot);
+        login(findBot(qq));
+    }
+
+    @Override
+    public void loginAll() {
+        getBotList().forEach(this::login);
+    }
+
+    @Override
+    public void cancel(long qq) {
+        cancel(findBot(qq));
+    }
+
+    @Override
+    public void cancel(Bot bot) {
+        bot.close();
+    }
+
+    @Override
+    public void cancelAll() {
+        getBotList().forEach(this::cancel);
     }
 
     @Override

@@ -38,4 +38,8 @@ allprojects {
             jvmTarget = "17"
         }
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
 }

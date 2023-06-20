@@ -46,7 +46,7 @@ public class TimerController {
                     long id = bot.getId();
                     Contact contact = MiraiContactUtils.getContact(id, t, type);
                     try {
-                        if (BotServiceImpl.INSTANCE.getConfiguration(id).isEnable() && contact != null) {
+                        if (BotServiceImpl.INSTANCE.isEnable(bot) && contact != null) {
                             contact.sendMessage((rssInfo.getMessageChain(contact)));
                         }
                         flag = 0;

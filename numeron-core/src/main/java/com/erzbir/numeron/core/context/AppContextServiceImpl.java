@@ -5,6 +5,7 @@ import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 
 /**
  * @author Erzbir
@@ -17,6 +18,11 @@ public class AppContextServiceImpl implements AppContextService {
     }
 
     @Override
+    public void addAllToContext(Collection<Class<?>> classes) {
+        classes.forEach(this::addToContext);
+    }
+
+    @Override
     public void addToContext(Class<?> bean) {
         try {
             AppContext.INSTANCE.addToContext(bean);
@@ -24,5 +30,15 @@ public class AppContextServiceImpl implements AppContextService {
                  NoSuchMethodException e) {
             NumeronLogUtil.logger.error("ERROR", e);
         }
+    }
+
+    @Override
+    public void removeContext(String name) {
+        AppContext.INSTANCE.removeBean(name);
+    }
+
+    @Override
+    public void removeContext(Class<?> c) {
+        AppContext.INSTANCE.removeBean(c);
     }
 }
