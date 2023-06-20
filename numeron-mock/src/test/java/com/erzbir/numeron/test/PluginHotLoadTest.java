@@ -16,6 +16,8 @@ import java.util.List;
  * @Date: 2023/6/19 14:24
  */
 public class PluginHotLoadTest {
+    private static List<Object> list = new ArrayList<>();
+
     @Test
     public void test1() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, InterruptedException {
         test2();
@@ -40,8 +42,6 @@ public class PluginHotLoadTest {
         Constructor<?> constructor = load.getConstructor();
         constructor.newInstance();
     }
-
-    private static List<Object> list = new ArrayList<>();
 
     @Test
     public void test3() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, IOException, InterruptedException {
