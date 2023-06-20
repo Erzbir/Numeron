@@ -6,25 +6,19 @@ import java.util.List;
  * @author Erzbir
  * @Date: 2023/4/26 21:33
  */
-interface PluginManagerInter extends PluginLoad {
+interface PluginManagerInter {
+    List<?> getLoadedPlugins();
+
+    List<?> getEnablePlugins();
+
+    List<?> getDisablePlugins();
+
     List<Plugin> getPlugins();
 
+    Plugin getPlugin(int index);
+
+    Plugin getPlugin(String plugin);
+
     String getPluginsFolder();
-
-    void load(Plugin plugin);
-
-    void enable(Plugin plugin);
-
-    void disable(Plugin plugin);
-
-    void removePlugin(Plugin plugin);
-
-    String getPluginName(Plugin plugin);
-
-    String getPluginAuthor(Plugin plugin);
-
-    String getPluginDec(Plugin plugin);
-
-    String getPluginVersion(Plugin plugin);
 
 }

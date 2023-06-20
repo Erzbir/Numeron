@@ -1,19 +1,14 @@
 package com.erzbir.numeron.console.plugin;
 
-import com.erzbir.numeron.annotation.Component;
+import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.context.AppContextServiceImpl;
 import com.erzbir.numeron.console.exception.PluginConflictException;
-import com.erzbir.numeron.console.exception.PluginLoadException;
+import com.erzbir.numeron.console.exception.PluginIllegalException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +17,7 @@ import java.util.concurrent.Executors;
  * @author Erzbir
  * @Date: 2023/4/26 17:36
  */
-public class PluginManager implements PluginManagerInter, PluginService {
+public class PluginManager implements PluginService, PluginLoad, PluginManagerInter {
     private static final String pluginPath = "numeron_plugins/";
     public static PluginManager INSTANCE = new PluginManager();
 
@@ -30,9 +25,9 @@ public class PluginManager implements PluginManagerInter, PluginService {
         ConfigCreateUtil.createDir(pluginPath);
     }
 
-    public final Map<String, ServiceLoader<Plugin>> serviceLoaderMap = new ConcurrentHashMap<>();
     public final ExecutorService executor = Executors.newCachedThreadPool();
     private final Map<String, Plugin> pluginMap = new ConcurrentHashMap<>();
+    private final Map<String, PluginContext> pluginPluginContextMap = new ConcurrentHashMap<>();
 
     private PluginManager() {
         loadAll();
@@ -44,29 +39,37 @@ public class PluginManager implements PluginManagerInter, PluginService {
         File[] files = file.listFiles(t -> t.getName().endsWith(".jar"));
         if (files != null) {
             for (File file1 : files) {
-                loadPlugin(file1);
+                load(file1);
             }
         }
     }
 
-    private void loadPlugin(File plugin) {
-        try {
-            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{plugin.getAbsoluteFile().toURI().toURL()});
-            ServiceLoader<Plugin> load = ServiceLoader.load(Plugin.class, urlClassLoader);
-            load.forEach(t -> {
-                Class<? extends Plugin> aClass = t.getClass();
-                String id = aClass.getName();
-                if (pluginMap.get(id) != null) {
-                    throw new PluginConflictException("插件冲突");
-                }
-                AppContextServiceImpl.INSTANCE.addAllToContext(aClass.getPackageName(), aClass.getClassLoader(), Component.class);
-                load(t);
-                serviceLoaderMap.put(id, load);
+    @Override
+    public void load(File plugin) {
+        try (HotSpiPluginLoader hotSpiPluginLoader = new HotSpiPluginLoader()) {
+            if (!plugin.getName().endsWith(".jar")) {
+                throw new PluginIllegalException("not a legal plugin");
+            }
+            List<Object> objects = hotSpiPluginLoader.loadNewJar(plugin);
+            objects.stream().filter(t -> Plugin.class.isAssignableFrom(t.getClass())).forEach(p -> {
+                Plugin pl = (Plugin) p;
+                Collection<Class<?>> values = hotSpiPluginLoader.getClassCache().values();
+                PluginContext pluginContext = new PluginContext(pl, hotSpiPluginLoader, plugin, new HashSet<>(values));
+                pluginPluginContextMap.put(pl.getClass().getName(), pluginContext);
+                AppContextServiceImpl.INSTANCE.addAllToContext(values);
+                loadPlugin(pl);
             });
         } catch (Exception e) {
-            NumeronLogUtil.logger.error("ERROR", e);
-            throw new PluginLoadException("插件加载异常" + e);
+            NumeronLogUtil.logger.error("ERROR", new PluginIllegalException(e));
         }
+    }
+
+    @Override
+    public void reload(Plugin plugin) {
+        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
+        File file = pluginContext.getFile();
+        removePlugin(plugin);
+        load(file);
     }
 
     @Override
@@ -75,7 +78,7 @@ public class PluginManager implements PluginManagerInter, PluginService {
             NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already enabled and cannot be re-enabled.");
             return;
         }
-        executor.submit(plugin::enable);
+        plugin.enable();
     }
 
     @Override
@@ -84,12 +87,20 @@ public class PluginManager implements PluginManagerInter, PluginService {
             NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already disabled and cannot be re-disabled.");
             return;
         }
-        executor.submit(plugin::disable);
+        plugin.disable();
     }
 
     @Override
     public void removePlugin(Plugin plugin) {
-        pluginMap.remove(plugin.getClass().getName()).onUnLoad();
+        String name = plugin.getClass().getName();
+        pluginMap.remove(name).onUnLoad();
+        PluginContext pluginContext = pluginPluginContextMap.remove(name);
+        pluginContext.unLoadPlugin();
+        pluginContext = null;
+        BotServiceImpl.INSTANCE.shutdownAll();
+        plugin = null;
+        System.gc();
+        BotServiceImpl.INSTANCE.launchAll();
     }
 
     @Override
@@ -100,25 +111,35 @@ public class PluginManager implements PluginManagerInter, PluginService {
     }
 
     @Override
+    public Plugin getPlugin(int index) {
+        return getPlugins().get(index);
+    }
+
+    @Override
+    public Plugin getPlugin(String plugin) {
+        return pluginMap.get(plugin);
+    }
+
+    @Override
     public String getPluginsFolder() {
         return pluginPath;
     }
 
     @Override
-    public void load(Plugin plugin) {
+    public boolean isLoaded(Plugin plugin) {
+        return pluginMap.containsValue(plugin);
+    }
+
+    @Override
+    public void loadPlugin(Plugin plugin) {
+        if (isLoaded(plugin)) {
+            NumeronLogUtil.logger.error("ERROR", new PluginConflictException("Plugin " + plugin.getDescription().getName() + "already loaded"));
+            return;
+        }
         plugin.onLoad();
         Class<? extends Plugin> aClass = plugin.getClass();
         pluginMap.put(aClass.getName(), plugin);
-    }
 
-    @Override
-    public void unLoad(Plugin plugin) {
-
-    }
-
-    @Override
-    public boolean isLoaded(Plugin plugin) {
-        return pluginMap.containsValue(plugin);
     }
 
     @Override

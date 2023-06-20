@@ -16,20 +16,24 @@ public class NumeronBotApplication {
     private static final String packageName = "com.erzbir.numeron";
     private static final ExecutorService executorService = Executors.newFixedThreadPool(8);
     private static final String LOGO = """
+                        
             | \\ | |_   _ _ __ ___   ___ _ __ ___  _ __ \s
             |  \\| | | | | '_ ` _ \\ / _ \\ '__/ _ \\| '_ \\\s
             | |\\  | |_| | | | | | |  __/ | | (_) | | | |
-            |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|""";
+            |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|
+                        
+            """;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         long l = System.currentTimeMillis();
         initConfig();
         initPlugin();
         Starter starter = new Starter(packageName, NumeronBotApplication.class.getClassLoader());
-        starter.boot(Starter.BotType.PACKAGE);  // 调用 boot 方法初始化
+        starter.boot(Starter.BotType.SPI);  // 调用 boot 方法初始化
         l = System.currentTimeMillis() - l;
         initLogin();
         printLog(LOGO);
+        Thread.sleep(1000);
         NumeronLogUtil.info("欢迎使用 Numeron!!!");
         NumeronLogUtil.info("启动耗时: " + l + "ms");
         BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
