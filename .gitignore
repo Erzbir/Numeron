@@ -52,4 +52,5 @@ build/
 .fleet/
 
 ### MacOS ###
-*._Store
+*._Store!
+/htmlReport/
