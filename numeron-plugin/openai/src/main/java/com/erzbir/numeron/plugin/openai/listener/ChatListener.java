@@ -13,6 +13,7 @@ import com.erzbir.numeron.plugin.openai.Role;
 import com.erzbir.numeron.plugin.openai.config.ChatConfig;
 import com.erzbir.numeron.plugin.openai.config.OpenAiConfig;
 import com.erzbir.numeron.plugin.openai.config.RoleConfig;
+import com.erzbir.numeron.utils.ConfigWriteException;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatMessage;
@@ -57,6 +58,52 @@ public class ChatListener {
 
     @Command(
             name = "OpenAI",
+            dec = "增加人设",
+            help = "/r -a [name] -n [prompt]",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^/r\\s+?-a\\s+?\\S+?-n\\s+?\\S+",
+            permission = PermissionType.ALL
+    )
+    private void addRole(MessageEvent event) {
+        String s = event.getMessage().contentToString().replaceFirst("^/r\\s+?", "");
+        String[] split = s.split("\\s+?-");
+        String name = "";
+        String prompt = "";
+        for (String ss : split) {
+            ss = ss.replaceFirst("\\s+", "").replace("-", "");
+            String substring = ss.substring(1);
+            if (ss.startsWith("a")) {
+                name = substring;
+            } else if (ss.startsWith("n")) {
+                prompt = substring;
+            }
+        }
+        Role role = new Role(name, prompt);
+        ROLE_CONFIG.addRole(role);
+    }
+
+    @Command(
+            name = "OpenAI",
+            dec = "保存人设",
+            help = "/r 1",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^/r\\s+save",
+            permission = PermissionType.ALL
+    )
+    private void saveRole(MessageEvent event) throws ConfigWriteException {
+        ROLE_CONFIG.save();
+    }
+
+    @Command(
+            name = "OpenAI",
             dec = "列出所有人设",
             help = "/r all",
             permission = PermissionType.ALL
@@ -64,7 +111,7 @@ public class ChatListener {
     @Message(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
-            text = "^/r\\s+\\all",
+            text = "^/r\\s+all",
             permission = PermissionType.ALL
     )
     private void listAllRole(MessageEvent event) {
@@ -78,6 +125,7 @@ public class ChatListener {
             messageChainBuilder.append(t.getName());
             builder.add(bot.getId(), senderName, messageChainBuilder.build());
         });
+        event.getSubject().sendMessage(builder.build());
     }
 
 

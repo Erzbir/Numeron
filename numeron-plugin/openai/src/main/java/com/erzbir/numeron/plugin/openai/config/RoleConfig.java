@@ -52,6 +52,10 @@ public class RoleConfig {
         return INSTANCE;
     }
 
+    public void save() throws ConfigWriteException {
+        JsonUtil.dump(configFile, INSTANCE, RoleConfig.class);
+    }
+
     public Role getRole(int index) {
         return roles.get(index);
     }
