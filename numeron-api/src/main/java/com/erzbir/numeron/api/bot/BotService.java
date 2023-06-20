@@ -15,13 +15,31 @@ public interface BotService {
 
     List<Bot> getBotList();
 
+    List<Bot> getRunningBotList();
+
     void shutdown(long qq);
 
+    void shutdown(Bot bot);
+
+    void shutdownAll();
+
     void launch(long qq);
+
+    void launch(Bot bot);
+
+    void launchAll();
 
     void login(Bot bot);
 
     void login(long qq);
+
+    void loginAll();
+
+    void cancel(long qq);
+
+    void cancel(Bot bot);
+
+    void cancelAll();
 
     List<Bot> getLoginBotList();
 
