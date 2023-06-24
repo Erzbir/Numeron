@@ -20,7 +20,7 @@
 
 这是一个使用 mirai-core 开发的 qqBot, 也可用作简单脚手架
 
-**JDK 为 Oracle OpenJDK 17**
+**JDK 为 Oracle OpenJDK 19**
 
 **构建系统为 Gradle (Kotlin DSL)**
 
