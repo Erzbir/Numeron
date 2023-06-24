@@ -6,7 +6,6 @@ import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -47,7 +46,7 @@ public class ClassScanner {
             basePackage = basePackage.substring(0, basePackage.lastIndexOf('.'));
         }
         this.basePackage = basePackage;
-        this.packageDirName = basePackage.replace('.', File.separatorChar);
+        this.packageDirName = basePackage.replace('.', '/');
         this.recursive = recursive;
         this.classPredicate = classPredicate;
         this.classLoader = classLoader;
@@ -65,7 +64,7 @@ public class ClassScanner {
     }
 
     public ClassScanner(String basePackage, boolean recursive, Predicate<Class<?>> classPredicate) {
-        this(basePackage, Thread.currentThread().getContextClassLoader(), recursive, null);
+        this(basePackage, Thread.currentThread().getContextClassLoader(), recursive, classPredicate);
     }
 
     public static Set<Class<?>> scanAllPackageByAnnotation(String packageName, Class<? extends Annotation> annotationClass) throws IOException {
@@ -105,11 +104,11 @@ public class ClassScanner {
     }
 
     public static Set<Class<?>> scanAllPackage() throws IOException {
-        return scanAllPackage("", (Predicate<Class<?>>) null);
+        return scanAllPackage("");
     }
 
     public static Set<Class<?>> scanAllPackage(String packageName) throws IOException {
-        return new ClassScanner(packageName, true, (Predicate<Class<?>>) null).scanAllClasses(true);
+        return new ClassScanner(packageName, true).scanAllClasses(true);
     }
 
     public static Set<Class<?>> scanAllPackage(String packageName, Predicate<Class<?>> classFilter) throws IOException {
@@ -117,7 +116,7 @@ public class ClassScanner {
     }
 
     public static Set<Class<?>> scanAllPackage(String packageName, ClassLoader classLoader) throws IOException {
-        return new ClassScanner(packageName, classLoader, true, null).scanAllClasses(true);
+        return new ClassScanner(packageName, classLoader, true).scanAllClasses(true);
     }
 
     public static Set<Class<?>> scanAllPackage(String packageName, ClassLoader classLoader, Predicate<Class<?>> classFilter) throws IOException, ClassNotFoundException {
@@ -206,7 +205,7 @@ public class ClassScanner {
 
     public Set<Class<?>> scanAllClasses(boolean forceScanJavaClassPaths) throws IOException {
         clear();
-        String basePackageFilePath = basePackage.replace('.', File.separatorChar);
+        String basePackageFilePath = basePackage.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(basePackageFilePath);
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
@@ -308,7 +307,7 @@ public class ClassScanner {
     private void scanJavaClassPaths() {
         final String[] javaClassPaths = System.getProperty("java.class.path").split(System.getProperty("path.separator"));
         for (String classPath : javaClassPaths) {
-            classPath = URLDecoder.decode(classPath, File.separatorChar == '\\' ? Charset.forName("GBK") : StandardCharsets.UTF_8);
+            classPath = URLDecoder.decode(classPath, StandardCharsets.UTF_8);
             scanFile(new File(classPath), null);
         }
     }
@@ -325,7 +324,7 @@ public class ClassScanner {
             if (fileName.endsWith(".class")) {
                 final String className = fileName//
                         .substring(rootDir.length(), fileName.length() - 6)//
-                        .replace(File.separatorChar, '.');//
+                        .replace('/', '.');//
                 addIfAccept(className);
             } else if (fileName.endsWith(".jar")) {
                 try {
@@ -347,10 +346,10 @@ public class ClassScanner {
     private String subPathBeforePackage(File file) {
         String filePath = file.getAbsolutePath();
         if (packageDirName != null && !packageDirName.isEmpty() && packageDirName.isBlank()) {
-            int i = packageDirName.lastIndexOf(File.separatorChar);
+            int i = packageDirName.lastIndexOf('/');
             filePath = filePath.substring(0, i);
         }
-        return filePath.endsWith(File.separator) ? filePath : filePath.concat(File.separator);
+        return filePath.endsWith("/") ? filePath : filePath.concat("/");
     }
 
     private void scanJar(JarFile jar) {
@@ -358,12 +357,12 @@ public class ClassScanner {
         Enumeration<JarEntry> entries = jar.entries();
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
-            name = entry.getName().replace(File.separatorChar, '.');
+            name = entry.getName().replace('/', '.');
             if (basePackage == null || basePackage.isEmpty() || name.startsWith(this.basePackage)) {
                 if (name.endsWith(".class") && !entry.isDirectory()) {
                     final String className = name//
                             .substring(0, name.length() - 6)//
-                            .replace(File.separatorChar, '.');
+                            .replace('/', '.');
                     addIfAccept(loadClass(className));
                 }
             }

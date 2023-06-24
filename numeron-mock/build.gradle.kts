@@ -1,9 +1,6 @@
 plugins {
+    kotlin("jvm")
     id("java")
-}
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {
