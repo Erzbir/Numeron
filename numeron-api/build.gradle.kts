@@ -1,10 +1,12 @@
 plugins {
     kotlin("jvm")
+    id("java")
+    `maven-publish`
+
 }
 
 dependencies {
-//  implem
-    implementation(project(":numeron-deps"))
+    api(project(":numeron-deps"))
     api(project(":numeron-annotation"))
-    implementation(project(":numeron-utils"))
+    api(project(":numeron-utils"))
 }
