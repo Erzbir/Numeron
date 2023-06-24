@@ -2,11 +2,14 @@ plugins {
     kotlin("jvm")
 }
 
+val miraiVersion = "2.15.0-RC"
+
 dependencies {
-    api("net.mamoe:mirai-core-jvm:2.15.0-M1")
-    runtimeOnly("net.mamoe:mirai-logging-log4j2:2.15.0-M1")
+    api("net.mamoe:mirai-core-jvm:${miraiVersion}")
+    api("net.mamoe:mirai-core-utils:${miraiVersion}")
+    //runtimeOnly("net.mamoe:mirai-logging-log4j2:${miraiVersion}")
     //api("org.slf4j:slf4j-api:2.0.5")
-    //runtimeOnly("org.slf4j:slf4j-simple:2.0.5")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.5")
     runtimeOnly("org.xerial:sqlite-jdbc:3.40.1.0")
     api("com.google.code.gson:gson:2.10.1")
     api("org.apache.logging.log4j:log4j-api:2.20.0")
