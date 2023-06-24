@@ -9,12 +9,20 @@ buildscript {
 
 plugins {
     kotlin("jvm") version "1.7.10"
+    id("java")
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "java")
 }
 
 allprojects {
     group = "com.erzbir.numeron"
 
     version = "1.0.0"
+
+    val javaVersion = JavaVersion.VERSION_17
 
     repositories {
         mavenLocal()
@@ -28,8 +36,8 @@ allprojects {
         options.encoding = "UTF-8"
 
         java {
-            sourceCompatibility = JavaVersion.VERSION_17
-            targetCompatibility = JavaVersion.VERSION_17
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
         }
     }
 
@@ -37,6 +45,14 @@ allprojects {
         kotlinOptions {
             jvmTarget = "17"
         }
+    }
+
+    tasks.withType<JavaExec> {
+    }
+
+
+    tasks.withType<Wrapper> {
+        gradleVersion = "8.0"
     }
 
     tasks.withType<Test> {
