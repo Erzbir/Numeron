@@ -2,9 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     kotlin("jvm")
-    id("java")
     id("com.github.johnrengelman.shadow") version "7.1.1"
-    `maven-publish`
 }
 
 dependencies {

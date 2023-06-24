@@ -20,7 +20,7 @@
 
 这是一个使用 mirai-core 开发的 qqBot, 也可用作简单脚手架
 
-**JDK 为 Oracle OpenJDK 19**
+**JDK 为 Oracle OpenJDK 17**
 
 **构建系统为 Gradle (Kotlin DSL)**
 
@@ -334,10 +334,11 @@ class Test {
 - [ ] 群管理功能
 - [x] api 和实现分离
 - [ ] console 控制台
-- [x] 功能热加载
+- [ ] 功能热加载
 - [ ] 注解处理器
 - [x] 插件模式
 - [ ] 只监听某个 id(好友/群) 的事件监听注册(用注解实现)
+- [ ] 兼容 mirai-console 的插件
 
 ## 联系方式:
 
