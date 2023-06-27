@@ -23,6 +23,16 @@ allprojects {
     version = "1.0.0"
 
     val javaVersion = JavaVersion.VERSION_17
+    val miraiVersion = "2.15.0-RC"
+    val gradleVersion = "8.0"
+    val encoding = "UTF-8"
+
+    ext {
+        set("javaVersion", javaVersion)
+        set("miraiVersion", miraiVersion)
+        set("gradleVersion", "8.0")
+        set("encoding", "UTF-8")
+    }
 
     repositories {
         mavenLocal()
@@ -33,7 +43,7 @@ allprojects {
     }
 
     tasks.withType<JavaCompile> {
-        options.encoding = "UTF-8"
+        options.encoding = encoding
 
         java {
             sourceCompatibility = javaVersion
@@ -43,7 +53,7 @@ allprojects {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
         kotlinOptions {
-            jvmTarget = "17"
+            jvmTarget = javaVersion.toString()
         }
     }
 
@@ -52,7 +62,7 @@ allprojects {
 
 
     tasks.withType<Wrapper> {
-        gradleVersion = "8.0"
+        this.gradleVersion = gradleVersion
     }
 
     tasks.withType<Test> {
