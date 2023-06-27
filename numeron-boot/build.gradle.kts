@@ -4,7 +4,14 @@ plugins {
     kotlin("jvm")
     id("java")
     id("com.github.johnrengelman.shadow") version "7.1.1"
+    id("application")
     `maven-publish`
+}
+
+val javaMainClass = "com.erzbir.numeron.NumeronBotApplication"
+
+application {
+    mainClass.set(javaMainClass)
 }
 
 dependencies {
@@ -37,7 +44,7 @@ dependencies {
 }
 
 
-tasks.withType<ShadowJar>() {
+tasks.withType<ShadowJar> {
     manifest {
         attributes["Main-Class"] = "com.erzbir.numeron.NumeronBotApplication"
         attributes["Multi-Release"] = "true"
