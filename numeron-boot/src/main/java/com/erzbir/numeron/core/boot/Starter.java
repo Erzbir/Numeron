@@ -37,8 +37,7 @@ public class Starter {
     private final ClassLoader classLoader;
 
     public Starter() {
-        this.basePackage = "com.erzbir.numeron";
-        this.classLoader = Thread.currentThread().getContextClassLoader();
+        this(Thread.currentThread().getContextClassLoader());
     }
 
     public Starter(String packageName, ClassLoader classLoader) {
