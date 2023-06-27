@@ -19,7 +19,19 @@ import net.mamoe.mirai.event.events.MessageEvent;
 @Menu(name = "RSS订阅")
 @SuppressWarnings("unused")
 public class RssCommand {
-    static {
+    @Command(
+            name = "RSS订阅命令",
+            dec = "开启推送",
+            help = "#rss",
+            permission = PermissionType.ALL
+    )
+    @Message(
+            text = "#rss",
+            messageRule = MessageRule.EQUAL,
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.ALL
+    )
+    private void open(MessageEvent event) {
         TimerController.loadAllScan();
     }
 
@@ -118,6 +130,6 @@ public class RssCommand {
             permission = PermissionType.MASTER
     )
     private void enableAllScan(MessageEvent event) {
-        PublishApi.disableScan();
+        PublishApi.enableScan();
     }
 }
