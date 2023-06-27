@@ -44,7 +44,7 @@ public class RssItem implements Serializable {
     }
 
     public RssInfo updateInfo() {
-        RssInfo rssInfo1 = RssUtil.getRssInfo(url);
+        RssInfo rssInfo1 = RssUtil.getNewestRssInfo(url);
         if (rssInfo.getPublishedDate().getTime() - rssInfo1.getPublishedDate().getTime() >= 0) {
             return null;
         }
