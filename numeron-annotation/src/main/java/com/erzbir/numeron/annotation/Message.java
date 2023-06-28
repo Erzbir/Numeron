@@ -34,5 +34,5 @@ public @interface Message {
 
     ConcurrencyKind concurrency() default ConcurrencyKind.CONCURRENT;
 
-    int id() default 0;
+    long id() default 0;
 }

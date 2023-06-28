@@ -14,6 +14,7 @@ import net.mamoe.mirai.contact.Group;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,13 +22,13 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2023/3/6 00:20
  */
 public class TimerController {
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
+    private static ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
 
     private static Runnable getTimerTask(String id) {
         return () -> {
             RssItem rssItem = RssConfig.getInstance().getRssMap().get(id);
             if (rssItem == null) {
-                return;
+                throw new RuntimeException("not found rssItem");
             }
             RssInfo rssInfo = rssItem.updateInfo();
             send(rssInfo, rssItem.getUserList(), Friend.class);
@@ -71,7 +72,9 @@ public class TimerController {
     }
 
     public static void disableScan() {
-        executorService.shutdown();
+        executorService.shutdownNow();
+        executorService = new ScheduledThreadPoolExecutor(5);
+        System.gc();
     }
 
     public static void addScan(String id, Long delay) {

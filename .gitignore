@@ -54,3 +54,5 @@ build/
 ### MacOS ###
 *._Store!
 /htmlReport/
+temp/
+tmp/

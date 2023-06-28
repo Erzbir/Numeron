@@ -4,7 +4,14 @@ plugins {
     kotlin("jvm")
     id("java")
     id("com.github.johnrengelman.shadow") version "7.1.1"
+    id("application")
     `maven-publish`
+}
+
+val javaMainClass = "com.erzbir.numeron.NumeronBotApplication"
+
+application {
+    mainClass.set(javaMainClass)
 }
 
 dependencies {
@@ -13,20 +20,22 @@ dependencies {
         "numeron-boot",
         "numeron-mock"
     )
+
     val unUsePluginSubModule: List<String> = listOf()
+    val plugins = rootProject.subprojects.firstOrNull { it.name == "numeron-plugin" }?.subprojects
+    val module = rootProject.subprojects.filter { plugins == null || plugins.contains(it).not() }
 
     fun importModule() {
-        rootProject.subprojects.filter { unUseSubModule.contains(it.name).not() }.forEach {
+        module.filter { unUseSubModule.contains(it.name).not() }.forEach {
+            logger.error(it.name)
             implementation(it)
         }
     }
 
     fun importPlugins() {
-        rootProject.subprojects.firstOrNull { it.name == "numeron-plugin" }?.let { project ->
-            project.subprojects.filter { unUsePluginSubModule.contains(it.name).not() }
-                .forEach {
-                    runtimeOnly(it)
-                }
+        plugins?.filter { unUsePluginSubModule.contains(it.name).not() }?.forEach {
+            logger.error(it.name)
+            runtimeOnly(it)
         }
     }
 
@@ -35,10 +44,13 @@ dependencies {
 }
 
 
-tasks.withType<ShadowJar>() {
+tasks.withType<ShadowJar> {
     manifest {
         attributes["Main-Class"] = "com.erzbir.numeron.NumeronBotApplication"
         attributes["Multi-Release"] = "true"
+        attributes["Application-Name"] = rootProject.name
+        attributes["Mirai-Version"] = ext["miraiVersion"]
+        attributes["Created-By"] = this@withType.name
     }
     mergeServiceFiles()
     archiveBaseName.set("numeron")

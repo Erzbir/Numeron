@@ -27,7 +27,7 @@ public final class RedisStore {
 
     private RedisStore() {
         Properties properties = new Properties();
-        String confFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "plugin-configs/sql/redisconfig.properties";
+        String confFile = NumeronImpl.INSTANCE.getPluginWorkDir() + "sign/redisconfig.properties";
         try {
             ConfigCreateUtil.createFile(confFile);
         } catch (IOException e) {
@@ -43,7 +43,7 @@ public final class RedisStore {
             NumeronLogUtil.logger.error("ERROR", e);
         }
         client = new Jedis(host, port);
-        if (!user.isEmpty() || !password.isEmpty()) {
+        if (user != null && !user.isEmpty() || password != null && !password.isEmpty()) {
             client.auth(user, password);
         }
     }

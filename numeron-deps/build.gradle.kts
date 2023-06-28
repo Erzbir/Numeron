@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
 }
 
-val miraiVersion = "2.15.0-RC"
+val miraiVersion = ext["miraiVersion"]
 
 dependencies {
     api("net.mamoe:mirai-core-jvm:${miraiVersion}")

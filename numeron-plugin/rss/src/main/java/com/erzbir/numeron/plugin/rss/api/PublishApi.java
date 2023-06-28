@@ -31,4 +31,8 @@ public class PublishApi {
     public static void disableScan() {
         TimerController.disableScan();
     }
+
+    public static void enableScan() {
+        TimerController.loadAllScan();
+    }
 }
