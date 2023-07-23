@@ -38,7 +38,7 @@ public class EventMethodExecute implements MethodExecute {
     }
 
     @Override
-    public void execute(Method method, Object bean, EventChannel<Event> channel, Annotation annotation) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void execute(Method method, Object bean, EventChannel<? extends Event> channel, Annotation annotation) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Class<? extends Annotation> aClass = annotation.annotationType();
         EventPriority priority = (EventPriority) aClass.getDeclaredMethod("priority").invoke(annotation);
         ConcurrencyKind concurrency = (ConcurrencyKind) aClass.getDeclaredMethod("concurrency").invoke(annotation);

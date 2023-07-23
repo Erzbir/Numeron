@@ -33,6 +33,22 @@ public class AppContextServiceImpl implements AppContextService {
     }
 
     @Override
+    public Object getBean(Class<?> requiredType) {
+        return getBean(requiredType.getName());
+    }
+
+    @Override
+    public Object getBean(String name) {
+        try {
+            return AppContext.INSTANCE.getBean(name);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                 IllegalAccessException e) {
+            NumeronLogUtil.logger.error("ERROR", e);
+        }
+        return null;
+    }
+
+    @Override
     public void removeContext(String name) {
         AppContext.INSTANCE.removeBean(name);
     }

@@ -1,5 +1,6 @@
 package com.erzbir.numeron.core.filter;
 
+import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -8,15 +9,12 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @author Erzbir
  * @Date: 2023/6/25 15:39
  * @see AbstractBotEventFilter
- * @see EventFilter
  * @see MessageEvent
  */
-public abstract class AbstractMessageEventFilter extends AbstractBotEventFilter<MessageEvent> implements EventFilter<MessageEvent>, Filter {
+public abstract class AbstractMessageEventFilter implements Filter<MessageEvent> {
     protected long id = 0;
 
-    public AbstractMessageEventFilter(Filter filter) {
-        super(filter);
-    }
+    public abstract EventChannel<? extends MessageEvent> filter(EventChannel<? extends MessageEvent> channel);
 
     public long getId() {
         return id;

@@ -1,8 +1,8 @@
 package com.erzbir.numeron.core.filter.event.permission;
 
 import com.erzbir.numeron.core.entity.serviceimpl.BlackServiceImpl;
-import com.erzbir.numeron.core.filter.EventFilter;
 import com.erzbir.numeron.core.filter.Filter;
+import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -11,24 +11,14 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @Date: 2023/3/8 16:51
  * <p>好友权限过滤类, 过滤掉(舍弃)不是好友的event</p>
  */
-public class FriendPermissionFilter extends AbstractPermissionFilter implements EventFilter<MessageEvent> {
-
-    public FriendPermissionFilter(Filter filter) {
-        super(filter);
-    }
-
+public class FriendPermissionFilter extends AbstractPermissionFilter implements Filter<MessageEvent> {
     @Override
-    public void filter(MessageEvent event) {
-        setFilterRule(t -> filter0(event), event);
+    public EventChannel<? extends MessageEvent> filter(EventChannel<? extends MessageEvent> channel) {
+        return filter0(channel);
     }
 
-    public boolean filter0(MessageEvent event) {
+    public EventChannel<? extends MessageEvent> filter0(EventChannel<? extends MessageEvent> channel) {
         BlackServiceImpl blackService = new BlackServiceImpl();
-        return event instanceof FriendMessageEvent && !blackService.exist(event.getSender().getId());
-    }
-
-    @Override
-    public boolean filter() {
-        return super.filter() && filterRule.test(arg);
+        return channel.filter(event -> event instanceof FriendMessageEvent && !blackService.exist(event.getSender().getId()));
     }
 }

@@ -1,5 +1,8 @@
 package com.erzbir.numeron.core.filter;
 
+import net.mamoe.mirai.event.Event;
+import net.mamoe.mirai.event.EventChannel;
+
 /**
  * 过滤器采用 策略模式 + 装饰者模式 + 工厂模式的设计
  * <p></p>
@@ -9,6 +12,6 @@ package com.erzbir.numeron.core.filter;
  * @Date: 2023/6/27 11:35
  */
 @FunctionalInterface
-public interface Filter {
-    boolean filter();
+public interface Filter<E extends Event> {
+    EventChannel<? extends E> filter(EventChannel<? extends E> channel);
 }

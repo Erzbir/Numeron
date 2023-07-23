@@ -17,5 +17,5 @@ public interface MethodExecute {
 
     void executeAfter(Runnable runnable);
 
-    void execute(Method method, Object bean, EventChannel<Event> channel, Annotation annotation) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    void execute(Method method, Object bean, EventChannel<? extends Event> channel, Annotation annotation) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 }

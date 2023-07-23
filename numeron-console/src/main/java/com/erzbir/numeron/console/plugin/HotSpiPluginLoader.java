@@ -90,7 +90,6 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
             }
         } catch (NoSuchFieldException | ClassNotFoundException | IllegalAccessException e) {
             NumeronLogUtil.logger.error("ERROR", e);
-            throw new RuntimeException(e);
         }
         return objects;
     }

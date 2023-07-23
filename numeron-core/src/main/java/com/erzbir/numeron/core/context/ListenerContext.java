@@ -24,6 +24,8 @@ public class ListenerContext {
 
     private final Map<EventPriority, Collection<?>> listenerCollectionMap;
 
+    private final Map<Class<?>, Listener<?>> listenerMap = new HashMap<>();
+
     private final MiraiEventChannelProxy miraiEventChannelProxy;
 
 
@@ -36,6 +38,10 @@ public class ListenerContext {
             NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public void addListener(Class<?> clazz, Listener<?> listener) {
+        listenerMap.put(clazz, listener);
     }
 
     private Listener<? extends Event> getListener(Object listenerRegistry) throws NoSuchFieldException, IllegalAccessException {

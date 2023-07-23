@@ -11,5 +11,5 @@ dependencies {
     implementation(project(":numeron-annotation"))
     implementation(project(":numeron-api"))
     implementation(project(":numeron-utils"))
-
+    implementation("net.mamoe:mirai-mock:2.15.0")
 }

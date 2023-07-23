@@ -1,9 +1,10 @@
 package com.erzbir.numeron.core.filter.event.message;
 
 import com.erzbir.numeron.core.filter.AbstractMessageEventFilter;
-import com.erzbir.numeron.core.filter.EventFilter;
 import com.erzbir.numeron.core.filter.Filter;
+import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.MessageEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 抽象消息过滤类
@@ -13,17 +14,14 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @author Erzbir
  * @Date: 2022/11/26 15:47
  * @see AbstractMessageEventFilter
- * @see EventFilter
  */
-public abstract class AbstractMessageFilter extends AbstractMessageEventFilter implements EventFilter<MessageEvent> {
+public abstract class AbstractMessageFilter extends AbstractMessageEventFilter implements Filter<MessageEvent> {
     /**
      * 此参数用于记录文本的规则
      */
     protected String text = "";
 
-    public AbstractMessageFilter(Filter filter) {
-        super(filter);
-    }
+    public abstract EventChannel<? extends MessageEvent> filter(EventChannel<? extends MessageEvent> channel);
 
     public String getText() {
         return text;

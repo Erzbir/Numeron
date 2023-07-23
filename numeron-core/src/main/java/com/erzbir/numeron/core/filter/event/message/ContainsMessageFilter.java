@@ -1,8 +1,9 @@
 package com.erzbir.numeron.core.filter.event.message;
 
-import com.erzbir.numeron.core.filter.EventFilter;
 import com.erzbir.numeron.core.filter.Filter;
+import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.events.MessageEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Erzbir
@@ -11,24 +12,13 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * 实体消息过滤类, 此类是判断是否包含text
  * </p>
  */
-public class ContainsMessageFilter extends AbstractMessageFilter implements EventFilter<MessageEvent> {
-
-    public ContainsMessageFilter(Filter filter) {
-        super(filter);
-    }
-
+public class ContainsMessageFilter extends AbstractMessageFilter implements Filter<MessageEvent> {
     @Override
-    public void filter(MessageEvent event) {
-        setFilterRule(t -> filter0(event), event);
+    public EventChannel<? extends MessageEvent> filter(EventChannel<? extends MessageEvent> channel) {
+        return filter0(channel);
     }
 
-    private boolean filter0(MessageEvent event) {
-        return text.isEmpty() || event.getMessage().contentToString().contains(text);
+    private EventChannel<? extends MessageEvent> filter0(EventChannel<? extends MessageEvent> channel) {
+        return channel.filter(event -> text.isEmpty() || event.getMessage().contentToString().contains(text));
     }
-
-    @Override
-    public boolean filter() {
-        return super.filter() && filterRule.test(arg);
-    }
-
 }
