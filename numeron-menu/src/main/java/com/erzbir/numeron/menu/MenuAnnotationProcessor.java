@@ -33,7 +33,7 @@ public class MenuAnnotationProcessor implements Processor {
                 MenuStatic.closeMenuGroups.put(name, groupService.getEnableGroupList());
             }
             List<Command> commands = new ArrayList<>();
-            NumeronLogUtil.debug(name);
+            NumeronLogUtil.info(name);
             for (Method method : v.getDeclaredMethods()) {
                 Command command = method.getAnnotation(Command.class);
                 if (command == null) {

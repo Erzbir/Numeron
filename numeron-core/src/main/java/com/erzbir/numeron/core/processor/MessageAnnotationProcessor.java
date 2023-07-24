@@ -5,7 +5,7 @@ import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.filter.annotation.MessageAnnotationFilter;
+import com.erzbir.numeron.core.filter.annotation.MessageAnnotationChannelFilter;
 import com.erzbir.numeron.core.handler.factory.ExecutorFactory;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import net.mamoe.mirai.event.EventChannel;
@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class MessageAnnotationProcessor implements Processor {
-    public static EventChannel<? extends MessageEvent> channel;
+    public static EventChannel<?> channel;
     public static Map<String, Method> methodMap = new HashMap<>(4);
 
     static {
@@ -45,11 +45,11 @@ public class MessageAnnotationProcessor implements Processor {
      * @return EventChannel
      */
     @NotNull
-    private <E extends Annotation> EventChannel<? extends MessageEvent> toFilter(@NotNull EventChannel<? extends MessageEvent> channel, E annotation) {
+    private <E extends Annotation> EventChannel<?> toFilter(@NotNull EventChannel<?> channel, E annotation) {
         if (!(annotation instanceof Message)) {
             return channel;
         }
-        return new MessageAnnotationFilter().setAnnotation((Message) annotation).filter(channel);
+        return new MessageAnnotationChannelFilter().setAnnotation((Message) annotation).filter(channel.filterIsInstance(MessageEvent.class));
     }
 
     /**
@@ -58,7 +58,7 @@ public class MessageAnnotationProcessor implements Processor {
      * @param channel    过滤的channel
      * @param annotation 消息处理注解
      */
-    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<? extends MessageEvent> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<?> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         ExecutorFactory.INSTANCE.create(annotation)
                 .getExecute()
                 .execute(method, bean, channel, annotation);
@@ -102,7 +102,7 @@ public class MessageAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANCE;
-        MessageAnnotationProcessor.channel = GlobalEventChannel.INSTANCE.filterIsInstance(MessageEvent.class);
+        MessageAnnotationProcessor.channel = GlobalEventChannel.INSTANCE;
         NumeronLogUtil.trace("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> registerMethods(v));
         NumeronLogUtil.trace("注解消息处理监听注册完毕\n");

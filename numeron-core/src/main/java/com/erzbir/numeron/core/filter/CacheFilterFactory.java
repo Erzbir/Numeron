@@ -7,5 +7,5 @@ import net.mamoe.mirai.event.Event;
  * @Data 2023/7/23
  */
 public interface CacheFilterFactory extends FilterFactory {
-    Filter<? extends Event> getFilter(Class<? extends Filter<? extends Event>> filerClass);
+    ChannelFilter<? extends Event> getFilter(Class<? extends ChannelFilter<? extends Event>> filerClass);
 }

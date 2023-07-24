@@ -1,0 +1,18 @@
+package com.erzbir.numeron.core.filter.permission;
+
+import com.erzbir.numeron.core.bot.BotServiceImpl;
+import com.erzbir.numeron.core.filter.ChannelFilter;
+import net.mamoe.mirai.event.events.MessageEvent;
+
+/**
+ * @author Erzbir
+ * @Date: 2022/11/26 16:03
+ * <p>主人权限过滤类, 过滤掉(舍弃)不是主人的event</p>
+ */
+public class MasterPermissionChannelFilter extends AbstractPermissionChannelFilter implements ChannelFilter<MessageEvent> {
+    @Override
+    public boolean filter(MessageEvent event) {
+        BotServiceImpl botService = new BotServiceImpl();
+        return botService.getMaster(event.getBot()) == event.getSender().getId();
+    }
+}

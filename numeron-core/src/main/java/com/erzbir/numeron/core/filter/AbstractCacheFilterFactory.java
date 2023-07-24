@@ -13,19 +13,19 @@ import java.util.Map;
  * @Data 2023/7/23
  */
 public abstract class AbstractCacheFilterFactory implements FilterFactory, CacheFilterFactory {
-    protected Map<Class<? extends Filter<?>>, Filter<? extends Event>> filterMap = new HashMap<>(8);
+    protected Map<Class<? extends ChannelFilter<?>>, ChannelFilter<? extends Event>> filterMap = new HashMap<>(8);
 
-    public Filter<? extends Event> getFilter(Class<? extends Filter<? extends Event>> filerClass) {
-        Filter<? extends Event> filter = filterMap.get(filerClass);
-        if (filter == null) {
+    public ChannelFilter<? extends Event> getFilter(Class<? extends ChannelFilter<? extends Event>> filerClass) {
+        ChannelFilter<? extends Event> channelFilter = filterMap.get(filerClass);
+        if (channelFilter == null) {
             try {
-                filter = filerClass.getConstructor().newInstance();
+                channelFilter = filerClass.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 NumeronLogUtil.logger.error(e);
             }
-            filterMap.put(filerClass, filter);
+            filterMap.put(filerClass, channelFilter);
         }
-        return filter;
+        return channelFilter;
     }
 }

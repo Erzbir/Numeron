@@ -9,5 +9,5 @@ import net.mamoe.mirai.event.Event;
  */
 @FunctionalInterface
 public interface FilterFactory {
-    Filter<? extends Event> create(Enum<?> e);
+    ChannelFilter<? extends Event> create(Enum<?> e);
 }

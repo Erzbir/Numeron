@@ -64,7 +64,7 @@ public class CommandAnnotationProcessor implements Processor {
 
     private void scanBeans(Class<?> bean) {
         String name = bean.getName();
-        NumeronLogUtil.debug("扫瞄到 " + name);
+        NumeronLogUtil.info("扫瞄到 " + name);
         for (Method method : bean.getDeclaredMethods()) {
             Command command = method.getDeclaredAnnotation(Command.class);
             addToDocMap(command);

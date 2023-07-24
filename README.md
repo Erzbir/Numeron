@@ -1,12 +1,11 @@
 # Numeron
 
-
 - [介绍:](#介绍)
     - [模块:](#模块)
     - [实现的功能:](#plugin模块实现的功能)
 - [说明:](#说明)
-    - [启动项目:](#启动项目) 
-    - [配置文件:](#配置文件) 
+    - [启动项目:](#启动项目)
+    - [配置文件:](#配置文件)
     - [API:](#api)
     - [插件模式:](#插件模式)
     - [@Message使用:](#message使用)
@@ -51,8 +50,8 @@
 - 发送/help获取自动生成的命令表(在方法上加上`@Command`注解生成)
 - 对接openai
     - 聊天
-      - 上下文
-      - 人设
+        - 上下文
+        - 人设
     - 补全
     - 问答
     - 绘画
@@ -64,7 +63,8 @@
 
 在 clone 代码并完成 gradle 构建后, 在 numeron-boot 模块下运行启动类的 `main()` 方法即可
 
-第一次启动时会在命令行输入 bot 相关配置信息, 第一次启动默认为 ANDROID_WATCH 协议扫码且默认启用并登陆, 后续在 erzbirnumeron/config/botconfig.json 文件中可进行配置配置
+第一次启动时会在命令行输入 bot 相关配置信息, 第一次启动默认为 ANDROID_WATCH 协议扫码且默认启用并登陆, 后续在
+erzbirnumeron/config/botconfig.json 文件中可进行配置配置
 
 ## 说明:
 
@@ -94,6 +94,7 @@
   }
 ]
 ```
+
 - account: bot 帐号
 - password: bot 密码
 - master: 主人帐号
@@ -118,14 +119,14 @@
 - `Numeron` 程序接口
     - 获取此程序的各种配置信息
     - 可以通过此接口向注册监听方法的前后和监听回调函数执行前后插入方法
-    - 增加 Processor 处理器(实现 `Processor` 接口的类), 增加处理器后行为和 `Processor` 的说明中除了不在启动时运行都一致. 添加之后可以靠关闭全部 bot 并重启执行启动 `Processor`
+    - 增加 Processor 处理器(实现 `Processor` 接口的类), 增加处理器后行为和 `Processor` 的说明中除了不在启动时运行都一致.
+      添加之后可以靠关闭全部 bot 并重启执行启动 `Processor`
 
 ### 插件模式:
 
 实现 Plugin 接口, 目前插件打包时需包含所有依赖打包
 
 将打包的插件 jar 放到运行目录的 numeron_plugins 目录下
-
 
 ### @Message 使用:
 
