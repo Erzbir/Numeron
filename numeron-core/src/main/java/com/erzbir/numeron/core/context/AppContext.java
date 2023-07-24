@@ -74,6 +74,9 @@ public class AppContext implements BeanFactory {
     }
 
     public void addToContext(Class<?> bean) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        if (!isConstructClass(bean)) {
+            return;
+        }
         Lazy annotation = bean.getAnnotation(Lazy.class);
         if (annotation == null || !annotation.value()) {
             context.put(bean.getName(), create(bean));

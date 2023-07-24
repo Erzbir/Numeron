@@ -56,7 +56,6 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
                 Collection<Class<?>> values = hotSpiPluginLoader.getClassCache().values();
                 PluginContext pluginContext = new PluginContext(pl, hotSpiPluginLoader, plugin, new HashSet<>(values));
                 pluginPluginContextMap.put(pl.getClass().getName(), pluginContext);
-                AppContextServiceImpl.INSTANCE.addAllToContext(values);
                 loadPlugin(pl);
             });
         } catch (Exception e) {
@@ -66,56 +65,48 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
 
     @Override
     public void reload(Plugin plugin) {
-        executor.submit(() -> {
-            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-            File file = pluginContext.getFile();
-            removePlugin(plugin);
-            load(file);
-        });
+        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
+        File file = pluginContext.getFile();
+        removePlugin(plugin);
+        load(file);
     }
 
     @Override
     public void enable(Plugin plugin) {
-        executor.submit(() -> {
-            if (plugin.isEnable()) {
-                NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already enabled and cannot be re-enabled.");
-                return;
-            }
-            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-            AppContextServiceImpl.INSTANCE.addAllToContext(pluginContext.getClasses());
-            BotServiceImpl.INSTANCE.shutdownAll();
-            BotServiceImpl.INSTANCE.launchAll();
-            plugin.enable();
-        });
+        if (plugin.isEnable()) {
+            NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already enabled and cannot be re-enabled.");
+            return;
+        }
+        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
+        AppContextServiceImpl.INSTANCE.addAllToContext(pluginContext.getClasses());
+        BotServiceImpl.INSTANCE.shutdownAll();
+        BotServiceImpl.INSTANCE.launchAll();
+        plugin.enable();
     }
 
     @Override
     public void disable(Plugin plugin) {
-        executor.submit(() -> {
-            if (!plugin.isEnable()) {
-                NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already disabled and cannot be re-disabled.");
-                return;
-            }
-            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-            pluginContext.getClasses().forEach(AppContextServiceImpl.INSTANCE::removeContext);
-            BotServiceImpl.INSTANCE.shutdownAll();
-            BotServiceImpl.INSTANCE.launchAll();
-            plugin.disable();
-        });
+        if (!plugin.isEnable()) {
+            NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already disabled and cannot be re-disabled.");
+            return;
+        }
+        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
+        pluginContext.getClasses().forEach(AppContextServiceImpl.INSTANCE::removeContext);
+        BotServiceImpl.INSTANCE.shutdownAll();
+        BotServiceImpl.INSTANCE.launchAll();
+        plugin.disable();
     }
 
     @Override
     public void removePlugin(Plugin plugin) {
-        executor.submit(() -> {
-            String name = plugin.getClass().getName();
-            pluginMap.remove(name).onUnLoad();
-            PluginContext pluginContext = pluginPluginContextMap.remove(name);
-            pluginContext.unLoadPlugin();
-            pluginContext = null;
-            BotServiceImpl.INSTANCE.shutdownAll();
-            System.gc();
-            BotServiceImpl.INSTANCE.launchAll();
-        });
+        String name = plugin.getClass().getName();
+        pluginMap.remove(name).onUnLoad();
+        PluginContext pluginContext = pluginPluginContextMap.remove(name);
+        pluginContext.unLoadPlugin();
+        pluginContext = null;
+        BotServiceImpl.INSTANCE.shutdownAll();
+        System.gc();
+        BotServiceImpl.INSTANCE.launchAll();
     }
 
     @Override

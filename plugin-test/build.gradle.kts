@@ -10,7 +10,7 @@ dependencies {
     compileOnly(project(":numeron-console"))
     compileOnly(project(":numeron-deps"))
     implementation(project(":plugin-dep"))
-    runtimeOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
 }
 
 tasks.withType<ShadowJar> {

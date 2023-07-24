@@ -42,6 +42,7 @@ public class PluginContext {
             classLoader1 = null;
             System.err.println(t.getName());
             AppContextServiceImpl.INSTANCE.removeContext(t);
+            t = null;
         });
         classes.clear();
         classLoader = null;

@@ -73,7 +73,7 @@ public class Starter {
         printLog(LOGO);
         NumeronLogUtil.info("欢迎使用 Numeron!!!");
         NumeronLogUtil.info("启动耗时: " + l + "ms");
-        BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
+       // BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
     }
 
     private void bootFromBasePackage() {
