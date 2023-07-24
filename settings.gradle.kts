@@ -32,5 +32,7 @@ include(
         ":numeron-plugin:rss",
         ":numeron-plugin:sign",
         ":numeron-plugin:switch",
+        ":plugin-dep",
+        ":plugin-test"
     )
 )

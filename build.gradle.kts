@@ -58,7 +58,7 @@ allprojects {
     }
 
     tasks.withType<JavaExec> {
-        setWorkingDir(rootDir)
+        workingDir = rootDir
     }
 
 

@@ -52,7 +52,7 @@ public class AppContext implements BeanFactory {
         classes.forEach(e -> {
             if (isConstructClass(e)) {
                 try {
-                    addToContext(e);  // 判断是否为可实例化的类
+                    addToContext(e);
                 } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
                          NoSuchMethodException ex) {
                     NumeronLogUtil.logger.error("ERROR", ex);
@@ -80,6 +80,10 @@ public class AppContext implements BeanFactory {
         } else {
             lazyContext.put(bean.getName(), bean);
         }
+    }
+
+    public void addToContext(Object bean) {
+        context.put(bean.getClass().getName(), bean);
     }
 
     private boolean isConstructClass(Class<?> bean) {
@@ -111,16 +115,24 @@ public class AppContext implements BeanFactory {
      * @return 返回类名为键, 类的字节码为值的Map
      * <p>取出所有实现了{@param interfaceType}接口的类实现</p>
      */
-    public Map<String, Class<?>> getBeansWithInter(Class<?> interfaceType) {
-        Map<String, Class<?>> beans = new HashMap<>();
+    public Map<String, Object> getBeansWithInter(Class<?> interfaceType) {
+        Map<String, Object> beans = new HashMap<>();
         context.forEach((k, v) -> {
             if (interfaceType.isAssignableFrom(v.getClass())) {
-                beans.put(k, v.getClass());
+                beans.put(k, v);
             }
         });
         lazyContext.forEach((k, v) -> {
             if (interfaceType.isAssignableFrom(v)) {
-                beans.put(k, v);
+                try {
+                    Object value = create(v);
+                    beans.put(k, value);
+                    lazyContext.remove(k);
+                    context.put(k, value);
+                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                         IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         return beans;
@@ -132,16 +144,24 @@ public class AppContext implements BeanFactory {
      * <p>取出所有带有{@param annotationType}注解的类<p/>
      */
     @Override
-    public Map<String, Class<?>> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
-        HashMap<String, Class<?>> beans = new HashMap<>();
+    public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
+        HashMap<String, Object> beans = new HashMap<>();
         context.forEach((k, v) -> {
-            if (v.getClass().getAnnotation(annotationType) != null) {
-                beans.put(k, v.getClass());
+            if (v.getClass().isAnnotationPresent(annotationType)) {
+                beans.put(k, v);
             }
         });
         lazyContext.forEach((k, v) -> {
-            if (v.getAnnotation(annotationType) != null) {
-                beans.put(k, v);
+            if (v.isAnnotationPresent(annotationType)) {
+                try {
+                    Object value = create(v);
+                    beans.put(k, value);
+                    lazyContext.remove(k);
+                    context.put(k, value);
+                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                         IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         return beans;

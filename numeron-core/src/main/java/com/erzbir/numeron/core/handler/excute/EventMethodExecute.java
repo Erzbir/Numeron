@@ -47,6 +47,7 @@ public class EventMethodExecute implements MethodExecute {
         ListenerContext.INSTANCE.getListenerRegister().subscribe(channel, eventType, EmptyCoroutineContext.INSTANCE, concurrency, priority, event -> {
             try {
                 before.run();
+                method.setAccessible(true);
                 method.invoke(bean, event);
                 after.run();
             } catch (IllegalAccessException | InvocationTargetException e) {

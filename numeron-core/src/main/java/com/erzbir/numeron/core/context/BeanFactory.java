@@ -17,9 +17,9 @@ public interface BeanFactory {
 
     boolean containsBean(String name);
 
-    Map<String, Class<?>> getBeansWithAnnotation(Class<? extends Annotation> annotationType);
+    Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType);
 
-    Map<String, Class<?>> getBeansWithInter(Class<?> interfaceType);
+    Map<String, Object> getBeansWithInter(Class<?> interfaceType);
 
     default <T> T create(Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor<T> constructor = clazz.getConstructor();
