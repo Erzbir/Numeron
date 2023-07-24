@@ -61,12 +61,14 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
         JarFile jarFile = new JarFile(jar);
         jarFile.entries().asIterator().forEachRemaining(jarEntry -> {
             String name = jarEntry.getName();
-            if (name.endsWith(".class")) {
+            if (name.endsWith(".class") && !name.endsWith("module-info.class") && !name.endsWith("package-info.class") && !name.startsWith("java") && !name.startsWith("kotlin")) {
                 try (InputStream inputStream = jarFile.getInputStream(jarEntry)) {
                     String className = name.replaceAll("/", ".")
                             .replace(".class", "");
-                    Class<?> aClass = load(inputStream, className);
-                    classCache.put(className, aClass);
+                    if (findLoadedClass(className) == null) {
+                        Class<?> aClass = load(inputStream, className);
+                        classCache.put(className, aClass);
+                    }
                 } catch (IOException e) {
                     NumeronLogUtil.logger.error("ERROR", e);
                 }

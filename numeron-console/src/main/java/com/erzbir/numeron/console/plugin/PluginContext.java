@@ -37,7 +37,12 @@ public class PluginContext {
     }
 
     public void unLoadPlugin() {
-        classes.forEach(AppContextServiceImpl.INSTANCE::removeContext);
+        classes.forEach(t -> {
+            ClassLoader classLoader1 = t.getClassLoader();
+            classLoader1 = null;
+            System.err.println(t.getName());
+            AppContextServiceImpl.INSTANCE.removeContext(t);
+        });
         classes.clear();
         classLoader = null;
         plugin = null;
