@@ -1,31 +1,19 @@
 package com.erzbir.numeron.core.processor;
 
-import com.erzbir.numeron.annotation.Event;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.exception.AnnotationGetException;
-import com.erzbir.numeron.core.filter.BaseFilter;
-import com.erzbir.numeron.core.filter.event.message.AbstractMessageFilter;
-import com.erzbir.numeron.core.filter.event.message.IDMessageFilter;
-import com.erzbir.numeron.core.filter.event.message.MessageFilterFactory;
-import com.erzbir.numeron.core.filter.event.permission.AbstractPermissionFilter;
-import com.erzbir.numeron.core.filter.event.permission.PermissionFilterFactory;
-import com.erzbir.numeron.core.filter.event.rule.AbstractRuleFilter;
-import com.erzbir.numeron.core.filter.event.rule.RuleFilterFactory;
+import com.erzbir.numeron.core.filter.annotation.MessageAnnotationChannelFilter;
 import com.erzbir.numeron.core.handler.factory.ExecutorFactory;
-import com.erzbir.numeron.filter.FilterRule;
-import com.erzbir.numeron.filter.MessageRule;
-import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.utils.NumeronLogUtil;
+import kotlinx.coroutines.CoroutineScope;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
-import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -41,7 +29,7 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class MessageAnnotationProcessor implements Processor {
-    public static EventChannel<net.mamoe.mirai.event.Event> channel;
+    public static EventChannel<?> channel;
     public static Map<String, Method> methodMap = new HashMap<>(4);
 
     static {
@@ -57,47 +45,11 @@ public class MessageAnnotationProcessor implements Processor {
      * @return EventChannel
      */
     @NotNull
-    private <E extends Annotation> EventChannel<net.mamoe.mirai.event.Event> toFilter(@NotNull EventChannel<net.mamoe.mirai.event.Event> channel, E annotation) {
+    private <E extends Annotation> EventChannel<? extends net.mamoe.mirai.event.Event> toFilter(@NotNull EventChannel<MessageEvent> channel, E annotation) {
         if (!(annotation instanceof Message)) {
             return channel;
         }
-        Class<? extends Annotation> aClass = annotation.annotationType();
-        FilterRule filterRule;
-        MessageRule messageRule;
-        String text;
-        PermissionType permission;
-        long id;
-        try {
-            // 以下操作通过反射调用注解的方法(注解的属性实际上是一个有返回值的方法), 再强制类型转换成对应的类型
-            filterRule = (FilterRule) methodMap.get("filterRule").invoke(annotation);
-            messageRule = (MessageRule) methodMap.get("messageRule").invoke(annotation);
-            text = (String) methodMap.get("text").invoke(annotation);
-            permission = (PermissionType) methodMap.get("permission").invoke(annotation);
-            id = (long) methodMap.get("id").invoke(annotation);
-        } catch (Exception e) {
-            NumeronLogUtil.logger.error("ERROR", e);
-            throw new AnnotationGetException(e);
-        }
-//        BaseFilter baseFilter = new BaseFilter();
-//        EventFilter<?> idMessageEventFilter = new IDMessageFilter(baseFilter);
-//        EventFilter<?> messageEventFilter = MessageFilterFactory.INSTANCE.create(messageRule, idMessageEventFilter).setText(text).setId(id);
-//        EventFilter<?> permissionEventFilter = PermissionFilterFactory.INSTANCE.create(permission, messageEventFilter);
-//        EventFilter<?> ruleEventFilter = RuleFilterFactory.INSTANCE.create(filterRule, permissionEventFilter);
-//        FinalFilter filter = new FinalFilter(ruleEventFilter);
-        return channel.filter(event -> {
-            BaseFilter baseFilter = new BaseFilter();
-            MessageEvent event1 = (MessageEvent) event;
-            AbstractMessageFilter idMessageEventFilter = new IDMessageFilter(baseFilter);
-            idMessageEventFilter.filter(event1);
-            AbstractMessageFilter messageEventFilter = (AbstractMessageFilter) MessageFilterFactory.INSTANCE.create(messageRule, idMessageEventFilter).setText(text).setId(id);
-            messageEventFilter.filter(event1);
-            AbstractPermissionFilter permissionEventFilter = PermissionFilterFactory.INSTANCE.create(permission, messageEventFilter);
-            permissionEventFilter.filter(event1);
-            AbstractRuleFilter ruleEventFilter = RuleFilterFactory.INSTANCE.create(filterRule, permissionEventFilter);
-            ruleEventFilter.filter(event1);
-            return ruleEventFilter.filter();
-        });
-        //  return channel.filter(t -> ruleEventFilter.filter());
+        return new MessageAnnotationChannelFilter().setAnnotation((Message) annotation).filter(channel);
     }
 
     /**
@@ -106,10 +58,39 @@ public class MessageAnnotationProcessor implements Processor {
      * @param channel    过滤的channel
      * @param annotation 消息处理注解
      */
-    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<net.mamoe.mirai.event.Event> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<? extends net.mamoe.mirai.event.Event> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         ExecutorFactory.INSTANCE.create(annotation)
                 .getExecute()
                 .execute(method, bean, channel, annotation);
+    }
+
+    private void bindScope(EventChannel<?> channel, CoroutineScope scope) {
+        AppContext.INSTANCE.addBean(scope);
+        channel.parentScope(scope);
+    }
+
+    private CoroutineScope getCoroutineScope(Class<?> beanClass, Scope scope) {
+        CoroutineScope coroutineScope = DefaultScope.INSTANCE;
+        if (scope != null) {
+            Class<? extends CoroutineScope> value = scope.value();
+            String name = scope.name();
+            try {
+                if (!value.equals(DefaultScope.class)) {
+                    Constructor<? extends CoroutineScope> constructor = value.getConstructor();
+                    constructor.setAccessible(true);
+                    coroutineScope = constructor.newInstance();
+                    AppContext.INSTANCE.addBean("defaultScope", coroutineScope);
+                }
+                if (!name.isEmpty()) {
+                    AppContext.INSTANCE.addBean(name, coroutineScope);
+                }
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException e) {
+                NumeronLogUtil.logger.error("ERROR", e);
+                throw new RuntimeException(e);
+            }
+        }
+        return coroutineScope;
     }
 
     /**
@@ -117,18 +98,24 @@ public class MessageAnnotationProcessor implements Processor {
      * @return 是否是需要的注解
      */
     private boolean isNeededAnnotation(Annotation annotation) {
-        return annotation instanceof Message || annotation instanceof Event;
+        return annotation instanceof Message || annotation instanceof Event || annotation instanceof Scope;
     }
 
     /**
      * 执行消息处理方法的注册方法
      *
-     * @param v bean对象
+     * @param bean bean 对象
      */
-    private void registerMethods(Class<?> v) {
-        String name = v.getName();
-        NumeronLogUtil.debug("扫瞄到 " + name);
-        for (Method method : v.getDeclaredMethods()) {
+    private void registerMethods(Object bean) {
+        Class<?> beanClass = bean.getClass();
+        String name = beanClass.getName();
+        NumeronLogUtil.info("扫瞄到 " + name);
+        Scope scope = beanClass.getAnnotation(Scope.class);
+        EventChannel<MessageEvent> eventChannel;
+        CoroutineScope coroutineScope = DefaultScope.INSTANCE;
+        coroutineScope = getCoroutineScope(beanClass, scope);
+        eventChannel = channel.filterIsInstance(MessageEvent.class).parentScope(coroutineScope);
+        for (Method method : beanClass.getDeclaredMethods()) {
             Arrays.stream(method.getAnnotations())
                     .filter(this::isNeededAnnotation).forEach(annotation -> {
                         String s = Arrays.toString(method.getParameterTypes())
@@ -136,10 +123,9 @@ public class MessageAnnotationProcessor implements Processor {
                                 .replaceAll("]", ")");
                         method.setAccessible(true);
                         try {
-                            execute(AppContext.INSTANCE.getBean(v), method, toFilter(channel, annotation), annotation);
-                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
-                                 InstantiationException e) {
-                            NumeronLogUtil.err(e.getMessage());
+                            execute(bean, method, toFilter(eventChannel, annotation), annotation);
+                        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                            NumeronLogUtil.logger.error("ERROR", e);
                             throw new RuntimeException(e);
                         }
                         NumeronLogUtil.info(method.getName() + s + " 处理方法注册完毕");
@@ -150,10 +136,10 @@ public class MessageAnnotationProcessor implements Processor {
     @Override
     public void onApplicationEvent() {
         AppContext context = AppContext.INSTANCE;
-        MessageAnnotationProcessor.channel = GlobalEventChannel.INSTANCE.filter(t -> t instanceof BotEvent);
-        NumeronLogUtil.trace("开始注册注解消息处理监听......");
+        MessageAnnotationProcessor.channel = GlobalEventChannel.INSTANCE;
+        NumeronLogUtil.info("开始注册注解消息处理监听......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> registerMethods(v));
-        NumeronLogUtil.trace("注解消息处理监听注册完毕\n");
+        NumeronLogUtil.info("注解消息处理监听注册完毕\n");
     }
 
     @Override

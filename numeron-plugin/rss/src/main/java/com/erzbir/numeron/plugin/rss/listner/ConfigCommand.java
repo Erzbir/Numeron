@@ -1,6 +1,7 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Lazy;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.filter.FilterRule;
@@ -19,6 +20,7 @@ import net.mamoe.mirai.message.data.PlainText;
  */
 @Listener
 @Menu(name = "RSS订阅")
+@Lazy
 @SuppressWarnings("unused")
 public class ConfigCommand {
     @Command(

@@ -23,12 +23,12 @@ public class AdminServiceImpl implements AdminService {
         BotServiceImpl botService = new BotServiceImpl();
         GroupServiceImpl groupService = new GroupServiceImpl();
         botService.getBotList().forEach(v -> {
-                    List<Long> list = new ArrayList<>();
                     HashMap<Long, List<Long>> map = new HashMap<>();
                     v.getGroups()
                             .stream()
                             .filter(f -> groupService.exist(f.getId()))
                             .forEach(g -> {
+                                List<Long> list = new ArrayList<>();
                                 g.getMembers()
                                         .stream()
                                         .filter(t -> t.getPermission().getLevel() > 0)

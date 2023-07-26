@@ -1,6 +1,7 @@
 package com.erzbir.numeron.console.plugin;
 
 import com.erzbir.numeron.api.context.AppContextServiceImpl;
+import com.erzbir.numeron.utils.CoroutineScopeBridge;
 
 import java.io.File;
 import java.util.Set;
@@ -37,7 +38,13 @@ public class PluginContext {
     }
 
     public void unLoadPlugin() {
-        classes.forEach(AppContextServiceImpl.INSTANCE::removeContext);
+        CoroutineScopeBridge.Companion.cancel(plugin);
+        classes.forEach(t -> {
+            ClassLoader classLoader1 = t.getClassLoader();
+            classLoader1 = null;
+            AppContextServiceImpl.INSTANCE.removeBean(t);
+            t = null;
+        });
         classes.clear();
         classLoader = null;
         plugin = null;

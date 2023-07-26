@@ -1,7 +1,9 @@
 package com.erzbir.numeron.console.plugin;
 
 import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.EmptyCoroutineContext;
+import kotlinx.coroutines.CompletableJob;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.JobKt;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -41,7 +43,8 @@ public abstract class NumeronPlugin implements Plugin {
     @NotNull
     @Override
     public CoroutineContext getCoroutineContext() {
-        return EmptyCoroutineContext.INSTANCE;
+        CompletableJob jobKt = JobKt.Job(null);
+        return Dispatchers.getDefault().plus((CoroutineContext) jobKt);
     }
 
 }

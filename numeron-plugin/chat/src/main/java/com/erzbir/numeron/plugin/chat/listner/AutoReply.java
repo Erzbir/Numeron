@@ -1,13 +1,11 @@
 package com.erzbir.numeron.plugin.chat.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Lazy;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.plugin.chat.entity.AutoReplyData;
+import com.erzbir.numeron.utils.CoroutineScopeBridge;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
@@ -90,6 +88,7 @@ public class AutoReply {
     private void sayGoodNight(MessageEvent e) {
 //        Image image = Contact.uploadImage(e.getSender(), new File("pix1001_4.jpg"));
         e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
+        CoroutineScopeBridge.Companion.cancel(DefaultScope.INSTANCE);
     }
 
     @Message(

@@ -66,4 +66,15 @@ public class Controller {
         event.getSubject().sendMessage(PluginManager.INSTANCE.getDisablePlugins().toString());
     }
 
+    @Message(
+            text = "/plugin 1",
+            messageRule = MessageRule.EQUAL,
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.ALL
+    )
+    private void removePlugin(MessageEvent event) {
+        event.getSubject().sendMessage("asdsadasdasdasd");
+        PluginManager.INSTANCE.removePlugin(PluginManager.INSTANCE.getPlugin(0));
+    }
+
 }

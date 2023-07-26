@@ -13,7 +13,7 @@ plugins {
 }
 
 val javaVersion = JavaVersion.VERSION_17
-val miraiVersion = "2.15.0-RC"
+val miraiVersion = "2.15.0"
 val gradleVersion = "8.0"
 val encoding = "UTF-8"
 
@@ -58,7 +58,7 @@ allprojects {
     }
 
     tasks.withType<JavaExec> {
-        setWorkingDir(rootDir)
+        workingDir = rootDir
     }
 
 

@@ -12,29 +12,36 @@ public class MenuDrawUtil {
     public static BufferedImage drawMenu(Long groupNumber) throws IOException, FontFormatException {
         BufferedImage drawImageBuffer = new BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = drawImageBuffer.createGraphics();
-        RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        graphics.setRenderingHints(renderingHints);
+        IOUtils.setRenderingHints(graphics);
+        // Set background color
         graphics.setColor(new Color(255, 222, 255));
         graphics.fillRect(0, 0, canvasWidth, canvasHeight);
+        // Drawing title
         BufferedImage titleImageBuffer = drawingTitle();
         graphics.drawImage(titleImageBuffer, 140, 300, 715, 100, null);
+        // Draw "帮助菜单" text
         graphics.setColor(Color.WHITE);
         graphics.setFont(IOUtils.getFont(Font.BOLD, 57));
-        float width = (1000 - graphics.getFontMetrics().stringWidth("帮助菜单")) >> 1;
-        graphics.drawString("帮助菜单", width, 372.5F);
+        String menuTitle = "帮助菜单";
+        float titleWidth = (canvasWidth - graphics.getFontMetrics().stringWidth(menuTitle)) / 2.0f;
+        graphics.drawString(menuTitle, titleWidth, 372.5F);
+        // Draw "by Numeron" text
         graphics.setFont(IOUtils.getFont(Font.ITALIC, 25));
         graphics.drawString("by Numeron", 400, 450);
+        // Retrieve images
         BufferedImage helpImageBuffer = MenuStatic.bufferedImageMap.get("help");
+        BufferedImage contentImageBuffer = MenuStatic.bufferedImageMap.get("content");
+        BufferedImage openImageBuffer = MenuStatic.bufferedImageMap.get("open");
+        BufferedImage closeImageBuffer = MenuStatic.bufferedImageMap.get("close");
+        // Draw help and content images
         if (helpImageBuffer != null) {
             graphics.drawImage(helpImageBuffer, 20, 550, 960, 40, null);
         }
-        BufferedImage contentImageBuffer = MenuStatic.bufferedImageMap.get("content");
         if (contentImageBuffer != null) {
             graphics.drawImage(contentImageBuffer, 20, 624, 960, 1240, null);
         }
-        BufferedImage openImageBuffer = MenuStatic.bufferedImageMap.get("open");
-        BufferedImage closeImageBuffer = MenuStatic.bufferedImageMap.get("close");
+        // Draw menu items
+        graphics.setFont(IOUtils.getFont(Font.BOLD, 25));
         int i = 0;
         int j = 0;
         for (String key : MenuStatic.menuList) {

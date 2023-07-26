@@ -7,27 +7,26 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class MenuHelpDrawUtil {
-    public static final int canvasWidth = 1000;
-    public static int canvasHeight = 1884;
+    public static final int CANVAS_WIDTH = 1000;
+    public static final int CANVAS_HEIGHT = 1884;
 
     public static BufferedImage drawMenuHelp(String menuName) throws IOException, FontFormatException {
         int height = 840 + MenuStatic.menuMap.get(menuName).size() * 60;
+        int canvasHeight = CANVAS_HEIGHT;
         if (height >= 1900) {
             canvasHeight = 2500;
         }
-        BufferedImage drawImageBuffer = new BufferedImage(canvasWidth, canvasHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage drawImageBuffer = new BufferedImage(CANVAS_WIDTH, canvasHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = drawImageBuffer.createGraphics();
-        RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        renderingHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        graphics.setRenderingHints(renderingHints);
+        IOUtils.setRenderingHints(graphics);
         graphics.setColor(new Color(255, 222, 255));
-        graphics.fillRect(0, 0, canvasWidth, canvasHeight);
+        graphics.fillRect(0, 0, CANVAS_WIDTH, canvasHeight);
         BufferedImage contentImageBuffer = drawingContent(menuName, height);
         graphics.drawImage(contentImageBuffer, 20, canvasHeight - height - 20, 960, height, null);
         graphics.setFont(IOUtils.getFont(Font.BOLD, 57));
         int width = graphics.getFontMetrics().stringWidth(menuName);
         BufferedImage titleImageBuffer = drawingTitle(menuName, width);
-        graphics.drawImage(titleImageBuffer, (canvasWidth - (width + 40)) / 2, (canvasHeight - height - 20 - 100) / 2, width + 40, 100, null);
+        graphics.drawImage(titleImageBuffer, (CANVAS_WIDTH - (width + 40)) / 2, (canvasHeight - height - 20 - 100) / 2, width + 40, 100, null);
         graphics.setColor(Color.WHITE);
         graphics.setFont(IOUtils.getFont(Font.ITALIC, 25));
         graphics.drawString("by Numeron", 400, (canvasHeight - height) / 2 + 95);
@@ -55,14 +54,12 @@ public class MenuHelpDrawUtil {
         graphics.setFont(IOUtils.getFont(Font.PLAIN, 30));
 //        graphics.drawString(menuList.get(menuName), 20, 140);
         graphics.drawString("Erzbir", 20, 380);
-        //    graphics.drawString("暂无", 20, 800 + 60 * menuMap.get(menuName).size());
-        int i = 0;
-        for (Command k : MenuStatic.menuMap.get(menuName)) {
-            if (k == null) {
-                continue;
+        int y = 580;
+        for (Command command : MenuStatic.menuMap.get(menuName)) {
+            if (command != null) {
+                graphics.drawString(command.dec() + "  " + command.help() + "  " + command.permission().name(), 20, y + 60);
+                y += 40;
             }
-            graphics.drawString(k.dec() + "  " + k.help() + "  " + k.permission().name(), 20, 580 + 60 + i * 40);
-            i++;
         }
         graphics.dispose();
         return drawingContentBuffer;

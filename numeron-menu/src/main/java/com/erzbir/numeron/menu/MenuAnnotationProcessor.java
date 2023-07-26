@@ -21,10 +21,11 @@ public class MenuAnnotationProcessor implements Processor {
 
     @Override
     public void onApplicationEvent() {
-        Map<String, Class<?>> menu = AppContext.INSTANCE.getBeansWithAnnotation(Menu.class);
+        Map<String, Object> menu = AppContext.INSTANCE.getBeansWithAnnotation(Menu.class);
         NumeronLogUtil.info("开始生成图片帮助菜单");
         menu.forEach((k, v) -> {
-            Menu annotation = v.getAnnotation(Menu.class);
+            Class<?> aClass = v.getClass();
+            Menu annotation = aClass.getAnnotation(Menu.class);
             String name = annotation.name();
             boolean open = annotation.open();
             MenuStatic.menuList.add(name);
@@ -33,8 +34,8 @@ public class MenuAnnotationProcessor implements Processor {
                 MenuStatic.closeMenuGroups.put(name, groupService.getEnableGroupList());
             }
             List<Command> commands = new ArrayList<>();
-            NumeronLogUtil.debug(name);
-            for (Method method : v.getDeclaredMethods()) {
+            NumeronLogUtil.info(name);
+            for (Method method : aClass.getDeclaredMethods()) {
                 Command command = method.getAnnotation(Command.class);
                 if (command == null) {
                     continue;

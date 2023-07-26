@@ -1,10 +1,8 @@
 package com.erzbir.numeron.core.context;
 
 import com.erzbir.numeron.api.context.AppContextService;
-import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 /**
@@ -24,21 +22,31 @@ public class AppContextServiceImpl implements AppContextService {
 
     @Override
     public void addToContext(Class<?> bean) {
-        try {
-            AppContext.INSTANCE.addToContext(bean);
-        } catch (InvocationTargetException | InstantiationException | IllegalAccessException |
-                 NoSuchMethodException e) {
-            NumeronLogUtil.logger.error("ERROR", e);
-        }
+        AppContext.INSTANCE.addBean(bean);
     }
 
     @Override
-    public void removeContext(String name) {
+    public void addBean(Object bean) {
+        AppContext.INSTANCE.addBean(bean);
+    }
+
+    @Override
+    public Object getBean(Class<?> requiredType) {
+        return getBean(requiredType.getName());
+    }
+
+    @Override
+    public Object getBean(String name) {
+        return AppContext.INSTANCE.getBean(name);
+    }
+
+    @Override
+    public void removeBean(String name) {
         AppContext.INSTANCE.removeBean(name);
     }
 
     @Override
-    public void removeContext(Class<?> c) {
+    public void removeBean(Class<?> c) {
         AppContext.INSTANCE.removeBean(c);
     }
 }
