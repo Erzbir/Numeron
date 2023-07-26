@@ -30,9 +30,13 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
     }
 
     @Override
-    protected synchronized Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
-        synchronized (getClassLoadingLock(className)) {
-            final Class<?> c = classCache.get(className);
+    protected Class<?> loadClass(String className, boolean resolve) throws ClassNotFoundException {
+        Object lock = super.isRegisteredAsParallelCapable() ? getClassLoadingLock(className) : this;
+        synchronized (lock) {
+            Class<?> c = classCache.get(className);
+            if (c == null) {
+                c = findLoadedClass(className);
+            }
             if (c == null) {
                 if (fileCache.containsKey(className)) {
                     throw new ClassNotFoundException(className);
@@ -61,12 +65,18 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
         JarFile jarFile = new JarFile(jar);
         jarFile.entries().asIterator().forEachRemaining(jarEntry -> {
             String name = jarEntry.getName();
-            if (name.endsWith(".class") && !name.endsWith("module-info.class") && !name.endsWith("package-info.class") && !name.startsWith("java") && !name.startsWith("kotlin")) {
-                try (InputStream inputStream = jarFile.getInputStream(jarEntry)) {
-                    String className = name.replaceAll("/", ".")
-                            .replace(".class", "");
-                    if (findLoadedClass(className) == null) {
-                        Class<?> aClass = load(inputStream, className);
+            if (name.endsWith(".class") && !name.endsWith("module-info.class") && !name.endsWith("package-info.class")) {
+                InputStream inputStream = null;
+                String className = name.replaceAll("/", ".")
+                        .replace(".class", "");
+                try {
+                    inputStream = jarFile.getInputStream(jarEntry);
+                    Class<?> aClass = null;
+                    if (findLoadedClass(className) == null && classCache.get(className) == null) {
+                        aClass = load(inputStream, className);
+                        System.out.println(aClass.getClassLoader());
+                    }
+                    if (aClass != null) {
                         classCache.put(className, aClass);
                     }
                 } catch (IOException e) {

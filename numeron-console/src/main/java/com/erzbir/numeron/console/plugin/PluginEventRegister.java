@@ -3,6 +3,7 @@ package com.erzbir.numeron.console.plugin;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.console.exception.PluginIllegalException;
+import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.filter.annotation.MessageAnnotationChannelFilter;
 import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
 import com.erzbir.numeron.utils.NumeronLogUtil;
@@ -11,7 +12,6 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -27,8 +27,8 @@ public class PluginEventRegister {
     }
 
     public void register(PluginContext pluginContext) {
-        EventChannel<BotEvent> eventEventChannel = GlobalEventChannel.INSTANCE.parentScope(pluginContext.getPlugin())
-                .filterIsInstance(BotEvent.class);
+        EventChannel<BotEvent> eventEventChannel = GlobalEventChannel.INSTANCE
+                .filterIsInstance(BotEvent.class).parentScope(pluginContext.getPlugin());
         pluginContext.getClasses().forEach(t -> {
             if (t.isAnnotationPresent(Listener.class)) {
                 Method[] declaredMethods = t.getDeclaredMethods();
@@ -42,13 +42,10 @@ public class PluginEventRegister {
                         MessageAnnotationChannelFilter filter = new MessageAnnotationChannelFilter();
                         filter.setAnnotation(message);
                         try {
-                            Constructor<?> constructor = t.getConstructor();
-                            constructor.setAccessible(true);
-                            Object object = constructor.newInstance();
+                            Object object = AppContext.INSTANCE.getBean(t.getName());
                             EventChannel<BotEvent> filterChannel = eventEventChannel.filter(event -> event instanceof MessageEvent messageEvent && filter.filter(messageEvent));
                             EventMethodExecute.INSTANCE.execute(declaredMethod, object, filterChannel, message);
-                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException |
-                                 InstantiationException e) {
+                        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                             NumeronLogUtil.logger.error("ERROR", e);
                             throw new PluginIllegalException(e);
                         }

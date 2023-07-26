@@ -17,4 +17,5 @@ dependencies {
     //runtimeOnly("org.apache.logging.log4j:log4j-slf4j2-impl:2.20.0")
     api("com.squareup.okhttp3:okhttp:4.10.0")
     api("commons-io:commons-io:2.13.0")
+    api("cglib:cglib:3.3.0")
 }

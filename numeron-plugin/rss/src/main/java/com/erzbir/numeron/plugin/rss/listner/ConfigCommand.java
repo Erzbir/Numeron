@@ -1,10 +1,12 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
-import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Lazy;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.filter.FilterRule;
 import com.erzbir.numeron.filter.MessageRule;
 import com.erzbir.numeron.filter.PermissionType;
-import com.erzbir.numeron.filter.TargetType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.EditApi;
 import com.erzbir.numeron.plugin.rss.api.ViewApi;
@@ -21,8 +23,6 @@ import net.mamoe.mirai.message.data.PlainText;
 @Lazy
 @SuppressWarnings("unused")
 public class ConfigCommand {
-    @Scope
-    @ListenTarget(value = TargetType.CONTACT, id = 2978086497L)
     @Command(
             name = "RSS订阅命令",
             dec = "修改订阅名",

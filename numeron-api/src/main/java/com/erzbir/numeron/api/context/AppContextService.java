@@ -14,11 +14,13 @@ public interface AppContextService {
 
     void addToContext(Class<?> bean);
 
+    void addBean(Object bean);
+
     Object getBean(String name);
 
     Object getBean(Class<?> beanClass);
 
-    void removeContext(String name);
+    void removeBean(String name);
 
-    void removeContext(Class<?> c);
+    void removeBean(Class<?> c);
 }

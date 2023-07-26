@@ -65,6 +65,9 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
 
     @Override
     public void reload(Plugin plugin) {
+        if (plugin == null) {
+            return;
+        }
         PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
         File file = pluginContext.getFile();
         removePlugin(plugin);
@@ -73,40 +76,53 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
 
     @Override
     public void enable(Plugin plugin) {
+        if (plugin == null) {
+            return;
+        }
         if (plugin.isEnable()) {
             NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already enabled and cannot be re-enabled.");
             return;
         }
-        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-        AppContextServiceImpl.INSTANCE.addAllToContext(pluginContext.getClasses());
-        BotServiceImpl.INSTANCE.shutdownAll();
-        BotServiceImpl.INSTANCE.launchAll();
-        plugin.enable();
+        executor.submit(() -> {
+            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
+            AppContextServiceImpl.INSTANCE.addAllToContext(pluginContext.getClasses());
+            BotServiceImpl.INSTANCE.shutdownAll();
+            BotServiceImpl.INSTANCE.launchAll();
+            plugin.enable();
+        });
     }
 
     @Override
     public void disable(Plugin plugin) {
+        if (plugin == null) {
+            return;
+        }
         if (!plugin.isEnable()) {
             NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already disabled and cannot be re-disabled.");
             return;
         }
-        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-        pluginContext.getClasses().forEach(AppContextServiceImpl.INSTANCE::removeContext);
-        BotServiceImpl.INSTANCE.shutdownAll();
-        BotServiceImpl.INSTANCE.launchAll();
-        plugin.disable();
+        executor.submit(() -> {
+            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
+            pluginContext.getClasses().forEach(AppContextServiceImpl.INSTANCE::removeBean);
+            BotServiceImpl.INSTANCE.shutdownAll();
+            BotServiceImpl.INSTANCE.launchAll();
+            plugin.disable();
+        });
     }
 
     @Override
     public void removePlugin(Plugin plugin) {
-        String name = plugin.getClass().getName();
-        pluginMap.remove(name).onUnLoad();
-        PluginContext pluginContext = pluginPluginContextMap.remove(name);
-        pluginContext.unLoadPlugin();
-        pluginContext = null;
-        BotServiceImpl.INSTANCE.shutdownAll();
+        plugin.disable();
+        executor.submit(() -> {
+            PluginContext pluginContext = pluginPluginContextMap.remove(plugin.getClass().getName());
+            BotServiceImpl.INSTANCE.shutdownAll();
+            String name = plugin.getClass().getName();
+            pluginMap.remove(name).onUnLoad();
+            pluginContext.unLoadPlugin();
+            BotServiceImpl.INSTANCE.launchAll();
+            System.err.println("asdioadiawdalodawodj");
+        });
         System.gc();
-        BotServiceImpl.INSTANCE.launchAll();
     }
 
     @Override

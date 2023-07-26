@@ -9,8 +9,10 @@ import net.mamoe.mirai.event.Listener;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * @author Erzbir
@@ -19,10 +21,11 @@ import java.util.Map;
  * 监听器上下文
  * </p>
  */
+@SuppressWarnings("all")
 public class ListenerContext {
     public static final ListenerContext INSTANCE = new ListenerContext();
 
-    private final Map<EventPriority, Collection<?>> listenerCollectionMap;
+    private final EnumMap<EventPriority, Collection<net.mamoe.mirai.internal.event.ListenerRegistry>> listenerCollectionMap;
 
     private final Map<Class<?>, Listener<?>> listenerMap = new HashMap<>();
 
@@ -51,7 +54,7 @@ public class ListenerContext {
     }
 
     @SuppressWarnings({"unchecked"})
-    private Map<EventPriority, Collection<?>> getListenerMap() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private EnumMap<EventPriority, Collection<net.mamoe.mirai.internal.event.ListenerRegistry>> getListenerMap() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
         Field mapField = Class.forName("net.mamoe.mirai.internal.event.EventListeners").getDeclaredField("map");
         mapField.setAccessible(true);
         Object companion = Class.forName("net.mamoe.mirai.internal.event.EventChannelToEventDispatcherAdapter").getDeclaredField("Companion").get(null);
@@ -60,7 +63,7 @@ public class ListenerContext {
         eventListeners.setAccessible(true);
         Object eventListenerInstance = eventListeners.get(adapterInstance);
         Object mapInstance = mapField.get(eventListenerInstance);
-        return (Map<EventPriority, Collection<?>>) mapInstance;
+        return (EnumMap<EventPriority, Collection<net.mamoe.mirai.internal.event.ListenerRegistry>>) mapInstance;
     }
 
     public MiraiEventChannelProxy.EventChannelMethodInvokeInter getListenerRegister() {
@@ -69,18 +72,20 @@ public class ListenerContext {
 
     private void cancel(Listener<? extends Event> listener) {
         if (listener.isCancelled()) {
+            listener = null;
             return;
         }
         listener.cancel(null);
+        listener = null;
     }
 
     public void cancelAll() {
-        listenerCollectionMap.forEach((k, v) -> v.forEach(t -> {
-            try {
-                cancel(getListener(t));
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                NumeronLogUtil.logger.error("ERROR", e);
-            }
-        }));
+        listenerCollectionMap.forEach((k, v) -> {
+            v.forEach(t -> {
+                cancel(t.getListener());
+            });
+            v.clear();
+            v = new ConcurrentLinkedDeque<>();
+        });
     }
 }

@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.filter.message;
 
 import com.erzbir.numeron.core.exception.FilterNotFoundException;
-import com.erzbir.numeron.core.filter.AbstractCacheFilterFactory;
+import com.erzbir.numeron.core.filter.AbstractEnumCacheFilterFactory;
 import com.erzbir.numeron.core.filter.CacheFilterFactory;
 import com.erzbir.numeron.core.filter.FilterFactory;
 import com.erzbir.numeron.filter.MessageRule;
@@ -13,17 +13,13 @@ import com.erzbir.numeron.filter.MessageRule;
  * 消息过滤类工厂
  * </p>
  */
-public class MessageCacheFilterFactory extends AbstractCacheFilterFactory implements FilterFactory, CacheFilterFactory {
-    public final static MessageCacheFilterFactory INSTANCE = new MessageCacheFilterFactory();
+public class MessageEnumCacheFilterFactory extends AbstractEnumCacheFilterFactory implements FilterFactory, CacheFilterFactory {
+    public final static MessageEnumCacheFilterFactory INSTANCE = new MessageEnumCacheFilterFactory();
 
-    private MessageCacheFilterFactory() {
+    private MessageEnumCacheFilterFactory() {
 
     }
 
-    /**
-     * @param e 枚举子类
-     * @return ChannelFilterInter
-     */
     @Override
     public AbstractMessageChannelFilter create(Enum<?> e) {
         if (e.equals(MessageRule.EQUAL)) {

@@ -1,10 +1,9 @@
 package com.erzbir.numeron.console.plugin;
 
 import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.EmptyCoroutineContext;
-import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.BotFactory;
-import net.mamoe.mirai.utils.BotConfiguration;
+import kotlinx.coroutines.CompletableJob;
+import kotlinx.coroutines.Dispatchers;
+import kotlinx.coroutines.JobKt;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -44,8 +43,8 @@ public abstract class NumeronPlugin implements Plugin {
     @NotNull
     @Override
     public CoroutineContext getCoroutineContext() {
-        Bot bot = BotFactory.INSTANCE.newBot(10000000012L, "oindowdawd", new BotConfiguration());
-        return bot.getCoroutineContext();
+        CompletableJob jobKt = JobKt.Job(null);
+        return Dispatchers.getDefault().plus((CoroutineContext) jobKt);
     }
 
 }

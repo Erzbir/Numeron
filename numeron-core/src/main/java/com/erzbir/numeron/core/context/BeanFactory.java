@@ -1,8 +1,5 @@
 package com.erzbir.numeron.core.context;
 
-import org.intellij.lang.annotations.PrintFormat;
-import org.intellij.lang.annotations.RegExp;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,9 +11,9 @@ import java.util.Map;
  */
 public interface BeanFactory {
 
-    Object getBean(Class<?> requiredType) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    Object getBean(Class<?> requiredType);
 
-    Object getBean(String name) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    Object getBean(String name);
 
     boolean containsBean(String name);
 
@@ -27,6 +24,6 @@ public interface BeanFactory {
     default <T> T create(Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor<T> constructor = clazz.getConstructor();
         constructor.setAccessible(true);
-        return clazz.getConstructor().newInstance();
+        return constructor.newInstance();
     }
 }

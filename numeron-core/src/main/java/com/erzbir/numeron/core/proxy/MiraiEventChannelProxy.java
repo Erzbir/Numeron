@@ -2,7 +2,6 @@ package com.erzbir.numeron.core.proxy;
 
 import com.erzbir.numeron.api.listener.ListenerRegisterInter;
 import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
-import com.erzbir.numeron.core.processor.MessageAnnotationProcessor;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.*;
 import org.jetbrains.annotations.NotNull;

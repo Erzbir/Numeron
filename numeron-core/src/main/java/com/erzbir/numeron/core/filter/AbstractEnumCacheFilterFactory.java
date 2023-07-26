@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Erzbir
  * @Data 2023/7/23
  */
-public abstract class AbstractCacheFilterFactory implements FilterFactory, CacheFilterFactory {
+public abstract class AbstractEnumCacheFilterFactory implements EnumFilterFactory, CacheFilterFactory {
     protected Map<Class<? extends ChannelFilter<?>>, ChannelFilter<? extends Event>> filterMap = new HashMap<>(8);
 
     public ChannelFilter<? extends Event> getFilter(Class<? extends ChannelFilter<? extends Event>> filerClass) {

@@ -1,9 +1,9 @@
 package com.erzbir.numeron.core.filter.rule;
 
 import com.erzbir.numeron.core.exception.FilterNotFoundException;
-import com.erzbir.numeron.core.filter.AbstractCacheFilterFactory;
+import com.erzbir.numeron.core.filter.AbstractEnumCacheFilterFactory;
 import com.erzbir.numeron.core.filter.CacheFilterFactory;
-import com.erzbir.numeron.core.filter.FilterFactory;
+import com.erzbir.numeron.core.filter.EnumFilterFactory;
 import com.erzbir.numeron.filter.FilterRule;
 
 /**
@@ -11,17 +11,13 @@ import com.erzbir.numeron.filter.FilterRule;
  * @Date: 2022/11/26 16:30
  * <p>规则过滤器工厂</p>
  */
-public class RuleCacheFilterFactory extends AbstractCacheFilterFactory implements FilterFactory, CacheFilterFactory {
-    public final static RuleCacheFilterFactory INSTANCE = new RuleCacheFilterFactory();
+public class RuleEnumCacheFilterFactory extends AbstractEnumCacheFilterFactory implements EnumFilterFactory, CacheFilterFactory {
+    public final static RuleEnumCacheFilterFactory INSTANCE = new RuleEnumCacheFilterFactory();
 
-    private RuleCacheFilterFactory() {
+    private RuleEnumCacheFilterFactory() {
 
     }
 
-    /**
-     * @param e 枚举子类
-     * @return ChannelFilterInter
-     */
     @Override
     public AbstractRuleChannelFilter create(Enum<?> e) {
         if (e.equals(FilterRule.BLACK)) {

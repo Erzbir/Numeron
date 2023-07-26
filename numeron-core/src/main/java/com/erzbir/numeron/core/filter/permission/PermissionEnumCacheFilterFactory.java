@@ -1,9 +1,9 @@
 package com.erzbir.numeron.core.filter.permission;
 
 import com.erzbir.numeron.core.exception.FilterNotFoundException;
-import com.erzbir.numeron.core.filter.AbstractCacheFilterFactory;
+import com.erzbir.numeron.core.filter.AbstractEnumCacheFilterFactory;
 import com.erzbir.numeron.core.filter.CacheFilterFactory;
-import com.erzbir.numeron.core.filter.FilterFactory;
+import com.erzbir.numeron.core.filter.EnumFilterFactory;
 import com.erzbir.numeron.filter.PermissionType;
 
 /**
@@ -11,17 +11,13 @@ import com.erzbir.numeron.filter.PermissionType;
  * @Date: 2022/11/26 16:30
  * <p>规则过滤器工厂</p>
  */
-public class PermissionCacheFilterFactory extends AbstractCacheFilterFactory implements FilterFactory, CacheFilterFactory {
-    public final static PermissionCacheFilterFactory INSTANCE = new PermissionCacheFilterFactory();
+public class PermissionEnumCacheFilterFactory extends AbstractEnumCacheFilterFactory implements EnumFilterFactory, CacheFilterFactory {
+    public final static PermissionEnumCacheFilterFactory INSTANCE = new PermissionEnumCacheFilterFactory();
 
-    private PermissionCacheFilterFactory() {
+    private PermissionEnumCacheFilterFactory() {
 
     }
 
-    /**
-     * @param e 枚举子类
-     * @return ChannelFilterInter
-     */
     @Override
     public AbstractPermissionChannelFilter create(Enum<?> e) {
         if (e.equals(PermissionType.ALL)) {
