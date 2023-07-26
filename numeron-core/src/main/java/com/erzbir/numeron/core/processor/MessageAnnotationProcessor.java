@@ -45,11 +45,11 @@ public class MessageAnnotationProcessor implements Processor {
      * @return EventChannel
      */
     @NotNull
-    private <E extends Annotation> EventChannel<?> toFilter(@NotNull EventChannel<?> channel, E annotation) {
+    private <E extends Annotation> EventChannel<? extends net.mamoe.mirai.event.Event> toFilter(@NotNull EventChannel<MessageEvent> channel, E annotation) {
         if (!(annotation instanceof Message)) {
             return channel;
         }
-        return new MessageAnnotationChannelFilter().setAnnotation((Message) annotation).filter(channel.filterIsInstance(MessageEvent.class));
+        return new MessageAnnotationChannelFilter().setAnnotation((Message) annotation).filter(channel);
     }
 
     /**
@@ -58,29 +58,31 @@ public class MessageAnnotationProcessor implements Processor {
      * @param channel    过滤的channel
      * @param annotation 消息处理注解
      */
-    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<?> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    private <E extends Annotation> void execute(Object bean, Method method, @NotNull EventChannel<? extends net.mamoe.mirai.event.Event> channel, E annotation) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         ExecutorFactory.INSTANCE.create(annotation)
                 .getExecute()
                 .execute(method, bean, channel, annotation);
     }
 
     private void bindScope(EventChannel<?> channel, CoroutineScope scope) {
-        AppContext.INSTANCE.addToContext(scope);
+        AppContext.INSTANCE.addBean(scope);
         channel.parentScope(scope);
     }
 
     private CoroutineScope getCoroutineScope(Class<?> beanClass, Scope scope) {
-        CoroutineScope coroutineScope = new DefaultScope();
+        CoroutineScope coroutineScope = DefaultScope.INSTANCE;
         if (scope != null) {
             Class<? extends CoroutineScope> value = scope.value();
+            String name = scope.name();
             try {
-                if (value.equals(DefaultScope.class)) {
-                    coroutineScope = (CoroutineScope) AppContext.INSTANCE.getBean(beanClass.getName());
-                } else {
+                if (!value.equals(DefaultScope.class)) {
                     Constructor<? extends CoroutineScope> constructor = value.getConstructor();
                     constructor.setAccessible(true);
                     coroutineScope = constructor.newInstance();
-                    AppContext.INSTANCE.addToContext(coroutineScope);
+                    AppContext.INSTANCE.addBean("defaultScope", coroutineScope);
+                }
+                if (!name.isEmpty()) {
+                    AppContext.INSTANCE.addBean(name, coroutineScope);
                 }
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
@@ -109,10 +111,10 @@ public class MessageAnnotationProcessor implements Processor {
         String name = beanClass.getName();
         NumeronLogUtil.info("扫瞄到 " + name);
         Scope scope = beanClass.getAnnotation(Scope.class);
-        EventChannel<?> eventChannel;
-        CoroutineScope coroutineScope = new DefaultScope();
+        EventChannel<MessageEvent> eventChannel;
+        CoroutineScope coroutineScope = DefaultScope.INSTANCE;
         coroutineScope = getCoroutineScope(beanClass, scope);
-        eventChannel = channel.parentScope(coroutineScope);
+        eventChannel = channel.filterIsInstance(MessageEvent.class).parentScope(coroutineScope);
         for (Method method : beanClass.getDeclaredMethods()) {
             Arrays.stream(method.getAnnotations())
                     .filter(this::isNeededAnnotation).forEach(annotation -> {

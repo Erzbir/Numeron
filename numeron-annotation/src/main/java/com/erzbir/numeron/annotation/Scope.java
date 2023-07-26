@@ -15,4 +15,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 public @interface Scope {
     Class<? extends CoroutineScope> value() default DefaultScope.class;
+
+    String name() default "";
 }
