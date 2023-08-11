@@ -5,9 +5,9 @@ import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.entity.WhiteServiceImpl;
-import com.erzbir.numeron.filter.FilterRule;
-import com.erzbir.numeron.filter.MessageRule;
-import com.erzbir.numeron.filter.PermissionType;
+import com.erzbir.numeron.api.filter.FilterRule;
+import com.erzbir.numeron.api.filter.MessageRule;
+import com.erzbir.numeron.api.filter.PermissionType;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.events.MessageEvent;
 

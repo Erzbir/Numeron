@@ -30,8 +30,8 @@ public class Starter {
             |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|
                         
             """;
-    public final ExecutorService executor = Executors.newCachedThreadPool();
-    public final Initial initial = new Initial();
+    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private final Initial initial = new Initial();
     private final String basePackage;
     private final ClassLoader classLoader;
 

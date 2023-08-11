@@ -6,7 +6,7 @@ import kotlin.coroutines.CoroutineContext
 
 /**
  * @author Erzbir
- * @Data 2023/7/26
+ * @Date 2023/7/26
  */
 open class NumeronPluginKt : Plugin {
     private lateinit var description: NumeronDescription

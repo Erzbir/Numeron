@@ -2,9 +2,10 @@ package com.erzbir.numeron.core.context;
 
 import com.erzbir.numeron.annotation.Component;
 import com.erzbir.numeron.annotation.Lazy;
+import com.erzbir.numeron.api.context.BeanFactory;
 import com.erzbir.numeron.api.processor.Processor;
-import com.erzbir.numeron.core.exception.BeanCreateException;
-import com.erzbir.numeron.core.exception.BeanNotFound;
+import com.erzbir.numeron.api.exception.BeanCreateException;
+import com.erzbir.numeron.api.exception.BeanNotFound;
 import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 /**
  * @author Erzbir
  * @Date: 2022/12/12 15:14
- * <p>有@Componet注解或是继承@Component注解的注解的类实例化后注册到这个包装类里</p>
+ * <p>有 {@link Component} 注解标记的类注册到这个类里</p>
  */
 public class AppContext implements BeanFactory {
     public static final AppContext INSTANCE = new AppContext();

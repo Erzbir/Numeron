@@ -69,7 +69,7 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
             return;
         }
         PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-        File file = pluginContext.getFile();
+        File file = pluginContext.getOriginalFile();
         removePlugin(plugin);
         load(file);
     }
@@ -118,7 +118,7 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
             BotServiceImpl.INSTANCE.shutdownAll();
             String name = plugin.getClass().getName();
             pluginMap.remove(name).onUnLoad();
-            pluginContext.unLoadPlugin();
+            pluginContext.destroy();
             BotServiceImpl.INSTANCE.launchAll();
             System.err.println("asdioadiawdalodawodj");
         });
