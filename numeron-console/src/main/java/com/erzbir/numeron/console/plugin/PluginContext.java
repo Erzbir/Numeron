@@ -10,7 +10,7 @@ import java.util.Set;
  * @author Erzbir
  * @Date: 2023/6/16 09:58
  */
-public class PluginContext {
+public class PluginContext implements IPluginContext {
     private Set<Class<?>> classes;
     private Plugin plugin;
 
@@ -25,23 +25,28 @@ public class PluginContext {
         this.classLoader = classLoader;
     }
 
+    @Override
     public Set<Class<?>> getClasses() {
         return classes;
     }
+
+    @Override
 
     public Plugin getPlugin() {
         return plugin;
     }
 
-    public File getFile() {
+    @Override
+    public File getOriginalFile() {
         return file;
     }
 
-    public void unLoadPlugin() {
+    @Override
+    public void destroy() {
         CoroutineScopeBridge.Companion.cancel(plugin);
         classes.forEach(t -> {
-            ClassLoader classLoader1 = t.getClassLoader();
-            classLoader1 = null;
+            ClassLoader clad = t.getClassLoader();
+            clad = null;
             AppContextServiceImpl.INSTANCE.removeBean(t);
             t = null;
         });
@@ -51,5 +56,10 @@ public class PluginContext {
         file = null;
         classes = null;
         System.gc();
+    }
+
+    @Override
+    public ClassLoader getClassLoader() {
+        return classLoader;
     }
 }

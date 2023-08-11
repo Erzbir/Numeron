@@ -1,7 +1,7 @@
 package com.erzbir.numeron.console;
 
 import com.erzbir.numeron.api.NumeronImpl;
-import com.erzbir.numeron.api.bot.NumeronBotConfiguration;
+import com.erzbir.numeron.bot.NumeronBotConfiguration;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.google.gson.*;

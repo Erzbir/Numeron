@@ -1,5 +1,6 @@
 package com.erzbir.numeron.api.bot;
 
+import com.erzbir.numeron.bot.NumeronBotConfiguration;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.auth.BotAuthorization;
 import org.jetbrains.annotations.NotNull;

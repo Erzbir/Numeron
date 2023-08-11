@@ -230,7 +230,7 @@ public class ClassScanner {
      */
     public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type) throws ClassNotFoundException, IOException {
         // 如果为空就先执行扫瞄再用Stream流过滤, 不为空就注解过滤
-        if (classes.size() == 0) {
+        if (classes.isEmpty()) {
             return scanWithAnnotation(type, true);
         }
         return scanWithAnnotation(type, false);
@@ -262,7 +262,7 @@ public class ClassScanner {
      * <p>此方法扫瞄实现了{@param interfaceType}的类</p>
      */
     public Set<Class<?>> scanWithInterface(Class<?> interfaceType) throws IOException, ClassNotFoundException {
-        if (classes.size() == 0) {
+        if (classes.isEmpty()) {
             return scanWithInterface(interfaceType, true);
         }
         return scanWithInterface(interfaceType, false);

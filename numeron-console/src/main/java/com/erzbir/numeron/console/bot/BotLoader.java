@@ -2,7 +2,7 @@ package com.erzbir.numeron.console.bot;
 
 import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
-import com.erzbir.numeron.api.bot.NumeronBotConfiguration;
+import com.erzbir.numeron.bot.NumeronBotConfiguration;
 import com.erzbir.numeron.console.NumeronConsole;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;

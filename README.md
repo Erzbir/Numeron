@@ -30,7 +30,6 @@
 - menu: 图片菜单生成
 - plugin: 目前用于实现功能, 此模块下的类会在程序运行最初被加载, 可用于扩展功能(引入 core 模块即可)
 - console: 控制台(待开发) 和插件模式
-- annotation: 注解
 - api: core 的 api 接口
 - utils: 一些通用工具
 - deps: 用于引入第三方依赖
@@ -144,7 +143,7 @@ erzbirnumeron/config/botconfig.json 文件中可进行配置配置
 public class Test {
     // 消息匹配规则设置了默认值, 默认是equals()完全匹配
 
-    @Message(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACKLIST)
+    @Message(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
     // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
     private void regex(GroupMessageEvent event) {
         event.getSubject().sendMessage("这是一个数字");
@@ -338,7 +337,6 @@ class Test {
 - [x] api 和实现分离
 - [ ] console 控制台
 - [x] 功能热加载
-- [ ] 注解处理器
 - [x] 插件模式
 - [ ] 只监听某个 id(好友/群) 的事件监听注册(用注解实现)
 

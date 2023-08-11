@@ -25,6 +25,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class ListenerContext {
     public static final ListenerContext INSTANCE = new ListenerContext();
 
+    /**
+     * 所有监听将会注册到这个容器中
+     */
     private final EnumMap<EventPriority, Collection<net.mamoe.mirai.internal.event.ListenerRegistry>> listenerCollectionMap;
 
     private final Map<Class<?>, Listener<?>> listenerMap = new HashMap<>();

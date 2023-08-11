@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.help;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.api.NumeronImpl;
-import com.erzbir.numeron.filter.PermissionType;
+import com.erzbir.numeron.api.filter.PermissionType;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.ForwardMessageBuilder;

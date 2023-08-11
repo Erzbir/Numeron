@@ -1,10 +1,5 @@
 package com.erzbir.numeron.core.handler.excute;
 
-import net.mamoe.mirai.event.Event;
-import net.mamoe.mirai.event.EventChannel;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -17,5 +12,11 @@ public interface MethodExecute {
 
     void executeAfter(Runnable runnable);
 
-    void execute(Method method, Object bean, EventChannel<? extends Event> channel, Annotation annotation) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    /**
+     *
+     * @param method 要执行的方法
+     * @param bean 包含 {@param method} 的实例
+     * @param args 参数
+     */
+    void execute(Method method, Object bean, Object... args);
 }

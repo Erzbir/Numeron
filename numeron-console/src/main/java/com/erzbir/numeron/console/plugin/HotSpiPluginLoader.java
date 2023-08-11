@@ -39,7 +39,7 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
             }
             if (c == null) {
                 if (fileCache.containsKey(className)) {
-                    throw new ClassNotFoundException(className);
+                    NumeronLogUtil.logger.error("ERROR", className);
                 } else {
                     return getSystemClassLoader().loadClass(className);
                 }
@@ -66,18 +66,13 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
         jarFile.entries().asIterator().forEachRemaining(jarEntry -> {
             String name = jarEntry.getName();
             if (name.endsWith(".class") && !name.endsWith("module-info.class") && !name.endsWith("package-info.class")) {
-                InputStream inputStream = null;
+                InputStream inputStream;
                 String className = name.replaceAll("/", ".")
                         .replace(".class", "");
                 try {
                     inputStream = jarFile.getInputStream(jarEntry);
-                    Class<?> aClass = null;
                     if (findLoadedClass(className) == null && classCache.get(className) == null) {
-                        aClass = load(inputStream, className);
-                        System.out.println(aClass.getClassLoader());
-                    }
-                    if (aClass != null) {
-                        classCache.put(className, aClass);
+                        load(inputStream, className);
                     }
                 } catch (IOException e) {
                     NumeronLogUtil.logger.error("ERROR", e);
@@ -109,8 +104,7 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
     @Override
     public List<Object> loadJarFromSpi(@NotNull File plugin, @NotNull Class<?> type) throws IOException {
         List<Object> objects = new ArrayList<>();
-        URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{plugin.getAbsoluteFile().toURI().toURL()});
-        ServiceLoader<?> load = ServiceLoader.load(type, urlClassLoader);
+        ServiceLoader<?> load = ServiceLoader.load(type, this);
         load.stream().forEach(objects::add);
         return objects;
     }
@@ -152,7 +146,9 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
 
     private Class<?> load(String className, byte[] bytes) {
         Class<?> defineClass = defineClass(className, bytes, 0, bytes.length);
-        classCache.put(className, defineClass);
+        if (defineClass != null) {
+            classCache.put(className, defineClass);
+        }
         return defineClass;
     }
 

@@ -3,10 +3,10 @@ package com.erzbir.numeron.plugin.plugincontrol;
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.api.filter.FilterRule;
+import com.erzbir.numeron.api.filter.MessageRule;
+import com.erzbir.numeron.api.filter.PermissionType;
 import com.erzbir.numeron.console.plugin.PluginManager;
-import com.erzbir.numeron.filter.FilterRule;
-import com.erzbir.numeron.filter.MessageRule;
-import com.erzbir.numeron.filter.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.event.events.MessageEvent;
 

@@ -8,16 +8,17 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.8.10"
     id("java")
 }
 
 val javaVersion = JavaVersion.VERSION_17
 val miraiVersion = "2.15.0"
-val gradleVersion = "8.0"
+val gradleVersion = "8.1.1"
 val encoding = "UTF-8"
 
 subprojects {
+
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "java")
 }

@@ -11,6 +11,9 @@ import java.util.function.Function;
 /**
  * @author Erzbir
  * @Date: 2023/6/9 16:04
+ * <p>
+ *     默认的消息注册器
+ * </p>
  */
 public class DefaultListenerRegisterImpl implements ListenerRegisterInter {
     @Override
