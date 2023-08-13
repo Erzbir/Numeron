@@ -1,11 +1,9 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.EditApi;
 import com.erzbir.numeron.plugin.rss.api.ViewApi;
@@ -25,7 +23,8 @@ public class ReceiveCommand {
             help = "#contacts [id]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#contacts\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -42,7 +41,8 @@ public class ReceiveCommand {
             help = "#contacts all",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#contacts all",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ADMIN
@@ -57,7 +57,8 @@ public class ReceiveCommand {
             help = "#add group [id] [groupId]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#add\\s+?group\\s+?\\d+?\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -74,7 +75,8 @@ public class ReceiveCommand {
             help = "#delete group [id] [groupId]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#delete\\s+?group\\s+?\\d+?\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -91,7 +93,8 @@ public class ReceiveCommand {
             help = "#add user [id] [groupId]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#add\\s+?user\\s+?\\d+?\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -108,7 +111,8 @@ public class ReceiveCommand {
             help = "#delete user [id] [groupId]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#delete\\s+?user\\s+?\\d+?\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,

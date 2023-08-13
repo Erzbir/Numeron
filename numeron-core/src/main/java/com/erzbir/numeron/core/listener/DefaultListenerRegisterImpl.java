@@ -18,8 +18,7 @@ import java.util.function.Function;
 public class DefaultListenerRegisterImpl implements ListenerRegisterInter {
     @Override
     public <E extends Event> Listener<E> subscribe(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Function<E, ListeningStatus> handler) {
-        return ListenerContext.INSTANCE.getListenerRegister().subscribe(
-                channel,
+        return channel.subscribe(
                 eventClass,
                 coroutineContext,
                 concurrency,
@@ -30,8 +29,7 @@ public class DefaultListenerRegisterImpl implements ListenerRegisterInter {
 
     @Override
     public <E extends Event> Listener<E> subscribeOnce(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler) {
-        return ListenerContext.INSTANCE.getListenerRegister().subscribeOnce(
-                channel,
+        return channel.subscribeOnce(
                 eventClass,
                 coroutineContext,
                 concurrency,
@@ -42,8 +40,7 @@ public class DefaultListenerRegisterImpl implements ListenerRegisterInter {
 
     @Override
     public <E extends Event> Listener<E> subscribeAlways(EventChannel<? extends Event> channel, Class<? extends E> eventClass, CoroutineContext coroutineContext, ConcurrencyKind concurrency, EventPriority priority, Consumer<E> handler) {
-        return ListenerContext.INSTANCE.getListenerRegister().subscribeAlways(
-                channel,
+        return channel.subscribeAlways(
                 eventClass,
                 coroutineContext,
                 concurrency,
@@ -53,22 +50,17 @@ public class DefaultListenerRegisterImpl implements ListenerRegisterInter {
     }
 
     @Override
-    public void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost) {
-        ListenerContext.INSTANCE.getListenerRegister().registerListenerHost(channel, listenerHost);
-    }
-
-    @Override
     public void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost, CoroutineContext coroutineContext) {
-        ListenerContext.INSTANCE.getListenerRegister().registerListenerHost(channel, listenerHost, coroutineContext);
+        channel.registerListenerHost(listenerHost, coroutineContext);
     }
 
     @Override
     public void setRunBefore(Runnable before) {
-        ListenerContext.INSTANCE.getListenerRegister().setRunBefore(before);
+        ListenerContext.INSTANCE.setRunBefore(before);
     }
 
     @Override
     public void setRunAfter(Runnable after) {
-        ListenerContext.INSTANCE.getListenerRegister().setRunAfter(after);
+        ListenerContext.INSTANCE.setRunAfter(after);
     }
 }

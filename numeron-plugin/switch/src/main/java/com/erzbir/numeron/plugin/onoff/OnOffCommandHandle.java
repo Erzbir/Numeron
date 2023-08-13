@@ -1,13 +1,11 @@
 package com.erzbir.numeron.plugin.onoff;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.entity.WhiteServiceImpl;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -28,7 +26,8 @@ public class OnOffCommandHandle {
             help = "/shutdown [qq]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/shutdown\\s+\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

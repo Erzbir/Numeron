@@ -1,7 +1,7 @@
 package com.erzbir.numeron.api.filter.factory.permission;
 
-import com.erzbir.numeron.api.exception.FilterNotFoundException;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.exception.FilterNotFoundException;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.api.filter.factory.EnumFilterFactory;
 import com.erzbir.numeron.api.filter.permission.*;
 

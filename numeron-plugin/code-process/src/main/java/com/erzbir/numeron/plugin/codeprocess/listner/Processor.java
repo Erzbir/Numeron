@@ -1,11 +1,9 @@
 package com.erzbir.numeron.plugin.codeprocess.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.codeprocess.runner.CodeRunner;
 import com.erzbir.numeron.plugin.codeprocess.runway.RunJs;
@@ -31,7 +29,8 @@ public class Processor {
             help = "py\nprint(1)",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "py\n",
             messageRule = MessageRule.BEGIN_WITH,
             filterRule = FilterRule.NONE,
@@ -48,7 +47,8 @@ public class Processor {
             help = "py\nconsole.log(1)",
             permission = PermissionType.MASTER
     )
-    @Message(text = "js\n",
+    @Handler
+    @MessageFilter(text = "js\n",
             messageRule = MessageRule.BEGIN_WITH,
             filterRule = FilterRule.NONE,
             permission = PermissionType.MASTER
@@ -64,7 +64,8 @@ public class Processor {
             help = "sh\necho 1",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "sh\n",
             messageRule = MessageRule.BEGIN_WITH,
             filterRule = FilterRule.NONE,

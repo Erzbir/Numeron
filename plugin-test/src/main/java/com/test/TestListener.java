@@ -2,8 +2,8 @@ package com.test;
 
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.test.Say;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;

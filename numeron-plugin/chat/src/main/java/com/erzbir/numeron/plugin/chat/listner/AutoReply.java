@@ -1,11 +1,10 @@
 package com.erzbir.numeron.plugin.chat.listner;
 
 import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.plugin.chat.entity.AutoReplyData;
-import com.erzbir.numeron.utils.CoroutineScopeBridge;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.event.events.UserMessageEvent;
@@ -23,7 +22,8 @@ import net.mamoe.mirai.message.data.PlainText;
 @SuppressWarnings("unused")
 public class AutoReply {
 
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^a",
             permission = PermissionType.ALL,
@@ -42,7 +42,8 @@ public class AutoReply {
             help = "/learn ques answer",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^/learn\\s+?.*?\\s+?.*",
             filterRule = FilterRule.BLACK,
@@ -63,7 +64,8 @@ public class AutoReply {
             help = "/forget ques",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^/forget\\s+\\S+",
             filterRule = FilterRule.BLACK,
@@ -80,10 +82,12 @@ public class AutoReply {
 
 
     // 测试
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "晚安",
             permission = PermissionType.MASTER,
-            filterRule = FilterRule.NORMAL
+            filterRule = FilterRule.NORMAL,
+            id = 2978086497L
     )
     private void sayGoodNight(MessageEvent e) {
 //        Image image = Contact.uploadImage(e.getSender(), new File("pix1001_4.jpg"));
@@ -91,7 +95,8 @@ public class AutoReply {
       //  CoroutineScopeBridge.Companion.cancel(DefaultScope.INSTANCE);
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "你好啊",
             permission = PermissionType.MASTER,
             filterRule = FilterRule.NONE
@@ -100,7 +105,8 @@ public class AutoReply {
         e.getSubject().sendMessage("你好");
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "hi, 你好, 我不好, 哈哈",
             permission = PermissionType.ALL,
             filterRule = FilterRule.BLACK,
@@ -110,7 +116,8 @@ public class AutoReply {
         e.getSubject().sendMessage("笑了");
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "s\\d+",
             permission = PermissionType.ALL,
@@ -120,7 +127,8 @@ public class AutoReply {
         e.getSubject().sendMessage("awa");
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "hi",
             permission = PermissionType.WHITE,
             filterRule = FilterRule.BLACK
@@ -129,7 +137,8 @@ public class AutoReply {
         e.getSubject().sendMessage("hi");
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.EQUAL,
             text = "小黑子",
             permission = PermissionType.ADMIN,

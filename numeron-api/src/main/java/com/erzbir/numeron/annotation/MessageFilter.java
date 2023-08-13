@@ -1,12 +1,9 @@
 package com.erzbir.numeron.annotation;
 
-
 import com.erzbir.numeron.api.filter.*;
 import com.erzbir.numeron.enums.FilterRule;
 import com.erzbir.numeron.enums.MessageRule;
 import com.erzbir.numeron.enums.PermissionType;
-import net.mamoe.mirai.event.ConcurrencyKind;
-import net.mamoe.mirai.event.EventPriority;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,24 +11,24 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>标记消息事件处理方法, 要生效类上必须要有 {@link Listener} 注解</p>
+ * <p>
+ * 标记在 {@link Event} 或 {@link Message} 或 {@link Handler} 注解生效的方法上, 指定过滤
+ * </p>
  *
  * <p>
- * 此注解标注的类会作为一个消息事件监听注册进 mirai 的监听中, 并将标记的方法作为回调方法, 注册消息监听时会根据方法上的此注解的方法返回值进行注册
+ * 可以指定一个自定义的过滤规则, 如果加上过滤逻辑则为: customFilter && messageRule && permission
+ * </p>
+ *
+ * <p>
+ * 当监听到一个消息时, 首先调用自定义过滤, 再调用 messageRule 进行消息匹配, 最后调用 permission 判断是否有权限
  * </p>
  *
  * @author Erzbir
- * @Date: 2022/11/18 14:32
- * @see Event
- * @see FilterRule
- * @see MessageRule
- * @see PermissionType
- * @see Handler
+ * @Date 2023/8/13
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@Deprecated
-public @interface Message {
+public @interface MessageFilter {
     String value() default "";
 
     /**
@@ -59,21 +56,16 @@ public @interface Message {
     String text();
 
     /**
+     * @return 指定监听对象的 id (User), 0 代表不不指定
+     */
+    long id() default 0;
+
+    /**
      * <p>
      * 如果 filterRule 为 CUSTOM 且值不为 {@link DefaultFilter}, 会调用自定义的过滤器
      * </p>
      *
      * @return 指定过滤器的字节码
      */
-    Class<? extends CustomFilter<?>> filter() default DefaultFilter.class;
-
-    /**
-     * @return 监听事件的优先级
-     */
-    EventPriority priority() default EventPriority.NORMAL;
-
-    /**
-     * @return 协程并发类型
-     */
-    ConcurrencyKind concurrency() default ConcurrencyKind.CONCURRENT;
+    Class<? extends CustomFilter<?>> customFilter() default DefaultFilter.class;
 }

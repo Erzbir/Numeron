@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.checkweight;
 
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -32,7 +30,8 @@ public class Check {
             dec = "查权重 [qq]或者[@xx]或者不写",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^查权重\\s*(@*\\d+)*",
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,

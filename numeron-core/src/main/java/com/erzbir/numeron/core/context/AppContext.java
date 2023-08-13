@@ -4,8 +4,8 @@ import com.erzbir.numeron.annotation.Component;
 import com.erzbir.numeron.annotation.Lazy;
 import com.erzbir.numeron.api.context.BeanFactory;
 import com.erzbir.numeron.api.processor.Processor;
-import com.erzbir.numeron.api.exception.BeanCreateException;
-import com.erzbir.numeron.api.exception.BeanNotFound;
+import com.erzbir.numeron.exception.BeanCreateException;
+import com.erzbir.numeron.exception.BeanNotFound;
 import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 

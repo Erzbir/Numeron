@@ -1,11 +1,9 @@
 package com.erzbir.numeron.plugin.openai.listener;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
 import com.erzbir.numeron.plugin.openai.ParseImage;
@@ -39,7 +37,8 @@ public class ImageListener {
             help = "/i 美女",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/i\\s+.+",
@@ -57,7 +56,8 @@ public class ImageListener {
             help = "/pic clean",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             text = "/pic clean",
             permission = PermissionType.ALL
@@ -80,7 +80,8 @@ public class ImageListener {
             help = "/pic save [true|false]",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/pic\\s+save\\s+[true|false]",

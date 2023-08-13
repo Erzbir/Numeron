@@ -1,11 +1,9 @@
 package com.erzbir.numeron.plugin.plugincontrol;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.console.plugin.PluginManager;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -24,7 +22,8 @@ public class Controller {
             help = "/plugin list -l",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/plugin list -l",
             messageRule = MessageRule.EQUAL,
             filterRule = FilterRule.BLACK,
@@ -40,7 +39,8 @@ public class Controller {
             help = "plugin list -e",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/plugin list -e",
             messageRule = MessageRule.EQUAL,
             filterRule = FilterRule.BLACK,
@@ -56,7 +56,8 @@ public class Controller {
             help = "/plugin list -d",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/plugin list -d",
             messageRule = MessageRule.EQUAL,
             filterRule = FilterRule.BLACK,
@@ -66,7 +67,8 @@ public class Controller {
         event.getSubject().sendMessage(PluginManager.INSTANCE.getDisablePlugins().toString());
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/plugin 1",
             messageRule = MessageRule.EQUAL,
             filterRule = FilterRule.BLACK,

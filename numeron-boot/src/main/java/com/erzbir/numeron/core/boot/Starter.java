@@ -1,5 +1,6 @@
 package com.erzbir.numeron.core.boot;
 
+import com.erzbir.numeron.api.Numeron;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.console.bot.BotLoader;
@@ -35,8 +36,12 @@ public class Starter {
     private final String basePackage;
     private final ClassLoader classLoader;
 
-    public Starter() {
-        this(Thread.currentThread().getContextClassLoader());
+    public Starter(Class<?> bootClass) {
+        this(bootClass.getPackageName());
+    }
+
+    public Starter(Class<?> bootClass, ClassLoader classLoader) {
+        this(bootClass.getPackageName(), classLoader);
     }
 
     public Starter(String packageName, ClassLoader classLoader) {
@@ -46,10 +51,6 @@ public class Starter {
 
     public Starter(String packageName) {
         this(packageName, Thread.currentThread().getContextClassLoader());
-    }
-
-    public Starter(ClassLoader classLoader) {
-        this("com.erzbir.numeron", classLoader);
     }
 
     public void boot(BotType botType) throws InterruptedException {
@@ -92,6 +93,7 @@ public class Starter {
                 executor.submit(processor::onApplicationEvent);
             });
         } catch (IOException | ClassNotFoundException e) {
+            NumeronLogUtil.logger.error(e.getMessage(), e);
             throw new ProcessorException(e);
         } finally {
             executor.shutdown();

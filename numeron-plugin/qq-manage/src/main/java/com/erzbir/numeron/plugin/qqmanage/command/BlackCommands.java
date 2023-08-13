@@ -1,13 +1,11 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.entity.BlackServiceImpl;
 import com.erzbir.numeron.api.entity.WhiteServiceImpl;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -27,7 +25,8 @@ public class BlackCommands {
             help = "/ban user [@user] 或者 /ban user [qq]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/ban\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -47,7 +46,8 @@ public class BlackCommands {
             help = "/noban user [@user] 或者 /noban user [qq]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/noban\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -66,7 +66,8 @@ public class BlackCommands {
             help = "/query black [qq]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/query\\s+?black\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

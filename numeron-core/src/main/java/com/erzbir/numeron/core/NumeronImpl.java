@@ -70,14 +70,4 @@ public class NumeronImpl implements Numeron {
     public void setRegisterAfter(Runnable runnable) {
         ListenerContext.INSTANCE.getListenerRegister().setRunAfter(runnable);
     }
-
-    @Override
-    public void setInvokeBefore(Runnable runnable) {
-        EventMethodExecute.INSTANCE.executeBefore(runnable);
-    }
-
-    @Override
-    public void setInvokeAfter(Runnable runnable) {
-        EventMethodExecute.INSTANCE.executeAfter(runnable);
-    }
 }

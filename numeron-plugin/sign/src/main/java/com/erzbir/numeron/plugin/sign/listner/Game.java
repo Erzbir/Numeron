@@ -1,10 +1,8 @@
 package com.erzbir.numeron.plugin.sign.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.plugin.sign.RedisStore;
 import com.erzbir.numeron.plugin.sign.entity.User;
 import net.mamoe.mirai.contact.Contact;
@@ -111,7 +109,8 @@ public class Game {
             help = "发送 \"签到\" 即可",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "签到",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ALL

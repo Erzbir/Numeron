@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.help;
 
 
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -24,7 +25,8 @@ import static com.erzbir.numeron.menu.MenuStatic.menuMap;
 @Menu(name = "菜单")
 @SuppressWarnings("unused")
 public class MenuSelectController {
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.EQUAL,
             text = "#menu",
             permission = PermissionType.ALL,
@@ -34,7 +36,8 @@ public class MenuSelectController {
         event.getSubject().sendMessage(Contact.uploadImage(event.getSubject(), bufferedImageToInputStream(drawMenu(event.getSubject().getId()), "PNG")));
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "#help\\s+.+",
             permission = PermissionType.ALL,
@@ -43,7 +46,7 @@ public class MenuSelectController {
     private void subMenu(GroupMessageEvent event) throws IOException, FontFormatException {
         String s = event.getMessage().contentToString().replaceFirst("#help\\s+", "");
         if (menuList.contains(s)) {
-            if (menuMap.get(s) != null && menuMap.get(s).size() > 0)
+            if (menuMap.get(s) != null && !menuMap.get(s).isEmpty())
                 event.getSubject().sendMessage(Contact.uploadImage(event.getSubject(), bufferedImageToInputStream(drawMenuHelp(s), "PNG")));
             else event.getSubject().sendMessage("该功能没有具体使用说明");
         } else event.getSubject().sendMessage("未找到该功能");

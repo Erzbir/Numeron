@@ -1,8 +1,8 @@
 package com.erzbir.numeron.api.filter.factory.rule;
 
-import com.erzbir.numeron.api.exception.FilterNotFoundException;
+import com.erzbir.numeron.exception.FilterNotFoundException;
 import com.erzbir.numeron.api.filter.AbstractCacheFilter;
-import com.erzbir.numeron.api.filter.FilterRule;
+import com.erzbir.numeron.enums.FilterRule;
 import com.erzbir.numeron.api.filter.factory.CacheFilterFactory;
 import com.erzbir.numeron.api.filter.factory.EnumFilterFactory;
 import com.erzbir.numeron.api.filter.rule.AbstractRuleChannelFilter;

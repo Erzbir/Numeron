@@ -1,10 +1,12 @@
 package com.erzbir.numeron.plugin.help;
 
 
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.MenuStatic;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -21,7 +23,8 @@ import static com.erzbir.numeron.menu.MenuDrawUtil.drawMenu;
 @Listener
 @SuppressWarnings("unused")
 public class MenuController {
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#OpenMenu\\s\\w*$",
             messageRule = MessageRule.REGEX,
             permission = PermissionType.ADMIN

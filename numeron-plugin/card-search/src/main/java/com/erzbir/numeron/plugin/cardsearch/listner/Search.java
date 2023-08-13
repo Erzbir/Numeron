@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.cardsearch.listner;
 
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.cardsearch.Card;
 import com.google.gson.Gson;
@@ -43,7 +41,8 @@ public class Search {
     private static final String PIC_URL = "https://cdn.233.momobako.com/ygopro/pics/";
 
     @Command(name = "游戏王查卡", dec = "sr [cardname]", help = "sr 青眼白龙", permission = PermissionType.ALL)
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^sr\\s+\\S+",
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,

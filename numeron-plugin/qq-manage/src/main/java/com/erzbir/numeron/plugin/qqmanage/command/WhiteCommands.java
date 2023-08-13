@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.entity.WhiteServiceImpl;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -26,7 +24,8 @@ public class WhiteCommands {
             help = "/permit user [@user] 或者 /permit user [qq]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/permit\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -45,7 +44,8 @@ public class WhiteCommands {
             help = "/unpermit user [@user] 或者 /unpermit user [qq]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/unpermit\\s+?user\\s+?@*\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -64,7 +64,8 @@ public class WhiteCommands {
             help = "/query white [id]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/query\\s+?white\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

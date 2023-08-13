@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.entity.GroupServiceImpl;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -26,7 +24,8 @@ public class GroupEnableCommands {
             help = "/enable group [id]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/enable\\s+?group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -46,7 +45,8 @@ public class GroupEnableCommands {
             help = "/disable group [id]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/disable\\s+?group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -65,7 +65,8 @@ public class GroupEnableCommands {
             help = "/query group [id]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/query\\s+?group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

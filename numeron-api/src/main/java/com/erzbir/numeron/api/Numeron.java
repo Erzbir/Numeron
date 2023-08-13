@@ -32,8 +32,4 @@ public interface Numeron {
     void setRegisterBefore(Runnable runnable);
 
     void setRegisterAfter(Runnable runnable);
-
-    void setInvokeBefore(Runnable runnable);
-
-    void setInvokeAfter(Runnable runnable);
 }

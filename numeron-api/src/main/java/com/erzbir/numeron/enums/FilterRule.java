@@ -1,4 +1,4 @@
-package com.erzbir.numeron.api.filter;
+package com.erzbir.numeron.enums;
 
 /**
  * @author Erzbir
@@ -20,6 +20,7 @@ public enum FilterRule {
      * 不做任何过滤
      */
     NONE,
+
     /**
      * 自定义模式
      */
