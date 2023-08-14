@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.plugin.qqmanage.action.IllegalService;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -26,7 +27,8 @@ public class IllegalCommands {
             help = "/add illegal [key]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/add\\s+?illegal\\s+?.+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -44,7 +46,8 @@ public class IllegalCommands {
             help = "/remove illegal [key]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/remove\\s+?illegal\\s+?.+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -62,7 +65,8 @@ public class IllegalCommands {
             help = "/query illegal [key]",
             permission = PermissionType.WHITE
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^/query\\s+?illegal\\s+?.+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

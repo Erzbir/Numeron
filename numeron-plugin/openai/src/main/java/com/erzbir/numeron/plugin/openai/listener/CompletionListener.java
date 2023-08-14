@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.openai.listener;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
 import com.erzbir.numeron.plugin.openai.config.CompletionConfig;
@@ -28,7 +29,8 @@ public class CompletionListener {
             help = "/f 水面",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/f\\s+.+",

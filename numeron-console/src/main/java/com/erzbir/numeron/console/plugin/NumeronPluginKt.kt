@@ -15,7 +15,7 @@ open class NumeronPluginKt : Plugin {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main + job
 
-    protected fun NumeronPlugin(description: NumeronDescription) {
+    protected fun NumeronPluginKt(description: NumeronDescription) {
         this.description = description
     }
 

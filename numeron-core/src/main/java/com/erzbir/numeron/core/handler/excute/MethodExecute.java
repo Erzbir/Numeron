@@ -8,15 +8,10 @@ import java.lang.reflect.Method;
  * <p>消息处理接口</p>
  */
 public interface MethodExecute {
-    void executeBefore(Runnable runnable);
-
-    void executeAfter(Runnable runnable);
-
     /**
-     *
      * @param method 要执行的方法
-     * @param bean 包含 {@param method} 的实例
-     * @param args 参数
+     * @param bean   包含 {@param method} 的实例
+     * @param args   参数
      */
     void execute(Method method, Object bean, Object... args);
 }

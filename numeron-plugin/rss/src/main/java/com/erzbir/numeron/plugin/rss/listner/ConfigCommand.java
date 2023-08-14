@@ -1,12 +1,9 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Lazy;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.EditApi;
 import com.erzbir.numeron.plugin.rss.api.ViewApi;
@@ -29,7 +26,8 @@ public class ConfigCommand {
             help = "#rename [id] [name]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#rename\\s+?\\d+?\\s+?.+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -46,7 +44,8 @@ public class ConfigCommand {
             help = "#url [id] [https://xxx.xxx]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#url\\s+?\\d+?\\s+?(http[s]*://.+)",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -63,7 +62,8 @@ public class ConfigCommand {
             help = "#list [id]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#list\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -80,7 +80,8 @@ public class ConfigCommand {
             help = "#list all",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#list all",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ADMIN
@@ -100,7 +101,8 @@ public class ConfigCommand {
             help = "#config rss",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#config rss",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ADMIN
@@ -115,7 +117,8 @@ public class ConfigCommand {
             help = "#config save",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#config save",
             filterRule = FilterRule.NONE,
             permission = PermissionType.MASTER
@@ -130,7 +133,8 @@ public class ConfigCommand {
             help = "#delay [min]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#delay\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -147,7 +151,8 @@ public class ConfigCommand {
             help = "#retry [times]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#retry\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

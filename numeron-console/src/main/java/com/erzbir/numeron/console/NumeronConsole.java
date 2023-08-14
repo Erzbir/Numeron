@@ -1,7 +1,9 @@
 package com.erzbir.numeron.console;
 
 import com.erzbir.numeron.api.NumeronImpl;
-import com.erzbir.numeron.bot.NumeronBotConfiguration;
+import com.erzbir.numeron.config.NumeronBotConfiguration;
+import com.erzbir.numeron.exception.LoginConfigReadException;
+import com.erzbir.numeron.exception.LoginConfigWriteException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.google.gson.*;
@@ -70,7 +72,9 @@ public class NumeronConsole {
                 botsJson = jsonElement.getAsJsonArray();
             }
         } catch (Exception e) {
-            NumeronLogUtil.logger.error("ERROR", e);
+            LoginConfigReadException exception = new LoginConfigReadException(e);
+            NumeronLogUtil.logger.error(exception.getMessage(), exception);
+            throw exception;
         }
         if (botsJson == null) {
             botsJson = new JsonArray();
@@ -88,7 +92,8 @@ public class NumeronConsole {
             Gson gson = new Gson();
             gson.toJson(botsJson, bufferedWriter);
         } catch (Exception e) {
-            NumeronLogUtil.logger.error("ERROR", e);
+            LoginConfigWriteException exception = new LoginConfigWriteException(e);
+            NumeronLogUtil.logger.error(exception.getMessage(), exception);
         }
     }
 }

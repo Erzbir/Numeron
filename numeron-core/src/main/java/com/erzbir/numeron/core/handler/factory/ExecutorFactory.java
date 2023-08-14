@@ -13,6 +13,7 @@ import java.lang.annotation.Annotation;
  * @Date: 2022/11/28 01:03
  * <p>处理器工厂</p>
  */
+@Deprecated
 public class ExecutorFactory implements AbstractFactory {
     public final static ExecutorFactory INSTANCE = new ExecutorFactory();
 

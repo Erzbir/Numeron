@@ -1,7 +1,7 @@
 package com.erzbir.numeron.annotation;
 
 import com.erzbir.numeron.api.filter.CustomFilter;
-import com.erzbir.numeron.api.filter.DefualtFilter;
+import com.erzbir.numeron.api.filter.DefaultFilter;
 import net.mamoe.mirai.event.ConcurrencyKind;
 import net.mamoe.mirai.event.EventPriority;
 
@@ -21,10 +21,11 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Deprecated
 public @interface Event {
     String value() default "";
 
-    Class<? extends CustomFilter<?>> filter() default DefualtFilter.class;
+    Class<? extends CustomFilter<?>> filter() default DefaultFilter.class;
 
     EventPriority priority() default EventPriority.NORMAL;
 

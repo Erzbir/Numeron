@@ -6,11 +6,12 @@ import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
 /**
- * @author Erzbir
- * @Data 2023/7/26
  * <p>
  *     一个默认的协程作用域
  * </p>
+ *
+ * @author Erzbir
+ * @Data 2023/7/26
  */
 class DefaultScope : CoroutineScope {
     private val job = Job()

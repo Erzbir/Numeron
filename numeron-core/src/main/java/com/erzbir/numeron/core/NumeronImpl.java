@@ -5,7 +5,6 @@ import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.config.NumeronConfiguration;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.context.ListenerContext;
-import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
 import net.mamoe.mirai.Bot;
 
 import java.util.List;
@@ -69,15 +68,5 @@ public class NumeronImpl implements Numeron {
     @Override
     public void setRegisterAfter(Runnable runnable) {
         ListenerContext.INSTANCE.getListenerRegister().setRunAfter(runnable);
-    }
-
-    @Override
-    public void setInvokeBefore(Runnable runnable) {
-        EventMethodExecute.INSTANCE.executeBefore(runnable);
-    }
-
-    @Override
-    public void setInvokeAfter(Runnable runnable) {
-        EventMethodExecute.INSTANCE.executeAfter(runnable);
     }
 }

@@ -1,9 +1,9 @@
 package com.erzbir.numeron.api.filter.factory.message;
 
-import com.erzbir.numeron.api.exception.FilterNotFoundException;
-import com.erzbir.numeron.api.filter.MessageRule;
 import com.erzbir.numeron.api.filter.factory.EnumFilterFactory;
 import com.erzbir.numeron.api.filter.message.*;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.exception.FilterNotFoundException;
 
 /**
  * @author Erzbir

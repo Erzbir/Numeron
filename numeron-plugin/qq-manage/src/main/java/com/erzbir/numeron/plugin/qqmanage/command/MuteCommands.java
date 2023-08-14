@@ -1,12 +1,13 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.entity.GroupServiceImpl;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -28,7 +29,8 @@ public class MuteCommands {
             help = "/mute [@user] [time] 或者 /mute [qq] [time]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/mute\\s+?@?\\d+?\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -44,7 +46,8 @@ public class MuteCommands {
             help = "/unmute [@user] [time] 或者 /unmute [qq] [time]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/unmute\\s+?@?\\d+?\\s+\\d+?",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -82,7 +85,8 @@ public class MuteCommands {
             help = "/mute group [id]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/mute group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,
@@ -99,7 +103,8 @@ public class MuteCommands {
             help = "/unmute [id]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/unmute group\\s+?\\d+",
             filterRule = FilterRule.NONE,
             messageRule = MessageRule.REGEX,

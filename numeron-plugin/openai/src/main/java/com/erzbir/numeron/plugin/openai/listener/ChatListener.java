@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.openai.listener;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.Conversation;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
@@ -44,7 +45,8 @@ public class ChatListener {
             help = "/r 1",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/r\\s+\\d+",
@@ -62,7 +64,8 @@ public class ChatListener {
             help = "/r -a [name] -n [prompt]",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/r\\s+?-a\\s+?\\S+?-n\\s+?\\S+",
@@ -92,7 +95,8 @@ public class ChatListener {
             help = "/r 1",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/r\\s+save",
@@ -108,7 +112,8 @@ public class ChatListener {
             help = "/r all",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/r\\s+all",
@@ -135,7 +140,8 @@ public class ChatListener {
             help = "/reset",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             text = "/reset",
             permission = PermissionType.ALL
@@ -150,7 +156,8 @@ public class ChatListener {
             help = "/c [message]",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.REGEX,
             text = "^/c\\s+.+",

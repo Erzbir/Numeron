@@ -1,6 +1,6 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.annotation.Event;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.api.listener.DefaultListenerRegister;
 import com.erzbir.numeron.menu.Menu;
@@ -22,7 +22,7 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
 @SuppressWarnings("unused")
 public class GroupRequest {
 
-    @Event
+    @Handler
     private void report(MemberJoinRequestEvent event) {
         Group group = event.getGroup();
         if (group != null) {

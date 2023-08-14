@@ -1,9 +1,10 @@
 package com.test;
 
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.test.Say;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -14,7 +15,8 @@ import net.mamoe.mirai.event.events.MessageEvent;
  */
 @Listener
 public class TestListener {
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "plugin-test1",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.MASTER
@@ -23,7 +25,8 @@ public class TestListener {
         event.getSubject().sendMessage(Main.INSTANCE.getDescription().getName() + new Say().say() + "! " + "'所有消息 权限为 MASTER '测试成功");
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "plugin-test2",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.MASTER
@@ -32,7 +35,8 @@ public class TestListener {
         event.getSubject().sendMessage(Main.INSTANCE.getDescription().getName() + new Say().say() + "! " + "'群消息 权限为 MASTER '测试成功");
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "plugin-test3",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.ALL

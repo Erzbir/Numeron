@@ -9,7 +9,6 @@ dependencies {
     compileOnly(project(":numeron-utils"))
     compileOnly(project(":numeron-deps"))
 
-    testImplementation(project(":numeron-api"))
-    testImplementation(project(":numeron-utils"))
-    testImplementation(project(":numeron-deps"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 }

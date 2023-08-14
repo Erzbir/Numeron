@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.FilterRule;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.PublishApi;
 import com.erzbir.numeron.plugin.rss.timer.TimerController;
@@ -25,7 +26,8 @@ public class RssCommand {
             help = "#rss",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#rss",
             messageRule = MessageRule.EQUAL,
             filterRule = FilterRule.BLACK,
@@ -41,7 +43,8 @@ public class RssCommand {
             help = "#sub [https://xxx.xxx]",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#sub\\s+?(http[s]*://.*)",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -58,7 +61,8 @@ public class RssCommand {
             help = "#nosub [id]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#nosub\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -75,7 +79,8 @@ public class RssCommand {
             help = "#ensub [id]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#ensub\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -92,7 +97,8 @@ public class RssCommand {
             help = "#delsub [id]",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#delsub\\s+?\\d+",
             messageRule = MessageRule.REGEX,
             filterRule = FilterRule.BLACK,
@@ -109,7 +115,8 @@ public class RssCommand {
             help = "#disable scan",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#disable scan",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.MASTER
@@ -124,7 +131,8 @@ public class RssCommand {
             help = "#enable scan",
             permission = PermissionType.MASTER
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#enable scan",
             filterRule = FilterRule.BLACK,
             permission = PermissionType.MASTER

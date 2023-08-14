@@ -1,7 +1,11 @@
 package com.erzbir.numeron.annotation;
 
 
-import com.erzbir.numeron.api.filter.*;
+import com.erzbir.numeron.api.filter.CustomFilter;
+import com.erzbir.numeron.api.filter.DefaultFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.ConcurrencyKind;
 import net.mamoe.mirai.event.EventPriority;
 
@@ -23,9 +27,11 @@ import java.lang.annotation.Target;
  * @see FilterRule
  * @see MessageRule
  * @see PermissionType
+ * @see Handler
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
+@Deprecated
 public @interface Message {
     String value() default "";
 
@@ -55,12 +61,12 @@ public @interface Message {
 
     /**
      * <p>
-     * 如果 filterRule 为 CUSTOM 且值不为 {@link DefualtFilter}, 会调用自定义的过滤器
+     * 如果 filterRule 为 CUSTOM 且值不为 {@link DefaultFilter}, 会调用自定义的过滤器
      * </p>
      *
      * @return 指定过滤器的字节码
      */
-    Class<? extends CustomFilter<?>> filter() default DefualtFilter.class;
+    Class<? extends CustomFilter<?>> filter() default DefaultFilter.class;
 
     /**
      * @return 监听事件的优先级

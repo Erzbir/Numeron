@@ -1,11 +1,11 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Event;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
-import com.erzbir.numeron.api.filter.MessageRule;
-import com.erzbir.numeron.api.filter.PermissionType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.qqmanage.NetUtil;
 import net.mamoe.mirai.contact.Group;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class MemberInAction {
     private final HashMap<Long, Boolean> isOn = new HashMap<>();
 
-    @Event
+    @Handler
     public void register(MemberJoinEvent event) {
         long groupId = event.getGroupId();
         isOn.putIfAbsent(groupId, false);
@@ -58,7 +58,8 @@ public class MemberInAction {
             help = "/welcome [true|false]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/welcome\\s+?(true|false)",
             permission = PermissionType.WHITE,
             messageRule = MessageRule.REGEX

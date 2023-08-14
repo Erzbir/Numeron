@@ -2,8 +2,8 @@ package com.erzbir.numeron.console.plugin;
 
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.context.AppContextServiceImpl;
-import com.erzbir.numeron.console.exception.PluginConflictException;
-import com.erzbir.numeron.console.exception.PluginIllegalException;
+import com.erzbir.numeron.exception.PluginConflictException;
+import com.erzbir.numeron.exception.PluginIllegalException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
