@@ -1,15 +1,15 @@
-package com.erzbir.numeron.core.boot;
+package com.erzbir.numeron.boot;
 
-import com.erzbir.numeron.api.Numeron;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.console.bot.BotLoader;
 import com.erzbir.numeron.console.plugin.Plugin;
 import com.erzbir.numeron.console.plugin.PluginManager;
-import com.erzbir.numeron.core.boot.exception.ProcessorException;
 import com.erzbir.numeron.core.context.AppContext;
+import com.erzbir.numeron.exception.ProcessorException;
 import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
+import net.mamoe.mirai.Bot;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -73,7 +73,7 @@ public class Starter {
         printLog(LOGO);
         NumeronLogUtil.info("欢迎使用 Numeron!!!");
         NumeronLogUtil.info("启动耗时: " + l + "ms");
-        // BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
+        BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
     }
 
     private void bootFromBasePackage() {

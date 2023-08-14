@@ -15,8 +15,7 @@ import java.lang.annotation.Target;
  *
  * @author Erzbir
  * @Date 2023/8/13
- * @see EventPriority
- * @see ConcurrencyKind
+ * @see net.mamoe.mirai.event.EventHandler
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -1,6 +1,7 @@
 package com.erzbir.numeron.annotation;
 
-import com.erzbir.numeron.api.filter.*;
+import com.erzbir.numeron.api.filter.CustomFilter;
+import com.erzbir.numeron.api.filter.DefaultFilter;
 import com.erzbir.numeron.enums.FilterRule;
 import com.erzbir.numeron.enums.MessageRule;
 import com.erzbir.numeron.enums.PermissionType;
@@ -12,7 +13,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 标记在 {@link Event} 或 {@link Message} 或 {@link Handler} 注解生效的方法上, 指定过滤
+ * 标记在 {@link Handler} 注解生效的方法上, 指定过滤
  * </p>
  *
  * <p>
@@ -20,11 +21,12 @@ import java.lang.annotation.Target;
  * </p>
  *
  * <p>
- * 当监听到一个消息时, 首先调用自定义过滤, 再调用 messageRule 进行消息匹配, 最后调用 permission 判断是否有权限
+ * 当监听到一个消息时, 首先调用 customFilter, 再调用 messageRule 进行消息匹配, 最后调用 permission 判断是否有权限, 过滤出一个期望的消息
  * </p>
  *
  * @author Erzbir
  * @Date 2023/8/13
+ * @see CommonFilter
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
@@ -56,7 +58,7 @@ public @interface MessageFilter {
     String text();
 
     /**
-     * @return 指定监听对象的 id (User), 0 代表不不指定
+     * @return 指定监听对象的 id (User), 0 代表不指定
      */
     long id() default 0;
 

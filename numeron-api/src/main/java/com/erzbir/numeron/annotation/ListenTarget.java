@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 标注在 {@link Message} 或 {@link Event} 或 {@link Handler} 生效的方法上
+ * 标注在 {@link Handler} 生效的方法上
  * </p>
  *
  * <p>

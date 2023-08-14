@@ -3,7 +3,6 @@ package com.erzbir.numeron.plugin.help;
 
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.enums.MessageRule;
 import com.erzbir.numeron.enums.PermissionType;
@@ -41,7 +40,8 @@ public class MenuController {
         }
     }
 
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "^#CloseMenu\\s\\w*$",
             messageRule = MessageRule.REGEX,
             permission = PermissionType.ADMIN

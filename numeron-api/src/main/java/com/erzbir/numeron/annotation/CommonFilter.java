@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 标记在 {@link Event} 或 {@link Message} 或 {@link Handler} 注解生效的方法上, 指定过滤
+ * 标记在 {@link Handler} 注解生效的方法上, 指定过滤
  * </p>
  *
  * <p>
@@ -19,6 +19,7 @@ import java.lang.annotation.Target;
  *
  * @author Erzbir
  * @Date 2023/8/13
+ * @see MessageFilter
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

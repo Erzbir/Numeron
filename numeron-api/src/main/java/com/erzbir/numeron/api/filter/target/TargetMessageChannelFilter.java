@@ -2,7 +2,6 @@ package com.erzbir.numeron.api.filter.target;
 
 import com.erzbir.numeron.api.filter.ChannelFilter;
 import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.event.events.UserMessageEvent;
 
 /**
  * @author Erzbir

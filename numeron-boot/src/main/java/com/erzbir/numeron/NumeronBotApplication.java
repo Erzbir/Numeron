@@ -1,6 +1,6 @@
 package com.erzbir.numeron;
 
-import com.erzbir.numeron.core.boot.Starter;
+import com.erzbir.numeron.boot.Starter;
 
 public class NumeronBotApplication {
 

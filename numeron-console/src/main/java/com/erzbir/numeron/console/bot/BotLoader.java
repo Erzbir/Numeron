@@ -2,8 +2,9 @@ package com.erzbir.numeron.console.bot;
 
 import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
-import com.erzbir.numeron.bot.NumeronBotConfiguration;
+import com.erzbir.numeron.config.NumeronBotConfiguration;
 import com.erzbir.numeron.console.NumeronConsole;
+import com.erzbir.numeron.exception.LoginConfigReadException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.google.gson.JsonArray;
@@ -55,14 +56,16 @@ public class BotLoader {
                 botsJson = JsonParser.parseReader(fileReader).getAsJsonArray();
             }
         } catch (Exception e) {
-            NumeronLogUtil.logger.error("ERROR", e);
+            LoginConfigReadException exception = new LoginConfigReadException(e);
+            NumeronLogUtil.logger.error(exception.getMessage(), exception);
+            throw exception;
         } finally {
             if (fileReader != null) {
                 try {
                     fileReader.close();
                     fileReader = null;
                 } catch (IOException e) {
-                    NumeronLogUtil.logger.error("ERROR", e);
+                    NumeronLogUtil.logger.error(e.getMessage(), e);
                 }
             }
         }

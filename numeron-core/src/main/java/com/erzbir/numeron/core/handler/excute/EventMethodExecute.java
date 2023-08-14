@@ -28,7 +28,7 @@ public class EventMethodExecute implements MethodExecute {
             method.invoke(bean, args);
             getRunAfterFunc(method).run();
         } catch (Exception e) {
-            NumeronLogUtil.logger.error("ERROR", e);
+            NumeronLogUtil.logger.error(e.getMessage(), e);
         }
     }
 

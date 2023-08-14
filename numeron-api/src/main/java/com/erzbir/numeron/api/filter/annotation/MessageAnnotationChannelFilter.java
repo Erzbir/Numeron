@@ -1,6 +1,5 @@
 package com.erzbir.numeron.api.filter.annotation;
 
-import com.erzbir.numeron.annotation.Message;
 import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.filter.ChannelFilter;
 import com.erzbir.numeron.api.filter.CustomFilter;
@@ -14,13 +13,12 @@ import com.erzbir.numeron.enums.MessageRule;
 import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.event.events.UserMessageEvent;
 
 import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>
- * 针对方法上的 {@link Message} 注解解析
+ * 针对方法上的 {@link MessageFilter} 注解解析过滤 channel
  * </p>
  * <p>
  * 默认使用非缓存的工厂进行创建, 原因是多线程不安全
@@ -52,12 +50,12 @@ public class MessageAnnotationChannelFilter extends AbstractAnnotationChannelFil
         if (filterRule.equals(FilterRule.CUSTOM) && !filter.equals(DefaultFilter.class)) {
             try {
                 CustomFilter customFilter = filter.getConstructor().newInstance();
-                return messageFilter.filter(event) && permissionFilter.filter(event) && customFilter.filter(event) && targetFilter.filter((UserMessageEvent) event);
+                return customFilter.filter(event) && messageFilter.filter(event) && permissionFilter.filter(event) && targetFilter.filter(event);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                      NoSuchMethodException e) {
                 NumeronLogUtil.logger.error(e.getMessage(), e);
             }
         }
-        return messageFilter.filter(event) && permissionFilter.filter(event) && ruleFilter.filter(event) && targetFilter.filter((UserMessageEvent) event);
+        return messageFilter.filter(event) && permissionFilter.filter(event) && ruleFilter.filter(event) && targetFilter.filter(event);
     }
 }

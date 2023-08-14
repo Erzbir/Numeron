@@ -92,7 +92,7 @@ public class AutoReply {
     private void sayGoodNight(MessageEvent e) {
 //        Image image = Contact.uploadImage(e.getSender(), new File("pix1001_4.jpg"));
         e.getSubject().sendMessage(new PlainText("晚安").plus(Image.fromId("{19D4A890-3381-943A-FD22-E5E78D106157}.jpg")));
-      //  CoroutineScopeBridge.Companion.cancel(DefaultScope.INSTANCE);
+        //  CoroutineScopeBridge.Companion.cancel(DefaultScope.INSTANCE);
     }
 
     @Handler

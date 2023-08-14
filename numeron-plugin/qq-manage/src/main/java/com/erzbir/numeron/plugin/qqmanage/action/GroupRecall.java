@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.api.listener.DefaultListenerRegister;
 import com.erzbir.numeron.enums.MessageRule;
 import com.erzbir.numeron.enums.PermissionType;
-import com.erzbir.numeron.api.listener.DefaultListenerRegister;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.qqmanage.DefaultStore;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -56,7 +57,8 @@ public class GroupRecall {
             help = "/prevent_recall [true|false]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/prevent_recall\\s+?(true|false)",
             permission = PermissionType.ADMIN,
             messageRule = MessageRule.REGEX

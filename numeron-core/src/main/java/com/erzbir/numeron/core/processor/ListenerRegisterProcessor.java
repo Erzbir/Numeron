@@ -19,15 +19,14 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
+ * <p>
+ * 从 bean 容器中获取有特定注解的 bean, 并根据方法上的注解过滤 channel 后注册事件监听
+ * </p>
+ *
  * @author Erzbir
  * @Date: 2022/11/18 15:10
- * <p>
- * 从 bean 容器中获取有特定注解的 bean, 并根据方法上的注解 过滤 channel 和注册时间监听
- * </p>
  * @see Processor
  */
 public class ListenerRegisterProcessor implements Processor {
@@ -96,7 +95,7 @@ public class ListenerRegisterProcessor implements Processor {
 //        SimpleAnnotationParser annotationParser = new SimpleAnnotationParser(methodAnnotation, "priority", "concurrency");
 //        annotationParser.inject(method);
 //        Map<String, Object> resultMap = annotationParser.getResultMap();
-//        EventPriority priority = (EventPriority) resultMap.get("priority");
+//        EventPriority priority = (EventPriority) resultMap.get("prior]ity");
 //        ConcurrencyKind concurrency = (ConcurrencyKind) resultMap.get("concurrency");
         EventPriority priority = handlerAnnotation.priority();
         ConcurrencyKind concurrency = handlerAnnotation.concurrency();

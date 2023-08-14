@@ -39,7 +39,7 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
             }
             if (c == null) {
                 if (fileCache.containsKey(className)) {
-                    NumeronLogUtil.logger.error("ERROR", className);
+                    throw new ClassNotFoundException();
                 } else {
                     return getSystemClassLoader().loadClass(className);
                 }

@@ -2,9 +2,9 @@ package com.erzbir.numeron.plugin.qqmanage.action;
 
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Event;
+import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.Message;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.enums.MessageRule;
 import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
@@ -23,7 +23,7 @@ import java.util.HashMap;
 public class MemberLeaveAction {
     private final HashMap<Long, Boolean> isOn = new HashMap<>();
 
-    @Event
+    @Handler
     public void register(MemberLeaveEvent event) {
         if (isOn.containsKey(event.getGroupId())) {
             event.getGroup().sendMessage(event.getMember().getNick() + " 离开了我们...");
@@ -36,7 +36,8 @@ public class MemberLeaveAction {
             help = "/leave [true|false]",
             permission = PermissionType.ADMIN
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "/leave\\s+?feedback\\s+?(true|false)",
             permission = PermissionType.ADMIN,
             messageRule = MessageRule.REGEX

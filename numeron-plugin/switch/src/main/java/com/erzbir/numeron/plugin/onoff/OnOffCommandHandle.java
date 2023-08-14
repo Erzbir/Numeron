@@ -1,6 +1,9 @@
 package com.erzbir.numeron.plugin.onoff;
 
-import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.entity.WhiteServiceImpl;
 import com.erzbir.numeron.enums.FilterRule;

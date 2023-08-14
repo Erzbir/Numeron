@@ -41,10 +41,6 @@ public class ListenerRegisterProxy {
         this.argsMap = argsMap;
     }
 
-    class AnoListenerRegister extends DefaultListenerRegisterImpl {
-
-    }
-
     public Object getArgv(String name) {
         return argsMap.get(name);
     }
@@ -67,6 +63,10 @@ public class ListenerRegisterProxy {
 
     public void setInvokeAfter(Runnable function) {
         functionAfter = function;
+    }
+
+    class AnoListenerRegister extends DefaultListenerRegisterImpl {
+
     }
 
     private class InvocationImpl implements InvocationHandler {

@@ -8,8 +8,9 @@
     - [配置文件:](#配置文件)
     - [API:](#api)
     - [插件模式:](#插件模式)
-    - [@Message使用:](#message使用)
-    - [@Event使用:](#event使用)
+    - [@Handler使用:](#handler使用)
+    - [@MessageFilter使用:](#messagefilter使用)
+    - [@CommonFilter使用:](#commonfilter使用)
     - [用@Command生成指令表:](#用command生成指令表)
     - [用@Menu生成图片菜单:](#用menu生成图片菜单)
 - [开发计划:](#开发计划)
@@ -25,11 +26,11 @@
 
 ### 模块:
 
-- core: 脚手架(消息过滤和监听注册实现)
+- core: 脚手架 (消息过滤和监听注册实现)
 - boot: 启动机器人功能, 目前程序的入口在此模块下
 - menu: 图片菜单生成
-- plugin: 目前用于实现功能, 此模块下的类会在程序运行最初被加载, 可用于扩展功能(引入 core 模块即可)
-- console: 控制台(待开发) 和插件模式
+- plugin: 目前用于实现功能, 此模块下的类会在程序运行最初被加载, 可用于扩展功能
+- console: 控制台 (待开发) 和插件模式
 - api: core 的 api 接口
 - utils: 一些通用工具
 - deps: 用于引入第三方依赖
@@ -123,105 +124,114 @@ erzbirnumeron/config/botconfig.json 文件中可进行配置配置
 
 ### 插件模式:
 
-实现 Plugin 接口, 目前插件打包时需包含所有依赖打包
+实现 `Plugin` 接口, 目前插件打包时需包含所有依赖打包
 
 将打包的插件 jar 放到运行目录的 numeron_plugins 目录下
 
-### @Message 使用:
+### @Handler使用:
 
-<code>[@Message](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Message.java)</code>
-> 可以标记在所有消息事件类型的处理方法上, 监听到满足此注解定义的规则的事件就会反射调用被标记的方法,
-> 类上必须有<code>[@Listener](numeron-core/src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
->
-> 这个注解适合用于命令类型的监听(给机器人发送一个消息, 进行相关代码运行),
->
-如果不是消息事件则使用下文介绍的<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
-
-```java
-
-@Listener
-public class Test {
-    // 消息匹配规则设置了默认值, 默认是equals()完全匹配
-
-    @Message(messageRule = MessageRule.REGEX, text = "\\d+", permission = PermissionType.ALL, filterRule = FilterRule.BLACK)
-    // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
-    private void regex(GroupMessageEvent event) {
-        event.getSubject().sendMessage("这是一个数字");
-    }
-
-    @Message(text = "hi", permission = PermissionType.WHITE, filterRule = FilterRule.NONE)
-    // 处理消息用户消息事件 匹配"hi", 权限是白名单, 不过滤
-    private void sayHello(UserMessageEvent event) {
-        event.getSubject().sendMessage("hi");
-    }
-
-    @Message(text = "晚安", permission = PermissionType.MASTER, filterRule = FilterRule.NORMAL)
-    // 匹配消息事件 匹配"晚安", 权限是主人, 过滤掉groupList以外的群 
-    private void sayGoodNight(MessageEvent event) {
-        event.getSubject().sendMessage("晚安");
-    }
-
-    // 权限是所有人, 不过滤
-    @Message(text = "你好", permission = PermissionType.ALL, filterRule = FilterRule.NONE)
-    private void sayH(MessageEvent e) {
-        e.getSubject().sendMessage("你好");
-    }
-
-    // 这是一个较为复杂的例子, 禁言一个人, 支持@和qq号
-    @Message(
-            text = "/mute\\s+?@?\\d+?\\s+?\\d+",
-            filterRule = FilterRule.NONE,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.ADMIN
-    )
-    private void muteSingle(MessageEvent event) {
-        String s = event.getMessage().contentToString().replaceFirst("/unmute\\s+?@?", "");
-        String[] ss = s.split("\\s+");
-        long id;
-        int time;
-        id = Long.parseLong(ss[1]);
-        time = Integer.parseInt(ss[2]);
-        if (event instanceof GroupMessageEvent event1) {
-            Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
-        } else {
-            AtomicReference<NormalMember> member = new AtomicReference<>();
-            GlobalConfig.groupList.forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
-            if (member.get().getPermission().getLevel() < 1) {
-                member.get().mute(time);
-            }
-        }
-    }
-}
-```
-
-可以用消息处理注解做到什么?
-
-- 三种过滤规则: 不过滤 / 过滤黑名单 / 正常过滤
-- 四种权限规则: 主人 / 白名单 / 所有人 / 群管理员
-- 六种消息匹配规则: 以?开头 / 以?结尾 / 包含? / 相等 / 正则 / 在数组中?
-
-### @Event使用:
-
-<code>[@Event](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Event.java)</code>
-和mirai提供的<code>@EventHandler</code>用法基本一样, 只是使用这个注解不用让类继承,
-不过类上必须有<code>[@Listener](numeron-core/src/main/java/com/erzbir/numeron/core/listener/Listener.java)</code>标记
+<code>[@Handler](numeron-api/src/main/java/com/erzbir/numeron/annotation/Handler.java)</code> 
+标记一个方法为事件监听回调在启动时注册进 mirai 的监听中, 和 mirai 提供的 <code>@EventHandler</code> 用法基本一样, 类上必须有 <code>[@Listener](numeron-api/src/main/java/com/erzbir/numeron/annotation/Listener.java)</code> 标记
 
 ```java
 
 @Listener
 public class Test {
 
-    @Event
+    @Handler
     private void test(MessageRecallEvent.GroupRecall event) {
         System.out.println("有人撤回了消息");
     }
 }
 ```
 
+### @MessageFilter使用:
+
+<code>[@MessageFilter](numeron-api/src/main/java/com/erzbir/numeron/annotation/MessageFilter.java)</code>
+> 用在 <code>[@Handler](numeron-api/src/main/java/com/erzbir/numeron/annotation/Handler.java)</code> 注解生效的方法上, 在注册监听时会判断方法上是否有此注解, 如果有则会根据此注解对 channel 进行过滤
+>
+> 这个注解适合用于命令类型的监听 (给机器人发送一个消息, 进行相关代码运行), 以下为示例
+
+```java
+
+@Listener
+public class Test {
+    // 消息匹配规则设置了默认值, 默认是 equals() 完全匹配
+
+    @Handler
+    @MessageFilter(
+            messageRule = MessageRule.REGEX, // 指定消息匹配的规则
+            text = "\\d+",                   // 需要匹配的消息
+            permission = PermissionType.ALL, // 权限规则
+            filterRule = FilterRule.BLACK    // 规则过滤
+    )
+    // 处理群消息事件, 正则匹配模式, 匹配数字, 权限是所有人, 过滤规则是过滤掉黑名单
+    private void regex(GroupMessageEvent event) {
+        event.getSubject().sendMessage("这是一个数字");
+    }
+
+    @Handler
+    @MessageFilter(text = "hi", 
+            permission = PermissionType.WHITE, 
+            filterRule = FilterRule.NONE, 
+            id = 1234567890L // 触发 id
+    )
+    // 处理消息用户消息事件, 匹配 id 为 1234567890 的用户发送的 "hi", 权限是白名单, 不过滤
+    private void sayHello(UserMessageEvent event) {
+        event.getSubject().sendMessage("hi");
+    }
+
+    @Handler
+    @MessageFilter(
+            text = "晚安", 
+            permission = PermissionType.MASTER, 
+            filterRule = FilterRule.NORMAL, 
+            messageRule = MessageRule.IN
+    )
+    // 匹配消息事件, 匹配 "晚安", 权限是主人, 过滤掉 disable 的群 
+    private void sayGoodNight(MessageEvent event) {
+        event.getSubject().sendMessage("晚安");
+    }
+    
+    @Handler
+    @MessageFilter(
+            text = "你好, hello", 
+            permission = PermissionType.ALL, 
+            filterRule = FilterRule.NONE, 
+            messageRule = MessageRule.IN
+    )
+    // 匹配 "你好" 或 "hello", 权限是所有人, 不过滤
+    private void sayH(MessageEvent e) {
+        e.getSubject().sendMessage("你好");
+    }
+}
+```
+
+### @CommonFilter使用:
+
+和上面的 `@MessageFilter` 类似, 只是此注解只能指定过滤器进行过滤
+
+<code>[@MessageFilter](numeron-api/src/main/java/com/erzbir/numeron/annotation/MessageFilter.java)</code>
+专注于 `MessageEvent` 的过滤, 而 <code>[@CommonFilter](numeron-api/src/main/java/com/erzbir/numeron/annotation/CommonFilter.java)</code> 是对所有 `Event`
+
+
+```java
+@Listener
+public class Test {
+
+    @Handler
+    @CommonFilter(filter = DefaultFilter.class)
+    private void test(MessageRecallEvent.GroupRecall event) {
+        System.out.println("有人撤回了消息");
+    }
+}
+```
+
+
 <code>[@Menu](numeron-menu/src/main/java/com/erzbir/numeron/menu/Menu.java)</code>
 > 用于生成图片菜单(有@Command会为这个menu生成帮助)
 
-<code>[@Command](numeron-core/src/main/java/com/erzbir/numeron/core/handler/Command.java)</code>
+<code>[@Command](numeron-api/src/main/java/com/erzbir/numeron/annotation/Command.java)</code>
 > 用于生成指令表
 
 ### 用@Command生成指令表:
@@ -236,7 +246,8 @@ class Test {
             help = "/learn ques answer",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^/learn\\s+?.*?\\s+?.*",
             filterRule = FilterRule.BLACK,
@@ -254,7 +265,8 @@ class Test {
             help = "/forget ques",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^/forget\\s+?.*",
             filterRule = FilterRule.BLACK,
@@ -290,7 +302,8 @@ class Test {
             help = "/learn ques answer",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^/learn\\s+?.*?\\s+?.*",
             filterRule = FilterRule.BLACK,
@@ -308,7 +321,8 @@ class Test {
             help = "/forget ques",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             messageRule = MessageRule.REGEX,
             text = "^/forget\\s+?.*",
             filterRule = FilterRule.BLACK,
@@ -338,7 +352,7 @@ class Test {
 - [ ] console 控制台
 - [x] 功能热加载
 - [x] 插件模式
-- [ ] 只监听某个 id(好友/群) 的事件监听注册(用注解实现)
+- [x] 只监听某个 id(好友/群) 的事件监听注册(用注解实现)
 
 ## 联系方式:
 

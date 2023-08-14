@@ -1,6 +1,9 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.NumeronImpl;
 import com.erzbir.numeron.enums.FilterRule;
 import com.erzbir.numeron.enums.MessageRule;
@@ -68,7 +71,8 @@ public class FastMute {
             help = "#打卡禁言",
             permission = PermissionType.ALL
     )
-    @Message(
+    @Handler
+    @MessageFilter(
             text = "#打卡解禁",
             filterRule = FilterRule.BLACK,
             messageRule = MessageRule.EQUAL,

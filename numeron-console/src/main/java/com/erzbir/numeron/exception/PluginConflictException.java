@@ -1,4 +1,4 @@
-package com.erzbir.numeron.console.exception;
+package com.erzbir.numeron.exception;
 
 /**
  * @author Erzbir

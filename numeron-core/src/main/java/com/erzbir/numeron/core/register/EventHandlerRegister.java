@@ -1,7 +1,6 @@
 package com.erzbir.numeron.core.register;
 
-import com.erzbir.numeron.bot.NumeronBotConfiguration;
-import com.erzbir.numeron.core.context.ListenerContext;
+import com.erzbir.numeron.config.NumeronBotConfiguration;
 import com.erzbir.numeron.core.handler.excute.EventMethodExecute;
 import com.erzbir.numeron.core.listener.DefaultListenerRegisterImpl;
 import kotlin.coroutines.EmptyCoroutineContext;
@@ -12,11 +11,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
 /**
- * @author Erzbir
- * @Date 2023/7/27
  * <p>
  * 事件监听注册器
  * </p>
+ *
+ * @author Erzbir
+ * @Date 2023/7/27
  */
 public class EventHandlerRegister implements HandlerRegister {
     public static EventHandlerRegister INSTANCE = new EventHandlerRegister();

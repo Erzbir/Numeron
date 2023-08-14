@@ -23,6 +23,22 @@ import java.io.IOException;
 @Listener
 @SuppressWarnings("unused")
 public class Help {
+    @NotNull
+    private static String[] getStrings() {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(NumeronImpl.INSTANCE.getWorkDir() + "help.txt"))) {
+            int len;
+            char[] buff = new char[30];
+            while ((len = reader.read(buff)) != -1) {
+                sb.append(new String(buff, 0, len));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String string = sb.toString();
+        return string.split("---");
+    }
+
     @Handler
     @MessageFilter(
             text = "/help",
@@ -40,21 +56,5 @@ public class Help {
             builder.add(bot.getId(), senderName, messageChainBuilder.build());
         }
         event.getSubject().sendMessage(builder.build());
-    }
-
-    @NotNull
-    private static String[] getStrings() {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(NumeronImpl.INSTANCE.getWorkDir() + "help.txt"))) {
-            int len;
-            char[] buff = new char[30];
-            while ((len = reader.read(buff)) != -1) {
-                sb.append(new String(buff, 0, len));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        String string = sb.toString();
-        return string.split("---");
     }
 }
