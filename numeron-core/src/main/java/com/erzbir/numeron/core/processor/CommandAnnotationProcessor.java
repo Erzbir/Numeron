@@ -6,6 +6,7 @@ import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.NumeronImpl;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
+import lombok.Getter;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -24,11 +25,8 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class CommandAnnotationProcessor implements Processor {
+    @Getter
     private static HashMap<String, Set<String>> helpMap = new HashMap<>();
-
-    public static HashMap<String, Set<String>> getHelpMap() {
-        return helpMap;
-    }
 
     private static void addToDocMap(Command command) {
         if (command == null) {

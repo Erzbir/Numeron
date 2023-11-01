@@ -1,11 +1,17 @@
 package com.erzbir.numeron.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.mamoe.mirai.utils.BotConfiguration;
 
 /**
+ * TODO: remove and refactor
+ *
  * @author Erzbir
  * @Date: 2023/5/3 12:47
  */
+@Setter
+@Getter
 public class NumeronBotConfiguration extends BotConfiguration {
     private long master;    // 主人
     private boolean enable;
@@ -20,27 +26,11 @@ public class NumeronBotConfiguration extends BotConfiguration {
         super();
     }
 
-    public long getMaster() {
-        return master;
-    }
-
-    public void setMaster(long master) {
-        this.master = master;
-    }
-
-    public boolean isEnable() {
-        return enable;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
-    }
-
     public void enable() {
-        this.enable = true;
+        setEnable(true);
     }
 
     public void disable() {
-        this.enable = false;
+        setEnable(false);
     }
 }

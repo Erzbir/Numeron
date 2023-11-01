@@ -1,11 +1,9 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.qqmanage.NetUtil;
 import net.mamoe.mirai.contact.Group;
@@ -59,11 +57,8 @@ public class MemberInAction {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "/welcome\\s+?(true|false)",
-            permission = PermissionType.WHITE,
-            messageRule = MessageRule.REGEX
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "/welcome\\s+?(true|false)", matchType = MatchType.REGEX_MATCHES)
     private void onOff(GroupMessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+?");
         isOn.put(event.getGroup().getId(), Boolean.parseBoolean(s[2]));

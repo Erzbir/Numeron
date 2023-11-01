@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.help;
 
 
+import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -26,23 +24,13 @@ import static com.erzbir.numeron.menu.MenuStatic.menuMap;
 @SuppressWarnings("unused")
 public class MenuSelectController {
     @Handler
-    @MessageFilter(
-            messageRule = MessageRule.EQUAL,
-            text = "#menu",
-            permission = PermissionType.ALL,
-            filterRule = FilterRule.BLACK
-    )
+    @Filter("#menu")
     private void picMenu(MessageEvent event) throws IOException, FontFormatException {
         event.getSubject().sendMessage(Contact.uploadImage(event.getSubject(), bufferedImageToInputStream(drawMenu(event.getSubject().getId()), "PNG")));
     }
 
     @Handler
-    @MessageFilter(
-            messageRule = MessageRule.REGEX,
-            text = "#help\\s+.+",
-            permission = PermissionType.ALL,
-            filterRule = FilterRule.BLACK
-    )
+    @Filter(value = "#help\\s+.+", matchType = MatchType.REGEX_MATCHES)
     private void subMenu(GroupMessageEvent event) throws IOException, FontFormatException {
         String s = event.getMessage().contentToString().replaceFirst("#help\\s+", "");
         if (menuList.contains(s)) {
