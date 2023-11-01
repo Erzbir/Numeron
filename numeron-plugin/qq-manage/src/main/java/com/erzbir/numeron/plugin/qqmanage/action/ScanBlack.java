@@ -5,7 +5,7 @@ import com.erzbir.numeron.api.listener.DefaultListenerRegister;
 import com.erzbir.numeron.api.permission.ContactType;
 import com.erzbir.numeron.api.permission.PermissionManager;
 import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.filter.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.ListeningStatus;

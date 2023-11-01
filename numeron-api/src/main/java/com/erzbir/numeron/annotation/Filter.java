@@ -1,6 +1,6 @@
 package com.erzbir.numeron.annotation;
 
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.filter.enums.MatchType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

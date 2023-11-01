@@ -6,7 +6,7 @@ import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
 import com.erzbir.numeron.annotation.Permission;
 import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.filter.enums.MatchType;
 import com.erzbir.numeron.menu.MenuStatic;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.MessageEvent;

@@ -1,4 +1,4 @@
-package com.erzbir.numeron.enums;
+package com.erzbir.numeron.api.filter.enums;
 
 /**
  * @author Erzbir
