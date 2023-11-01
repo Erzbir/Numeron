@@ -1,8 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.plugin.qqmanage.action.IllegalService;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -24,8 +28,12 @@ public class IllegalCommands {
             permission = PermissionType.WHITE
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "^/add\\s+?illegal\\s+?.+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/add\\s+?illegal\\s+?.+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void add(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/add\\s+?illegal\\s+?", "");
         IllegalService.INSTANCE.add(s, event.getSender().getId());
@@ -39,8 +47,12 @@ public class IllegalCommands {
             permission = PermissionType.WHITE
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "^/remove\\s+?illegal\\s+?.+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/remove\\s+?illegal\\s+?.+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void remove(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/remove\\s+?illegal\\s+?", "");
         IllegalService.INSTANCE.remove(s);
@@ -54,8 +66,12 @@ public class IllegalCommands {
             permission = PermissionType.WHITE
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "^/query\\s+?illegal\\s+?.+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/query\\s+?illegal\\s+?.+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void query(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/query\\s+?illegal\\s+?", "");
         if (s.equals("0")) {

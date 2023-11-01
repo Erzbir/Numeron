@@ -1,7 +1,7 @@
 package com.erzbir.numeron.annotation;
 
 
-import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.PermissionType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,7 +30,7 @@ public @interface Command {
     /**
      * @return 指令权限
      */
-    PermissionType permission() default PermissionType.EVERYONE;
+    PermissionType permission();
 
     /**
      * @return 指令示例或帮助

@@ -2,10 +2,12 @@ package com.erzbir.numeron.plugin.cardsearch.listner;
 
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.cardsearch.Card;
 import com.google.gson.Gson;
@@ -13,7 +15,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.mamoe.mirai.contact.Contact;
-import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -38,17 +39,18 @@ import java.util.Objects;
 @Listener
 @Menu(name = "游戏王查卡")
 @SuppressWarnings("unused")
-public class Search extends SimpleListenerHost {
+public class Search {
     private static final String API = "https://ygocdb.com/api/v0/?search=";
     private static final String PIC_URL = "https://cdn.233.momobako.com/ygopro/pics/";
 
-    @Command(
-            name = "游戏王查卡",
-            dec = "sr [cardname]",
-            help = "sr 青眼白龙"
-    )
+    @Command(name = "游戏王查卡", dec = "sr [cardname]", help = "sr 青眼白龙", permission = PermissionType.ALL)
     @Handler
-    @Filter(value = "^sr\\s+\\S+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^sr\\s+\\S+",
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ALL
+    )
     private void search(MessageEvent event) throws IOException {
         String s = event.getMessage().contentToString().replaceFirst("^sr\\s+", "");
         String string = sendRequest(s);

@@ -1,5 +1,7 @@
 package com.erzbir.numeron.core.context;
 
+import com.erzbir.numeron.api.listener.ListenerRegisterInter;
+import com.erzbir.numeron.core.proxy.ListenerRegisterProxy;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventPriority;
@@ -31,15 +33,26 @@ public class ListenerContext {
 
     private final Map<Class<?>, Listener<?>> listenerMap = new HashMap<>();
 
+    private final ListenerRegisterProxy listenerRegisterProxy;
+
 
     public ListenerContext() {
         try {
             listenerCollectionMap = getListenerMap();
+            listenerRegisterProxy = new ListenerRegisterProxy(new HashMap<>());
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | NoSuchFieldException |
                  InvocationTargetException e) {
             NumeronLogUtil.logger.error("ERROR", e);
             throw new RuntimeException(e);
         }
+    }
+
+    public void setRunBefore(Runnable before) {
+        listenerRegisterProxy.setInvokeBefore(before);
+    }
+
+    public void setRunAfter(Runnable after) {
+        listenerRegisterProxy.setInvokeAfter(after);
     }
 
     public void addListener(Class<?> clazz, Listener<?> listener) {
@@ -63,6 +76,10 @@ public class ListenerContext {
         Object eventListenerInstance = eventListeners.get(adapterInstance);
         Object mapInstance = mapField.get(eventListenerInstance);
         return (EnumMap<EventPriority, Collection<net.mamoe.mirai.internal.event.ListenerRegistry>>) mapInstance;
+    }
+
+    public ListenerRegisterInter getListenerRegister() {
+        return listenerRegisterProxy.getProxy();
     }
 
     private void cancel(Listener<? extends Event> listener) {

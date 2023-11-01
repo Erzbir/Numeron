@@ -28,4 +28,8 @@ public interface Numeron {
     void removeProcessor(Processor processor);
 
     Set<Processor> getProcessors();
+
+    void setRegisterBefore(Runnable runnable);
+
+    void setRegisterAfter(Runnable runnable);
 }

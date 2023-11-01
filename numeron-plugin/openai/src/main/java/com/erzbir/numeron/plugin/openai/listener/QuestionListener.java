@@ -1,10 +1,12 @@
 package com.erzbir.numeron.plugin.openai.listener;
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
 import com.erzbir.numeron.plugin.openai.config.QuestionConfig;
@@ -28,10 +30,16 @@ public class QuestionListener {
     @Command(
             name = "OpenAI",
             dec = "问答",
-            help = "/q 今天天气如何"
+            help = "/q 今天天气如何",
+            permission = PermissionType.ALL
     )
     @Handler
-    @Filter(value = "^/q\\s+.+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.REGEX,
+            text = "^/q\\s+.+",
+            permission = PermissionType.ALL
+    )
     private void question(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/q\\s+", "");
         String text = OpenAiServiceImpl.INSTANCE.OPENAISERVICE.createChatCompletion(createRequest(s)).getChoices().get(0).getMessage().getContent();

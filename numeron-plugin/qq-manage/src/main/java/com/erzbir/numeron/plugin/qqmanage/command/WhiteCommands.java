@@ -1,10 +1,13 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.ContactType;
-import com.erzbir.numeron.api.permission.PermissionManager;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.api.entity.WhiteServiceImpl;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -25,12 +28,17 @@ public class WhiteCommands {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "^/permit\\s+?user\\s+?@*\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/permit\\s+?user\\s+?@*\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void permit2(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/permit\\s+?user\\s+?@*", ""));
-        PermissionManager.INSTANCE.permit(ContactType.USER, id);
-        event.getSubject().sendMessage(id + " 已添加到白名单");
+        if (WhiteServiceImpl.INSTANCE.addWhite(id, event.getSender().getId())) {
+            event.getSubject().sendMessage(id + " 已添加到白名单");
+        }
     }
 
     @Command(
@@ -40,12 +48,17 @@ public class WhiteCommands {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "^/unpermit\\s+?user\\s+?@*\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/unpermit\\s+?user\\s+?@*\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void noPermit(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/unpermit\\s+?user\\s+?@*", ""));
-        PermissionManager.INSTANCE.down(ContactType.USER, id);
-        event.getSubject().sendMessage(id + " 已移出白名单");
+        if (WhiteServiceImpl.INSTANCE.removeWhite(id)) {
+            event.getSubject().sendMessage(id + " 已移出白名单");
+        }
     }
 
     @Command(
@@ -55,9 +68,18 @@ public class WhiteCommands {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "^/query\\s+?white\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/query\\s+?white\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void query(MessageEvent event) {
         long l = Long.parseLong(event.getMessage().contentToString().replaceFirst("/query\\s+?white\\s+?", ""));
+        if (l == 0) {
+            event.getSubject().sendMessage(WhiteServiceImpl.INSTANCE.getWhites().toString());
+        } else {
+            event.getSubject().sendMessage(String.valueOf(WhiteServiceImpl.INSTANCE.exist(l)));
+        }
     }
 }

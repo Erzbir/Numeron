@@ -1,8 +1,12 @@
 package com.erzbir.numeron.plugin.codeprocess.listner;
 
-import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.codeprocess.runner.CodeRunner;
 import com.erzbir.numeron.plugin.codeprocess.runway.RunJs;
@@ -29,8 +33,12 @@ public class Processor {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "py\n", matchType = MatchType.TEXT_STARTS_WITH)
+    @MessageFilter(
+            text = "py\n",
+            messageRule = MessageRule.BEGIN_WITH,
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
     private void runPy(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunPy.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("py\\s+", "")));
@@ -39,12 +47,15 @@ public class Processor {
     @Command(
             name = "指令执行",
             dec = "执行js代码",
-            help = "js\nconsole.log(1)",
+            help = "py\nconsole.log(1)",
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "js\n", matchType = MatchType.TEXT_STARTS_WITH)
+    @MessageFilter(text = "js\n",
+            messageRule = MessageRule.BEGIN_WITH,
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
     private void runJs(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunJs.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("js\\s+", "")));
@@ -57,8 +68,12 @@ public class Processor {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "sh\n", matchType = MatchType.TEXT_STARTS_WITH)
+    @MessageFilter(
+            text = "sh\n",
+            messageRule = MessageRule.BEGIN_WITH,
+            filterRule = FilterRule.NONE,
+            permission = PermissionType.MASTER
+    )
     private void runShell(MessageEvent event) throws IOException {
         codeRunner.setRunCode(RunShell.getInstance());
         event.getSubject().sendMessage(codeRunner.getRunCode().execute(event.getMessage().contentToString().replaceFirst("sh\\s+", "")));

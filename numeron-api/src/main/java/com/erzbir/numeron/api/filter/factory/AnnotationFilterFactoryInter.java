@@ -6,8 +6,6 @@ import net.mamoe.mirai.event.Event;
 import java.lang.annotation.Annotation;
 
 /**
- * 注解过滤器工厂接口
- *
  * @author Erzbir
  * @Date 2023/7/27
  */

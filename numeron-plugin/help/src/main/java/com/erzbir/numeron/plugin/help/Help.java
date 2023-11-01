@@ -1,9 +1,10 @@
 package com.erzbir.numeron.plugin.help;
 
-import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.NumeronImpl;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.ForwardMessageBuilder;
@@ -39,7 +40,10 @@ public class Help {
     }
 
     @Handler
-    @Filter("/help")
+    @MessageFilter(
+            text = "/help",
+            permission = PermissionType.ALL
+    )
     private void help(MessageEvent event) {
         String[] split = getStrings();
         ForwardMessageBuilder builder = new ForwardMessageBuilder(event.getSubject());

@@ -1,9 +1,11 @@
 package com.erzbir.numeron.plugin.sign.listner;
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.plugin.sign.RedisStore;
 import com.erzbir.numeron.plugin.sign.entity.User;
 import net.mamoe.mirai.contact.Contact;
@@ -107,10 +109,15 @@ public class Game {
     @Command(
             name = "签到",
             dec = "签到",
-            help = "发送 \"签到\" 即可"
+            help = "发送 \"签到\" 即可",
+            permission = PermissionType.ALL
     )
     @Handler
-    @Filter("签到")
+    @MessageFilter(
+            text = "签到",
+            filterRule = FilterRule.BLACK,
+            permission = PermissionType.ALL
+    )
     private void sign(GroupMessageEvent event) throws IOException {
         event.getSubject().sendMessage(sign(event.getSender(), event.getGroup()));
     }

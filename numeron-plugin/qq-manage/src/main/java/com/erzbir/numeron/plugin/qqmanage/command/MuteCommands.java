@@ -1,10 +1,13 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.ContactType;
-import com.erzbir.numeron.api.permission.PermissionManager;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.api.entity.GroupServiceImpl;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -27,8 +30,12 @@ public class MuteCommands {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "/mute\\s+?@?\\d+?\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "/mute\\s+?@?\\d+?\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ADMIN
+    )
     private void muteSingle(MessageEvent event) {
         mute(event, true);
     }
@@ -40,8 +47,12 @@ public class MuteCommands {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "/unmute\\s+?@?\\d+?\\s+\\d+?", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "/unmute\\s+?@?\\d+?\\s+\\d+?",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ADMIN
+    )
     private void unmuteSingle(MessageEvent event) {
         mute(event, false);
     }
@@ -57,7 +68,7 @@ public class MuteCommands {
             Objects.requireNonNull(event1.getGroup().get(id)).mute(time);
         } else {
             AtomicReference<NormalMember> member = new AtomicReference<>();
-            PermissionManager.INSTANCE.getContactsOfPermission(ContactType.GROUP, PermissionType.NORMAL).forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
+            GroupServiceImpl.INSTANCE.getEnableGroupList().forEach(v -> member.set(Objects.requireNonNull(event.getBot().getGroup(v)).get(id)));
             if (member.get().getPermission().getLevel() < 1) {
                 if (!bool && member.get().isMuted()) {
                     member.get().unmute();
@@ -75,8 +86,11 @@ public class MuteCommands {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "/mute group\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "/mute group\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ADMIN)
     private void muteGroup(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);
@@ -90,8 +104,12 @@ public class MuteCommands {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "/unmute group\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "/unmute group\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.ADMIN
+    )
     private void unmuteGroup(MessageEvent event) {
         String[] split = event.getMessage().contentToString().split("\\s+");
         long id = Long.parseLong(split[2]);

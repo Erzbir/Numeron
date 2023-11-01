@@ -6,8 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
- * bean 工厂, 定义 bean 的创建和获取
- *
  * @author Erzbir
  * @Date: 2022/12/12 15:16
  */

@@ -1,10 +1,13 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
 import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.NumeronImpl;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import com.google.gson.Gson;
@@ -48,10 +51,16 @@ public class FastMute {
     @Command(
             name = "打卡解/禁言",
             dec = "打卡禁言",
-            help = "#打卡禁言"
+            help = "#打卡禁言",
+            permission = PermissionType.ALL
     )
     @Handler
-    @Filter(value = "#打卡禁言")
+    @MessageFilter(
+            text = "#打卡禁言",
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.EQUAL,
+            permission = PermissionType.ALL
+    )
     private void fastMute(UserMessageEvent event) {
         group.forEach(t -> Objects.requireNonNull(event.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(true));
     }
@@ -59,10 +68,16 @@ public class FastMute {
     @Command(
             name = "打卡解/禁言",
             dec = "打卡解禁",
-            help = "#打卡禁言"
+            help = "#打卡禁言",
+            permission = PermissionType.ALL
     )
     @Handler
-    @Filter(value = "#打卡解禁")
+    @MessageFilter(
+            text = "#打卡解禁",
+            filterRule = FilterRule.BLACK,
+            messageRule = MessageRule.EQUAL,
+            permission = PermissionType.ALL
+    )
     private void fastUnMute(UserMessageEvent event) {
         group.forEach(t -> Objects.requireNonNull(event.getBot().getGroup(t.getAsLong())).getSettings().setMuteAll(false));
     }
