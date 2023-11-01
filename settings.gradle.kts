@@ -19,6 +19,7 @@ include(
         ":numeron-menu",
         ":numeron-plugin",
         ":numeron-utils",
+        ":numeron-mock",
         ":numeron-all",
         ":numeron-plugin:card-search",
         ":numeron-plugin:chat",
@@ -32,5 +33,7 @@ include(
         ":numeron-plugin:sign",
         ":numeron-plugin:switch",
         ":numeron-plugin:mcbot",
+        ":plugin-dep",
+        ":plugin-test"
     )
 )

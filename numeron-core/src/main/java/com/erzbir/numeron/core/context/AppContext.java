@@ -8,7 +8,6 @@ import com.erzbir.numeron.exception.BeanCreateException;
 import com.erzbir.numeron.exception.BeanNotFound;
 import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
-import lombok.Getter;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -31,7 +30,6 @@ public class AppContext implements BeanFactory {
     private final Map<String, Class<?>> context = new ConcurrentHashMap<>();
     private final Map<String, Class<?>> lazyContext = new ConcurrentHashMap<>();
     private final Map<String, Object> singletonMap = new ConcurrentHashMap<>();
-    @Getter
     private final Set<Processor> processors = new HashSet<>();
 
     private AppContext() {
@@ -63,6 +61,10 @@ public class AppContext implements BeanFactory {
 
     public synchronized void removeProcessor(Processor processor) {
         processors.remove(processor);
+    }
+
+    public Set<Processor> getProcessors() {
+        return processors;
     }
 
     public void addBean(Class<?> beanClass) {

@@ -21,10 +21,6 @@ subprojects {
 
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "java")
-
-    dependencies {
-        annotationProcessor("org.projectlombok:lombok:1.18.30")
-    }
 }
 
 allprojects {
@@ -43,8 +39,8 @@ allprojects {
     ext {
         set("javaVersion", javaVersion)
         set("miraiVersion", miraiVersion)
-        set("gradleVersion", gradleVersion)
-        set("encoding", encoding)
+        set("gradleVersion", "8.0")
+        set("encoding", "UTF-8")
     }
 
     tasks.withType<JavaCompile> {

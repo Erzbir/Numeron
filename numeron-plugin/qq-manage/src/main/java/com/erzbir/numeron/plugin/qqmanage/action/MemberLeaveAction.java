@@ -1,9 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
 
-import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MemberLeaveEvent;
@@ -30,12 +33,15 @@ public class MemberLeaveAction {
     @Command(
             name = "退群提示",
             dec = "开关退群",
-            help = "/leave feedback [true|false]",
+            help = "/leave [true|false]",
             permission = PermissionType.ADMIN
     )
     @Handler
-    @Permission(permission = PermissionType.ADMIN)
-    @Filter(value = "/leave\\s+?feedback\\s+?(true|false)", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "/leave\\s+?feedback\\s+?(true|false)",
+            permission = PermissionType.ADMIN,
+            messageRule = MessageRule.REGEX
+    )
     private void onOff(GroupMessageEvent event) {
         String[] s = event.getMessage().contentToString().split("\\s+?");
         isOn.put(event.getGroup().getId(), Boolean.parseBoolean(s[2]));

@@ -1,11 +1,14 @@
 package com.erzbir.numeron.plugin.onoff;
 
-import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
-import com.erzbir.numeron.api.permission.ContactType;
-import com.erzbir.numeron.api.permission.PermissionManager;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.entity.WhiteServiceImpl;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -27,8 +30,12 @@ public class OnOffCommandHandle {
             permission = PermissionType.WHITE
     )
     @Handler
-    @Permission(permission = PermissionType.WHITE)
-    @Filter(value = "/shutdown\\s+\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "/shutdown\\s+\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.WHITE
+    )
     private void shutdown(MessageEvent e) {
         String s = e.getMessage().contentToString().replaceFirst("/shutdown\\s+", "");
         long id = e.getBot().getId();
@@ -43,7 +50,7 @@ public class OnOffCommandHandle {
         if (!BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).isEnable()) {
             e.getBot().getEventChannel().subscribe(MessageEvent.class, event -> {
                 String s1 = event.getMessage().contentToString();
-                if ((PermissionManager.INSTANCE.getContactsOfPermission(ContactType.USER, PermissionType.WHITE).contains(event.getSender().getId()) || event.getSender().getId() == BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).getMaster()) && s1.startsWith("/launch")) {
+                if ((WhiteServiceImpl.INSTANCE.exist(event.getSender().getId()) || event.getSender().getId() == BotServiceImpl.INSTANCE.getConfiguration(e.getBot().getId()).getMaster()) && s1.startsWith("/launch")) {
                     String s2 = s1.replaceFirst("/launch\\s+", "");
                     e.getSubject().sendMessage("开机");
                     BotServiceImpl.INSTANCE.launch(Long.parseLong(s2));

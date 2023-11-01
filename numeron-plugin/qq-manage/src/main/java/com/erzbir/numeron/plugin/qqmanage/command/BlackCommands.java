@@ -1,10 +1,14 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.ContactType;
-import com.erzbir.numeron.api.permission.PermissionManager;
-import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Handler;
+import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.api.entity.BlackServiceImpl;
+import com.erzbir.numeron.api.entity.WhiteServiceImpl;
+import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MessageRule;
+import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -25,11 +29,18 @@ public class BlackCommands {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "^/ban\\s+?user\\s+?@*\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/ban\\s+?user\\s+?@*\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void ban(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/ban\\s+?user\\s+?@*", ""));
-        PermissionManager.INSTANCE.ban(ContactType.USER, id);
+        WhiteServiceImpl.INSTANCE.removeWhite(id);
+        if (BlackServiceImpl.INSTANCE.addBlack(id, event.getSender().getId())) {
+            event.getSubject().sendMessage(id + " 添加到黑名单");
+        }
     }
 
     @Command(
@@ -39,11 +50,17 @@ public class BlackCommands {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "^/noban\\s+?user\\s+?@*\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/noban\\s+?user\\s+?@*\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void remove(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/noban\\s+?user\\s+?@*", ""));
-        PermissionManager.INSTANCE.permit(ContactType.USER, id);
+        if (BlackServiceImpl.INSTANCE.removeBlack(id)) {
+            event.getSubject().sendMessage(id + " 已移出黑名单");
+        }
     }
 
     @Command(
@@ -53,12 +70,20 @@ public class BlackCommands {
             permission = PermissionType.MASTER
     )
     @Handler
-    @Permission(permission = PermissionType.MASTER)
-    @Filter(value = "^/query\\s+?black\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
+    @MessageFilter(
+            text = "^/query\\s+?black\\s+?\\d+",
+            filterRule = FilterRule.NONE,
+            messageRule = MessageRule.REGEX,
+            permission = PermissionType.MASTER
+    )
     private void query(MessageEvent event) {
         long l = Long.parseLong(event.getMessage()
                 .contentToString()
                 .replaceFirst("^/query\\s+?black\\s+?", ""));
-
+        if (l == 0) {
+            event.getSubject().sendMessage(BlackServiceImpl.INSTANCE.getBlacks().toString());
+        } else {
+            event.getSubject().sendMessage(String.valueOf(BlackServiceImpl.INSTANCE.exist(l)));
+        }
     }
 }
