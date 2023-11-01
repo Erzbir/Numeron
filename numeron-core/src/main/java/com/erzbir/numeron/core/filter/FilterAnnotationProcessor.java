@@ -4,7 +4,7 @@ import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Filters;
 import com.erzbir.numeron.api.filter.annotation.FilterAnnotationFilter;
 import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
-import com.erzbir.numeron.enums.MultiMatchType;
+import com.erzbir.numeron.api.filter.enums.MultiMatchType;
 import net.mamoe.mirai.event.Event;
 
 import java.lang.reflect.AnnotatedElement;

@@ -3,7 +3,7 @@ package com.erzbir.numeron.plugin.qqmanage.action;
 
 import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.filter.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.MemberLeaveEvent;

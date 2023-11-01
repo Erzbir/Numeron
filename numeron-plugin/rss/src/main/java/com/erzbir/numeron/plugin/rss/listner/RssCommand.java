@@ -2,7 +2,7 @@ package com.erzbir.numeron.plugin.rss.listner;
 
 import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.permission.PermissionType;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.filter.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.PublishApi;
 import com.erzbir.numeron.plugin.rss.timer.TimerController;

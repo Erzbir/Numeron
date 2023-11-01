@@ -4,7 +4,7 @@ import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.enums.MatchType;
+import com.erzbir.numeron.api.filter.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
 import com.erzbir.numeron.plugin.openai.config.QuestionConfig;

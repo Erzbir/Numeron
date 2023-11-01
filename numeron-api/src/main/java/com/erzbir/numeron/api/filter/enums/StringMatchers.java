@@ -1,4 +1,4 @@
-package com.erzbir.numeron.enums;
+package com.erzbir.numeron.api.filter.enums;
 
 import com.erzbir.numeron.api.filter.StringMatcher;
 import lombok.Getter;
