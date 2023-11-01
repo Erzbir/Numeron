@@ -2,9 +2,10 @@ package com.erzbir.numeron.menu;
 
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.api.permission.ContactType;
+import com.erzbir.numeron.api.permission.PermissionManager;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.entity.serviceimpl.GroupServiceImpl;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
@@ -30,8 +31,8 @@ public class MenuAnnotationProcessor implements Processor {
             boolean open = annotation.open();
             MenuStatic.menuList.add(name);
             if (!open) {
-                GroupServiceImpl groupService = new GroupServiceImpl();
-                MenuStatic.closeMenuGroups.put(name, groupService.getEnableGroupList());
+                PermissionManager permissionManager = PermissionManager.INSTANCE;
+                MenuStatic.closeMenuGroups.put(name, permissionManager.getAllContact(ContactType.GROUP));
             }
             List<Command> commands = new ArrayList<>();
             NumeronLogUtil.info(name);

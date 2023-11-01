@@ -1,6 +1,7 @@
 package com.erzbir.numeron.console.plugin;
 
 import com.erzbir.numeron.utils.NumeronLogUtil;
+import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +18,7 @@ import java.util.jar.JarFile;
  * @author Erzbir
  * @Date: 2023/4/26 19:13
  */
+@Getter
 public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, SpiJarLoad {
     public final String SPI_CONFIG_FILE = "META-INF/services/com.erzbir.numeron.console.plugin.Plugin";
 
@@ -46,18 +48,6 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
             }
             return c;
         }
-    }
-
-    public String getSPI_CONFIG_FILE() {
-        return SPI_CONFIG_FILE;
-    }
-
-    public Map<String, Class<?>> getClassCache() {
-        return classCache;
-    }
-
-    public Map<String, File> getFileCache() {
-        return fileCache;
     }
 
     @Override
@@ -102,7 +92,7 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
     }
 
     @Override
-    public List<Object> loadJarFromSpi(@NotNull File plugin, @NotNull Class<?> type) throws IOException {
+    public List<Object> loadJarFromSpi(@NotNull File plugin, @NotNull Class<?> type) {
         List<Object> objects = new ArrayList<>();
         ServiceLoader<?> load = ServiceLoader.load(type, this);
         load.stream().forEach(objects::add);
@@ -145,11 +135,21 @@ public class HotSpiPluginLoader extends URLClassLoader implements HotJarLoad, Sp
     }
 
     private Class<?> load(String className, byte[] bytes) {
-        Class<?> defineClass = defineClass(className, bytes, 0, bytes.length);
-        if (defineClass != null) {
-            classCache.put(className, defineClass);
+        try {
+
+            Class<?> defineClass = defineClass(className, bytes, 0, bytes.length);
+            if (defineClass != null) {
+                classCache.put(className, defineClass);
+            }
+            return defineClass;
+        } catch (IllegalAccessError e) {
+            try {
+                loadClass(className);
+            } catch (ClassNotFoundException ignore) {
+
+            }
         }
-        return defineClass;
+        return null;
     }
 
 

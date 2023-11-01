@@ -6,7 +6,7 @@ import net.mamoe.mirai.event.Event;
 
 /**
  * <p>
- * 顶层过滤器工厂父类
+ * 顶层过滤器工厂接口
  * </p>
  *
  * @author Erzbir
