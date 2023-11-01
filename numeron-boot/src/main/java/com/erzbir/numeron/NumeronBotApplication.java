@@ -1,12 +1,16 @@
 package com.erzbir.numeron;
 
+import com.erzbir.numeron.boot.SpiStarter;
 import com.erzbir.numeron.boot.Starter;
+import com.erzbir.numeron.boot.StarterController;
 
 public class NumeronBotApplication {
 
     public static void main(String[] args) throws InterruptedException {
-        Starter starter = new Starter(NumeronBotApplication.class, NumeronBotApplication.class.getClassLoader());
-        starter.boot(Starter.BotType.SPI);  // 调用 boot 方法初始化
+        Starter starter = new SpiStarter(NumeronBotApplication.class, NumeronBotApplication.class.getClassLoader());
+        StarterController starterController = new StarterController();
+        starterController.setStarter(starter);
+        starterController.boot();  // 调用 boot 方法初始化
     }
 }
 

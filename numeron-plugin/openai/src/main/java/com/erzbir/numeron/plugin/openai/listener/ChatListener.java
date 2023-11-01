@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.openai.listener;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.Conversation;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
@@ -42,16 +40,10 @@ public class ChatListener {
     @Command(
             name = "OpenAI",
             dec = "设定人设",
-            help = "/r 1",
-            permission = PermissionType.ALL
+            help = "/r 1"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/r\\s+\\d+",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/r\\s+\\d+", matchType = MatchType.REGEX_MATCHES)
     private void setRole(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/r\\s+", "");
         int index = Integer.parseInt(s);
@@ -61,16 +53,10 @@ public class ChatListener {
     @Command(
             name = "OpenAI",
             dec = "增加人设",
-            help = "/r -a [name] -n [prompt]",
-            permission = PermissionType.ALL
+            help = "/r -a [name] -n [prompt]"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/r\\s+?-a\\s+?\\S+?-n\\s+?\\S+",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/r\\s+?-a\\s+?\\S+?-n\\s+?\\S+", matchType = MatchType.REGEX_MATCHES)
     private void addRole(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/r\\s+?", "");
         String[] split = s.split("\\s+?-");
@@ -92,16 +78,10 @@ public class ChatListener {
     @Command(
             name = "OpenAI",
             dec = "保存人设",
-            help = "/r 1",
-            permission = PermissionType.ALL
+            help = "/r 1"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/r\\s+save",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/r\\s+save", matchType = MatchType.REGEX_MATCHES)
     private void saveRole(MessageEvent event) throws ConfigWriteException {
         ROLE_CONFIG.save();
     }
@@ -109,16 +89,10 @@ public class ChatListener {
     @Command(
             name = "OpenAI",
             dec = "列出所有人设",
-            help = "/r all",
-            permission = PermissionType.ALL
+            help = "/r all"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/r\\s+all",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/r\\s+all", matchType = MatchType.REGEX_MATCHES)
     private void listAllRole(MessageEvent event) {
         List<Role> roles = ROLE_CONFIG.getRoles();
         ForwardMessageBuilder builder = new ForwardMessageBuilder(event.getSubject());
@@ -137,15 +111,10 @@ public class ChatListener {
     @Command(
             name = "OpenAI",
             dec = "清除对话",
-            help = "/reset",
-            permission = PermissionType.ALL
+            help = "/reset"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            text = "/reset",
-            permission = PermissionType.ALL
-    )
+    @Filter("/reset")
     private void clear(MessageEvent event) {
         CONVERSATION = new Conversation(OpenAiServiceImpl.INSTANCE.OPENAICONFIG.getLimit());
     }
@@ -153,16 +122,10 @@ public class ChatListener {
     @Command(
             name = "OpenAI",
             dec = "聊天",
-            help = "/c [message]",
-            permission = PermissionType.ALL
+            help = "/c [message]"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/c\\s+.+",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/c\\s+.+", matchType = MatchType.REGEX_MATCHES)
     private void chat(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/c\\s+", "");
         ChatMessage message = null;

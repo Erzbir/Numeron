@@ -1,12 +1,10 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.listener.DefaultListenerRegister;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.qqmanage.DefaultStore;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -58,11 +56,8 @@ public class GroupRecall {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "/prevent_recall\\s+?(true|false)",
-            permission = PermissionType.ADMIN,
-            messageRule = MessageRule.REGEX
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "/prevent_recall\\s+?(true|false)", matchType = MatchType.REGEX_MATCHES)
     private void cantRecall(MessageEvent e) {
         preventRecall = Boolean.valueOf(e.getMessage().contentToString().replaceFirst("/prevent_recall\\s+", ""));
         System.out.println(preventRecall);

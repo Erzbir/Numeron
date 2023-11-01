@@ -1,11 +1,12 @@
 package com.erzbir.numeron.plugin.help;
 
 
+import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.annotation.Permission;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.MenuStatic;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -23,11 +24,8 @@ import static com.erzbir.numeron.menu.MenuDrawUtil.drawMenu;
 @SuppressWarnings("unused")
 public class MenuController {
     @Handler
-    @MessageFilter(
-            text = "^#OpenMenu\\s\\w*$",
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.WHITE)
+    @Filter(value = "^#OpenMenu\\s\\w*$", matchType = MatchType.REGEX_MATCHES)
     private void openMenu(MessageEvent e) throws IOException, FontFormatException {
         String[] ary = e.getMessage().contentToString().split("\\s+");
         if (MenuStatic.menuList.contains(ary[1]) && MenuStatic.closeMenuGroups.get(ary[1]) != null) {
@@ -41,11 +39,8 @@ public class MenuController {
     }
 
     @Handler
-    @MessageFilter(
-            text = "^#CloseMenu\\s\\w*$",
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.WHITE)
+    @Filter(value = "^#CloseMenu\\s\\w*$", matchType = MatchType.REGEX_MATCHES)
     private void closeMenu(MessageEvent e) throws IOException, FontFormatException {
         String[] ary = e.getMessage().contentToString().split("\\s+");
         if (MenuStatic.menuList.contains(ary[1])) {

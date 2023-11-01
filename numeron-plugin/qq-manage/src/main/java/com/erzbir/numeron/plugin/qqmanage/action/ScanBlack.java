@@ -1,13 +1,11 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.api.entity.BlackServiceImpl;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.listener.DefaultListenerRegister;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.api.permission.ContactType;
+import com.erzbir.numeron.api.permission.PermissionManager;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.NormalMember;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -28,7 +26,7 @@ public class ScanBlack {
     private void register(MessageEvent event) {
         DefaultListenerRegister.INSTANCE.subscribe(
                 event.getBot().getEventChannel().filter(f -> f instanceof GroupMessageEvent event1
-                        && BlackServiceImpl.INSTANCE.exist(event1.getSender().getId())
+                        && PermissionManager.INSTANCE.getContactPermission(ContactType.USER, event1.getSender().getId()).equals(PermissionType.NONE)
                         && event1.getGroup().getBotPermission().getLevel() != 0),
                 GroupMessageEvent.class, event1 -> {
                     ((NormalMember) event.getSender()).kick("黑名单用户");
@@ -44,11 +42,8 @@ public class ScanBlack {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^/scan\\s+?black\\s+?(true|false)",
-            permission = PermissionType.ADMIN,
-            messageRule = MessageRule.REGEX
-    )
+    @Permission
+    @Filter(value = "^/scan\\s+?black\\s+?(true|false)", matchType = MatchType.REGEX_MATCHES)
     public void onEvent(MessageEvent event) {
         flag = Boolean.parseBoolean(event.getMessage().contentToString()
                 .replaceFirst("^/scan\\s+?black\\s+?", ""));
