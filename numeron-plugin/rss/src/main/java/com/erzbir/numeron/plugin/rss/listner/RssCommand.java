@@ -1,12 +1,8 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.PublishApi;
 import com.erzbir.numeron.plugin.rss.timer.TimerController;
@@ -24,15 +20,11 @@ public class RssCommand {
             name = "RSS订阅命令",
             dec = "开启推送",
             help = "#rss",
-            permission = PermissionType.ALL
+            permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "#rss",
-            messageRule = MessageRule.EQUAL,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ALL
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter("#rss")
     private void open(MessageEvent event) {
         TimerController.loadAllScan();
     }
@@ -40,16 +32,10 @@ public class RssCommand {
     @Command(
             name = "RSS订阅命令",
             dec = "添加订阅",
-            help = "#sub [https://xxx.xxx]",
-            permission = PermissionType.ALL
+            help = "#sub [https://xxx.xxx]"
     )
     @Handler
-    @MessageFilter(
-            text = "^#sub\\s+?(http[s]*://.*)",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^#sub\\s+?(http[s]*://.*)", matchType = MatchType.REGEX_MATCHES)
     private void sub(MessageEvent event) {
         String url = event.getMessage().contentToString().replaceFirst("^#sub\\s+?", "");
         PublishApi.addPublish(url);
@@ -62,12 +48,8 @@ public class RssCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#nosub\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#nosub\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void cancel(MessageEvent event) {
         String id = event.getMessage().contentToString().replaceFirst("^#nosub\\s+?", "");
         PublishApi.disablePublish(id);
@@ -80,12 +62,8 @@ public class RssCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#ensub\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#ensub\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void enable(MessageEvent event) {
         String id = event.getMessage().contentToString().replaceFirst("^#ensub\\s+?", "");
         PublishApi.enablePublish(id);
@@ -98,12 +76,8 @@ public class RssCommand {
             permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            text = "^#delsub\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.MASTER)
+    @Filter(value = "^#delsub\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void delete(MessageEvent event) {
         String id = event.getMessage().contentToString().replaceFirst("^#delsub\\s+?", "");
         PublishApi.deletePublish(id);
@@ -116,11 +90,8 @@ public class RssCommand {
             permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            text = "#disable scan",
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.MASTER)
+    @Filter("#disable scan")
     private void disableAllScan(MessageEvent event) {
         PublishApi.disableScan();
     }
@@ -132,11 +103,8 @@ public class RssCommand {
             permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            text = "#enable scan",
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.MASTER)
+    @Filter("#enable scan")
     private void enableAllScan(MessageEvent event) {
         PublishApi.enableScan();
     }

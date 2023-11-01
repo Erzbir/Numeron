@@ -1,12 +1,8 @@
 package com.erzbir.numeron.plugin.openai.listener;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.openai.OpenAiServiceImpl;
 import com.erzbir.numeron.plugin.openai.ParseImage;
@@ -37,16 +33,10 @@ public class ImageListener {
     @Command(
             name = "OpenAI",
             dec = "画图",
-            help = "/i 美女",
-            permission = PermissionType.ALL
+            help = "/i 美女"
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/i\\s+.+",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/i\\s+.+", matchType = MatchType.REGEX_MATCHES)
     private void image(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/i\\s+", "");
         MessageChain singleMessages = buildImageMessage(OpenAiServiceImpl.INSTANCE.OPENAISERVICE.createImage(createRequest(s)).getData(), event);
@@ -57,14 +47,11 @@ public class ImageListener {
             name = "OpenAI",
             dec = "清理保存图片",
             help = "/pic clean",
-            permission = PermissionType.ALL
+            permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            text = "/pic clean",
-            permission = PermissionType.ALL
-    )
+    @Permission(permission = PermissionType.MASTER)
+    @Filter("/pic clean")
     private void clean(MessageEvent event) {
         String folder = ImageConfig.getInstance().getFolder();
         File file = new File(folder);
@@ -81,15 +68,10 @@ public class ImageListener {
             name = "OpenAI",
             dec = "关闭图片保存",
             help = "/pic save [true|false]",
-            permission = PermissionType.ALL
+            permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            text = "^/pic\\s+save\\s+[true|false]",
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^/pic\\s+save\\s+[true|false]", matchType = MatchType.REGEX_MATCHES)
     private void picSave(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^/pic\\s+save\\s+", "");
         ImageConfig.getInstance().setSave(Boolean.parseBoolean(s));

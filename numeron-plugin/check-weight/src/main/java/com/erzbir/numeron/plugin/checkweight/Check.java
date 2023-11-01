@@ -2,12 +2,10 @@ package com.erzbir.numeron.plugin.checkweight;
 
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -30,16 +28,10 @@ public class Check {
 
     @Command(
             name = "查权重",
-            dec = "查权重 [qq]或者[@xx]或者不写",
-            permission = PermissionType.ALL
+            dec = "查权重 [qq]或者[@xx]或者不写"
     )
     @Handler
-    @MessageFilter(
-            text = "^查权重\\s*(@*\\d+)*",
-            filterRule = FilterRule.BLACK,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.ALL
-    )
+    @Filter(value = "^查权重\\s*(@*\\d+)*", matchType = MatchType.REGEX_MATCHES)
     private void check(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^查权重(\\s*@*)*", "");
         if (!s.isEmpty()) {

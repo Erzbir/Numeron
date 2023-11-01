@@ -18,7 +18,6 @@ dependencies {
     val unUseSubModule: List<String> = listOf(
         "numeron-plugin",
         "numeron-boot",
-        "numeron-mock",
         "numeron-all",
         "plugin-test",
         "plugin-dep"

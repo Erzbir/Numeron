@@ -1,13 +1,10 @@
 package com.erzbir.numeron.plugin.plugincontrol;
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Handler;
 import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
 import com.erzbir.numeron.console.plugin.PluginManager;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.event.events.MessageEvent;
 
@@ -22,16 +19,10 @@ public class Controller {
     @Command(
             name = "查看已加载插件",
             dec = "/查看已加载插件",
-            help = "/plugin list -l",
-            permission = PermissionType.ALL
+            help = "/plugin list -l"
     )
     @Handler
-    @MessageFilter(
-            text = "/plugin list -l",
-            messageRule = MessageRule.EQUAL,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ALL
-    )
+    @Filter("/plugin list -l")
     private void listLoaded(MessageEvent event) {
         event.getSubject().sendMessage(PluginManager.INSTANCE.getLoadedPlugins().toString());
     }
@@ -39,16 +30,10 @@ public class Controller {
     @Command(
             name = "查看启用的插件",
             dec = "/查看启用的插件",
-            help = "plugin list -e",
-            permission = PermissionType.ALL
+            help = "plugin list -e"
     )
     @Handler
-    @MessageFilter(
-            text = "/plugin list -e",
-            messageRule = MessageRule.EQUAL,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ALL
-    )
+    @Filter("/plugin list -e")
     private void listEnable(MessageEvent event) {
         event.getSubject().sendMessage(PluginManager.INSTANCE.getEnablePlugins().toString());
     }
@@ -56,29 +41,17 @@ public class Controller {
     @Command(
             name = "查看未启用的插件",
             dec = "查看未启用的插件",
-            help = "/plugin list -d",
-            permission = PermissionType.ALL
+            help = "/plugin list -d"
     )
     @Handler
-    @MessageFilter(
-            text = "/plugin list -d",
-            messageRule = MessageRule.EQUAL,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ALL
-    )
+    @Filter("/plugin list -d")
     private void listDisable(MessageEvent event) {
         event.getSubject().sendMessage(PluginManager.INSTANCE.getDisablePlugins().toString());
     }
 
-    @Handler
-    @MessageFilter(
-            text = "/plugin 1",
-            messageRule = MessageRule.EQUAL,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ALL
-    )
+    //    @Handler
+    @Filter(value = "/plugin\\s+\\d+")
     private void removePlugin(MessageEvent event) {
-        event.getSubject().sendMessage("asdsadasdasdasd");
         PluginManager.INSTANCE.removePlugin(PluginManager.INSTANCE.getPlugin(0));
     }
 

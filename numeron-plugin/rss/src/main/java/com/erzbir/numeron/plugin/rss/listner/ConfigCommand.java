@@ -1,9 +1,8 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
 import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.EditApi;
 import com.erzbir.numeron.plugin.rss.api.ViewApi;
@@ -27,12 +26,8 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#rename\\s+?\\d+?\\s+?.+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#rename\\s+?\\d+?\\s+?.+", matchType = MatchType.REGEX_MATCHES)
     private void rename(MessageEvent event) {
         String[] s = event.getMessage().contentToString().replaceFirst("^#rename\\s+?", "").split("\\s+?");
         EditApi.editName(s[0], s[1]);
@@ -45,12 +40,8 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#url\\s+?\\d+?\\s+?(http[s]*://.+)",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#url\\s+?\\d+?\\s+?(http[s]*://.+)", matchType = MatchType.REGEX_MATCHES)
     private void renameUrl(MessageEvent event) {
         String[] s = event.getMessage().contentToString().replaceFirst("^#url\\s+?", "").split("\\s+?");
         EditApi.editUrl(s[0], s[1]);
@@ -63,12 +54,8 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#list\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#list\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void list(MessageEvent event) {
         String id = event.getMessage().contentToString().replaceFirst("#list\\s+?", "");
         event.getSubject().sendMessage(ViewApi.viewRss(id));
@@ -81,11 +68,8 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "#list all",
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter("#list all")
     private void listAll(MessageEvent event) {
         String[] split = ViewApi.viewAllRss().split("\\n\\n");
         ForwardMessageBuilder forwardMessageBuilder = new ForwardMessageBuilder(event.getSubject());
@@ -102,11 +86,8 @@ public class ConfigCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "#config rss",
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter("#config rss")
     private void echoConfig(MessageEvent event) {
         event.getSubject().sendMessage(ViewApi.viewAllConfig());
     }
@@ -118,11 +99,8 @@ public class ConfigCommand {
             permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            text = "#config save",
-            filterRule = FilterRule.NONE,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter("config save")
     private void saveConfig(MessageEvent event) {
         event.getSubject().sendMessage(String.valueOf(EditApi.saveConfig()));
     }
@@ -134,12 +112,8 @@ public class ConfigCommand {
             permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            text = "^#delay\\s+?\\d+",
-            filterRule = FilterRule.NONE,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#delay\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void setDelay(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^#delay\\s+?", "");
         EditApi.editDelay(Integer.parseInt(s));
@@ -152,12 +126,8 @@ public class ConfigCommand {
             permission = PermissionType.MASTER
     )
     @Handler
-    @MessageFilter(
-            text = "^#retry\\s+?\\d+",
-            filterRule = FilterRule.NONE,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#retry\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void setRetryTimes(MessageEvent event) {
         String s = event.getMessage().contentToString().replaceFirst("^#retry\\s+?", "");
         EditApi.editRetryTimes(Integer.parseInt(s));

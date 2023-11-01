@@ -19,4 +19,8 @@ dependencies {
     api("commons-io:commons-io:2.13.0")
     api("cglib:cglib:3.3.0")
     api("org.ow2.asm:asm:9.5")
+    api("org.projectlombok:lombok:1.18.30")
+   // api("cn.hutool:hutool-all:5.8.22")
+  //  api("org.springframework.boot:spring-boot-starter-aop:3.1.4")
+   // api("org.springframework.boot:spring-boot:3.1.4")
 }

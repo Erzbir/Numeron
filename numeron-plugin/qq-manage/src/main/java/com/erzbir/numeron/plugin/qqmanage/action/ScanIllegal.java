@@ -1,13 +1,10 @@
 package com.erzbir.numeron.plugin.qqmanage.action;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
+import com.erzbir.numeron.annotation.*;
 import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.api.listener.DefaultListenerRegister;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.NormalMember;
@@ -51,11 +48,8 @@ public class ScanIllegal {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^/scan\\s+?illegal\\s+?(true|false)",
-            permission = PermissionType.ADMIN,
-            messageRule = MessageRule.REGEX
-    )
+    @Permission
+    @Filter(value = "^/scan\\s+?illegal\\s+?(true|false)", matchType = MatchType.REGEX_MATCHES)
     public void onEvent(MessageEvent event) {
         flag = Boolean.parseBoolean(event.getMessage().contentToString()
                 .replaceFirst("^/scan\\s+?illegal\\s+?", ""));

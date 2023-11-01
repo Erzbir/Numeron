@@ -1,13 +1,12 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.api.entity.GroupServiceImpl;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.api.permission.ContactType;
+import com.erzbir.numeron.api.permission.PermissionManager;
+import com.erzbir.numeron.api.permission.PermissionType;
 import com.erzbir.numeron.enums.FilterRule;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
@@ -28,18 +27,13 @@ public class GroupEnableCommands {
             permission = PermissionType.WHITE
     )
     @Handler
-    @MessageFilter(
-            text = "^/enable\\s+?group\\s+?\\d+",
-            filterRule = FilterRule.NONE,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.WHITE)
+    @Filter(value = "^/enable\\s+?group\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void enable(MessageEvent event) {
         System.out.println("1212");
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/enable\\s+?group\\s+?", ""));
-        if (GroupServiceImpl.INSTANCE.enableGroup(id, event.getSender().getId())) {
-            event.getSubject().sendMessage("群: " + id + " 已授权");
-        }
+        PermissionManager.INSTANCE.permit(ContactType.GROUP, id);
+        event.getSubject().sendMessage("群: " + id + " 已授权");
     }
 
     @Command(
@@ -49,17 +43,12 @@ public class GroupEnableCommands {
             permission = PermissionType.WHITE
     )
     @Handler
-    @MessageFilter(
-            text = "^/disable\\s+?group\\s+?\\d+",
-            filterRule = FilterRule.NONE,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.WHITE
-    )
+    @Permission(permission = PermissionType.WHITE)
+    @Filter(value = "^/disable\\s+?group\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void disable(MessageEvent event) {
         long id = Long.parseLong(event.getMessage().contentToString().replaceFirst("/disable\\s+?group\\s+?", ""));
-        if (GroupServiceImpl.INSTANCE.disableGroup(id)) {
-            event.getSubject().sendMessage("群: " + id + " 已取消授权");
-        }
+        PermissionManager.INSTANCE.removePermission(ContactType.GROUP, id);
+        event.getSubject().sendMessage("群: " + id + " 已取消授权");
     }
 
     @Command(
@@ -69,18 +58,9 @@ public class GroupEnableCommands {
             permission = PermissionType.WHITE
     )
     @Handler
-    @MessageFilter(
-            text = "^/query\\s+?group\\s+?\\d+",
-            filterRule = FilterRule.NONE,
-            messageRule = MessageRule.REGEX,
-            permission = PermissionType.MASTER
-    )
+    @Permission(permission = PermissionType.WHITE)
+    @Filter(value = "^/query\\s+?group\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void query(MessageEvent event) {
         long l = Long.parseLong(event.getMessage().contentToString().replaceFirst("^/query\\s+?group\\s+?", ""));
-        if (l == 0) {
-            event.getSubject().sendMessage(GroupServiceImpl.INSTANCE.getEnableGroupList().toString());
-        } else {
-            event.getSubject().sendMessage(String.valueOf(GroupServiceImpl.INSTANCE.exist(l)));
-        }
     }
 }

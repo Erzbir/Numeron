@@ -1,12 +1,8 @@
 package com.erzbir.numeron.plugin.rss.listner;
 
-import com.erzbir.numeron.annotation.Command;
-import com.erzbir.numeron.annotation.Handler;
-import com.erzbir.numeron.annotation.Listener;
-import com.erzbir.numeron.annotation.MessageFilter;
-import com.erzbir.numeron.enums.FilterRule;
-import com.erzbir.numeron.enums.MessageRule;
-import com.erzbir.numeron.enums.PermissionType;
+import com.erzbir.numeron.annotation.*;
+import com.erzbir.numeron.api.permission.PermissionType;
+import com.erzbir.numeron.enums.MatchType;
 import com.erzbir.numeron.menu.Menu;
 import com.erzbir.numeron.plugin.rss.api.EditApi;
 import com.erzbir.numeron.plugin.rss.api.ViewApi;
@@ -27,12 +23,8 @@ public class ReceiveCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#contacts\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#contacts\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void echo(MessageEvent event) {
         String id = event.getMessage().contentToString().replaceFirst("#contacts\\s+?", "");
         event.getSubject().sendMessage(ViewApi.viewReceiveList(id));
@@ -45,11 +37,8 @@ public class ReceiveCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "#contacts all",
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter("#contact all")
     private void echoAll(MessageEvent event) {
         event.getSubject().sendMessage(ViewApi.viewAllReceiveList());
     }
@@ -61,12 +50,8 @@ public class ReceiveCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#add\\s+?group\\s+?\\d+?\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#add\\s+?group\\s+?\\d+?\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void addG(MessageEvent event) {
         String[] s = event.getMessage().contentToString().replaceFirst("#add\\s+?group\\s+?", "").split("\\s+?");
         EditApi.EditReceiveListApi.addGroup(s[0], Long.parseLong(s[1]));
@@ -79,12 +64,8 @@ public class ReceiveCommand {
             permission = PermissionType.ADMIN
     )
     @Handler
-    @MessageFilter(
-            text = "^#delete\\s+?group\\s+?\\d+?\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.ADMIN
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#delete\\s+?group\\s+?\\d+?\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void deleteG(MessageEvent event) {
         String[] s = event.getMessage().contentToString().replaceFirst("#delete\\s+?group\\s+?", "").split("\\s+?");
         EditApi.EditReceiveListApi.deleteGroup(s[0], Long.parseLong(s[1]));
@@ -97,12 +78,8 @@ public class ReceiveCommand {
             permission = PermissionType.WHITE
     )
     @Handler
-    @MessageFilter(
-            text = "^#add\\s+?user\\s+?\\d+?\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.WHITE
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#add\\s+?user\\s+?\\d+?\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void addU(MessageEvent event) {
         String[] s = event.getMessage().contentToString().replaceFirst("#add\\s+?user\\s+?", "").split("\\s+?");
         EditApi.EditReceiveListApi.addUser(s[0], Long.parseLong(s[1]));
@@ -115,12 +92,8 @@ public class ReceiveCommand {
             permission = PermissionType.WHITE
     )
     @Handler
-    @MessageFilter(
-            text = "^#delete\\s+?user\\s+?\\d+?\\s+?\\d+",
-            messageRule = MessageRule.REGEX,
-            filterRule = FilterRule.BLACK,
-            permission = PermissionType.WHITE
-    )
+    @Permission(permission = PermissionType.ADMIN)
+    @Filter(value = "^#delete\\s+?user\\s+?\\d+?\\s+?\\d+", matchType = MatchType.REGEX_MATCHES)
     private void deleteU(MessageEvent event) {
         String[] s = event.getMessage().contentToString().replaceFirst("#delete\\s+?group\\s+?", "").split("\\s+?");
         EditApi.EditReceiveListApi.deleteUser(s[0], Long.parseLong(s[1]));
