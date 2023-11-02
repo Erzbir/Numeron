@@ -35,7 +35,7 @@ public enum StringMatchers {
     REGEX_CONTAINS((target, rule) -> {
         Pattern pattern = Pattern.compile(rule);
         Matcher regMatcher = pattern.matcher(target);
-        while (regMatcher.hitEnd()) {
+        while (!regMatcher.hitEnd()) {
             if (regMatcher.find()) {
                 return true;
             }
