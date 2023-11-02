@@ -97,21 +97,6 @@ public class EventMethodExecute implements MethodExecute {
         return true;
     }
 
-    private String parseAnnotation(Annotation annotation) {
-        if (annotation instanceof RunBefore runBefore) {
-            return runBefore.value();
-        } else if (annotation instanceof RunAfter runAfter) {
-            return runAfter.value();
-        }
-        return "";
-    }
-
-    public String[] getParameterTypeNames(String methodName) {
-        String s = methodName.replaceFirst(".*\\(", "")
-                .replaceFirst("\\)", "");
-        return s.replaceAll("\\s+", "").split(",");
-    }
-
     public String removeParameters(String methodName) {
         return methodName.replaceFirst("\\(.*", "");
     }
