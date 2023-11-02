@@ -50,13 +50,10 @@ public class EnhanceListenerHostRegister implements ListenerHostRegister {
      */
     @NotNull
     private EventChannel<? extends net.mamoe.mirai.event.Event> toFilter(@NotNull EventChannel<? extends net.mamoe.mirai.event.Event> channel, Method method) {
-        return channel.filter(event -> {
-            boolean filter = FilterAnnotationProcessor.INSTANCE.process(method, event);
-            filter &= TargetsAnnotationProcessor.INSTANCE.process(method, event);
-            filter &= PermissionAnnotationProcessor.INSTANCE.process(method, event);
-            filter &= CommonAnnotationProcessor.INSTANCE.process(method, event);
-            return filter;
-        });
+        return channel.filter(event -> FilterAnnotationProcessor.INSTANCE.process(method, event)
+                && CommonAnnotationProcessor.INSTANCE.process(method, event)
+                && PermissionAnnotationProcessor.INSTANCE.process(method, event)
+                && TargetsAnnotationProcessor.INSTANCE.process(method, event));
     }
 
     private EventChannel<? extends net.mamoe.mirai.event.Event> bindScope(EventChannel<? extends net.mamoe.mirai.event.Event> channel, CoroutineScope scope) {

@@ -24,8 +24,6 @@ public class TargetsAnnotationFilter extends AbstractAnnotationChannelFilter<Tar
             return true;
         }
 
-        boolean match = true;
-
         long[] bots = annotation.bots();
         long[] senders = annotation.senders();
         long[] groups = annotation.groups();
@@ -34,27 +32,36 @@ public class TargetsAnnotationFilter extends AbstractAnnotationChannelFilter<Tar
             return true;
         }
 
+
+        return filterSenders(senders, event) && filterGroups(groups, event) && filterBots(bots, event);
+    }
+
+    private boolean filterBots(long[] bots, Event event) {
         if (bots.length != 0) {
             if (event instanceof BotEvent botEvent) {
-                match &= Arrays.stream(bots).anyMatch(bot -> bot == botEvent.getBot().getId());
+                return Arrays.stream(bots).anyMatch(bot -> bot == botEvent.getBot().getId());
             }
-
         }
+        return true;
+    }
 
+    private boolean filterSenders(long[] senders, Event event) {
         if (senders.length != 0) {
-            if (event instanceof UserEvent userEvent) {
-                match &= Arrays.stream(senders).anyMatch(sender -> sender == userEvent.getUser().getId());
-            }
             if (event instanceof MessageEvent messageEvent) {
-                match &= Arrays.stream(senders).anyMatch(sender -> sender == messageEvent.getSender().getId());
+                return Arrays.stream(senders).anyMatch(sender -> sender == messageEvent.getSender().getId());
+            } else if (event instanceof UserEvent userEvent) {
+                return Arrays.stream(senders).anyMatch(sender -> sender == userEvent.getUser().getId());
             }
         }
+        return true;
+    }
 
+    private boolean filterGroups(long[] groups, Event event) {
         if (groups.length != 0) {
             if (event instanceof GroupEvent groupEvent) {
-                match &= Arrays.stream(groups).anyMatch(group -> group == groupEvent.getGroup().getId());
+                return Arrays.stream(groups).anyMatch(group -> group == groupEvent.getGroup().getId());
             }
         }
-        return match;
+        return true;
     }
 }

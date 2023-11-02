@@ -18,14 +18,16 @@ import net.mamoe.mirai.event.events.MessageEvent;
 public class FilterAnnotationFilter extends AbstractAnnotationChannelFilter<Filter, Event> {
     @Override
     public boolean filter(Event event) {
-        boolean match = true;
         Targets targets = annotation.targets();
         TargetsAnnotationFilter targetsFilter = (TargetsAnnotationFilter) AnnotationFilterFactory.INSTANCE.create(targets);
+        return filter0(event) && targetsFilter.filter(event);
+    }
 
+    private boolean filter0(Event event) {
         if (event instanceof MessageEvent messageEvent) {
             Matcher<String, String> matcher = annotation.matchType().getMatcher();
-            match = matcher.match(messageEvent.getMessage().contentToString(), annotation.value());
+            return matcher.match(messageEvent.getMessage().contentToString(), annotation.value());
         }
-        return match && targetsFilter.filter(event);
+        return true;
     }
 }
