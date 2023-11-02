@@ -5,6 +5,7 @@ import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.core.listener.EnhanceListenerHostRegister;
 import com.erzbir.numeron.utils.NumeronLogUtil;
+import kotlin.coroutines.EmptyCoroutineContext;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 
@@ -27,7 +28,7 @@ public class ListenerRegisterProcessor implements Processor {
     public void onApplicationEvent() {
         ListenerRegisterProcessor.channel = GlobalEventChannel.INSTANCE;
         NumeronLogUtil.info("开始注册注解消息处理监听......");
-        context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> enhanceListenerHostRegister.registerMethods(v, channel));
+        context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> enhanceListenerHostRegister.registerMethods(v, channel, EmptyCoroutineContext.INSTANCE));
         NumeronLogUtil.info("注解消息处理监听注册完毕\n");
     }
 

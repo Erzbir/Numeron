@@ -1,5 +1,7 @@
 package com.erzbir.numeron.core.listener;
 
+import kotlin.coroutines.CoroutineContext;
+import kotlin.coroutines.EmptyCoroutineContext;
 import net.mamoe.mirai.event.ConcurrencyKind;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
@@ -12,5 +14,9 @@ import java.lang.reflect.Method;
  * @Date 2023/7/27
  */
 public interface HandlerRegister {
-    void register(Object bean, Method method, EventChannel<? extends Event> channel, EventPriority eventPriority, ConcurrencyKind concurrencyKind);
+    default void register(Object bean, Method method, EventChannel<? extends Event> channel, EventPriority eventPriority, ConcurrencyKind concurrency) {
+        register(bean, method, channel, eventPriority, concurrency, EmptyCoroutineContext.INSTANCE);
+    }
+
+    void register(Object bean, Method method, EventChannel<? extends Event> channel, EventPriority eventPriority, ConcurrencyKind concurrency, CoroutineContext coroutineContext);
 }

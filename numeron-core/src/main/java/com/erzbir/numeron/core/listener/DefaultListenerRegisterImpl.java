@@ -54,4 +54,9 @@ public class DefaultListenerRegisterImpl implements ListenerRegisterInter {
     public void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost, CoroutineContext coroutineContext) {
         enhanceListenerHostRegister.registerListenerHost(channel, listenerHost, coroutineContext);
     }
+
+    @Override
+    public void registerListenerHost(EventChannel<? extends Event> channel, Object bean, CoroutineContext coroutineContext) {
+        enhanceListenerHostRegister.registerListenerHost(channel, bean, coroutineContext);
+    }
 }

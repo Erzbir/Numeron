@@ -33,7 +33,12 @@ public class EnhanceListenerHostRegister implements ListenerHostRegister {
 
     @Override
     public void registerListenerHost(EventChannel<? extends Event> channel, ListenerHost listenerHost, CoroutineContext coroutineContext) {
-        registerMethods(listenerHost, channel);
+        registerListenerHost(channel, (Object) listenerHost, coroutineContext);
+    }
+
+    @Override
+    public void registerListenerHost(EventChannel<? extends Event> channel, Object bean, CoroutineContext coroutineContext) {
+        registerMethods(bean, channel, coroutineContext);
     }
 
     /**
@@ -82,7 +87,7 @@ public class EnhanceListenerHostRegister implements ListenerHostRegister {
         return coroutineScope;
     }
 
-    public void registerMethod(Object bean, Method method, EventChannel<? extends net.mamoe.mirai.event.Event> eventChannel) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public void registerMethod(Object bean, Method method, EventChannel<? extends net.mamoe.mirai.event.Event> eventChannel, CoroutineContext coroutineContext) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Annotation handlerAnnotation = method.getAnnotation(Handler.class);
         if (handlerAnnotation == null) {
             handlerAnnotation = method.getAnnotation(EventHandler.class);
@@ -98,7 +103,7 @@ public class EnhanceListenerHostRegister implements ListenerHostRegister {
         EventPriority priority = (EventPriority) annotationParser.get("priority");
         ConcurrencyKind concurrency = (ConcurrencyKind) annotationParser.get("concurrency");
         EventChannel<? extends net.mamoe.mirai.event.Event> filteredScopedChannel = toFilter(scopedEventChannel, method);
-        eventHandlerRegister.register(bean, method, filteredScopedChannel, priority, concurrency);
+        eventHandlerRegister.register(bean, method, filteredScopedChannel, priority, concurrency, coroutineContext);
     }
 
     /**
@@ -106,7 +111,7 @@ public class EnhanceListenerHostRegister implements ListenerHostRegister {
      *
      * @param bean bean 对象
      */
-    public void registerMethods(Object bean, EventChannel<? extends Event> channel) {
+    public void registerMethods(Object bean, EventChannel<? extends Event> channel, CoroutineContext coroutineContext) {
         Class<?> beanClass = bean.getClass();
         Method[] methods = ListenerAnnotationUtil.getCallBackMethods(bean);
         if (methods == null) {
@@ -125,7 +130,7 @@ public class EnhanceListenerHostRegister implements ListenerHostRegister {
                             .replaceFirst("\\[", "(")
                             .replace("]", ")");
                     try {
-                        registerMethod(bean, method, eventChannel);
+                        registerMethod(bean, method, eventChannel, coroutineContext);
                     } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
                         NumeronLogUtil.logger.error("ERROR", e);
                         throw new RuntimeException(e);

@@ -1,7 +1,7 @@
 package com.erzbir.numeron.core.listener;
 
 import com.erzbir.numeron.config.NumeronBotConfiguration;
-import kotlin.coroutines.EmptyCoroutineContext;
+import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.*;
 import net.mamoe.mirai.event.events.BotEvent;
 
@@ -21,10 +21,10 @@ public class EventHandlerRegister implements HandlerRegister {
     private final DefaultListenerRegisterImpl defaultListenerRegister = new DefaultListenerRegisterImpl();
 
     @Override
-    public void register(Object bean, Method method, EventChannel<? extends Event> channel, EventPriority eventPriority, ConcurrencyKind concurrency) {
+    public void register(Object bean, Method method, EventChannel<? extends Event> channel, EventPriority eventPriority, ConcurrencyKind concurrency, CoroutineContext coroutineContext) {
         Parameter[] parameters = method.getParameters();
         Class<? extends Event> eventType = parameters[0].getType().asSubclass(Event.class);
-        defaultListenerRegister.subscribe(channel, eventType, EmptyCoroutineContext.INSTANCE, concurrency, eventPriority, event -> {
+        defaultListenerRegister.subscribe(channel, eventType, coroutineContext, concurrency, eventPriority, event -> {
             EventMethodExecute.INSTANCE.execute(method, bean, event);
             return event instanceof BotEvent event1 ? (((NumeronBotConfiguration) event1.getBot().getConfiguration()).isEnable() ? ListeningStatus.LISTENING : ListeningStatus.STOPPED) : ListeningStatus.LISTENING;
         });
