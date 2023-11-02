@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * <p>
- * 标记在 {@link Handler} 注解生效的方法上, 指定过滤, {@code Filter} 的负数形式
+ * 标记在 {@link Handler} 注解生效的方法上, 指定过滤, {@link Filter} 的负数形式
  * </p>
  *
  * @author Erzbir
@@ -23,9 +23,9 @@ public @interface Filters {
     Filter[] value();
 
     /**
-     * 如果是 ANY, 那么遍历到一个  {@code Filter} 为 true 时的过滤生效 或者 遍历完也没有一个生效
+     * 如果是 {@code ANY}, 那么遍历到一个  {@link Filter} 为 {@code true} 时的过滤生效 或者 遍历完没有为 {@code true} 的则不生效
      * <p><p/>
-     * 如果是 ALL, 那么会遍历完整个 {@code Filter} 数组
+     * 如果是 {@code ALL}, 那么会遍历完整个 {@link Filter} 数组, 全为 {@code true} 时过滤生效
      */
     MultiMatchType multiMatchType() default MultiMatchType.ANY;
 }

@@ -10,8 +10,11 @@ import net.mamoe.mirai.event.Event;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * 针对 {@link CommonFilter } 注解的内容过滤
+ *
  * @author Erzbir
  * @Date 2023/8/11
+ * @see CommonFilter
  */
 public class CommonAnnotationFilter extends AbstractAnnotationChannelFilter<CommonFilter, Event> implements ChannelFilter<Event> {
     @SuppressWarnings({"rawtypes", "unchecked"})

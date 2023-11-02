@@ -23,7 +23,7 @@ public class PermissionDaoImpl implements PermissionDao {
 
     private PermissionDaoImpl() {
         String permission = """
-                CREATE TABLE IF NOT EXISTS Permissions(
+                CREATE TABLE IF NOT EXISTS permissions(
                     id BIGINT PRIMARY KEY DEFAULT 0 NOT NULL,
                     contact_type_code INT DEFAULT 0 NOT NULL,
                     contact_id BIGINT NOT NULL,
@@ -42,7 +42,7 @@ public class PermissionDaoImpl implements PermissionDao {
 
     @Override
     public Map<Long, Permission> getAllPermissions(Integer contactTypeCode) throws SQLException {
-        String sql = "SELECT * FROM Permissions";
+        String sql = "SELECT * FROM permissions";
         PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
         ResultSet resultSet = SqlUtil.getResultSet(prepared);
         Map<Long, Permission> ret = new HashMap<>();
@@ -57,7 +57,7 @@ public class PermissionDaoImpl implements PermissionDao {
 
     @Override
     public Map<ContactType, Map<Long, Permission>> getAllPermissions() throws SQLException {
-        String sql = "SELECT * FROM Permissions";
+        String sql = "SELECT * FROM permissions";
         PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
         ResultSet resultSet = SqlUtil.getResultSet(prepared);
         Map<ContactType, Map<Long, Permission>> ret = new HashMap<>();
@@ -76,7 +76,7 @@ public class PermissionDaoImpl implements PermissionDao {
 
     @Override
     public void addPermission(Integer contactTypeCode, Long contactId, Integer permissionCode) throws SQLException {
-        String sql = "INSERT INTO Permissions(contact_type_code,contact_id,permission_code) VALUES(?,?,?)";
+        String sql = "INSERT INTO permissions(contact_type_code,contact_id,permission_code) VALUES(?,?,?)";
         Object[] params = {
                 contactTypeCode, contactId, permissionCode
         };
@@ -87,7 +87,7 @@ public class PermissionDaoImpl implements PermissionDao {
 
     @Override
     public void removePermission(Integer contactType, Long contactId) throws SQLException {
-        String sql = "DELETE FROM Permissions WHERE contact_type_code=? and contact_id=?";
+        String sql = "DELETE FROM permissions WHERE contact_type_code=? and contact_id=?";
         PreparedStatement prepared = SqlConnection.getConnection().prepareStatement(sql);
         prepared.setInt(1, contactType);
         prepared.setLong(2, contactId);
@@ -97,7 +97,7 @@ public class PermissionDaoImpl implements PermissionDao {
 
     @Override
     public void updatePermission(Integer contactTypeCode, Long contactId, Integer permissionCode) throws SQLException {
-        String sql = "UPDATE Permissions SET permission_code=? WHERE contact_type_code=? and contact_id=?";
+        String sql = "UPDATE permissions SET permission_code=? WHERE contact_type_code=? and contact_id=?";
         Object[] params = {
                 contactTypeCode, contactId, permissionCode
         };

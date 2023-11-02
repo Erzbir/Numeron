@@ -8,10 +8,12 @@ import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.events.MessageEvent;
 
 /**
- * 针对 {@code Filter 和 Filters} 注解的内容过滤
+ * 针对 {@link  Filter} 和 {@link com.erzbir.numeron.annotation.Filters} 注解的内容过滤
  *
  * @author Erzbir
  * @Date 2023/11/1
+ * @see Filter
+ * @see com.erzbir.numeron.annotation.Filters
  */
 public class FilterAnnotationFilter extends AbstractAnnotationChannelFilter<Filter, Event> {
     @Override

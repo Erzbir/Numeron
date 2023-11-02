@@ -9,10 +9,11 @@ import net.mamoe.mirai.event.events.GroupEvent;
 import net.mamoe.mirai.event.events.UserEvent;
 
 /**
- * 针对 {@code Permission } 注解的内容过滤
+ * 针对 {@link Permission } 注解的内容过滤
  *
  * @author Erzbir
  * @Date 2023/11/1
+ * @see Permission
  */
 public class PermissionAnnotationFilter extends AbstractAnnotationChannelFilter<Permission, Event> {
     @Override

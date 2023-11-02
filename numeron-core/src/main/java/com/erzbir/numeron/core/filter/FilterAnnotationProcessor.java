@@ -3,8 +3,8 @@ package com.erzbir.numeron.core.filter;
 import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Filters;
 import com.erzbir.numeron.api.filter.annotation.FilterAnnotationFilter;
-import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
 import com.erzbir.numeron.api.filter.enums.MultiMatchType;
+import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
 import net.mamoe.mirai.event.Event;
 
 import java.lang.reflect.AnnotatedElement;
@@ -24,7 +24,7 @@ public class FilterAnnotationProcessor implements EventAnnotationProcessor {
         Filters filters = annotatedElement.getAnnotation(Filters.class);
         Filter filterAnn = annotatedElement.getAnnotation(Filter.class);
         List<Filter> filterList;
-        MultiMatchType multiMatchType = MultiMatchType.ALL;
+        MultiMatchType multiMatchType = MultiMatchType.ANY;
         if (filters != null) {
             filterList = List.of(filters.value());
             multiMatchType = filters.multiMatchType();

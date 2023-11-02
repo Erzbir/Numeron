@@ -1,9 +1,10 @@
 package com.erzbir.numeron.api.permission;
 
 /**
+ * <p>权限</p>
+ *
  * @author Erzbir
  * @Date: 2022/11/19 09:21
- * <p>权限过滤比类型</p>
  */
 public enum PermissionType implements Permission {
     MASTER(0x00000000, "master"),

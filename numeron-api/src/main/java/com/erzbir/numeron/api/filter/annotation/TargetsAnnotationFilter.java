@@ -11,10 +11,11 @@ import net.mamoe.mirai.event.events.UserEvent;
 import java.util.Arrays;
 
 /**
- * 针对 {@code Targets} 注解的内容过滤
+ * 针对 {@link Targets} 注解的内容过滤
  *
  * @author Erzbir
  * @Date 2023/11/1
+ * @see Targets
  */
 public class TargetsAnnotationFilter extends AbstractAnnotationChannelFilter<Targets, Event> implements Filter<Event> {
     @Override
