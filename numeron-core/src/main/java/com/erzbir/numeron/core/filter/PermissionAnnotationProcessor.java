@@ -1,7 +1,6 @@
 package com.erzbir.numeron.core.filter;
 
 import com.erzbir.numeron.annotation.Permission;
-import com.erzbir.numeron.api.filter.annotation.PermissionAnnotationFilter;
 import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
 import net.mamoe.mirai.event.Event;
 
@@ -20,7 +19,6 @@ public class PermissionAnnotationProcessor implements EventAnnotationProcessor {
         if (permission == null) {
             return true;
         }
-        PermissionAnnotationFilter permissionFilter = (PermissionAnnotationFilter) AnnotationFilterFactory.INSTANCE.create(permission);
-        return permissionFilter.filter(event);
+        return AnnotationFilterFactory.INSTANCE.create(permission).filter(event);
     }
 }

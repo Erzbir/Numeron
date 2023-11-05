@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.mamoe.mirai.Bot;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Erzbir
@@ -24,19 +24,20 @@ public class StarterController {
             |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|
                         
             """;
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-    private final Starter.Initializer initial = new Starter.Initializer();
     private Starter starter;
+    private List<Initializer> initializers = new ArrayList<>();
 
-    public void boot() throws InterruptedException {
-        long l = System.currentTimeMillis();
-        initial.initConfig();
-        initial.initPlugin();
+    public StarterController() {
+        initializers.add(new ConfigInitializer());
+        initializers.add(new PluginInitializer());
+        initializers.add(new BotInitializer());
+    }
+
+
+    public void boot(Class<?> bootClass, ClassLoader classLoader) throws InterruptedException {
+        initializers.forEach(Initializer::init);
+        setStarter(new SpiStarter(bootClass.getName(), classLoader));
         starter.boot();
-        initial.initLogin();
-        while (!initial.getExecutor().isTerminated()) {
-            Thread.sleep(100);
-        }
         printLog();
         NumeronLogUtil.info("欢迎使用 Numeron!!!");
         BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);

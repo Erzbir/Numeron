@@ -1,5 +1,8 @@
 package com.erzbir.numeron.utils;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -19,108 +22,116 @@ import java.util.stream.Collectors;
  * @author Erzbir
  * @Date: 2022/12/12 01:17
  */
+@Getter
 public class ClassScanner {
 
-    private final String basePackage; // 主包
-    private final String packageDirName;
-    private final boolean recursive;  // 是否递归扫瞄
-    @Deprecated
-    private final Predicate<String> packagePredicate; // 用于过滤
-    private final Predicate<Class<?>> classPredicate; // 用于过滤
+    @Setter
+    private String basePackage; // 主包
+    @Setter
+    private String packageDirName;
+    @Setter
+    private Predicate<Class<?>> classPredicate; // 用于过滤
+    @Setter
     private ClassLoader classLoader;
     private Set<Class<?>> classes = new HashSet<>();  // 扫瞄后将字节码放到这个Set
     private Set<String> classesOfLoadError = new HashSet<>();
+    @Setter
     private boolean initialize;
+    @Setter
     private boolean ignoreLoadError;
-
 
     /**
      * @param basePackage    主包
-     * @param recursive      是否递归
      * @param classPredicate 用于过滤
-     * @param classLoader    类加载器, 在类加载器和线程类加载器的上下文不一致时会用到
+     * @param classLoader    类加载器
      */
-    public ClassScanner(String basePackage, ClassLoader classLoader, boolean recursive,
+    public ClassScanner(String basePackage, ClassLoader classLoader,
                         Predicate<Class<?>> classPredicate) {
         if (basePackage.endsWith(".")) {
             basePackage = basePackage.substring(0, basePackage.lastIndexOf('.'));
         }
         this.basePackage = basePackage;
         this.packageDirName = basePackage.replace('.', '/');
-        this.recursive = recursive;
         this.classPredicate = classPredicate;
         this.classLoader = classLoader;
-        this.packagePredicate = null;
         this.initialize = false;
         this.ignoreLoadError = false;
     }
 
-    public ClassScanner(String basePackage, ClassLoader classLoader, boolean recursive) {
-        this(basePackage, classLoader, recursive, null);
+    public ClassScanner(String basePackage, ClassLoader classLoader) {
+        this(basePackage, classLoader, null);
     }
 
-    public ClassScanner(String basePackage, boolean recursive) {
-        this(basePackage, Thread.currentThread().getContextClassLoader(), recursive, null);
+    public ClassScanner(String basePackage) {
+        this(basePackage, Thread.currentThread().getContextClassLoader(), null);
     }
 
-    public ClassScanner(String basePackage, boolean recursive, Predicate<Class<?>> classPredicate) {
-        this(basePackage, Thread.currentThread().getContextClassLoader(), recursive, classPredicate);
+    public ClassScanner(String basePackage, Predicate<Class<?>> classPredicate) {
+        this(basePackage, Thread.currentThread().getContextClassLoader(), classPredicate);
     }
 
-    public static Set<Class<?>> scanAllPackageByAnnotation(String packageName, Class<? extends Annotation> annotationClass) throws IOException {
+    public static Set<Class<?>> scanAllPackageByAnnotation(String packageName, Class<? extends Annotation> annotationClass) {
         return scanAllPackage(packageName, clazz -> clazz.isAnnotationPresent(annotationClass));
     }
 
-    public static Set<Class<?>> scanPackageByAnnotation(String packageName, Class<? extends Annotation> annotationClass) throws IOException, ClassNotFoundException {
+    public static Set<Class<?>> scanPackageByAnnotation(String packageName, Class<? extends Annotation> annotationClass) {
         return scanPackage(packageName, clazz -> clazz.isAnnotationPresent(annotationClass));
     }
 
-    public static Set<Class<?>> scanAllPackageBySuper(String packageName, Class<?> superClass) throws IOException {
+    public static Set<Class<?>> scanAllPackageBySuper(String packageName, Class<?> superClass) {
         return scanAllPackage(packageName, clazz -> superClass.isAssignableFrom(clazz) && !superClass.equals(clazz));
     }
 
-    public static Set<Class<?>> scanPackageBySuper(String packageName, Class<?> superClass) throws IOException, ClassNotFoundException {
+    public static Set<Class<?>> scanPackageBySuper(String packageName, Class<?> superClass) {
         return scanPackage(packageName, clazz -> superClass.isAssignableFrom(clazz) && !superClass.equals(clazz));
     }
 
-    public static Set<Class<?>> scanPackage() throws IOException, ClassNotFoundException {
+    public static Set<Class<?>> scanPackage() {
         return scanPackage("", (Predicate<Class<?>>) null);
     }
 
-    public static Set<Class<?>> scanPackage(String packageName) throws IOException, ClassNotFoundException {
+    public static Set<Class<?>> scanPackage(String packageName) {
         return scanPackage(packageName, (Predicate<Class<?>>) null);
     }
 
-    public static Set<Class<?>> scanPackage(String packageName, ClassLoader classLoader) throws IOException, ClassNotFoundException {
-        return new ClassScanner(packageName, classLoader, true, null).scanAllClasses();
+    public static Set<Class<?>> scanPackage(String packageName, ClassLoader classLoader, boolean force) {
+        return new ClassScanner(packageName, classLoader, null).scan(force);
     }
 
-    public static Set<Class<?>> scanPackage(String packageName, Predicate<Class<?>> classFilter) throws IOException, ClassNotFoundException {
-        return new ClassScanner(packageName, Thread.currentThread().getContextClassLoader(), true, classFilter).scanAllClasses();
+    public static Set<Class<?>> scanPackage(String packageName, boolean force) {
+        return new ClassScanner(packageName).scan(force);
     }
 
-    public static Set<Class<?>> scanPackage(String packageName, ClassLoader classLoader, Predicate<Class<?>> classFilter) throws IOException, ClassNotFoundException {
-        return new ClassScanner(packageName, classLoader, true, classFilter).scanAllClasses();
+    public static Set<Class<?>> scanPackage(String packageName, ClassLoader classLoader) {
+        return new ClassScanner(packageName, classLoader, null).scan();
     }
 
-    public static Set<Class<?>> scanAllPackage() throws IOException {
+    public static Set<Class<?>> scanPackage(String packageName, Predicate<Class<?>> classFilter) {
+        return new ClassScanner(packageName, Thread.currentThread().getContextClassLoader(), classFilter).scan();
+    }
+
+    public static Set<Class<?>> scanPackage(String packageName, ClassLoader classLoader, Predicate<Class<?>> classFilter) {
+        return new ClassScanner(packageName, classLoader, classFilter).scan();
+    }
+
+    public static Set<Class<?>> scanAllPackage() {
         return scanAllPackage("");
     }
 
-    public static Set<Class<?>> scanAllPackage(String packageName) throws IOException {
-        return new ClassScanner(packageName, true).scanAllClasses(true);
+    public static Set<Class<?>> scanAllPackage(String packageName) {
+        return new ClassScanner(packageName).scan(true);
     }
 
-    public static Set<Class<?>> scanAllPackage(String packageName, Predicate<Class<?>> classFilter) throws IOException {
-        return new ClassScanner(packageName, Thread.currentThread().getContextClassLoader(), true, classFilter).scanAllClasses(true);
+    public static Set<Class<?>> scanAllPackage(String packageName, Predicate<Class<?>> classFilter) {
+        return new ClassScanner(packageName, Thread.currentThread().getContextClassLoader(), classFilter).scan(true);
     }
 
-    public static Set<Class<?>> scanAllPackage(String packageName, ClassLoader classLoader) throws IOException {
-        return new ClassScanner(packageName, classLoader, true).scanAllClasses(true);
+    public static Set<Class<?>> scanAllPackage(String packageName, ClassLoader classLoader) {
+        return new ClassScanner(packageName, classLoader).scan(true);
     }
 
-    public static Set<Class<?>> scanAllPackage(String packageName, ClassLoader classLoader, Predicate<Class<?>> classFilter) throws IOException, ClassNotFoundException {
-        return new ClassScanner(packageName, classLoader, true, classFilter).scanAllClasses(true);
+    public static Set<Class<?>> scanAllPackage(String packageName, ClassLoader classLoader, Predicate<Class<?>> classFilter) {
+        return new ClassScanner(packageName, classLoader, classFilter).scan(true);
     }
 
     /**
@@ -147,88 +158,36 @@ public class ClassScanner {
         return null;
     }
 
-    public Set<Class<?>> getClasses() {
-        return classes;
+    public Set<Class<?>> scan() {
+        return scan(false);
     }
 
-    public Set<String> getClassesOfLoadError() {
-        return classesOfLoadError;
-    }
-
-    public boolean isInitialize() {
-        return initialize;
-    }
-
-    public void setInitialize(boolean initialize) {
-        this.initialize = initialize;
-    }
-
-    public boolean isIgnoreLoadError() {
-        return ignoreLoadError;
-    }
-
-    public void setIgnoreLoadError(boolean ignoreLoadError) {
-        this.ignoreLoadError = ignoreLoadError;
-    }
-
-    public String getBasePackage() {
-        return basePackage;
-    }
-
-    public String getPackageDirName() {
-        return packageDirName;
-    }
-
-    public boolean isRecursive() {
-        return recursive;
-    }
-
-    public Predicate<String> getPackagePredicate() {
-        return packagePredicate;
-    }
-
-    public Predicate<Class<?>> getClassPredicate() {
-        return classPredicate;
-    }
-
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
-
-    /**
-     * @return 包含所有class的Set
-     * <p>扫瞄所有class</p>
-     */
-    public Set<Class<?>> scanAllClasses() throws IOException, ClassNotFoundException {
-        return scanAllClasses(false);
-    }
-
-    public Set<Class<?>> scanAllClasses(boolean forceScanJavaClassPaths) throws IOException {
+    public Set<Class<?>> scan(boolean forceScanJavaClassPaths) {
         clear();
         String basePackageFilePath = basePackage.replace('.', '/');
-        Enumeration<URL> resources = classLoader.getResources(basePackageFilePath);
-        while (resources.hasMoreElements()) {
-            URL resource = resources.nextElement();
-            String protocol = resource.getProtocol();
-            if ("file".equals(protocol)) {
-                String filePath = URLDecoder.decode(resource.getFile(), StandardCharsets.UTF_8);
-                scanFile(new File(filePath), null);
-            } else if ("jar".equals(protocol)) {
-                scanJar(((JarURLConnection) resource.openConnection()).getJarFile());
+        try {
+            Enumeration<URL> resources = classLoader.getResources(basePackageFilePath);
+            while (resources.hasMoreElements()) {
+                URL resource = resources.nextElement();
+                String protocol = resource.getProtocol();
+                if ("file".equals(protocol)) {
+                    String filePath = URLDecoder.decode(resource.getFile(), StandardCharsets.UTF_8);
+                    scanFile(new File(filePath), null);
+                } else if ("jar".equals(protocol)) {
+                    scanJar(((JarURLConnection) resource.openConnection()).getJarFile());
+                }
             }
+        } catch (IOException e) {
+            classesOfLoadError.add(basePackageFilePath);
+            NumeronLogUtil.err(e.getMessage());
         }
-        if (forceScanJavaClassPaths) {
+        if (forceScanJavaClassPaths || classes.isEmpty()) {
             scanJavaClassPaths();
         }
         return classes;
     }
 
-    /**
-     * @param type 注解字节码
-     * @return 返回Set
-     * <p>扫瞄有{@param type}注解的类</p>
-     */
-    public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type) throws ClassNotFoundException, IOException {
+    public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type) {
         // 如果为空就先执行扫瞄再用Stream流过滤, 不为空就注解过滤
         if (classes.isEmpty()) {
             return scanWithAnnotation(type, true);
@@ -236,46 +195,42 @@ public class ClassScanner {
         return scanWithAnnotation(type, false);
     }
 
-    public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type, boolean isRenew) throws IOException, ClassNotFoundException {
+    public Set<Class<?>> scanWithAnnotation(Class<? extends Annotation> type, boolean isRenew) {
         if (isRenew) {
-            scanAllClasses();
+            scan();
         }
         return classes.stream().filter(t -> {
-            boolean flag = !t.isAnnotation(); // 排除注解, 因为注解也会有注解
-            if (t.getAnnotation(type) != null) {
-                return flag;
+            if (t.isAnnotation()) {
+                return false;
             }
-            Annotation[] annotations = t.getAnnotations();  // 取出t上的所有类注解
+            if (t.getAnnotation(type) != null) {
+                return true;
+            }
+            Annotation[] annotations = t.getAnnotations();  // 取出 t 上的所有注解, 向上一层搜索
             for (Annotation annotation : annotations) {
-                // if (getAnnotationFromAnnotation(annotation, type) != null)
                 if (annotation.annotationType().getAnnotation(type) != null) {
-                    return flag;
+                    return true;
                 }
             }
             return false;
         }).collect(Collectors.toSet());
     }
 
-    /**
-     * @param interfaceType 接口的字节码
-     * @return 返回一个Set
-     * <p>此方法扫瞄实现了{@param interfaceType}的类</p>
-     */
-    public Set<Class<?>> scanWithInterface(Class<?> interfaceType) throws IOException, ClassNotFoundException {
+    public Set<Class<?>> scanWithSupperClass(Class<?> supperClass) {
         if (classes.isEmpty()) {
-            return scanWithInterface(interfaceType, true);
+            return scanWithSupperClass(supperClass, true);
         }
-        return scanWithInterface(interfaceType, false);
+        return scanWithSupperClass(supperClass, false);
     }
 
-    public Set<Class<?>> scanWithInterface(Class<?> interfaceType, boolean isRenew) throws IOException, ClassNotFoundException {
+    public Set<Class<?>> scanWithSupperClass(Class<?> supperClass, boolean isRenew) {
         if (isRenew) {
-            scanAllClasses();
+            scan();
         }
         return classes.stream().filter(t -> {
             Class<?>[] interfaces = t.getInterfaces();
             for (Class<?> inter : interfaces) {
-                if (inter == interfaceType) {
+                if (inter == supperClass) {
                     return true;
                 }
             }
@@ -333,7 +288,7 @@ public class ClassScanner {
                     throw new RuntimeException(e);
                 }
             }
-        } else if (file.isDirectory() && recursive) {
+        } else if (file.isDirectory()) {
             final File[] files = file.listFiles();
             if (null != files) {
                 for (File subFile : files) {

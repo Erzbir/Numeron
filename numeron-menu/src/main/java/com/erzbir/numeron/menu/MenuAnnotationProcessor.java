@@ -2,10 +2,10 @@ package com.erzbir.numeron.menu;
 
 
 import com.erzbir.numeron.annotation.Command;
+import com.erzbir.numeron.api.context.DefaultBeanCentral;
 import com.erzbir.numeron.api.permission.ContactType;
 import com.erzbir.numeron.api.permission.PermissionManager;
 import com.erzbir.numeron.api.processor.Processor;
-import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.lang.reflect.Method;
@@ -22,7 +22,7 @@ public class MenuAnnotationProcessor implements Processor {
 
     @Override
     public void onApplicationEvent() {
-        Map<String, Object> menu = AppContext.INSTANCE.getBeansWithAnnotation(Menu.class);
+        Map<String, Object> menu = DefaultBeanCentral.INSTANCE.getBeansWithAnnotation(Menu.class);
         NumeronLogUtil.info("开始生成图片帮助菜单");
         menu.forEach((k, v) -> {
             Class<?> aClass = v.getClass();

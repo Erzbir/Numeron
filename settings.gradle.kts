@@ -12,7 +12,7 @@ rootProject.name = "Numeron"
 include(
     listOf(
         ":numeron-api",
-        ":numeron-deps",
+        ":numeron-common",
         ":numeron-boot",
         ":numeron-console",
         ":numeron-core",

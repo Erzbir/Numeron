@@ -1,5 +1,8 @@
 package com.erzbir.numeron.boot;
 
+import com.erzbir.numeron.annotation.Component;
+import com.erzbir.numeron.api.context.DefaultBeanCentral;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -8,16 +11,8 @@ import java.util.concurrent.Executors;
  * @Date 2023/11/1
  */
 public abstract class AbstractStarter implements Starter {
-    protected static final String LOGO = """
-                        
-            | \\ | |_   _ _ __ ___   ___ _ __ ___  _ __ \s
-            |  \\| | | | | '_ ` _ \\ / _ \\ '__/ _ \\| '_ \\\s
-            | |\\  | |_| | | | | | |  __/ | | (_) | | | |
-            |_| \\_|\\__,_|_| |_| |_|\\___|_|  \\___/|_| |_|
-                        
-            """;
     protected final ExecutorService executor = Executors.newCachedThreadPool();
-    protected final String basePackage;
+    protected final String packageName;
     protected final ClassLoader classLoader;
 
     protected AbstractStarter(Class<?> bootClass) {
@@ -29,11 +24,16 @@ public abstract class AbstractStarter implements Starter {
     }
 
     protected AbstractStarter(String packageName, ClassLoader classLoader) {
-        basePackage = packageName;
+        this.packageName = packageName;
         this.classLoader = classLoader;
     }
 
     protected AbstractStarter(String packageName) {
         this(packageName, Thread.currentThread().getContextClassLoader());
+    }
+
+    @Override
+    public void boot() {
+        DefaultBeanCentral.INSTANCE.plusByAnnotation(packageName, classLoader, Component.class);
     }
 }

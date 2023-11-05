@@ -27,5 +27,5 @@ public @interface CommonFilter {
      *
      * @return 指定过滤器的字节码
      */
-    Class<? extends CustomFilter<?>> filter() default DefaultFilter.class;
+    Class<? extends CustomFilter> filter() default DefaultFilter.class;
 }

@@ -1,6 +1,11 @@
 package com.erzbir.numeron.console.plugin;
 
+import java.io.File;
+import java.util.List;
+
 /**
+ * PluginService
+ *
  * @author Erzbir
  * @Date: 2023/4/27 19:36
  */
@@ -10,9 +15,11 @@ interface PluginService {
 
     void disable(Plugin plugin);
 
-    boolean isLoaded(Plugin plugin);
+    void reload(Plugin plugin);
 
-    void loadPlugin(Plugin plugin);
+    void load(Plugin plugin);
+
+    boolean isLoaded(Plugin plugin);
 
     void removePlugin(Plugin plugin);
 
@@ -23,4 +30,20 @@ interface PluginService {
     String getPluginDec(Plugin plugin);
 
     String getPluginVersion(Plugin plugin);
+
+    List<?> getLoadedPlugins();
+
+    List<?> getEnablePlugins();
+
+    List<?> getDisablePlugins();
+
+    List<Plugin> getPlugins();
+
+    Plugin getPlugin(int index);
+
+    Plugin getPlugin(String plugin);
+
+    String getPluginsFolder();
+
+    File[] getUnloadedPlugins();
 }

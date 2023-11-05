@@ -1,7 +1,7 @@
 package com.erzbir.numeron.api.filter.annotation;
 
 import com.erzbir.numeron.annotation.Targets;
-import com.erzbir.numeron.api.filter.Filter;
+import com.erzbir.numeron.api.filter.AnnotationFilter;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupEvent;
@@ -17,7 +17,7 @@ import java.util.Arrays;
  * @Date 2023/11/1
  * @see Targets
  */
-public class TargetsAnnotationFilter extends AbstractAnnotationChannelFilter<Targets, Event> implements Filter<Event> {
+public class TargetsAnnotationFilter extends AbstractAnnotationFilter<Targets> implements AnnotationFilter {
     @Override
     public boolean filter(Event event) {
         if (annotation == null) {

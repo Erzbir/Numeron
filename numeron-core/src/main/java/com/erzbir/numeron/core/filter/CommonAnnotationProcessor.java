@@ -1,7 +1,6 @@
 package com.erzbir.numeron.core.filter;
 
 import com.erzbir.numeron.annotation.CommonFilter;
-import com.erzbir.numeron.api.filter.annotation.CommonAnnotationFilter;
 import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
 import net.mamoe.mirai.event.Event;
 
@@ -20,7 +19,6 @@ public class CommonAnnotationProcessor implements EventAnnotationProcessor {
         if (commonFilter == null) {
             return true;
         }
-        CommonAnnotationFilter commonAnnotationFilter = (CommonAnnotationFilter) AnnotationFilterFactory.INSTANCE.create(commonFilter);
-        return commonAnnotationFilter.filter(event);
+        return AnnotationFilterFactory.INSTANCE.create(commonFilter).filter(event);
     }
 }

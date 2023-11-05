@@ -1,6 +1,7 @@
 package com.erzbir.numeron.api.filter.annotation;
 
 import com.erzbir.numeron.annotation.Permission;
+import com.erzbir.numeron.api.filter.AnnotationFilter;
 import com.erzbir.numeron.api.permission.ContactType;
 import com.erzbir.numeron.api.permission.PermissionManager;
 import com.erzbir.numeron.api.permission.PermissionType;
@@ -15,7 +16,7 @@ import net.mamoe.mirai.event.events.UserEvent;
  * @Date 2023/11/1
  * @see Permission
  */
-public class PermissionAnnotationFilter extends AbstractAnnotationChannelFilter<Permission, Event> {
+public class PermissionAnnotationFilter extends AbstractAnnotationFilter<Permission> implements AnnotationFilter {
     @Override
     public boolean filter(Event event) {
         if (annotation == null) {

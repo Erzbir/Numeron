@@ -1,10 +1,10 @@
 package com.erzbir.numeron.core.bot;
 
 import com.erzbir.numeron.api.bot.BotService;
+import com.erzbir.numeron.api.context.DefaultAppContext;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.config.NumeronBotConfiguration;
-import com.erzbir.numeron.core.context.AppContext;
-import com.erzbir.numeron.core.context.ListenerContext;
+import com.erzbir.numeron.core.context.MiraiListenerContext;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.auth.BotAuthorization;
@@ -59,9 +59,9 @@ public class BotServiceImpl implements BotService {
     public void shutdown(Bot bot) {
         getConfiguration(bot).disable();
         List<Bot> runningBotList = getRunningBotList();
-        if (runningBotList.size() == 0) {
-            AppContext.INSTANCE.getProcessors().forEach(Processor::destroy);
-            ListenerContext.INSTANCE.cancelAll();
+        if (runningBotList.isEmpty()) {
+            DefaultAppContext.INSTANCE.getProcessors().forEach(Processor::destroy);
+            MiraiListenerContext.INSTANCE.cancelAll();
         }
     }
 
@@ -80,7 +80,7 @@ public class BotServiceImpl implements BotService {
         getConfiguration(bot).enable();
         List<Bot> runningBotList = getRunningBotList();
         if (runningBotList.size() == 1) {
-            AppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
+            DefaultAppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
         }
     }
 

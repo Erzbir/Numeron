@@ -2,7 +2,6 @@ package com.erzbir.numeron.core.filter;
 
 import com.erzbir.numeron.annotation.Filter;
 import com.erzbir.numeron.annotation.Filters;
-import com.erzbir.numeron.api.filter.annotation.FilterAnnotationFilter;
 import com.erzbir.numeron.api.filter.enums.MultiMatchType;
 import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
 import net.mamoe.mirai.event.Event;
@@ -53,7 +52,6 @@ public class FilterAnnotationProcessor implements EventAnnotationProcessor {
     }
 
     private boolean match(com.erzbir.numeron.annotation.Filter filter, Event event) {
-        FilterAnnotationFilter filterAnnotationFilter = (FilterAnnotationFilter) AnnotationFilterFactory.INSTANCE.create(filter);
-        return filterAnnotationFilter.filter(event);
+        return AnnotationFilterFactory.INSTANCE.create(filter).filter(event);
     }
 }
