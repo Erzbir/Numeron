@@ -15,7 +15,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
  * @see Filter
  * @see com.erzbir.numeron.annotation.Filters
  */
-public class FilterAnnotationFilter extends AbstractAnnotationChannelFilter<Filter, Event> {
+public class FilterAnnotationFilter extends AbstractAnnotationFilter<Filter> {
     @Override
     public boolean filter(Event event) {
         Targets targets = annotation.targets();

@@ -6,6 +6,6 @@ plugins {
 }
 
 dependencies {
-    api(project(":numeron-deps"))
+    api(project(":numeron-common"))
     api(project(":numeron-utils"))
 }

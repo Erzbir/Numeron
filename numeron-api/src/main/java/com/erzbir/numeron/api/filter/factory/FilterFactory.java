@@ -2,7 +2,6 @@ package com.erzbir.numeron.api.filter.factory;
 
 
 import com.erzbir.numeron.api.filter.Filter;
-import net.mamoe.mirai.event.Event;
 
 /**
  * <p>
@@ -12,6 +11,6 @@ import net.mamoe.mirai.event.Event;
  * @author Erzbir
  * @Date: 2022/11/26 17:54
  */
-public interface FilterFactory<E> {
-    Filter<? extends Event> create(E e);
+public interface FilterFactory {
+    <E> Filter create(E e);
 }

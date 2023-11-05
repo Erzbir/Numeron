@@ -1,9 +1,9 @@
 package com.erzbir.numeron.core.util;
 
+import com.erzbir.numeron.utils.NumeronLogUtil;
 import lombok.Getter;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +25,20 @@ public class SimpleAnnotationParser implements AnnotationParser {
 
 
     @Override
-    public void inject(Object object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void inject(Object object) {
+        if (object == null || annotation == null) {
+            return;
+        }
         Class<? extends Annotation> aClass = annotation.getClass();
         for (String key : keys) {
-            Method declaredMethod = aClass.getDeclaredMethod(key);
-            declaredMethod.setAccessible(true);
-            Object invoke = declaredMethod.invoke(annotation);
-            resultMap.put(key, invoke);
+            try {
+                Method declaredMethod = aClass.getDeclaredMethod(key);
+                declaredMethod.setAccessible(true);
+                Object invoke = declaredMethod.invoke(annotation);
+                resultMap.put(key, invoke);
+            } catch (Exception e) {
+                NumeronLogUtil.err(e.getMessage());
+            }
         }
     }
 

@@ -1,9 +1,9 @@
 package com.erzbir.numeron.core;
 
 import com.erzbir.numeron.api.Numeron;
+import com.erzbir.numeron.api.context.DefaultAppContext;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.config.NumeronConfiguration;
-import com.erzbir.numeron.core.context.AppContext;
 import net.mamoe.mirai.Bot;
 
 import java.util.List;
@@ -46,17 +46,17 @@ public class NumeronImpl implements Numeron {
 
     @Override
     public void addProcessor(Processor processor) {
-        AppContext.INSTANCE.addProcessor(processor);
+        DefaultAppContext.INSTANCE.addProcessor(processor);
     }
 
     @Override
     public void removeProcessor(Processor processor) {
-        AppContext.INSTANCE.removeProcessor(processor);
+        DefaultAppContext.INSTANCE.removeProcessor(processor);
     }
 
     @Override
     public Set<Processor> getProcessors() {
-        return AppContext.INSTANCE.getProcessors();
+        return DefaultAppContext.INSTANCE.getProcessors();
     }
 
 }

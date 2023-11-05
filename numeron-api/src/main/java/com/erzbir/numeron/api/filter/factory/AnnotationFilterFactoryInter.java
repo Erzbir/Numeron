@@ -1,7 +1,7 @@
 package com.erzbir.numeron.api.filter.factory;
 
+import com.erzbir.numeron.api.filter.AnnotationFilter;
 import com.erzbir.numeron.api.filter.Filter;
-import net.mamoe.mirai.event.Event;
 
 import java.lang.annotation.Annotation;
 
@@ -12,6 +12,11 @@ import java.lang.annotation.Annotation;
  * @Date 2023/7/27
  */
 @FunctionalInterface
-public interface AnnotationFilterFactoryInter extends FilterFactory<Annotation> {
-    Filter<? extends Event> create(Annotation annotation);
+public interface AnnotationFilterFactoryInter extends FilterFactory {
+    <E extends Annotation> AnnotationFilter create(E annotation);
+
+    @Override
+    default <E> Filter create(E e) {
+        return create((Annotation) e);
+    }
 }

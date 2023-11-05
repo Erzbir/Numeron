@@ -4,7 +4,6 @@ import kotlin.coroutines.CoroutineContext;
 import kotlin.coroutines.EmptyCoroutineContext;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
-import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListenerHost;
 
 /**

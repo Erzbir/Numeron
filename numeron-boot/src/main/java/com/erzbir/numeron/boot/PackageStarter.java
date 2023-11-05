@@ -1,12 +1,11 @@
 package com.erzbir.numeron.boot;
 
+import com.erzbir.numeron.api.context.DefaultAppContext;
 import com.erzbir.numeron.api.processor.Processor;
-import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.exception.ProcessorException;
 import com.erzbir.numeron.utils.ClassScanner;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -20,14 +19,15 @@ public class PackageStarter extends AbstractStarter implements Starter {
 
     @Override
     public void boot() {
-        ClassScanner scanner = new ClassScanner(basePackage, classLoader, true, null);
+        super.boot();
+        ClassScanner scanner = new ClassScanner(packageName, classLoader, null);
         try {
             // 扫瞄实现了 Processor 接口的类
-            scanner.scanWithInterface(Processor.class).forEach(e -> {
+            scanner.scanWithSupperClass(Processor.class).forEach(e -> {
                 Processor processor;
                 try {
                     processor = (Processor) e.getDeclaredConstructor().newInstance();
-                    AppContext.INSTANCE.addProcessor(processor);
+                    DefaultAppContext.INSTANCE.addProcessor(processor);
                 } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                          NoSuchMethodException ex) {
                     NumeronLogUtil.logger.error("ERROR", ex);
@@ -35,9 +35,6 @@ public class PackageStarter extends AbstractStarter implements Starter {
                 }
                 executor.submit(processor::onApplicationEvent);
             });
-        } catch (IOException | ClassNotFoundException e) {
-            NumeronLogUtil.logger.error(e.getMessage(), e);
-            throw new ProcessorException(e);
         } finally {
             executor.shutdown();
         }

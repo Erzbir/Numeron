@@ -1,8 +1,8 @@
 package com.erzbir.numeron.plugin.qqmanage.command;
 
 import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.permission.PermissionType;
 import com.erzbir.numeron.api.filter.enums.MatchType;
+import com.erzbir.numeron.api.permission.PermissionType;
 import com.erzbir.numeron.plugin.qqmanage.action.IllegalService;
 import net.mamoe.mirai.event.events.MessageEvent;
 

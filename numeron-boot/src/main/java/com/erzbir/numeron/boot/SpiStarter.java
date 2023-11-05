@@ -1,7 +1,7 @@
 package com.erzbir.numeron.boot;
 
+import com.erzbir.numeron.api.context.DefaultAppContext;
 import com.erzbir.numeron.api.processor.Processor;
-import com.erzbir.numeron.core.context.AppContext;
 
 import java.util.ServiceLoader;
 
@@ -28,11 +28,12 @@ public class SpiStarter extends AbstractStarter implements Starter {
 
     @Override
     public void boot() {
+        super.boot();
         ServiceLoader.load(Processor.class).forEach(t -> {
             if (t != null) {
                 executor.submit(() -> {
                     t.onApplicationEvent();
-                    AppContext.INSTANCE.addProcessor(t);
+                    DefaultAppContext.INSTANCE.addProcessor(t);
                 });
             }
         });

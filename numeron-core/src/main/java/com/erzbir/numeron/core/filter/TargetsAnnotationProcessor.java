@@ -1,7 +1,6 @@
 package com.erzbir.numeron.core.filter;
 
 import com.erzbir.numeron.annotation.Targets;
-import com.erzbir.numeron.api.filter.annotation.TargetsAnnotationFilter;
 import com.erzbir.numeron.api.filter.factory.AnnotationFilterFactory;
 import net.mamoe.mirai.event.Event;
 
@@ -20,7 +19,6 @@ public class TargetsAnnotationProcessor implements EventAnnotationProcessor {
         if (targets == null) {
             return true;
         }
-        TargetsAnnotationFilter targetsAnnotationFilter = (TargetsAnnotationFilter) AnnotationFilterFactory.INSTANCE.create(targets);
-        return targetsAnnotationFilter.filter(event);
+        return AnnotationFilterFactory.INSTANCE.create(targets).filter(event);
     }
 }

@@ -10,7 +10,7 @@ subprojects {
         compileOnly(project(":numeron-api"))
         compileOnly(project(":numeron-utils"))
         compileOnly(project(":numeron-menu"))
-        compileOnly(project(":numeron-deps"))
+        compileOnly(project(":numeron-common"))
         compileOnly(project(":numeron-console"))
     }
 }

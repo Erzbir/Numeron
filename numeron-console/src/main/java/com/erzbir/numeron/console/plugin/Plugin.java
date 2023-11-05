@@ -1,12 +1,10 @@
 package com.erzbir.numeron.console.plugin;
 
-import kotlinx.coroutines.CoroutineScope;
-
 /**
  * @author Erzbir
  * @Date: 2023/4/26 14:18
  */
-public interface Plugin extends CoroutineScope {
+public interface Plugin {
     void onEnable();
 
     void onDisable();
@@ -21,6 +19,10 @@ public interface Plugin extends CoroutineScope {
 
     boolean isEnable();
 
-    NumeronDescription getDescription();
+    PluginDescription getDescription();
+
+    PluginContext getPluginContext();
+
+    void setPluginContext(PluginContext pluginContext);
 
 }

@@ -2,9 +2,10 @@ package com.erzbir.numeron.core.processor;
 
 import com.erzbir.numeron.annotation.Command;
 import com.erzbir.numeron.annotation.Listener;
+import com.erzbir.numeron.api.context.BeanContext;
+import com.erzbir.numeron.api.context.DefaultBeanCentral;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.core.NumeronImpl;
-import com.erzbir.numeron.core.context.AppContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import lombok.Getter;
 
@@ -38,7 +39,7 @@ public class CommandAnnotationProcessor implements Processor {
 
     @Override
     public void onApplicationEvent() {
-        AppContext context = AppContext.INSTANCE;
+        BeanContext context = DefaultBeanCentral.INSTANCE;
         NumeronLogUtil.info("开始生成命令帮助文档......");
         context.getBeansWithAnnotation(Listener.class).forEach((k, v) -> scanBeans(v));
         NumeronImpl numeron = new NumeronImpl();

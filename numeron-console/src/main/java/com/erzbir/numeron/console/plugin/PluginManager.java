@@ -1,7 +1,9 @@
 package com.erzbir.numeron.console.plugin;
 
-import com.erzbir.numeron.api.bot.BotServiceImpl;
-import com.erzbir.numeron.api.context.AppContextServiceImpl;
+import com.erzbir.numeron.api.context.DefaultAppContext;
+import com.erzbir.numeron.api.processor.Processor;
+import com.erzbir.numeron.console.plugin.loader.DefaultPluginLoader;
+import com.erzbir.numeron.core.context.MiraiListenerContext;
 import com.erzbir.numeron.exception.PluginConflictException;
 import com.erzbir.numeron.exception.PluginIllegalException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;
@@ -9,15 +11,14 @@ import com.erzbir.numeron.utils.NumeronLogUtil;
 
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author Erzbir
  * @Date: 2023/4/26 17:36
  */
-public class PluginManager implements PluginService, PluginLoad, PluginManagerInter {
+public class PluginManager implements PluginService {
     private static final String pluginPath = "numeron_plugins/";
     public static PluginManager INSTANCE = new PluginManager();
 
@@ -25,9 +26,9 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
         ConfigCreateUtil.createDir(pluginPath);
     }
 
-    public final ExecutorService executor = Executors.newCachedThreadPool();
-    private final Map<String, Plugin> pluginMap = new ConcurrentHashMap<>();
-    private final Map<String, PluginContext> pluginPluginContextMap = new ConcurrentHashMap<>();
+    private PluginRegister pluginEventRegister = new PluginEventRegister();
+    private Map<String, Plugin> pluginMap = new ConcurrentHashMap<>();
+
 
     private PluginManager() {
         loadAll();
@@ -44,19 +45,19 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
         }
     }
 
-    @Override
     public void load(File plugin) {
-        try (HotSpiPluginLoader hotSpiPluginLoader = new HotSpiPluginLoader()) {
+        try {
             if (!plugin.getName().endsWith(".jar")) {
                 throw new PluginIllegalException("not a legal plugin");
             }
-            List<Object> objects = hotSpiPluginLoader.loadNewJar(plugin);
-            objects.stream().filter(t -> Plugin.class.isAssignableFrom(t.getClass())).forEach(p -> {
-                Plugin pl = (Plugin) p;
-                Collection<Class<?>> values = hotSpiPluginLoader.getClassCache().values();
-                PluginContext pluginContext = new PluginContext(pl, hotSpiPluginLoader, plugin, new HashSet<>(values));
-                pluginPluginContextMap.put(pl.getClass().getName(), pluginContext);
-                loadPlugin(pl);
+            DefaultPluginLoader pluginLoader = new DefaultPluginLoader();
+            pluginLoader.load(plugin);
+            pluginLoader.loadedPlugins.forEach(p -> {
+                Set<Class<?>> collect = new HashSet<>(pluginLoader.loadedClass);
+                PluginContext pluginContext = new PluginContext(collect, plugin);
+                p.setPluginContext(pluginContext);
+                load(p);
+                pluginEventRegister.register(pluginContext);
             });
         } catch (Exception e) {
             NumeronLogUtil.logger.error("ERROR", new PluginIllegalException(e));
@@ -68,10 +69,21 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
         if (plugin == null) {
             return;
         }
-        PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-        File file = pluginContext.getOriginalFile();
-        removePlugin(plugin);
-        load(file);
+        pluginMap.remove(plugin.getClass().getName());
+        CompletableFuture.runAsync(() -> {
+            PluginContext pluginContext = plugin.getPluginContext();
+            File file = pluginContext.getFile();
+            unload(plugin);
+            System.gc();
+            load(file);
+
+        }).thenRunAsync(() -> {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ignore) {
+            }
+            DefaultAppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
+        });
     }
 
     @Override
@@ -83,13 +95,7 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
             NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already enabled and cannot be re-enabled.");
             return;
         }
-        executor.submit(() -> {
-            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-            AppContextServiceImpl.INSTANCE.addAllToContext(pluginContext.getClasses());
-            BotServiceImpl.INSTANCE.shutdownAll();
-            BotServiceImpl.INSTANCE.launchAll();
-            plugin.enable();
-        });
+        plugin.enable();
     }
 
     @Override
@@ -101,28 +107,30 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
             NumeronLogUtil.logger.error("Plugin" + plugin.getDescription().getName() + "is already disabled and cannot be re-disabled.");
             return;
         }
-        executor.submit(() -> {
-            PluginContext pluginContext = pluginPluginContextMap.get(plugin.getClass().getName());
-            pluginContext.getClasses().forEach(AppContextServiceImpl.INSTANCE::removeBean);
-            BotServiceImpl.INSTANCE.shutdownAll();
-            BotServiceImpl.INSTANCE.launchAll();
-            plugin.disable();
-        });
+        plugin.disable();
+    }
+
+    public void unload(Plugin plugin) {
+        MiraiListenerContext.INSTANCE.cancelAll();
+        plugin.disable();
+        PluginContext pluginContext = plugin.getPluginContext();
+        pluginContext.destroy();
+        System.gc();
     }
 
     @Override
     public void removePlugin(Plugin plugin) {
-        plugin.disable();
-        executor.submit(() -> {
-            PluginContext pluginContext = pluginPluginContextMap.remove(plugin.getClass().getName());
-            BotServiceImpl.INSTANCE.shutdownAll();
-            String name = plugin.getClass().getName();
-            pluginMap.remove(name).onUnLoad();
-            pluginContext.destroy();
-            BotServiceImpl.INSTANCE.launchAll();
-            System.err.println("asdioadiawdalodawodj");
+        if (plugin == null) {
+            return;
+        }
+        pluginMap.remove(plugin.getClass().getName());
+        CompletableFuture.runAsync(() -> unload(plugin)).thenRunAsync(() -> {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ignore) {
+            }
+            DefaultAppContext.INSTANCE.getProcessors().forEach(Processor::onApplicationEvent);
         });
-        System.gc();
     }
 
     @Override
@@ -148,12 +156,18 @@ public class PluginManager implements PluginService, PluginLoad, PluginManagerIn
     }
 
     @Override
+    public File[] getUnloadedPlugins() {
+        File file = new File(pluginPath);
+        return file.listFiles(t -> t.getName().endsWith(".jar"));
+    }
+
+    @Override
     public boolean isLoaded(Plugin plugin) {
         return pluginMap.containsValue(plugin);
     }
 
     @Override
-    public void loadPlugin(Plugin plugin) {
+    public void load(Plugin plugin) {
         if (isLoaded(plugin)) {
             NumeronLogUtil.logger.error("ERROR", new PluginConflictException("Plugin " + plugin.getDescription().getName() + "already loaded"));
             return;

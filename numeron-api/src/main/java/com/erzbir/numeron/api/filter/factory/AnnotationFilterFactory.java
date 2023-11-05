@@ -1,9 +1,12 @@
 package com.erzbir.numeron.api.filter.factory;
 
 import com.erzbir.numeron.annotation.*;
-import com.erzbir.numeron.api.filter.annotation.*;
+import com.erzbir.numeron.api.filter.AnnotationFilter;
+import com.erzbir.numeron.api.filter.annotation.CommonAnnotationFilter;
+import com.erzbir.numeron.api.filter.annotation.FilterAnnotationFilter;
+import com.erzbir.numeron.api.filter.annotation.PermissionAnnotationFilter;
+import com.erzbir.numeron.api.filter.annotation.TargetsAnnotationFilter;
 import com.erzbir.numeron.exception.FilterNotFoundException;
-import net.mamoe.mirai.event.Event;
 
 import java.lang.annotation.Annotation;
 
@@ -21,17 +24,17 @@ public class AnnotationFilterFactory implements AnnotationFilterFactoryInter {
     }
 
     @Override
-    public AbstractAnnotationChannelFilter<? extends Annotation, ? extends Event> create(Annotation annotation) {
+    public <E extends Annotation> AnnotationFilter create(E annotation) {
         if (CommonFilter.class.equals(annotation.annotationType())) {
-            return new CommonAnnotationFilter().setAnnotation((CommonFilter) annotation);
+            return new CommonAnnotationFilter().setAnnotation(annotation);
         } else if (Targets.class.equals(annotation.annotationType())) {
-            return new TargetsAnnotationFilter().setAnnotation((Targets) annotation);
+            return new TargetsAnnotationFilter().setAnnotation(annotation);
         } else if (Filters.class.equals(annotation.annotationType())) {
-            return new FilterAnnotationFilter().setAnnotation((Filter) annotation);
+            return new FilterAnnotationFilter().setAnnotation(annotation);
         } else if (Filter.class.equals(annotation.annotationType())) {
-            return new FilterAnnotationFilter().setAnnotation((Filter) annotation);
+            return new FilterAnnotationFilter().setAnnotation(annotation);
         } else if (Permission.class.equals(annotation.annotationType())) {
-            return new PermissionAnnotationFilter().setAnnotation((Permission) annotation);
+            return new PermissionAnnotationFilter().setAnnotation(annotation);
         }
         throw new FilterNotFoundException("no filter of this type");
     }

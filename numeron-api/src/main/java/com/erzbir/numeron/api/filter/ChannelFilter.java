@@ -12,8 +12,8 @@ import net.mamoe.mirai.event.EventChannel;
  * @Date: 2023/6/27 11:35
  */
 @FunctionalInterface
-public interface ChannelFilter<E extends Event> extends Filter<E> {
-    default EventChannel<? extends E> filter(EventChannel<? extends E> channel) {
+public interface ChannelFilter extends Filter {
+    default <E extends Event> EventChannel<? extends E> filter(EventChannel<? extends E> channel) {
         return channel.filter(this::filter);
     }
 }

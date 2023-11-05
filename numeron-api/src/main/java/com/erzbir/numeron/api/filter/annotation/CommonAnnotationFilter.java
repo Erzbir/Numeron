@@ -1,7 +1,7 @@
 package com.erzbir.numeron.api.filter.annotation;
 
 import com.erzbir.numeron.annotation.CommonFilter;
-import com.erzbir.numeron.api.filter.ChannelFilter;
+import com.erzbir.numeron.api.filter.AnnotationFilter;
 import com.erzbir.numeron.api.filter.CustomFilter;
 import com.erzbir.numeron.api.filter.DefaultFilter;
 import com.erzbir.numeron.utils.NumeronLogUtil;
@@ -16,11 +16,10 @@ import java.lang.reflect.InvocationTargetException;
  * @Date 2023/8/11
  * @see CommonFilter
  */
-public class CommonAnnotationFilter extends AbstractAnnotationChannelFilter<CommonFilter, Event> implements ChannelFilter<Event> {
-    @SuppressWarnings({"rawtypes", "unchecked"})
+public class CommonAnnotationFilter extends AbstractAnnotationFilter<CommonFilter> implements AnnotationFilter {
     @Override
     public boolean filter(Event event) {
-        Class<? extends CustomFilter<?>> filter = annotation.filter();
+        Class<? extends CustomFilter> filter = annotation.filter();
         if (!filter.equals(DefaultFilter.class)) {
             try {
                 CustomFilter customFilter = filter.getConstructor().newInstance();
