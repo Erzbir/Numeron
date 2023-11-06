@@ -1,10 +1,10 @@
-package com.erzbir.numeron.core.bot;
+package com.erzbir.numeron.bot;
 
 import com.erzbir.numeron.api.bot.BotService;
 import com.erzbir.numeron.api.context.DefaultAppContext;
+import com.erzbir.numeron.api.context.MiraiListenerContext;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.config.NumeronBotConfiguration;
-import com.erzbir.numeron.core.context.MiraiListenerContext;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.BotFactory;
 import net.mamoe.mirai.auth.BotAuthorization;

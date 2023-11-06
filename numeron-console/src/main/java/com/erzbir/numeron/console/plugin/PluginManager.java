@@ -1,9 +1,9 @@
 package com.erzbir.numeron.console.plugin;
 
 import com.erzbir.numeron.api.context.DefaultAppContext;
+import com.erzbir.numeron.api.context.MiraiListenerContext;
 import com.erzbir.numeron.api.processor.Processor;
 import com.erzbir.numeron.console.plugin.loader.DefaultPluginLoader;
-import com.erzbir.numeron.core.context.MiraiListenerContext;
 import com.erzbir.numeron.exception.PluginConflictException;
 import com.erzbir.numeron.exception.PluginIllegalException;
 import com.erzbir.numeron.utils.ConfigCreateUtil;

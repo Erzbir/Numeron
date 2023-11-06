@@ -1,13 +1,10 @@
 package com.erzbir.numeron.boot;
 
-import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import lombok.Getter;
 import lombok.Setter;
-import net.mamoe.mirai.Bot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ServiceLoader;
 
 /**
  * @author Erzbir
@@ -25,22 +22,18 @@ public class StarterController {
                         
             """;
     private Starter starter;
-    private List<Initializer> initializers = new ArrayList<>();
-
-    public StarterController() {
-        initializers.add(new ConfigInitializer());
-        initializers.add(new PluginInitializer());
-        initializers.add(new BotInitializer());
-    }
 
 
     public void boot(Class<?> bootClass, ClassLoader classLoader) throws InterruptedException {
-        initializers.forEach(Initializer::init);
-        setStarter(new SpiStarter(bootClass.getName(), classLoader));
+        boot(bootClass.getPackageName(), classLoader);
+    }
+
+    public void boot(String name, ClassLoader classLoader) throws InterruptedException {
+        ServiceLoader.load(Initializer.class).forEach(Initializer::init);
+        setStarter(new SpiStarter(name, classLoader));
         starter.boot();
         printLog();
         NumeronLogUtil.info("欢迎使用 Numeron!!!");
-        BotServiceImpl.INSTANCE.getBotList().forEach(Bot::join);
     }
 
 

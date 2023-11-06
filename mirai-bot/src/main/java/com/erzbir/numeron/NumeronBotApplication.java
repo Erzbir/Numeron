@@ -1,5 +1,6 @@
 package com.erzbir.numeron;
 
+import com.erzbir.numeron.api.bot.BotServiceImpl;
 import com.erzbir.numeron.boot.StarterController;
 
 public class NumeronBotApplication {
@@ -7,6 +8,7 @@ public class NumeronBotApplication {
     public static void main(String[] args) throws InterruptedException {
         StarterController starterController = new StarterController();
         starterController.boot(NumeronBotApplication.class, NumeronBotApplication.class.getClassLoader());  // 调用 boot 方法初始化
+        BotServiceImpl.INSTANCE.loginAll();
     }
 }
 

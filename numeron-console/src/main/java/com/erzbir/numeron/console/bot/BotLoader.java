@@ -40,7 +40,7 @@ public class BotLoader {
     }
 
     public static List<Bot> load() {
-        JsonArray botsJson = null;
+        JsonArray botsJson;
         List<Bot> bots = new ArrayList<>();
         BufferedReader fileReader = null;
         try {

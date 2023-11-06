@@ -1,6 +1,5 @@
-package com.erzbir.numeron.core.context;
+package com.erzbir.numeron.api.context;
 
-import com.erzbir.numeron.api.context.ListenerContext;
 import com.erzbir.numeron.utils.NumeronLogUtil;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventPriority;
