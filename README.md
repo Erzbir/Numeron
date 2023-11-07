@@ -6,6 +6,7 @@
         - [实现的功能:](#plugin-模块实现的功能)
     - [说明:](#说明)
         - [只使用 bot 功能:](#只使用-bot-功能)
+        - [脚手架使用](#脚手架使用)
             - [@Handler 使用:](#handler使用)
             - [@Filter 使用:](#filter-使用)
             - [@Permission 使用](#permission-使用)
