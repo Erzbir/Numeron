@@ -95,8 +95,8 @@ public class NumeronBotApplication {
 
 > 将一个方法标记为监听回调, 监听的时间类型由参数决定
 
-<code>
-此注解标注的方法由 [ListenerRegisterInter](numeron-api/src/main/java/com/erzbir/numeron/api/listener/ListenerRegisterInter.java)</code>
+
+此注解标注的方法由 <code>[ListenerRegisterInter](numeron-api/src/main/java/com/erzbir/numeron/api/listener/ListenerRegisterInter.java)</code>
 的实现类注册到 bot 框架监听
 
 ```java
@@ -162,6 +162,7 @@ public class Test {
 ```
 
 #### @Command 生成指令表:
+此部分打算抽象一个 format 类负责格式化
 
 <code>[@Command](numeron-api/src/main/java/com/erzbir/numeron/annotation/Command.java)</code>
 
@@ -203,10 +204,9 @@ class Test {
 }
 ```
 
-效果:
-![2023031916.30.57](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/2023031916.30.57.png)
-
 ### @Menu 生成图片菜单:
+
+此部分打算抽象一个 format 类负责格式化
 
 <code>[@Menu](numeron-menu/src/main/java/com/erzbir/numeron/menu/Menu.java)</code>
 
@@ -251,11 +251,6 @@ class Test {
     }
 }
 ```
-
-效果:
-![f44d0e472c5d15199ab8917cba107ace](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/f44d0e472c5d15199ab8917cba107ace.png)
-
-![9f7c0b37e82f492e8c282e54ddd7e755](https://bloghexofluid.oss-cn-hangzhou.aliyuncs.com/uPic/9f7c0b37e82f492e8c282e54ddd7e755.png)
 
 ## 开发计划:
 
