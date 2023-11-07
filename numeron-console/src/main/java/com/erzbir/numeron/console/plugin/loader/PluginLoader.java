@@ -11,7 +11,7 @@ import java.util.Set;
  * @Date: 2023/6/16 09:52
  */
 public interface PluginLoader {
-    String PATH = "META-INF/services/com.erzbir.numeron.console.plugin.Plugin";
+    String SERVICE_PATH = "META-INF/services/com.erzbir.numeron.console.plugin.Plugin";
 
     void load(File file);
 

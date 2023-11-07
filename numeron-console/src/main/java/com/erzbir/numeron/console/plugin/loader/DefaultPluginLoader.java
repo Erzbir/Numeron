@@ -23,7 +23,6 @@ public class DefaultPluginLoader implements PluginLoader {
     public Set<Plugin> loadedPlugins = new HashSet<>();
     public Set<Class<?>> loadedClass = new HashSet<>();
     public URLClassLoader classLoader;
-    String SERVICE_PATH = "META-INF/services/com.erzbir.numeron.console.plugin.Plugin";
 
     public DefaultPluginLoader(URLClassLoader urlClassLoader) {
         this.classLoader = urlClassLoader;

@@ -24,11 +24,11 @@ public class StarterController {
     private Starter starter;
 
 
-    public void boot(Class<?> bootClass, ClassLoader classLoader) throws InterruptedException {
+    public void boot(Class<?> bootClass, ClassLoader classLoader) {
         boot(bootClass.getPackageName(), classLoader);
     }
 
-    public void boot(String name, ClassLoader classLoader) throws InterruptedException {
+    public void boot(String name, ClassLoader classLoader) {
         ServiceLoader.load(Initializer.class).forEach(Initializer::init);
         setStarter(new SpiStarter(name, classLoader));
         starter.boot();
