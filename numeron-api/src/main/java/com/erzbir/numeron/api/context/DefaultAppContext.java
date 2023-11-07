@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * 程序预处理器和一些环境属性放入这个类中
  * @author Erzbir
  * @Date 2023/11/2
  */

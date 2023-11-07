@@ -13,6 +13,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * 将所有通过注解标识需要实例化的类添加到此容器
+ * <p></p>
+ * plus 方法为添加字节码的方式, addBean 则是直接添加实例化对象
  * @author Erzbir
  * @Date 2023/11/2
  */

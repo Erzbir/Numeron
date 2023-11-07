@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 此类实际上是一个是 {@code StringMatcher} 的单例实现, 例如: {@code EQUALS},
+ * 此类实际上是一个 {@code StringMatcher} 的单例实现, 例如: {@code EQUALS},
  * 使用函数式接口的方式构造一个匹配两个字符串是否相同的 {@code StringMatcher},
  * 而 {@code EQUALS} 就是这个 {@code StringMatcher} 的单例模式 (枚举特性)
  *
