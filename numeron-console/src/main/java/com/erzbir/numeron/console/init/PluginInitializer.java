@@ -1,5 +1,6 @@
-package com.erzbir.numeron.boot;
+package com.erzbir.numeron.console.init;
 
+import com.erzbir.numeron.boot.Initializer;
 import com.erzbir.numeron.console.plugin.Plugin;
 import com.erzbir.numeron.console.plugin.PluginManager;
 import com.erzbir.numeron.utils.NumeronLogUtil;

@@ -1,11 +1,9 @@
 plugins {
-    kotlin("jvm")
-    id("java")
-    `maven-publish`
+
 }
 
 dependencies {
     api(project(":numeron-api"))
     api(project(":numeron-utils"))
-    api(project(":numeron-common"))
+    runtimeOnly("org.xerial:sqlite-jdbc:3.42.0.0")
 }

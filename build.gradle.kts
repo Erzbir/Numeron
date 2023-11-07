@@ -30,8 +30,14 @@ subprojects {
     apply(plugin = "com.github.johnrengelman.shadow")
 
     dependencies {
-        annotationProcessor("org.projectlombok:lombok:1.18.30")
         compileOnly("org.projectlombok:lombok:1.18.30")
+        compileOnly("net.mamoe:mirai-core-jvm:${miraiVersion}")
+        api("net.mamoe:mirai-core-utils:${miraiVersion}")
+        api("com.google.code.gson:gson:2.10.1")
+        api("org.apache.logging.log4j:log4j-api:2.20.0")
+        runtimeOnly("org.apache.logging.log4j:log4j-core:2.20.0")
+        runtimeOnly("org.slf4j:slf4j-simple:2.0.5")
+        annotationProcessor("org.projectlombok:lombok:1.18.30")
     }
 }
 

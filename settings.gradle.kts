@@ -12,14 +12,14 @@ rootProject.name = "Numeron"
 include(
     listOf(
         ":numeron-api",
-        ":numeron-common",
         ":numeron-boot",
         ":numeron-console",
         ":numeron-core",
         ":numeron-menu",
         ":numeron-plugin",
         ":numeron-utils",
-        ":numeron-all",
+        ":mirai-bot",
+
         ":numeron-plugin:card-search",
         ":numeron-plugin:chat",
         ":numeron-plugin:check-weight",
