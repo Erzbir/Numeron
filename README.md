@@ -140,6 +140,8 @@ public class Test {
 
 #### @Permission 使用:
 
+[@Permission](numeron-api/src/main/java/com/erzbir/numeron/annotation/Permission.java)
+
 此项目中提供了一个默认的权限实现, 也可以通过 spi
 实现 [PermissionService](numeron-api/src/main/java/com/erzbir/numeron/api/permission/PermissionService.java)
 接口实现自定义权限规则 (尚未开发完毕)
