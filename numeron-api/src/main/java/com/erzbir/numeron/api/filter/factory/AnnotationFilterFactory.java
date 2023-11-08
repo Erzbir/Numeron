@@ -24,7 +24,7 @@ public class AnnotationFilterFactory implements AnnotationFilterFactoryInter {
     }
 
     @Override
-    public <E extends Annotation> AnnotationFilter create(E annotation) {
+    public AnnotationFilter create(Annotation annotation) {
         if (CommonFilter.class.equals(annotation.annotationType())) {
             return new CommonAnnotationFilter().setAnnotation(annotation);
         } else if (Targets.class.equals(annotation.annotationType())) {

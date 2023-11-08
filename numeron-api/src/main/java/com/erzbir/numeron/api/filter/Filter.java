@@ -1,10 +1,8 @@
 package com.erzbir.numeron.api.filter;
 
-import net.mamoe.mirai.event.Event;
-
 /**
  * <p>
- * 顶层过滤器父接口, 最终以一个 event 为单位过滤
+ * 顶层过滤器父接口
  * </p>
  *
  * @author Erzbir
@@ -12,5 +10,5 @@ import net.mamoe.mirai.event.Event;
  */
 @FunctionalInterface
 public interface Filter {
-    <E extends Event> boolean filter(E event);
+    <E> boolean filter(E event);
 }

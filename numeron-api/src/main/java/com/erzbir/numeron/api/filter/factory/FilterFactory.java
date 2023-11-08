@@ -11,6 +11,6 @@ import com.erzbir.numeron.api.filter.Filter;
  * @author Erzbir
  * @Date: 2022/11/26 17:54
  */
-public interface FilterFactory {
-    <E> Filter create(E e);
+public interface FilterFactory<E> {
+    Filter create(E e);
 }

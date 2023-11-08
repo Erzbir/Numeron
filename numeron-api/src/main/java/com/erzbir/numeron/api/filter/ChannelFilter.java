@@ -1,6 +1,5 @@
 package com.erzbir.numeron.api.filter;
 
-import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 
 /**
@@ -13,7 +12,7 @@ import net.mamoe.mirai.event.EventChannel;
  */
 @FunctionalInterface
 public interface ChannelFilter extends Filter {
-    default <E extends Event> EventChannel<? extends E> filter(EventChannel<? extends E> channel) {
+    default <E> EventChannel<? extends E> filter(EventChannel<? extends E> channel) {
         return channel.filter(this::filter);
     }
 }

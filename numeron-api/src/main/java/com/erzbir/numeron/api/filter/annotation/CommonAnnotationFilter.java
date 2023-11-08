@@ -5,7 +5,6 @@ import com.erzbir.numeron.api.filter.AnnotationFilter;
 import com.erzbir.numeron.api.filter.CustomFilter;
 import com.erzbir.numeron.api.filter.DefaultFilter;
 import com.erzbir.numeron.utils.NumeronLogUtil;
-import net.mamoe.mirai.event.Event;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -18,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class CommonAnnotationFilter extends AbstractAnnotationFilter<CommonFilter> implements AnnotationFilter {
     @Override
-    public boolean filter(Event event) {
+    public <E> boolean filter(E event) {
         Class<? extends CustomFilter> filter = annotation.filter();
         if (!filter.equals(DefaultFilter.class)) {
             try {

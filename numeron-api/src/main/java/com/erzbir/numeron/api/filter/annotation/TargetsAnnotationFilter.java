@@ -2,7 +2,6 @@ package com.erzbir.numeron.api.filter.annotation;
 
 import com.erzbir.numeron.annotation.Targets;
 import com.erzbir.numeron.api.filter.AnnotationFilter;
-import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -19,7 +18,7 @@ import java.util.Arrays;
  */
 public class TargetsAnnotationFilter extends AbstractAnnotationFilter<Targets> implements AnnotationFilter {
     @Override
-    public boolean filter(Event event) {
+    public <E> boolean filter(E event) {
         if (annotation == null) {
             return true;
         }
@@ -36,7 +35,7 @@ public class TargetsAnnotationFilter extends AbstractAnnotationFilter<Targets> i
         return filterSenders(senders, event) && filterGroups(groups, event) && filterBots(bots, event);
     }
 
-    private boolean filterBots(long[] bots, Event event) {
+    private <E> boolean filterBots(long[] bots, E event) {
         if (bots.length != 0) {
             if (event instanceof BotEvent botEvent) {
                 return Arrays.stream(bots).anyMatch(bot -> bot == botEvent.getBot().getId());
@@ -45,7 +44,7 @@ public class TargetsAnnotationFilter extends AbstractAnnotationFilter<Targets> i
         return true;
     }
 
-    private boolean filterSenders(long[] senders, Event event) {
+    private <E> boolean filterSenders(long[] senders, E event) {
         if (senders.length != 0) {
             if (event instanceof MessageEvent messageEvent) {
                 return Arrays.stream(senders).anyMatch(sender -> sender == messageEvent.getSender().getId());
@@ -56,7 +55,7 @@ public class TargetsAnnotationFilter extends AbstractAnnotationFilter<Targets> i
         return true;
     }
 
-    private boolean filterGroups(long[] groups, Event event) {
+    private <E> boolean filterGroups(long[] groups, E event) {
         if (groups.length != 0) {
             if (event instanceof GroupEvent groupEvent) {
                 return Arrays.stream(groups).anyMatch(group -> group == groupEvent.getGroup().getId());
