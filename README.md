@@ -119,6 +119,8 @@ public class Test {
 
 <code>[@Filter](numeron-api/src/main/java/com/erzbir/numeron/annotation/Filter.java)</code>
 
+此处参考了: [simple-robot](https://github.com/simple-robot/simpler-robot)
+
 此注解可以针对: 群 id, 事件发送者 id, bot id 以及消息事件的文本消息来进行规则过滤
 
 此注解可以实现简单的权限, 本项目提供了一个专门的权限过滤注解, 下文介绍
