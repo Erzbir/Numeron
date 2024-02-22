@@ -1,4 +1,4 @@
-package com.erzbir.numeron.define;
+package com.erzbir.numeron.entity;
 
 import com.erzbir.numeron.action.SendSupport;
 

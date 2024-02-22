@@ -1,19 +1,21 @@
 package com.erzbir.numeron.common;
 
+/**
+ * 属性容器接口
+ *
+ * @author Erzbir
+ * @Data: 2023/12/6 10:46
+ */
 public interface AttributeContainer<K, V> {
-    void putAttribute(K key, V value);
+    void putAttribute(Attribute<K, V> attribute);
 
-    void putIfAbsentAttribute(K key, V value);
+    void putIfAbsentAttribute(Attribute<K, V> attribute);
 
-    V removeAttribute(K key);
+    Attribute<K, V> removeAttribute(Attribute.Key<K> key);
 
-    boolean removeAttribute(K key, V value);
+    boolean removeAttribute(Attribute.Key<K> key, Attribute<K, V> attribute);
 
-    V getAttribute(K key);
+    Attribute<K, V> getAttribute(Attribute.Key<K> key);
 
-    V getIfAbsentAttribute(K key);
-
-    boolean containsKey(K key);
-
-    boolean containsValue(V value);
+    boolean containsAttribute(Attribute<K, V> attribute);
 }
