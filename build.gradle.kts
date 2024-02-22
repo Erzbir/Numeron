@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 buildscript {
     repositories {
         mavenLocal()
@@ -10,17 +8,19 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.9.22"
     id("java")
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "7.1.1"
 }
 
-rootProject.version = "1.0.0"
-val javaVersion = JavaVersion.VERSION_17
-val miraiVersion = "2.15.0"
-val gradleVersion = "8.1.1"
+
+group = "com.erzbir"
+version = "1.0.0"
+val javaVersion = JavaVersion.VERSION_21
+val gradleVersion = "8.5"
 val encoding = "UTF-8"
+
 
 subprojects {
 
@@ -31,12 +31,18 @@ subprojects {
 
     dependencies {
         compileOnly("org.projectlombok:lombok:1.18.30")
-        compileOnly("net.mamoe:mirai-core-jvm:${miraiVersion}")
-        api("net.mamoe:mirai-core-utils:${miraiVersion}")
-        api("com.google.code.gson:gson:2.10.1")
-        api("org.apache.logging.log4j:log4j-api:2.20.0")
-        runtimeOnly("org.apache.logging.log4j:log4j-core:2.20.0")
-        runtimeOnly("org.slf4j:slf4j-simple:2.0.5")
+        compileOnly("org.slf4j:slf4j-api:2.0.12")
+
+        implementation("ch.qos.logback:logback-classic:1.5.0")
+
+        runtimeOnly("ch.qos.logback:logback-core:1.5.0")
+
+        testImplementation(platform("org.junit:junit-bom:5.10.2"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testCompileOnly("org.slf4j:slf4j-api:2.0.12")
+        testCompileOnly("org.projectlombok:lombok:1.18.30")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
+
         annotationProcessor("org.projectlombok:lombok:1.18.30")
     }
 }
@@ -48,7 +54,6 @@ allprojects {
 
     repositories {
         mavenLocal()
-
         mavenCentral()
         gradlePluginPortal()
         google()
@@ -56,7 +61,6 @@ allprojects {
 
     ext {
         set("javaVersion", javaVersion)
-        set("miraiVersion", miraiVersion)
         set("gradleVersion", gradleVersion)
         set("encoding", encoding)
     }
@@ -91,10 +95,6 @@ allprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
+        debugOptions.enabled
     }
-}
-
-tasks.withType<ShadowJar> {
-    mergeServiceFiles()
-    minimize()
 }

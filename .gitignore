@@ -1,25 +1,39 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-data.sqlite
-erzbirnumeron
-*.log
-/plugin-libraries
-/plugin-shared-libraries
-/plugin_config
-/plugin_data
-/temp
-/nm-plugin
-/data
-/plugins
-/numeron_plugins
-/plugin-lib
-/logs
-qodana.yaml
-
 .gradle
-### STS ###
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+#### Compiled class file ###
+*.class
+
+#### Log file ###
+*.log
+/log/
+
+#### BlueJ files ###
+*.ctxt
+
+#### Mobile Tools for Java (J2ME) ###
+.mtj.tmp/
+
+### Fleet ###
+.fleet/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+out/
+.idea/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
 .apt_generated
 .classpath
 .factorypath
@@ -27,13 +41,9 @@ qodana.yaml
 .settings
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
 ### NetBeans ###
 /nbproject/private/
@@ -41,18 +51,26 @@ out
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
 
-### Fleet ###
-.fleet/
+### Mac OS ###
+.DS_Store
 
-### MacOS ###
-*._Store!
-/htmlReport/
-temp/
-tmp/
+### Maven publishing credits ###
+keys.properties
+/plugins/
+
+token.txt
+bintray.user.txt
+bintray.key.txt
+
+### For gpg sign ###
+/build-gpg-sign
+
+#### Name for IDEA direction sorting ###
+build-secret-keys/
+
+
+local.properties

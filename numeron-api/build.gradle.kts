@@ -1,7 +1,8 @@
 plugins {
-
+    id("java")
 }
 
+
 dependencies {
-    api(project(":numeron-utils"))
+
 }

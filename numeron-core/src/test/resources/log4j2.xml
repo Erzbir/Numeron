@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="error">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%highlight{[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%level] [%thread] %msg%xEx%n}{FATAL=Black, ERROR=Red, WARN=Yellow, INFO=Green, DEBUG=Cyan, TRACE=White}"/>
+        </Console>
+    </appenders>
+
+    <loggers>
+        <root level="all">
+            <appender-ref ref="Console"/>
+        </root>
+    </loggers>
+</configuration>
