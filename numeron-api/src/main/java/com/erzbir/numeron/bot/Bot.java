@@ -1,7 +1,7 @@
 package com.erzbir.numeron.bot;
 
 import com.erzbir.numeron.component.Component;
-import com.erzbir.numeron.define.Subject;
+import com.erzbir.numeron.entity.Subject;
 
 /**
  * @author Erzbir
